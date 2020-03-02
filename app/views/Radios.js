@@ -26,11 +26,11 @@ const Radios = () => {
             isDisabled: false
           },
           {
-            label: "This longer text is disabled",
+            label: "This text is both checked and disabled",
             isDisabled: true
           }
-        ]}/>
-        <PackenDivider size={1} type="light" margin={{top: 15, bottom: 10}}/>
+        ]} initialIndex={2}/>
+        <PackenDivider size={1} type="light" margin={{top: 15, bottom: 15}}/>
         <PackenText style={{marginBottom: 5, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenText>
         <PackenRadio layout="row" items={[
           {
@@ -38,7 +38,7 @@ const Radios = () => {
             isDisabled: false
           },
           {
-            label: "Another text",
+            label: "This is checked",
             isDisabled: false
           },
           {

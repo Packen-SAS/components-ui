@@ -32,7 +32,7 @@ export default {
   },
   danger: {
     default: "#FE5860",
-    drk: "#B94146",
+    focus: "#B94146",
     lgt: "#FEEFF0"
   },
   warning: {

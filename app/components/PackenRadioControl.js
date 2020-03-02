@@ -7,11 +7,22 @@ import PackenText from "../components/PackenText";
 
 const PackenRadioControl = props => {
   const { label, checkedIndex, selfIndex, updateCheckedIndex, isDisabled } = props;
-  const [state, setState] = useState("default");
+  const initialState = isDisabled ? "default_disabled" : "default";
+  const [state, setState] = useState(initialState);
 
   const onPress_handler = () => {
     setState("checked");
     updateCheckedIndex(selfIndex);
+  }
+
+  const check_if_disabled = () => {
+    if (isDisabled) {
+      if (checkedIndex !== selfIndex) {
+        setState("default_disabled");
+      } else {
+        setState("checked_disabled");
+      }
+    }
   }
 
   useEffect(() => {
@@ -20,16 +31,11 @@ const PackenRadioControl = props => {
     } else {
       setState("checked");
     }
+    check_if_disabled();
   }, [checkedIndex]);
 
   useEffect(() => {
-    console.log(label, isDisabled);
-    if (isDisabled) {
-      RadioStyles.control[state] = {
-        ...RadioStyles.control[state],
-        ...RadioStyles.control.disabled
-      }
-    }
+    check_if_disabled();
   }, []);
 
   return (
