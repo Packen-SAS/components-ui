@@ -7,7 +7,7 @@ import PackenRadioControl from "./PackenRadioControl";
 
 const PackenRadio = props => {
   const { layout, items, initialIndex } = props;
-  const [checkedIndex, setCheckedIndex] = useState(initialIndex || null);
+  const [checkedIndex, setCheckedIndex] = useState(initialIndex);
   const [currentSelection, setCurrentSelection] = useState("");
 
   const update_checked_index = newCheckedIndex => {
@@ -28,7 +28,7 @@ const PackenRadio = props => {
 
   useEffect(() => {
     /* Use the new, updated selection here */
-    /* console.log(currentSelection); */
+    // console.log(currentSelection);
   }, [currentSelection]);
 
   return (

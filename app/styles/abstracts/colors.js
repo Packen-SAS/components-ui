@@ -32,6 +32,62 @@ export default {
   },
   danger: {
     default: "#FE5860",
-    focus: "#B94146"
+    focus: "#B94146",
+    lgt: "#FEEFF0"
+  },
+  warning: {
+    default: "#FFC10A",
+    drk: "#B78105",
+    lgt: "#FFF7CE"
+  },
+  info: {
+    default: "#7188FC",
+    drk: "#3849B5",
+    lgt: "#E2E9FE"
+  },
+  success: {
+    default: "#2EE2BC",
+    drk: "#1E9078",
+    lgt: "#ECFCF8"
+  },
+  brand: {
+    primary: {
+      dft: "#00E5FF",
+      drk: "#00B3DB",
+      udrk: "#0087B7",
+      lgt: "#8BF3FF",
+      ulgt: "#B9F7FF",
+      snw: "#E7FCFF"
+    },
+    secondary: {
+      dft: "#0D73FF",
+      drk: "#094AA3",
+      lgt: "#9AC2FE",
+      ulgt: "#BDD8FF",
+      snw: "#E9F2FF"
+    }
+  },
+  basic: {
+    white: {
+      dft: "#FFFFFF",
+      med: "#F9FAFB",
+      drk: "#F5F7F8",
+    },
+    gray: {
+      dft: "#C6CED7",
+      lgt: "#ECEEF1",
+      drk: "#A0AEBC"
+    },
+    independence: {
+      dft: "#556D87",
+      lgt: "#7B8DA2",
+      drk: "#304D6D"
+    },
+    yankees: {
+      dft: "#1F3246"
+    },
+    black: {
+      dft: "#000000"
+    }
   }
 }
