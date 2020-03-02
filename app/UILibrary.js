@@ -8,6 +8,10 @@ import Colors from "./styles/abstracts/colors";
 import PackenText from "./components/PackenText";
 import Buttons from "./views/Buttons";
 import Avatars from "./views/Avatars";
+import Dividers from "./views/Dividers";
+import Tabs from "./views/Tabs";
+import ServiceStatus from "./views/ServiceStatus";
+import Radios from "./views/Radios";
 
 const UILibrary = () => {
   return (
@@ -15,6 +19,10 @@ const UILibrary = () => {
       <ScrollView>
         <View style={styles.container}>
           <PackenText style={styles.container__title}>UI Components Library</PackenText>
+          <Radios/>
+          <ServiceStatus/>
+          <Tabs/>
+          <Dividers/>
           <Avatars/>
           <Buttons/>
         </View>

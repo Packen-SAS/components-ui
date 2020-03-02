@@ -3,6 +3,7 @@ import Typography from "../abstracts/typography";
 
 export const base = {
   shape: {
+    position: "relative",
     flexDirection: "row",
     alignSelf: "flex-start",
     alignItems: "center",

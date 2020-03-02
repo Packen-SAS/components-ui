@@ -5,8 +5,7 @@ import Typography from "../abstracts/typography";
 export default {
   section: {
     padding: Spacing.padding.all.base,
-    paddingHorizontal: 0,
-    marginBottom: 10
+    paddingHorizontal: 0
   },
   section__title: {
     color: Colors.base.default_alt,
@@ -17,9 +16,7 @@ export default {
     borderBottomColor: Colors.base.default_lgt
   },
   section__content: {
-    marginTop: 20,
-    alignItems: "flex-start",
-    alignSelf: "flex-start"
+    marginTop: 20
   },
   section__contentItem: {
     marginBottom: 10

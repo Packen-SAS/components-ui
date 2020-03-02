@@ -10,19 +10,19 @@ const Avatars = () => {
   return (
     <Section title="Avatars">
       <View style={SectionStyles.section__content}>
-        <PackenAvatar size="tiny" src="avatar.jpg"/>
+        <PackenAvatar size="tiny" src={require("../../assets/images/avatar.jpg")}/>
       </View>
       <View style={SectionStyles.section__content}>
-        <PackenAvatar size="small" src="avatar.jpg"/>
+        <PackenAvatar size="small" src={require("../../assets/images/avatar.jpg")}/>
       </View>
       <View style={SectionStyles.section__content}>
-        <PackenAvatar size="medium" src="avatar.jpg"/>
+        <PackenAvatar size="medium" src={require("../../assets/images/avatar.jpg")}/>
       </View>
       <View style={SectionStyles.section__content}>
-        <PackenAvatar size="large" src="avatar.jpg"/>
+        <PackenAvatar size="large" src={require("../../assets/images/avatar.jpg")}/>
       </View>
       <View style={SectionStyles.section__content}>
-        <PackenAvatar size="giant" src="avatar.jpg"/>
+        <PackenAvatar size="giant" src={require("../../assets/images/avatar.jpg")}/>
       </View>
     </Section>
   );

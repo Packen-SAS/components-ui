@@ -17,3 +17,36 @@ export const large = {
 export const giant = {
   size: 96
 };
+
+export const base = {
+  borderRadius: 100,
+  overflow: "hidden"
+}
+
+export const container = {
+  tiny: {
+    ...base,
+    height: tiny.size,
+    width: tiny.size
+  },
+  small: {
+    ...base,
+    height: small.size,
+    width: small.size
+  },
+  medium: {
+    ...base,
+    height: medium.size,
+    width: medium.size
+  },
+  large: {
+    ...base,
+    height: large.size,
+    width: large.size
+  },
+  giant: {
+    ...base,
+    height: giant.size,
+    width: giant.size
+  }
+}

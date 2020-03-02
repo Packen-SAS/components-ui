@@ -1,24 +1,20 @@
 import React from "react";
 
-import { ImageBackground } from "react-native";
+import { View, Image } from "react-native";
 
 import * as AvatarStyles from "../styles/components/PackenAvatar";
 
 const PackenAvatar = props => {
-  const get_styles = () => {
-    return {
-      height: AvatarStyles[props.size].size,
-      width: AvatarStyles[props.size].size
-    };
-  }
-
-  const get_src = () => {
-    const path = `../../assets/images/${props.src}`;
-    return require(path);
-  }
+  const { size, src } = props;
 
   return (
-    <ImageBackground source={get_src} style={get_styles}></ImageBackground>
+    <View style={AvatarStyles.container[size]}>
+      <Image source={src} style={{
+        height: "100%",
+        width: "100%",
+        borderRadius: AvatarStyles.container[size].borderRadius
+      }}/>
+    </View>
   );
 }
 

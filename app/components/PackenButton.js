@@ -125,7 +125,11 @@ const PackenButton = props => {
     props.callback();
   }
 
-  check_custom_styles_pressIn = newStyles => {
+  const pressIn_handler = () => {
+    let newStyles = {...get_styles()}
+    newStyles.shape.backgroundColor = Color[level].focus;
+
+    /* Custom focus styles */
     switch (level) {
       case "secondary":
         newStyles.shape.borderColor = Color.secondary.focus;
@@ -137,13 +141,6 @@ const PackenButton = props => {
       case "danger":
         break;
     }
-  }
-
-  const pressIn_handler = () => {
-    let newStyles = {...get_styles()}
-    newStyles.shape.backgroundColor = Color[level].focus;
-
-    check_custom_styles_pressIn(newStyles);
 
     setStyles(newStyles);
   }
