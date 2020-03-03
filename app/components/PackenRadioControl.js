@@ -1,55 +1,79 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 
 import { TouchableWithoutFeedback, View } from "react-native";
 
 import RadioStyles from "../styles/components/PackenRadio";
 import PackenText from "../components/PackenText";
 
-const PackenRadioControl = props => {
-  const { label, checkedIndex, selfIndex, updateCheckedIndex, isDisabled } = props;
-  const initialState = isDisabled ? "default_disabled" : "default";
-  const [state, setState] = useState(initialState);
+class PackenRadioControl extends Component {
+  constructor(props) {
+    super(props);
 
-  const onPress_handler = () => {
-    setState("checked");
-    updateCheckedIndex(selfIndex);
+    this.state = {
+      state: props.isDisabled ? "default_disabled" : "default"
+    }
   }
 
-  const check_if_disabled = () => {
-    if (isDisabled) {
-      if (checkedIndex !== selfIndex) {
-        setState("default_disabled");
+  componentDidMount() {
+    this.check_if_checked();
+    this.check_if_disabled();
+  }
+
+  onPress_handler = () => {
+    this.setState({
+      state: "checked"
+    });
+
+    this.props.updateCheckedIndex(this.props.selfIndex);
+  }
+
+  check_if_disabled = () => {
+    if (this.props.isDisabled) {
+      if (this.props.checkedIndex !== this.props.selfIndex) {
+        this.setState({
+          state: "default_disabled"
+        });
       } else {
-        setState("checked_disabled");
+        this.setState({
+          state: "checked_disabled"
+        });
       }
     }
   }
 
-  useEffect(() => {
-    if (checkedIndex !== selfIndex) {
-      setState("default");
+  check_if_checked = () => {
+    if (this.props.checkedIndex !== this.props.selfIndex) {
+      this.setState({
+        state: "default"
+      });
     } else {
-      setState("checked");
+      this.setState({
+        state: "checked"
+      });
     }
-    check_if_disabled();
-  }, [checkedIndex]);
+  }
 
-  useEffect(() => {
-    check_if_disabled();
-  }, []);
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.checkedIndex !== this.props.checkedIndex) {
+      this.check_if_checked();
+      this.check_if_disabled();
+    }
+  }
 
-  return (
-    <View pointerEvents={isDisabled ? "none" : "auto"}>
-      <TouchableWithoutFeedback onPress={onPress_handler}>
-        <View style={RadioStyles.shape.default}>
-          <View style={RadioStyles.control[state]}></View>
-          {
-            label ? <PackenText style={RadioStyles.label.default}>{label}</PackenText> : null
-          }
-        </View>
-      </TouchableWithoutFeedback>
-    </View>
-  );
+  render() {
+    return (
+      <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
+        <TouchableWithoutFeedback onPress={this.onPress_handler}>
+          <View style={RadioStyles.shape.default}>
+            <View style={RadioStyles.control[this.state.state]}></View>
+            {
+              this.props.label ? <PackenText style={RadioStyles.label.default}>{this.props.label}</PackenText> : null
+            }
+          </View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
+  }
 }
 
 export default PackenRadioControl;

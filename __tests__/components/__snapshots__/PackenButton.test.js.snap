@@ -1,0 +1,159 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PackenButton/> Rendering renders a regular button correctly 1`] = `
+<View
+  pointerEvents="auto"
+>
+  <View
+    accessible={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "alignSelf": "flex-start",
+        "backgroundColor": "#00B3DB",
+        "flexDirection": "row",
+        "justifyContent": "center",
+        "minHeight": 40,
+        "paddingHorizontal": 46,
+        "paddingVertical": 12,
+        "position": "relative",
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+    >
+      <Text
+        style={
+          Object {
+            "color": "#FFFFFF",
+            "fontFamily": "Muli-Bold",
+            "fontSize": 14,
+            "letterSpacing": 1,
+            "lineHeight": 16,
+            "marginHorizontal": 12,
+            "textAlign": "center",
+            "textTransform": "uppercase",
+          }
+        }
+      >
+        Medium
+      </Text>
+      <View
+        onLayout={[Function]}
+        style={
+          Object {
+            "left": "auto",
+            "position": "absolute",
+            "right": -12,
+            "top": 0,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": "#FFFFFF",
+                "fontSize": 21,
+              },
+              undefined,
+              Object {
+                "fontFamily": "Feather",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
+
+exports[`<PackenButton/> Rendering renders an icon button correctly 1`] = `
+<View
+  pointerEvents="auto"
+>
+  <View
+    accessible={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "alignItems": "center",
+        "alignSelf": "flex-start",
+        "backgroundColor": "#F5F7F8",
+        "borderColor": "#556D87",
+        "borderStyle": "solid",
+        "borderWidth": 1,
+        "flexDirection": "row",
+        "height": 48,
+        "justifyContent": "center",
+        "position": "relative",
+        "width": 48,
+      }
+    }
+  >
+    <View
+      onLayout={[Function]}
+    >
+      <Text
+        style={
+          Object {
+            "color": "#222B45",
+            "fontFamily": "Muli-Regular",
+            "fontSize": 14,
+          }
+        }
+      />
+      <View
+        onLayout={[Function]}
+        style={
+          Object {
+            "left": 0,
+            "position": "absolute",
+            "top": 0,
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          style={
+            Array [
+              Object {
+                "color": "#556D87",
+                "fontSize": 24,
+              },
+              undefined,
+              Object {
+                "fontFamily": "Feather",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;

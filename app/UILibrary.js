@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { StyleSheet, SafeAreaView, ScrollView, View } from "react-native";
 
 import Typography from "./styles/abstracts/typography";
@@ -13,22 +13,24 @@ import Tabs from "./views/Tabs";
 import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
 
-const UILibrary = () => {
-  return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.container}>
-          <PackenText style={styles.container__title}>UI Components Library</PackenText>
-          <Radios/>
-          <ServiceStatus/>
-          <Tabs/>
-          <Dividers/>
-          <Avatars/>
-          <Buttons/>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+class UILibrary extends Component {
+  render() {
+    return (
+      <SafeAreaView>
+        <ScrollView>
+          <View style={styles.container}>
+            <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <Radios/>
+            <ServiceStatus/>
+            <Tabs/>
+            <Dividers/>
+            <Avatars/>
+            <Buttons/>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
