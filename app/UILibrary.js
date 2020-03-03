@@ -13,6 +13,7 @@ import Tabs from "./views/Tabs";
 import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
 import Toggles from "./views/Toggles";
+import Checkbox from "./views/Checkbox";
 
 class UILibrary extends Component {
   render() {
@@ -22,6 +23,7 @@ class UILibrary extends Component {
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
             <Toggles/>
+            <Checkbox />
             <Radios/>
             <ServiceStatus/>
             <Tabs/>

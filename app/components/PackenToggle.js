@@ -13,22 +13,26 @@ class PackenToggle extends Component {
       isDisabled: props.isDisabled,
       shape: {
         height: 0,
-        width: 0
+        width: 0,
+        disabled: {}
       },
       dot: {
         height: 0,
         width: 0,
-        position: {}
+        position: {},
+        disabled: {}
       },
       on: {
         height: 0,
         width: 0,
-        position: {}
+        position: {},
+        disabled: {}
       },
       off: {
         height: 0,
         width: 0,
-        position: {}
+        position: {},
+        disabled: {}
       }
     }
   }
@@ -38,31 +42,49 @@ class PackenToggle extends Component {
     this.check_if_disabled();
   }
 
-  get_disabled_styles = () => {
-    let disabledStyles = {};
-
-    if (this.state.isDisabled) {
-      disabledStyles = {
-        shape: {
+  set_disabled_styles = prevState => {
+    this.setState({
+      shape: {
+        ...this.state.shape,
+        disabled: {
           ...ToggleStyles.shape.disabled
-        },
-        dot: {
-          ...ToggleStyles.dot.disabled
-        },
-        label: {
-          on: { ...ToggleStyles.label.on.disabled },
-          off: { ...ToggleStyles.label.off.disabled }
         }
-      };
-    }
-
-    return disabledStyles;
+      },
+      dot: {
+        ...this.state.dot,
+        disabled: {
+          ...ToggleStyles.dot.disabled
+        }
+      },
+      on: {
+        ...this.state.on,
+        disabled: {
+          ...ToggleStyles.label.on.disabled
+        }
+      },
+      off: {
+        ...this.state.off,
+        disabled: {
+          ...ToggleStyles.label.off.disabled
+        }
+      }
+    });
   }
 
   check_if_disabled = () => {
     if (this.props.isDisabled) {
+      let newState = "";
+
+      if (this.state.state === "active") {
+        newState = "disabled_active";
+      } else {
+        newState = "disabled_inactive"
+      }
+
       this.setState({
-        state: "disabled"
+        state: newState
+      }, () => {
+        this.set_disabled_styles();
       });
     }
   }
@@ -71,40 +93,44 @@ class PackenToggle extends Component {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       shape: {
+        ...this.state.shape,
         height: height,
         width: width
       }
-    });
+    }, this.position_elements);
   }
 
   get_dot_dimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       dot: {
+        ...this.state.dot,
         height: height,
         width: width
       }
-    });
+    }, this.position_elements);
   }
 
   get_on_dimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       on: {
+        ...this.state.on,
         height: height,
         width: width
       }
-    });
+    }, this.position_elements);
   }
 
   get_off_dimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       off: {
+        ...this.state.off,
         height: height,
         width: width
       }
-    });
+    }, this.position_elements);
   }
 
   position_elements = () => {
@@ -112,15 +138,15 @@ class PackenToggle extends Component {
     this.setState({
       dot: {
         ...this.state.dot,
-        position: positionStyles.dot
+        positioning: positionStyles.dot
       },
       on: {
         ...this.state.on,
-        position: positionStyles.on
+        positioning: positionStyles.on
       },
       off: {
         ...this.state.off,
-        position: positionStyles.off
+        positioning: positionStyles.off
       }
     });
   }
@@ -145,7 +171,7 @@ class PackenToggle extends Component {
           opacity: 0
         }
       }
-    } else {
+    } else if (this.state.state === "inactive") {
       positionStyles = {
         dot: {
           top: 2,
@@ -156,7 +182,7 @@ class PackenToggle extends Component {
         },
         off: {
           position: "absolute",
-          top: (this.state.shape.height / 2) + (this.state.on.height / 2),
+          top: (this.state.shape.height / 2) + (this.state.off.height / 2),
           right: 8,
           bottom: "auto",
           left: "auto"
@@ -182,39 +208,33 @@ class PackenToggle extends Component {
   }
 
   render() {
-    console.log("UPDATED STYLES AFTER TOGGLE");
-    console.log(this.state.dot.position);
-    console.log(this.state.on.position);
-    console.log(this.state.off.position);
-    console.log("---------------------------");
-
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>
           <View style={{
             ...ToggleStyles.shape.default,
             ...ToggleStyles.shape[this.state.state],
-            ...this.get_disabled_styles().shape
+            ...this.state.shape.disabled
           }} onLayout={e => { this.get_shape_dimensions(e); }}>
             <View style={{
               ...ToggleStyles.dot.default,
               ...ToggleStyles.dot[this.state.state],
-              ...this.get_disabled_styles().dot,
-              ...this.state.dot.position
+              ...this.state.dot.positioning,
+              ...this.state.dot.disabled
             }} onLayout={e => { this.get_dot_dimensions(e); }}></View>
-            <View onLayout={e => { this.get_on_dimensions(e); }} style={this.state.on.position}>
+            <View onLayout={e => { this.get_on_dimensions(e); }} style={this.state.on.positioning}>
               <PackenText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.on[this.state.state],
-                ...this.get_disabled_styles().on
-              }}>ON</PackenText>
+                ...this.state.on.disabled
+              }}>{this.props.onLabel}</PackenText>
             </View>
-            <View onLayout={e => { this.get_off_dimensions(e); }} style={this.state.off.position}>
+            <View onLayout={e => { this.get_off_dimensions(e); }} style={this.state.off.positioning}>
               <PackenText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.off[this.state.state],
-                ...this.get_disabled_styles().off
-              }}>OFF</PackenText>
+                ...this.state.off.disabled
+              }}>{this.props.offLabel}</PackenText>
             </View>
           </View>
         </TouchableWithoutFeedback>

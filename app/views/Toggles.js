@@ -23,16 +23,16 @@ class Toggles extends Component {
       <Section title="Toggles">
         <View style={SectionStyles.section__content}>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle isActive={true} toggleHandler={this.toggle_handler}/>
+            <PackenToggle onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggle_handler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle isActive={false} toggleHandler={this.toggle_handler}/>
+            <PackenToggle onLabel="SÍ" offLabel="NO" isActive={false} toggleHandler={this.toggle_handler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle isActive={true} toggleHandler={this.toggle_handler} isDisabled/>
+            <PackenToggle onLabel="SÍ" offLabel="NO" isActive={true} toggleHandler={this.toggle_handler} isDisabled/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle isActive={false} toggleHandler={this.toggle_handler} isDisabled/>
+            <PackenToggle onLabel="ON" offLabel="OFF" isActive={false} toggleHandler={this.toggle_handler} isDisabled/>
           </View>
         </View>
       </Section>
