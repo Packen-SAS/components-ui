@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
@@ -7,68 +7,79 @@ import SectionStyles from "../styles/components/Section";
 import PackenButton from "../components/PackenButton";
 import PackenServiceStatus from "../components/PackenServiceStatus";
 
-const ServiceStatus = () => {
-  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+class ServiceStatus extends Component {
+  constructor(props) {
+    super(props);
 
-  const mock_callback = () => { return; }
-
-  const steps = [
-    {
-      title: "Solicitando Servicio",
-      activeIcon: "clock",
-      date: "Agosto 13, 2017",
-      time: "05:08 pm",
-      callback: mock_callback
-    },
-    {
-      title: "Servicio Confirmado",
-      activeIcon: "search",
-      date: "Agosto 13, 2017",
-      time: "05:13 pm",
-      callback: mock_callback
-    },
-    {
-      title: "Servicio Finalizado",
-      activeIcon: "check-circle",
-      date: "Agosto 13, 2017",
-      time: "06:32 pm",
-      callback: mock_callback
+    this.state = {
+      currentStepIndex: 0,
+      steps: [
+        {
+          title: "Solicitando Servicio",
+          activeIcon: "clock",
+          date: "Agosto 13, 2017",
+          time: "05:08 pm",
+          callback: this.mock_callback
+        },
+        {
+          title: "Servicio Confirmado",
+          activeIcon: "search",
+          date: "Agosto 13, 2017",
+          time: "05:13 pm",
+          callback: this.mock_callback
+        },
+        {
+          title: "Servicio Finalizado",
+          activeIcon: "check-circle",
+          date: "Agosto 13, 2017",
+          time: "06:32 pm",
+          callback: this.mock_callback
+        }
+      ]
     }
-  ];
-
-  const back = () => {
-    setCurrentStepIndex(currentStepIndex > 0 ? currentStepIndex - 1 : 0);
   }
 
-  const next = () => {
-    setCurrentStepIndex(currentStepIndex < steps.length - 1 ? currentStepIndex + 1 : steps.length - 1);
+  mock_callback = () => { return; }
+
+  back = () => {
+    this.setState({
+      currentStepIndex: this.state.currentStepIndex > 0 ? this.state.currentStepIndex - 1 : 0
+    });
   }
-  
-  return (
-    <Section title="Service Status">
-      <View style={SectionStyles.section__content}>
-        <PackenServiceStatus steps={steps} currentStepIndex={currentStepIndex}/>
-        <View style={{marginTop: 20, flexDirection: "row"}}>
-          <View style={{marginRight: 5}}>
-            <PackenButton
-              type="regular"
-              level="primary"
-              size="tiny"
-              icon={{name: "arrow-left", position: "left"}}
-              callback={back}>Previous</PackenButton>
-          </View>
-          <View style={{marginRight: 5}}>
-            <PackenButton
-              type="regular"
-              level="primary"
-              size="tiny"
-              icon={{name: "arrow-right", position: "right"}}
-              callback={next}>Next</PackenButton>
+
+  next = () => {
+    this.setState({
+      currentStepIndex: this.state.currentStepIndex < this.state.steps.length - 1 ? this.state.currentStepIndex + 1 : this.state.steps.length - 1
+    });
+  }
+
+  render() {
+    return (
+      <Section title="Service Status">
+        <View style={SectionStyles.section__content}>
+          <PackenServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex}/>
+          <View style={{marginTop: 20, flexDirection: "row"}}>
+            <View style={{marginRight: 5}}>
+              <PackenButton
+                type="regular"
+                level="primary"
+                size="tiny"
+                icon={{name: "arrow-left", position: "left"}}
+                callback={this.back}>Previous</PackenButton>
+            </View>
+            <View style={{marginRight: 5}}>
+              <PackenButton
+                type="regular"
+                level="primary"
+                size="tiny"
+                icon={{name: "arrow-right", position: "right"}}
+                callback={this.next}>Next</PackenButton>
+            </View>
           </View>
         </View>
-      </View>
-    </Section>
-  );
+      </Section>
+    );
+  }
 }
 
 export default ServiceStatus;

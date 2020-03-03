@@ -1,21 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
 
 import { View, Image } from "react-native";
 
 import * as AvatarStyles from "../styles/components/PackenAvatar";
 
-const PackenAvatar = props => {
-  const { size, src } = props;
+class PackenAvatar extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <View style={AvatarStyles.container[size]}>
-      <Image source={src} style={{
-        height: "100%",
-        width: "100%",
-        borderRadius: AvatarStyles.container[size].borderRadius
-      }}/>
-    </View>
-  );
+  render() {
+    return (
+      <View style={AvatarStyles.container[this.props.size]}>
+        <Image source={this.props.src} style={{
+          height: "100%",
+          width: "100%",
+          borderRadius: AvatarStyles.container[this.props.size].borderRadius
+        }}/>
+      </View>
+    );
+  }
 }
 
 export default PackenAvatar;

@@ -1,21 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import { View } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 
 import ServiceStatusStyles from "../styles/components/PackenServiceStatus";
 
-const PackenServiceStatusIcon = props => {
-  const { activeIcon, stepsLength, activeIndex, selfIndex, isComplete } = props;
-  const [state, setState] = useState("default");
-  const [isCurrent, setIsCurrent] = useState(false);
+class PackenServiceStatusIcon extends Component {
+  constructor(props) {
+    super(props);
 
-  const get_icon = () => {
-    let stateIcon = activeIcon;
+    this.state = {
+      state: "default",
+      isCurrent: false
+    }
+  }
 
-    if (!isCurrent) {
+  componentDidMount() {
+    this.check_if_active();
+  }
+
+  get_icon = () => {
+    let stateIcon = this.props.activeIcon;
+    
+    if (!this.state.isCurrent) {
       stateIcon = "minus-circle";
-      if (isComplete) {
+      if (this.props.isComplete) {
         stateIcon = "check-circle";
       }
     }
@@ -23,33 +32,47 @@ const PackenServiceStatusIcon = props => {
     return stateIcon;
   }
 
-  const check_if_current = () => {
-    if (activeIndex === selfIndex) {
-      setState("active");
+  check_if_current = () => {
+    if (this.props.activeIndex === this.props.selfIndex) {
+      this.setState({
+        state: "active"
+      });
       return true;
     } else {
-      setState("default");
+      this.setState({
+        state: "default"
+      });
       return false;
     }
   }
 
-  useEffect(() => {
-    const newState = check_if_current();
-    setIsCurrent(newState);
-  }, [activeIndex]);
+  check_if_active = () => {
+    const newState = this.check_if_current();
+    this.setState({
+      isCurrent: newState
+    });
+  }
 
-  return (
-    <View style={ServiceStatusStyles.timeline__item}>
-      <View style={ServiceStatusStyles.timeline__icon_wrapper}>
-        <Icon name={get_icon()} size={ServiceStatusStyles.icon[state].fontSize} color={ServiceStatusStyles.icon[state].color} />
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.activeIndex !== this.props.activeIndex) {
+      this.check_if_active();
+    }
+  }
+
+  render() {
+    return (
+      <View style={ServiceStatusStyles.timeline__item}>
+        <View style={ServiceStatusStyles.timeline__icon_wrapper}>
+          <Icon name={this.get_icon()} size={ServiceStatusStyles.icon[this.state.state].fontSize} color={ServiceStatusStyles.icon[this.state.state].color} />
+        </View>
+        {
+          this.props.selfIndex !== this.props.stepsLength - 1 ? (
+            <View style={ServiceStatusStyles.timeline__divider}></View>
+          ) : null
+        }
       </View>
-      {
-        selfIndex !== stepsLength - 1 ? (
-          <View style={ServiceStatusStyles.timeline__divider}></View>
-        ) : null
-      }
-    </View>
-  );
+    );
+  }
 }
 
 export default PackenServiceStatusIcon;

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PackenAvatar/> renders correctly 1`] = `
+<View
+  style={
+    Object {
+      "borderRadius": 100,
+      "height": 32,
+      "overflow": "hidden",
+      "width": 32,
+    }
+  }
+>
+  <Image
+    source={
+      Object {
+        "testUri": "../../../assets/images/avatar.jpg",
+      }
+    }
+    style={
+      Object {
+        "borderRadius": 100,
+        "height": "100%",
+        "width": "100%",
+      }
+    }
+  />
+</View>
+`;

@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import TabsStyles from "../styles/components/PackenTabs";
 import PackenText from "./PackenText";
 
-const PackenTabItem = props => {
-  const { label, callback, activeTabIndex, selfIndex, updateActiveTabIndex } = props;
+class PackenTabItem extends Component {
+  constructor(props) {
+    super(props);
 
-  const get_item_styles = () => {
+    this.state = {
+      itemStyles: this.get_item_styles()
+    }
+  }
+
+  componentDidMount() {
+    this.check_if_active();
+  }
+
+  get_item_styles = () => {
     const styles = {
       shape: {
         ...TabsStyles.item.base.shape,
@@ -27,16 +37,14 @@ const PackenTabItem = props => {
     return styles;
   }
 
-  const [itemStyles, setItemStyles] = useState(get_item_styles());
-
-  const set_active_tab = () => {
-    set_active_styles();
-    updateActiveTabIndex(selfIndex);
-    callback();
+  set_active_tab = () => {
+    this.set_active_styles();
+    this.props.updateActiveTabIndex(this.props.selfIndex);
+    this.props.callback();
   }
 
-  const set_active_styles = () => {
-    let activeStyles = { ...itemStyles }
+  set_active_styles = () => {
+    let activeStyles = { ...this.state.itemStyles }
     activeStyles.shape = {
       ...activeStyles.shape,
       ...TabsStyles.item.active.shape
@@ -49,23 +57,30 @@ const PackenTabItem = props => {
       ...activeStyles.icon,
       ...TabsStyles.item.active.icon
     };
-    setItemStyles(activeStyles);
+
+    this.setState({
+      itemStyles: activeStyles
+    });
   }
 
-  const check_if_active = () => {
-    if (activeTabIndex === selfIndex) {
-      set_active_styles();
+  check_if_active = () => {
+    if (this.props.activeTabIndex === this.props.selfIndex) {
+      this.set_active_styles();
     } else {
-      setItemStyles(get_item_styles());
+      this.setState({
+        itemStyles: this.get_item_styles()
+      });
     }
   }
 
-  useEffect(() => {
-    check_if_active();
-  }, [activeTabIndex]);
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.activeTabIndex !== this.props.activeTabIndex) {
+      this.check_if_active();
+    }
+  }
 
-  const pressIn_handler = () => {
-    let newStyles = { ...itemStyles };
+  pressIn_handler = () => {
+    let newStyles = { ...this.state.itemStyles };
 
     newStyles.shape = {
       ...newStyles.shape,
@@ -80,21 +95,27 @@ const PackenTabItem = props => {
       ...TabsStyles.item.focus.icon
     };
 
-    setItemStyles(newStyles);
+    this.setState({
+      itemStyles: newStyles
+    });
   }
 
-  const pressOut_handler = () => {
-    setItemStyles(get_item_styles());
+  pressOut_handler = () => {
+    this.setState({
+      itemStyles: this.get_item_styles()
+    });
   }
 
-  return (
-    <TouchableWithoutFeedback onPress={() => { set_active_tab(); }} onPressIn={pressIn_handler} onPressOut={pressOut_handler}>
-      <View style={itemStyles.shape}>
-        <View style={{ marginRight: 10 }}><PackenText style={itemStyles.icon}>»</PackenText></View>
-        <PackenText style={itemStyles.label}>{label}</PackenText>
-      </View>
-    </TouchableWithoutFeedback>
-  );
+  render() {
+    return (
+      <TouchableWithoutFeedback onPress={() => { this.set_active_tab(); }} onPressIn={this.pressIn_handler} onPressOut={this.pressOut_handler}>
+        <View style={this.state.itemStyles.shape}>
+          <View style={{ marginRight: 10 }}><PackenText style={this.state.itemStyles.icon}>»</PackenText></View>
+          <PackenText style={this.state.itemStyles.label}>{this.props.label}</PackenText>
+        </View>
+      </TouchableWithoutFeedback>
+    );
+  }
 }
 
 export default PackenTabItem;

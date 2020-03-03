@@ -1,20 +1,24 @@
-import React from "react";
+import React, { Component } from "react";
 
 import { View } from "react-native";
 
 import * as DividerStyles from "../styles/components/PackenDivider";
 
-const PackenDivider = props => {
-  const { size, margin, type } = props;
+class PackenDivider extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <View style={{
-      height: size,
-      marginTop: margin.top,
-      marginBottom: margin.bottom,
-      ...DividerStyles[type]
-    }}></View>
-  );
+  render() {
+    return (
+      <View style={{
+        height: this.props.size,
+        marginTop: this.props.margin.top,
+        marginBottom: this.props.margin.bottom,
+        ...DividerStyles[this.props.type]
+      }}></View>
+    );
+  }
 }
 
 export default PackenDivider;

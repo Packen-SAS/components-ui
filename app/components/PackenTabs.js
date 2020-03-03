@@ -1,33 +1,42 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 
 import { View } from "react-native";
 
 import TabsStyles from "../styles/components/PackenTabs";
 import PackenTabItem from "./PackenTabItem";
 
-const PackenTabs = props => {
-  const { items, activeIndex } = props;
-  const [activeTabIndex, setActiveTabIndex] = useState(activeIndex);
+class PackenTabs extends Component {
+  constructor(props) {
+    super(props);
 
-  update_active_index = newActiveIndex => {
-    setActiveTabIndex(newActiveIndex);
+    this.state = {
+      activeTabIndex: props.activeIndex
+    }
   }
 
-  return (
-    <View style={TabsStyles.container}>
-      {
-        items.map((item, i) => (
-          <PackenTabItem
-            key={`${item.label}-${i}`}
-            activeTabIndex={activeTabIndex}
-            selfIndex={i}
-            label={item.label}
-            updateActiveTabIndex={update_active_index}
-            callback={item.callback}/>
-        ))
-      }
-    </View>
-  );
+  update_active_index = newActiveIndex => {
+    this.setState({
+      activeTabIndex: newActiveIndex
+    });
+  }
+
+  render() {
+    return (
+      <View style={TabsStyles.container}>
+        {
+          this.props.items.map((item, i) => (
+            <PackenTabItem
+              key={`${item.label}-${i}`}
+              activeTabIndex={this.state.activeTabIndex}
+              selfIndex={i}
+              label={item.label}
+              updateActiveTabIndex={this.update_active_index}
+              callback={item.callback}/>
+          ))
+        }
+      </View>
+    );
+  }
 }
 
 export default PackenTabs;
