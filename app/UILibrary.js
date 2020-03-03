@@ -12,6 +12,7 @@ import Dividers from "./views/Dividers";
 import Tabs from "./views/Tabs";
 import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
+import Toggles from "./views/Toggles";
 
 class UILibrary extends Component {
   render() {
@@ -20,6 +21,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <Toggles/>
             <Radios/>
             <ServiceStatus/>
             <Tabs/>
