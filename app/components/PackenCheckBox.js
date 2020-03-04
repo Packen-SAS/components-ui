@@ -9,11 +9,9 @@ import Typography from '../styles/abstracts/typography';
 export default class PackecnCheckBox extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props);
     }
 
     changeState = async (index, disabled, checked) => {
-        console.log("ALgg");
         if (!disabled) {
             this.props.notifyParent(index, !checked);
         }
