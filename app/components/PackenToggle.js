@@ -76,9 +76,7 @@ class PackenToggle extends Component {
     if (this.props.isDisabled) {
       this.setState({
         state: "disabled"
-      }, () => {
-        this.set_disabled_styles();
-      });
+      }, this.set_disabled_styles);
     }
   }
 
@@ -146,7 +144,7 @@ class PackenToggle extends Component {
 
   get_position_styles = () => {
     let positionStyles = {};
-    let state = this.state.isDisabled ? this.state.initialState : this.state.state;
+    const state = this.state.isDisabled ? this.state.initialState : this.state.state;
 
     if (state === "active") {
       positionStyles = {
@@ -203,12 +201,6 @@ class PackenToggle extends Component {
   }
 
   render() {
-    console.log("***********************");
-    console.log("-----------------------");
-    console.log("DISABLED", this.state.dot.disabled);
-    console.log("-----------------------");
-    console.log("POSITIONING", this.state.dot.positioning);
-
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>
