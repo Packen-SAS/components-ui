@@ -17,6 +17,7 @@ import Checkbox from "./views/Checkbox";
 import TextArea from "./views/TextArea";
 import Input from './views/Input';
 
+import Modals from "./views/Modals";
 
 class UILibrary extends Component {
   render() {
@@ -26,6 +27,7 @@ class UILibrary extends Component {
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
             <Input />
+            <Modals/>
             <Toggles/>
             <TextArea/>            
             <Checkbox />

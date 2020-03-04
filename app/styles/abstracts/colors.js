@@ -11,7 +11,8 @@ export default {
     transparent: "rgba(255, 255, 255, 0)",
     gray: "#7B8DA2",
     gray_drk: "#A0AEBC",
-    gray_alt: "#C6CED7"
+    gray_alt: "#C6CED7",
+    gray_alt_drk: "#231F20"
   },
   primary: {
     default: "#00B3DB",
@@ -49,6 +50,9 @@ export default {
     default: "#2EE2BC",
     drk: "#1E9078",
     lgt: "#ECFCF8"
+  },
+  white: {
+    default: "#FFFFFF"
   },
   brand: {
     primary: {
