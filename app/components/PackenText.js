@@ -7,12 +7,17 @@ import Typography from "../styles/abstracts/typography";
 class PackenText extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      preset: props.preset ? Typography[this.props.preset] : {}
+    }
   }
 
   render() {
     return (
       <Text style={{
         ...styles.base,
+        ...this.state.preset,
         ...this.props.style
       }}>{this.props.children}</Text>
     );
