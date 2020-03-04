@@ -58,7 +58,6 @@ class Checkbox extends Component {
 
   render() {
     return (
-
       <Section title="Checkbox">
         <View style={{ marginTop: 10 }}>
           <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenText>

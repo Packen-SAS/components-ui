@@ -14,6 +14,8 @@ import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
 import Toggles from "./views/Toggles";
 import Checkbox from "./views/Checkbox";
+import TextArea from "./views/TextArea";
+
 
 class UILibrary extends Component {
   render() {
@@ -23,6 +25,7 @@ class UILibrary extends Component {
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
             <Toggles/>
+            <TextArea/>            
             <Checkbox />
             <Radios/>
             <ServiceStatus/>
