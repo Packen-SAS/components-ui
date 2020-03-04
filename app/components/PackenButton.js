@@ -7,12 +7,6 @@ import PackenText from "./PackenText";
 import * as ButtonStyles from "../styles/components/PackenButton";
 
 class PackenButton extends Component {
-  /* const { type, level, size, icon, isDisabled } = props;
-  const [shapeHeight, setShapeHeight] = useState(0);
-  const [shapeWidth, setShapeWidth] = useState(0);
-  const [iconHeight, setIconHeight] = useState(0);
-  const [iconWidth, setIconWidth] = useState(0); */
-
   constructor(props) {
     super(props);
 
@@ -54,8 +48,8 @@ class PackenButton extends Component {
           iconWrapper: {
             position: "absolute",
             top: 0,
-            right: props.icon.position === "left" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0),
-            left: props.icon.position === "right" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0)
+            right: props.icon ? props.icon.position === "left" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0) : 0,
+            left: props.icon ? props.icon.position === "right" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0) : 0
           }
         };
         break;
@@ -106,7 +100,7 @@ class PackenButton extends Component {
       type: props.type,
       level: props.level,
       size: props.size,
-      icon: props.icon,
+      icon: props.icon ? props.icon : undefined,
       isDisabled: props.isDisabled,
       shapeHeight: 0,
       shapeWidth: 0,
@@ -155,8 +149,8 @@ class PackenButton extends Component {
           iconWrapper: {
             position: "absolute",
             top: (this.state.shapeHeight/2) - (this.state.iconHeight/2),
-            right: this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)),
-            left: this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2))
+            right: this.props.icon ? this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)) : 0,
+            left: this.props.icon ? this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)) : 0
           }
         };
         break;
@@ -271,9 +265,13 @@ class PackenButton extends Component {
           <View style={this.state.styles.shape}>
             <View style={this.state.styles.shape__content} onLayout={e => { this.get_shape_dimensions(e.nativeEvent.layout); }}>
               <PackenText style={this.state.styles.label}>{this.props.children}</PackenText>
-              <View style={this.state.styles.iconWrapper} onLayout={e => { this.get_icon_dimensions(e.nativeEvent.layout); }}>
-                <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
-              </View>
+              {
+                this.props.icon ? (
+                  <View style={this.state.styles.iconWrapper} onLayout={e => { this.get_icon_dimensions(e.nativeEvent.layout); }}>
+                    <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
+                  </View>
+                ) : null
+              }
             </View>
           </View>
         </TouchableWithoutFeedback>

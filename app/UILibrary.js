@@ -15,7 +15,7 @@ import Radios from "./views/Radios";
 import Toggles from "./views/Toggles";
 import Checkbox from "./views/Checkbox";
 import TextArea from "./views/TextArea";
-
+import Modals from "./views/Modals";
 
 class UILibrary extends Component {
   render() {
@@ -24,6 +24,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <Modals/>
             <Toggles/>
             <TextArea/>            
             <Checkbox />

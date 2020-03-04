@@ -7,8 +7,6 @@ import PackenText from '../components/PackenText';
 import Colors from '../styles/abstracts/colors';
 import Typography from '../styles/abstracts/typography';
 
-
-
 class Checkbox extends Component {
   constructor(props) {
     super(props);
