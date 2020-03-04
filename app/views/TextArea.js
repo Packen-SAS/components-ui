@@ -1,13 +1,28 @@
 import React, { Component } from 'react';
-import {Text, View} from 'react-native';
+import { View, Text } from 'react-native';
 import PackenTextArea from '../components/PackenTextArea';
 
-class TextArea extends Component{
-    render(){
-        return(
+class TextArea extends Component {
+
+    constructor(props) {
+        super(props)
+    }
+
+    state = {
+        text: ''
+    }
+
+    changeTextValue = (textChanged) => {
+        this.setState({text: textChanged});
+    }
+
+    render() {
+        return (
             <View>
-                <Text>Tex</Text>
-                <PackenTextArea />
+                <PackenTextArea placeholder="Placeholder test" 
+                    label="Label props" value={this.state.text}
+                    changeTextValue={this.changeTextValue} 
+                />
             </View>
         )
     }

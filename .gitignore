@@ -41,6 +41,7 @@ buck-out/
 \.buckd/
 *.keystore
 
+__snapshots__
 # fastlane
 #
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
@@ -54,3 +55,4 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+unit
