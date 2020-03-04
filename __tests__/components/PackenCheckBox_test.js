@@ -14,35 +14,86 @@ describe('Render PackenCheck', () => {
     let c;
     beforeAll(() => {
         c = new PackenCheckBox({
-            checked: true,
-            title: "Test",  
-            notifyParent: handleNotify = (checked) => console.log(checked),
-            disabled: true
+            items: [{
+                checked: true,
+                title: "Check",
+                disabled: false,
+            },
+            {
+                checked: false,
+                title: "UnCheck",
+                disabled: false,
+            },
+            {
+                checked: null,
+                title: "Null",
+                disabled: false,
+            }],
+
+            layout: "row",
+            notifyParent:console.log("Test")
+
+
         });
-        
-        c.setState = (state) =>{
+
+
+        c.setState = (state) => {
             c.state.checked = state;
         }
+
+    })
+
+
+    it('rends styles checkbox when checked is disabled is false and checked is true or false', () => {
+        c.getStylesCheckBox(false, true);
+    });
+
+    it('rends styles checkbox when checked is diferent of true or false', () => {
+        c.getStylesCheckBox(true, null);
+    });
+
+    it('rends styles checkbox when disable is true and checked is true or false', () => {
+        c.getStylesCheckBox(true, true);
+    })
+
+    it('rends styles checkbox when disable is false and checked is diferent to true or false', () => {
+        c.getStylesCheckBox(false, null);
+    })
+
+    it('rends correctly', () => {
+        let render = renderer.create(
+            <PackenCheckBox
+            layout="column"
+            notifyParent={() => console.log("Test")}
+                items={[{
+                    checked: true,
+                    title: "Check",
+                    disabled: false,
+                    id: 1
+                },
+                {
+                    checked: false,
+                    title: "UnCheck",
+                    disabled: false,
+                    key: 2
+                },
+                {
+                    checked: null,
+                    title: "Null",
+                    disabled: false,
+                    key: 3
+                }]}
+
+            />).toJSON();
+            
+            
+            expect(render);
+
         
     })
 
-    it('rends correctly checked(true)' , () => {
-        let render = renderer.create(
-            <PackenCheckBox checked={true} title={"Pruena"}
-                notifyParent={handleNotify = (checked) => console.log(checked)} />
-        ).toJSON();
-        expect(render);
-    });
 
-    it('rends correctly checked(false) without title' , () => {
-        let render = renderer.create(
-            <PackenCheckBox checked={false} 
-                notifyParent={handleNotify = (checked) => console.log(checked)} />
-        ).toJSON();
-        expect(render);
-    });
-
-    it('rends correctly change state', async() => {
+    it('rends correctly change state', async () => {
         c.setState = (state) => {
             c.state.checked = state
         }
@@ -50,67 +101,5 @@ describe('Render PackenCheck', () => {
         expect(state);
     })
 
-    it('rends change state with async/await', async() =>{
-        let checkbox = new PackenCheckBox({
-            checked: true,
-            title: "Test",
-            notifyParent: handleNotify = (checked) => console.log(checked),
-            disabled: false
-        })
-        checkbox.setState = (state) =>{
-            checkbox.state.checked = state;
-        }
-        
-        let state = checkbox.changeState();
-        console.log("State con await ", state);
-    });
-
-    it('rends correctly styles when check not is disabled and checked is true or false', () =>{
-        let check = new PackenCheckBox({
-            checked: true,
-            title: "Test",
-            notifyParent: handleNotify = (checked) => console.log(checked),
-            disabled: true
-        })
-        check.setState = (state) =>{
-            c.state.checked = state;
-        }
-        let state = check.getStylesCheckBox();
-        expect(state);  
-    });
-
-    it('rends styles when checked not is true or false', () => {
-        let render = renderer.create(
-            <PackenCheckBox checked={null}
-                title={"Test"}
-                notifyParent={handleNotify = (checked) => console.log(checked)}
-                disabled={true} />
-        ).toJSON();
-        expect(render);
-    });
-
-    it('rends styles when cheked is not disabled and checked is true or false', () => {
-        let render = renderer.create(
-            <PackenCheckBox checked={null}
-                title={"Test"}
-                notifyParent={handleNotify = (checked) => console.log(checked)}
-            />
-        ).toJSON();
-        expect(render);
-    });
-
-    it('rends styles of checkbox when is disabled and checked is true or false', () => {
-        let cb = new PackenCheckBox({
-            checked: true,
-            title: "Test",
-            notifyParent: handleNotify = (checked) => console.log(checked),
-            disabled: false
-        })
-        cb.setState = (state) =>{
-            c.state.checked = state;
-        }
-        let state = cb.changeState();
-        expect(state);
-    });
 
 })

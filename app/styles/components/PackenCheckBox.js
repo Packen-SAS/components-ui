@@ -43,7 +43,7 @@ export default {
         color: Colors.base.white, marginTop: 2
     },
     title: {
-        left: 6,
+        left: 5,
         
         fontSize: Typography.size.medium,
         color: Colors.base.default_alt
