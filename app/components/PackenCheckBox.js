@@ -6,14 +6,15 @@ import PackenText from '../components/PackenText';
 import Colors from '../styles/abstracts/colors';
 import Typography from '../styles/abstracts/typography';
 
-export default class PackenCheckBox extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default class PackecnCheckBox extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
-  changeState = async (index, disabled, checked) => {
-    if (!disabled) {
-      this.props.notifyParent(index, !checked);
+    changeState = async (index, disabled, checked) => {
+        if (!disabled) {
+            this.props.notifyParent(index, !checked);
+        }
     }
   }
 

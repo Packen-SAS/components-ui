@@ -9,6 +9,7 @@ class PackenToggle extends Component {
     super(props);
 
     this.state = {
+      initialState: props.isActive ? "active" : "inactive",
       state: props.isActive ? "active" : "inactive",
       isDisabled: props.isDisabled,
       shape: {
@@ -42,7 +43,7 @@ class PackenToggle extends Component {
     this.check_if_disabled();
   }
 
-  set_disabled_styles = prevState => {
+  set_disabled_styles = () => {
     this.setState({
       shape: {
         ...this.state.shape,
@@ -73,16 +74,8 @@ class PackenToggle extends Component {
 
   check_if_disabled = () => {
     if (this.props.isDisabled) {
-      let newState = "";
-
-      if (this.state.state === "active") {
-        newState = "disabled_active";
-      } else {
-        newState = "disabled_inactive"
-      }
-
       this.setState({
-        state: newState
+        state: "disabled"
       }, () => {
         this.set_disabled_styles();
       });
@@ -153,8 +146,9 @@ class PackenToggle extends Component {
 
   get_position_styles = () => {
     let positionStyles = {};
+    let state = this.state.isDisabled ? this.state.initialState : this.state.state;
 
-    if (this.state.state === "active") {
+    if (state === "active") {
       positionStyles = {
         dot: {
           top: 2,
@@ -171,7 +165,7 @@ class PackenToggle extends Component {
           opacity: 0
         }
       }
-    } else if (this.state.state === "inactive") {
+    } else if (state === "inactive") {
       positionStyles = {
         dot: {
           top: 2,
@@ -204,10 +198,17 @@ class PackenToggle extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.state !== this.state.state) {
       this.position_elements();
+      this.check_if_disabled();
     }
   }
 
   render() {
+    console.log("***********************");
+    console.log("-----------------------");
+    console.log("DISABLED", this.state.dot.disabled);
+    console.log("-----------------------");
+    console.log("POSITIONING", this.state.dot.positioning);
+
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>
