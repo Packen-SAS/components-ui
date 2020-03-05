@@ -92,6 +92,19 @@ class PackenInput extends Component {
     return paddingStyles;
   }
 
+  get_multiline_styles = () => {
+    let multilineStyles = {};
+
+    if (this.props.multiline) {
+      multilineStyles = {
+        ...InputStyles.textarea.base,
+        ...InputStyles.textarea.size[this.props.size]
+      }
+    }
+
+    return multilineStyles;
+  }
+
   handle_press_in = () => {
     this.setState({
       state: "hover"
@@ -120,6 +133,7 @@ class PackenInput extends Component {
     this.setState({
       value: text
     });
+    this.props.onChangeText(text);
   }
 
   render() {
@@ -157,7 +171,8 @@ class PackenInput extends Component {
                 ...InputStyles.input.size[this.props.size],
                 ...InputStyles.input.theme[this.props.theme],
                 ...InputStyles.input.state[this.state.state],
-                ...this.get_padding_styles()
+                ...this.get_padding_styles(),
+                ...this.get_multiline_styles()
               }}
               value={this.state.value}
               onFocus={this.handle_focus}
@@ -165,6 +180,7 @@ class PackenInput extends Component {
               onChangeText={this.handle_change_text}
               placeholder={this.props.placeholder}
               placeholderTextColor={InputStyles.placeholder.color}
+              multiline={this.props.multiline ? true : false}
             />
           </TouchableWithoutFeedback>
         </View>
