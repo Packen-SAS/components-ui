@@ -146,11 +146,7 @@ class PackenToggle extends Component {
 
   get_position_styles = () => {
     let positionStyles = {};
-<<<<<<< HEAD
     const state = this.state.isDisabled ? this.state.initialState : this.state.state;
-=======
-    let state = this.state.isDisabled ? this.state.initialState : this.state.state;
->>>>>>> Removed useless code and finished Toggles
 
     if (state === "active") {
       positionStyles = {

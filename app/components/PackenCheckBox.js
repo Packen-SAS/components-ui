@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback, StyleSheet } from "react-native";
 
-<<<<<<< HEAD
 export default class PackecnCheckBox extends React.Component {
   constructor(props) {
     super(props);
@@ -16,26 +15,6 @@ export default class PackecnCheckBox extends React.Component {
 
   state = {
     items: []
-=======
-import Icon from "react-native-vector-icons/dist/Feather";
-
-import CheckBoxStyles from "../styles/components/PackenCheckBox";
-import PackenText from "../components/PackenText";
-
-class PackenCheckBox extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      items: []
-    }
-  }
-
-  changeState = async (index, disabled, checked) => {
-    if (!disabled) {
-      this.props.notifyParent(index, !checked);
-    }
->>>>>>> Initial integration with Checkbox, Input and Textarea components
   }
 
   componentWillMount() {
@@ -59,11 +38,7 @@ class PackenCheckBox extends Component {
   map_items = (check, index) => {
     return (
       <View key={index} style={PackenCheckBoxStyle.contentView}>
-<<<<<<< HEAD
         <TouchableOpacity onPress={() => this.changeState(index, check.disabled, check.checked)} >
-=======
-        <TouchableWithoutFeedback onPress={() => this.changeState(index, check.disabled, check.checked)} >
->>>>>>> Initial integration with Checkbox, Input and Textarea components
           <View style={PackenCheckBoxStyle.contentCheckTitle} >
             <View style={this.getStylesCheckBox(check.disabled, check.checked)} >
               {check.checked === true ? <Icon style={CheckBoxStyles.icon} name="check" /> : null}
@@ -97,11 +72,7 @@ const PackenCheckBoxStyle = StyleSheet.create({
     marginBottom: 10
   },
   contentCheckTitle: {
-<<<<<<< HEAD
     flexDirection: 'row',
-=======
-    flexDirection: "row",
->>>>>>> Initial integration with Checkbox, Input and Textarea components
     marginLeft: 10
   }
 });

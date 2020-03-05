@@ -1,14 +1,15 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component } from "react";
+import { View } from "react-native";
 
-import Section from '../components/Section';
+import Section from "../components/Section";
 import SectionStyles from "../styles/components/Section";
 
-import Colors from '../styles/abstracts/colors';
-import Typography from '../styles/abstracts/typography';
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
 
-import PackenText from '../components/PackenText';
-import PackenCheckBox from '../components/PackenCheckBox';
+import PackenText from "../components/PackenText";
+import PackenDivider from "../components/PackenDivider";
+import PackenCheckBox from "../components/PackenCheckBox";
 
 class Checkboxes extends Component {
   constructor(props) {
@@ -46,7 +47,6 @@ class Checkboxes extends Component {
           title: "Null",
           disabled: true,
         }
-
       ]
     }
   }
@@ -57,6 +57,13 @@ class Checkboxes extends Component {
     this.setState({
       items: newItems
     });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.items !== this.state.items) {
+      /* Latest items state can be used here */
+      /* console.log(this.state.items); */
+    }
   }
 
   render() {
@@ -71,6 +78,8 @@ class Checkboxes extends Component {
               notifyParent={this.handleNotify}
             />
           </View>
+          <PackenDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
+          <PackenText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenText>
           <View style={SectionStyles.section__contentItem}>
             <PackenCheckBox
               layout="row"
