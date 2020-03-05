@@ -242,9 +242,26 @@ export default {
     }
   },
   textarea: {
+    base: {
+      paddingVertical: 8,
+      paddingHorizontal: 16,
+      textAlignVertical: "top"
+    },
     size: {
       tiny: {
-        
+        height: 96
+      },
+      small: {
+        height: 104
+      },
+      medium: {
+        height: 104
+      },
+      large: {
+        height: 104
+      },
+      giant: {
+        height: 104
       }
     }
   },

@@ -13,7 +13,7 @@ class Inputs extends Component {
 
   handle_change_text = value => {
     /* Content can be used here */
-    console.log(value);
+    /* console.log(value); */
   }
 
   render() {
@@ -119,6 +119,21 @@ class Inputs extends Component {
               help="Help text disabled"
               theme="success"
               disabled
+            />
+          </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenInput
+              size="medium"
+              placeholder="Placeholder"
+              onChangeText={this.handle_change_text}
+              message={{
+                text: "Caption text, description, error notification",
+                icon: "info"
+              }}
+              label="Label textarea"
+              help="Help text textarea"
+              theme="default"
+              multiline
             />
           </View>
         </View>
