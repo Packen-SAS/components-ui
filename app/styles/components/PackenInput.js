@@ -51,7 +51,7 @@ export default {
             borderWidth: 2,
             borderColor: 'red',
             height: 40,
-            paddingLeft: 16,
+            paddingLeft: 10,
             paddingRight: 13,
             color: Colors.base.default_alt,
             backgroundColor: Colors.secondary.default
@@ -74,7 +74,7 @@ export default {
             paddingTop: 10,
             paddingRight: 10,
             paddingBottom: 10,
-            paddingLeft: 0,
+            paddingLeft: 5,
             color: '#424242',
             height: 40
         },
