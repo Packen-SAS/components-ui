@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, View, TouchableWithoutFeedback, Image } from "react-native";
+import { Modal, View, TouchableWithoutFeedback, Image, Dimensions } from "react-native";
 
 import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -40,6 +40,10 @@ class PackenModal extends Component {
             top: 0,
             right: 0
           }
+        },
+        has: {
+          next: true,
+          prev: false
         }
       }
     }
@@ -133,23 +137,33 @@ class PackenModal extends Component {
       if (prevState.dimensions !== this.state.dimensions) {
         this.set_gallery_arrows_position();
       }
+      if (prevProps.isOpen !== this.props.isOpen) {
+        this.reinit_gallery();
+      }
     }
   }
 
+  reinit_gallery = () => {
+    this.setState({
+      has: {
+        next: true,
+        prev: false
+      }
+    });
+  }
+
   prevSlide = () => {
-    console.log("PREVSLIDE");
     this.carousel_ref.snapToPrev();
   }
 
   nextSlide = () => {
-    console.log("NEXTSLIDE");
     this.carousel_ref.snapToNext();
   }
 
   render_gallery_slide = ({item, index}) => {
     return (
       <View key={index} style={ModalStyles.gallery.slide}>
-        <Image source={item} style={ModalStyles.gallery.image}/>
+        <Image source={item} style={this.get_gallery_box_dimensions()}/>
       </View>
     );
   }
@@ -179,8 +193,7 @@ class PackenModal extends Component {
   }
 
   set_gallery_arrows_position = () => {
-    const verticalOffset = (this.state.dimensions.gallery.height/2.25);
-    /* const horizontalOffset = (this.state.dimensions.arrows.width + 40); */
+    const verticalOffset = this.state.dimensions.gallery.height / 2.25;
     const horizontalOffset = this.state.dimensions.arrows.width + 20;
 
     this.setState({
@@ -197,6 +210,22 @@ class PackenModal extends Component {
     });
   }
 
+  get_gallery_box_dimensions = () => {
+    return {
+      height: Dimensions.get("screen").height / 3,
+      width: Dimensions.get("screen").width - 50
+    };
+  }
+
+  handle_before_snap = slideIndex => {
+    this.setState({
+      has: {
+        next: slideIndex === this.props.images.length - 1 ? false : true,
+        prev: slideIndex === 0 ? false : true
+      }
+    });
+  }
+
   render() {
     return (
       <Modal visible={this.props.isOpen} animationType="fade" transparent={true}>
@@ -206,7 +235,7 @@ class PackenModal extends Component {
               <View style={ModalStyles.header}>        
                 <View style={ModalStyles.header__inner}>
                   <TouchableWithoutFeedback onPress={this.props.toggle}>
-                  <Icon name="x" size={20} color={Colors[this.props.theme].default} />
+                    <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null}/>
                   </TouchableWithoutFeedback>
                 </View>
               </View>
@@ -235,34 +264,41 @@ class PackenModal extends Component {
                   </View>
                 ) : (
                     /* Gallery modal */
-                    <View style={ModalStyles.gallery.box} onLayout={e => { this.get_gallery_dimensions(e.nativeEvent.layout); }}>
+                    <View style={this.get_gallery_box_dimensions()} onLayout={e => { this.get_gallery_dimensions(e.nativeEvent.layout); }}>
                       {
                         this.props.images.length > 1 ? (
-                          <TouchableWithoutFeedback onPress={this.prevSlide}>
-                            <View onLayout={e => { this.get_gallery_arrow_dimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
-                              <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft}/>
-                            </View>
-                          </TouchableWithoutFeedback>
+                          <>
+                            {
+                              this.state.has.prev ? (
+                                <TouchableWithoutFeedback onPress={this.prevSlide}>
+                                  <View onLayout={e => { this.get_gallery_arrow_dimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
+                                    <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon}/>
+                                  </View>
+                                </TouchableWithoutFeedback>
+                              ) : null
+                            }
+                            {
+                              this.state.has.next ? (
+                                <TouchableWithoutFeedback onPress={this.nextSlide}>
+                                  <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
+                                    <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon}/>
+                                  </View>
+                                </TouchableWithoutFeedback>
+                              ) : null
+                            }
+                          </>
                         ) : null
                       }
                       <Carousel
                         ref={c => { this.carousel_ref = c; }}
+                        onBeforeSnapToItem={this.handle_before_snap}
                         data={this.props.images}
                         renderItem={this.render_gallery_slide}
-                        itemWidth={ModalStyles.gallery.box.width}
-                        sliderWidth={ModalStyles.gallery.box.width}
+                        itemWidth={this.get_gallery_box_dimensions().width}
+                        sliderWidth={this.get_gallery_box_dimensions().width}
                         inactiveSlideOpacity={1}
                         inactiveSlideScale={1}
                       />
-                      {
-                        this.props.images.length > 1 ? (
-                          <TouchableWithoutFeedback onPress={this.nextSlide}>
-                            <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
-                              <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft}/>
-                            </View>
-                          </TouchableWithoutFeedback>
-                        ) : null
-                      }
                     </View>
                   )
               }

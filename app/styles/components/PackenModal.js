@@ -50,6 +50,11 @@ export default {
     alignItems: "center",
     justifyContent: "flex-end"
   },
+  header__close_icon: {
+    shadowOpacity: 0.05,
+    textShadowRadius: 5,
+    textShadowOffset: { width: 0, height: 1 }
+  },
   info: {
     backgroundColor: "transparent"
   },
@@ -128,14 +133,15 @@ export default {
     justifyContent: "center"
   },
   gallery: {
-    box: {
-      height: 200,
-      width: 300
-    },
     arrows: {
       base: {
         position: "absolute",
         zIndex: 2
+      },
+      icon: {
+        shadowOpacity: 0.05,
+        textShadowRadius: 5,
+        textShadowOffset: { width: 0, height: 1 }
       }
     },
     slide: {
@@ -144,10 +150,6 @@ export default {
       justifyContent: "center",
       borderRadius: 8,
       backgroundColor: Colors.basic.black.dft
-    },
-    image: {
-      height: 200,
-      width: 300
     }
   }
 }
