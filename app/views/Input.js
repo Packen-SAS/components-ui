@@ -1,10 +1,7 @@
 import React from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, Button } from 'react-native';
 import PackenInput from '../components/PackenInput';
-import PackenText from '../components/PackenText';
 import Section from '../components/Section';
-import Typography from '../styles/abstracts/typography';
-import Colors from '../styles/abstracts/colors';
 
 
 
@@ -25,7 +22,7 @@ class Inputs extends React.Component {
         return (
             <View>
                 <Section title="Inputs">
-                    <View  >
+                    <View>
                         <PackenInput
                             placeholder="Placeholder"
                             errorMessage={this.state.errorMessage}
@@ -37,7 +34,7 @@ class Inputs extends React.Component {
                             />
                     </View>
 
-                    <View >
+                    <View>
                         <PackenInput
                             placeholder="Placeholder"
                             icon="lock"
