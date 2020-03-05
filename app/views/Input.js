@@ -32,7 +32,8 @@ class Inputs extends React.Component {
                             icon="lock"
                             value={this.state.value}
                             label="Input error"
-                            notifyParent={this.notifyParent} 
+                            notifyParent={this.notifyParent}
+                            positionIcon={"left"}
                             />
                     </View>
 
