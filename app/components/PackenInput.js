@@ -66,7 +66,10 @@ class PackenInput extends Component {
         return (
             <View style={{ marginTop: 10 }}>
                 <PackenText style={PackenInputStyles.labelInput}>{this.props.label}</PackenText>
+
                 <View style={this.getStyleContentInput()}>
+                    {this.props.positionIcon === 'left' ?
+                        <Icon name={this.props.icon} size={20} color={this.getColorIcon()} /> : null}
                     <TextInput
                         editable={this.props.disabled === true ? false : true}
                         onFocus={this.onFocusInput}
@@ -76,7 +79,8 @@ class PackenInput extends Component {
                         placeholder={this.props.placeholder ? this.props.placeholder : null}
                         value={this.props.value ? this.props.value : null}
                     />
-                    <Icon name={this.props.icon} size={20} color={this.getColorIcon()} />
+                    {this.props.positionIcon !== 'left' ?
+                        <Icon name={this.props.icon} size={20} color={this.getColorIcon()} /> : null}
                 </View>
                 {this.renderErrorMessage()}
             </View>
