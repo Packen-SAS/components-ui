@@ -3,7 +3,6 @@ import { View, TextInput, Text } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import PackenText from '../components/PackenText';
 import PackenInputStyles from '../styles/components/PackenInput';
-import Typography from '../styles/abstracts/typography';
 import Colors from '../styles/abstracts/colors';
 
 
