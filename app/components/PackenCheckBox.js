@@ -1,26 +1,26 @@
-import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
-import Icon from 'react-native-vector-icons/dist/Feather';
-import CheckBoxStyles from '../styles/components/PackenCheckBox';
-import PackenText from '../components/PackenText';
-import Colors from '../styles/abstracts/colors';
-import Typography from '../styles/abstracts/typography';
+import React, { Component } from "react";
+import { View, TouchableWithoutFeedback, StyleSheet } from "react-native";
 
-export default class PackecnCheckBox extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+import Icon from "react-native-vector-icons/dist/Feather";
 
-    changeState = async (index, disabled, checked) => {
-        if (!disabled) {
-            this.props.notifyParent(index, !checked);
-        }
+import CheckBoxStyles from "../styles/components/PackenCheckBox";
+import PackenText from "../components/PackenText";
+
+class PackenCheckBox extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      items: []
     }
   }
 
-  state = {
-    items: []
+  changeState = async (index, disabled, checked) => {
+    if (!disabled) {
+      this.props.notifyParent(index, !checked);
+    }
   }
+
   componentWillMount() {
     this.setState({ items: this.props.items });
   }
@@ -42,8 +42,8 @@ export default class PackecnCheckBox extends React.Component {
   map_items = (check, index) => {
     return (
       <View key={index} style={PackenCheckBoxStyle.contentView}>
-        <TouchableOpacity onPress={() => this.changeState(index, check.disabled, check.checked)} >
-          <View style={PackenCheckBoxStyle.contentCheckTitle } >
+        <TouchableWithoutFeedback onPress={() => this.changeState(index, check.disabled, check.checked)} >
+          <View style={PackenCheckBoxStyle.contentCheckTitle} >
             <View style={this.getStylesCheckBox(check.disabled, check.checked)} >
               {check.checked === true ? <Icon style={CheckBoxStyles.icon} name="check" /> : null}
               {check.checked === false ? <Icon style={CheckBoxStyles.icon} name="minus" /> : null}
@@ -52,12 +52,12 @@ export default class PackecnCheckBox extends React.Component {
               <PackenText style={CheckBoxStyles.title}>{check.title}</PackenText>
               : null}
           </View>
-        </TouchableOpacity>
+        </TouchableWithoutFeedback>
       </View>
     )
   }
 
-  get_items = () => this.state.items.map(this.map_items)
+  get_items = () => this.state.items.map(this.map_items);
 
   render() {
     return (
@@ -70,14 +70,15 @@ export default class PackecnCheckBox extends React.Component {
   }
 }
 
-
 const PackenCheckBoxStyle = StyleSheet.create({
   contentView: {
-    marginRight: 10, 
+    marginRight: 10,
     marginBottom: 10
   },
-  contentCheckTitle:{
-    flexDirection: 'row', 
+  contentCheckTitle: {
+    flexDirection: "row",
     marginLeft: 10
   }
 });
+
+export default PackenCheckBox;

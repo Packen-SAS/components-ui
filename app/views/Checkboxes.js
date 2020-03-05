@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
-import { View, CheckBox } from 'react-native';
+import { View } from 'react-native';
+
 import Section from '../components/Section';
 import SectionStyles from "../styles/components/Section";
-import PackenCheckBox from '../components/PackenCheckBox';
-import PackenText from '../components/PackenText';
+
 import Colors from '../styles/abstracts/colors';
 import Typography from '../styles/abstracts/typography';
 
-class Checkbox extends Component {
+import PackenText from '../components/PackenText';
+import PackenCheckBox from '../components/PackenCheckBox';
+
+class Checkboxes extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       items: [
         {
           checked: true,
-          title: "Check",
+          title: "Checked",
           disabled: false,
         },
         {
           checked: false,
-          title: "UnCheck",
+          title: "Unchecked",
           disabled: false,
         },
         {
@@ -29,12 +33,12 @@ class Checkbox extends Component {
         },
         {
           checked: true,
-          title: "Check",
+          title: "Checked",
           disabled: true,
         },
         {
           checked: false,
-          title: "UnCheck",
+          title: "Unchecked",
           disabled: true,
         },
         {
@@ -47,16 +51,17 @@ class Checkbox extends Component {
     }
   }
 
-
   handleNotify = (index, value) => {
     const newItems = this.state.items.slice();
     newItems[index].checked = value;
-    this.setState({ items: newItems });
+    this.setState({
+      items: newItems
+    });
   }
 
   render() {
     return (
-      <Section title="Checkbox">
+      <Section title="Checkboxes">
         <View style={{ marginTop: 10 }}>
           <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenText>
           <View style={SectionStyles.section__contentItem}>
@@ -66,7 +71,6 @@ class Checkbox extends Component {
               notifyParent={this.handleNotify}
             />
           </View>
-
           <View style={SectionStyles.section__contentItem}>
             <PackenCheckBox
               layout="row"
@@ -74,14 +78,10 @@ class Checkbox extends Component {
               notifyParent={this.handleNotify}
             />
           </View>
-
-
-
         </View>
       </Section>
     )
   }
-
 }
 
-export default Checkbox; 
+export default Checkboxes; 

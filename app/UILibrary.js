@@ -6,6 +6,7 @@ import Spacing from "./styles/abstracts/spacing";
 import Colors from "./styles/abstracts/colors";
 
 import PackenText from "./components/PackenText";
+
 import Buttons from "./views/Buttons";
 import Avatars from "./views/Avatars";
 import Dividers from "./views/Dividers";
@@ -13,11 +14,10 @@ import Tabs from "./views/Tabs";
 import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
 import Toggles from "./views/Toggles";
-import Checkbox from "./views/Checkbox";
-import TextArea from "./views/TextArea";
-import Input from './views/Input';
-
+import Checkboxes from "./views/Checkboxes";
+import TextAreas from "./views/TextAreas";
 import Modals from "./views/Modals";
+import Inputs from "./views/Inputs";
 
 class UILibrary extends Component {
   render() {
@@ -26,11 +26,11 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
-            <Input />
             <Modals/>
+            <Inputs/>
+            <TextAreas/>
             <Toggles/>
-            <TextArea/>            
-            <Checkbox />
+            <Checkboxes/>
             <Radios/>
             <ServiceStatus/>
             <Tabs/>
