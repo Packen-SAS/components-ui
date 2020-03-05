@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, { Component } from "react";
+import { View } from "react-native";
 
-import PackenTextArea from '../components/PackenTextArea';
+import PackenTextArea from "../components/PackenTextArea";
 
 class TextAreas extends Component {
   constructor(props) {

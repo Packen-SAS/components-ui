@@ -11,24 +11,23 @@ class PackenCheckBox extends Component {
     super(props);
 
     this.state = {
-      items: []
+      items: [...props.items]
     }
   }
 
-  changeState = async (index, disabled, checked) => {
+  change_state = async (index, disabled, checked) => {
     if (!disabled) {
       this.props.notifyParent(index, !checked);
     }
   }
 
-  componentWillMount() {
-    this.setState({ items: this.props.items });
-  }
-
-  getStylesCheckBox = (disabled, checked) => {
+  get_styles_checkbox = (disabled, checked) => {
     if (disabled) {
       if (checked !== true && checked !== false) {
         return CheckBoxStyles.content.disabledCheckUnChecked;
+      }
+      if (!checked) {
+        return CheckBoxStyles.content.disabledUnChecked;
       }
       return CheckBoxStyles.content.disabled;
     }
@@ -42,15 +41,17 @@ class PackenCheckBox extends Component {
   map_items = (check, index) => {
     return (
       <View key={index} style={PackenCheckBoxStyle.contentView}>
-        <TouchableWithoutFeedback onPress={() => this.changeState(index, check.disabled, check.checked)} >
-          <View style={PackenCheckBoxStyle.contentCheckTitle} >
-            <View style={this.getStylesCheckBox(check.disabled, check.checked)} >
+        <TouchableWithoutFeedback onPress={() => this.change_state(index, check.disabled, check.checked)}>
+          <View style={PackenCheckBoxStyle.contentCheckTitle}>
+            <View style={this.get_styles_checkbox(check.disabled, check.checked)} >
               {check.checked === true ? <Icon style={CheckBoxStyles.icon} name="check" /> : null}
               {check.checked === false ? <Icon style={CheckBoxStyles.icon} name="minus" /> : null}
             </View>
-            {check.title ?
-              <PackenText style={CheckBoxStyles.title}>{check.title}</PackenText>
-              : null}
+            {
+              check.title ? (
+                <PackenText style={CheckBoxStyles.title}>{check.title}</PackenText>
+              ) : null
+            }
           </View>
         </TouchableWithoutFeedback>
       </View>
@@ -63,7 +64,7 @@ class PackenCheckBox extends Component {
     return (
       <View>
         <View style={{ flexDirection: this.props.layout, flexWrap: "wrap" }}>
-          {this.get_items()}
+          { this.get_items() }
         </View>
       </View>
     )
@@ -72,12 +73,12 @@ class PackenCheckBox extends Component {
 
 const PackenCheckBoxStyle = StyleSheet.create({
   contentView: {
-    marginRight: 10,
+    marginRight: 15,
     marginBottom: 10
   },
   contentCheckTitle: {
-    flexDirection: "row",
-    marginLeft: 10
+    alignSelf: "flex-start",
+    flexDirection: "row"
   }
 });
 

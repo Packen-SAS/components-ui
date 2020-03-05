@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { TextInput, View } from 'react-native';
+import React, { Component } from "react";
+import { TextInput, View } from "react-native";
 
-import PackenTextAreaStyles from '../styles/components/PackenTextArea';
+import PackenTextAreaStyles from "../styles/components/PackenTextArea";
 
-import PackenText from './PackenText';
-
+import PackenText from "./PackenText";
 
 class PackenTextArea extends Component {
   constructor(props) {
