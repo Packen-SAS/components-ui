@@ -15,7 +15,6 @@ import ServiceStatus from "./views/ServiceStatus";
 import Radios from "./views/Radios";
 import Toggles from "./views/Toggles";
 import Checkboxes from "./views/Checkboxes";
-/* import TextAreas from "./views/TextAreas"; */
 import Modals from "./views/Modals";
 import Inputs from "./views/Inputs";
 
@@ -28,7 +27,6 @@ class UILibrary extends Component {
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
             <Modals/>
             <Inputs/>
-            {/* <TextAreas/> */}
             <Toggles/>
             <Checkboxes/>
             <Radios/>
