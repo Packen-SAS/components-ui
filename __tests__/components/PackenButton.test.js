@@ -99,5 +99,22 @@ describe("<PackenButton/>", () => {
       renderRegularInstance.pressOut_handler();
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
     });
+
+    it("updates styles after onLayout changes", () => {
+      const prevStyles = renderRegularInstance.styles;
+      const prevState = {
+        shapeHeight: 0,
+        iconHeight: 0,
+        iconWidth: 0
+      };
+      renderRegularInstance.setState({
+        shapeHeight: 1,
+        iconHeight: 1,
+        iconWidth: 1
+      });
+
+      renderRegularInstance.componentDidUpdate(null, prevState, null);
+      expect(renderRegularInstance.state.styles).not.toEqual(prevStyles);
+    });
   });
 });

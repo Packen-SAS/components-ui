@@ -59,24 +59,6 @@ class PackenModal extends Component {
     }
   }
 
-  get_btn_styles = () => {
-    let btnStyles = {...ModalStyles.btn.base};
-
-    if (this.props.banner) {
-      btnStyles = {
-        ...btnStyles,
-        ...ModalStyles.btn.banner[this.props.size]
-      }
-    } else {
-      btnStyles = {
-        ...btnStyles,
-        ...ModalStyles.btn.default
-      }
-    }
-
-    return btnStyles;
-  }
-
   get_content_styles = () => {
     let contentStyles = { ...ModalStyles.content.base };
 

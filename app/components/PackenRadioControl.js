@@ -38,6 +38,8 @@ class PackenRadioControl extends Component {
           state: "checked_disabled"
         });
       }
+    } else {
+      return false;
     }
   }
 

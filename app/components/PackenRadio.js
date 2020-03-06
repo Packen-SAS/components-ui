@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { Component } from "react";
 
 import { View } from "react-native";
 
@@ -38,6 +38,7 @@ class PackenRadio extends Component {
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
+      return this.state.currentSelection;
     }
   }
 
