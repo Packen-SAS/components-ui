@@ -136,6 +136,49 @@ class Inputs extends Component {
               multiline
             />
           </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenInput
+              size="tiny"
+              placeholder="Placeholder"
+              onChangeText={this.handle_change_text}
+              message={{
+                text: "Caption text, description, error notification",
+                icon: "info"
+              }}
+              label="Label textarea"
+              theme="danger"
+              multiline
+            />
+          </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenInput
+              size="tiny"
+              placeholder="Placeholder"
+              onChangeText={this.handle_change_text}
+              message={{
+                text: "Caption text, description, error notification",
+                icon: "info"
+              }}
+              label="Label textarea"
+              theme="success"
+              multiline
+            />
+          </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenInput
+              size="large"
+              placeholder="Placeholder"
+              onChangeText={this.handle_change_text}
+              message={{
+                text: "Caption text, description, error notification",
+                icon: "info"
+              }}
+              label="Label textarea"
+              help="Help primary large"
+              theme="primary"
+              multiline
+            />
+          </View>
         </View>
       </Section>
     )
