@@ -15,7 +15,7 @@ class PackenCheckBox extends Component {
     }
   }
 
-  change_state = async (index, disabled, checked) => {
+  change_state = (index, disabled, checked) => {
     if (!disabled) {
       this.props.notifyParent(index, !checked);
     }
