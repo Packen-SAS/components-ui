@@ -1,16 +1,17 @@
 import "react-native";
 import React from "react";
+import renderer from "react-test-renderer";
 
 import PackenAvatar from "../../app/components/PackenAvatar";
-
-import renderer from "react-test-renderer";
 
 describe("<PackenAvatar/>", () => {
   const render = renderer.create(
     <PackenAvatar size="tiny" src={require("../../assets/images/avatar.jpg")}/>
-  ).toJSON();
+  );
 
-  it("renders correctly", () => {
-    expect(render).toMatchSnapshot();
+  describe("rendering", () => {
+    it("renders correctly", () => {
+      expect(render).toBeDefined();
+    });
   });
 });
