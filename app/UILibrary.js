@@ -17,6 +17,7 @@ import Toggles from "./views/Toggles";
 import Checkboxes from "./views/Checkboxes";
 import Modals from "./views/Modals";
 import Inputs from "./views/Inputs";
+import MapPins from "./views/MapPins";
 
 class UILibrary extends Component {
   render() {
@@ -25,6 +26,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <MapPins/>
             <Modals/>
             <Inputs/>
             <Toggles/>
