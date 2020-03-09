@@ -73,7 +73,7 @@ describe("<PackenToggle/>", () => {
     });
 
     it("toggles inner state", () => {
-      renderInstance.props = { toggleHandler: mock_function };
+      renderInstance.props = { toggleHandler: jest.fn() };
       renderInstance.setState({ state: "active" });
       renderInstance.toggle();
 
@@ -82,7 +82,7 @@ describe("<PackenToggle/>", () => {
         expect(renderInstance.state.state).toBe("inactive");
         expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("executes correct code on componentDidUpdate", () => {
