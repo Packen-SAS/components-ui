@@ -46,7 +46,7 @@ describe("<PackenServiceStatusIcon/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.state.state).toBe("active");
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets 'state' as 'default' if prop indexes don't match", () => {

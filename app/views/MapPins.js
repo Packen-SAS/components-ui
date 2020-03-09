@@ -1,0 +1,192 @@
+import React, { Component } from "react";
+import { View } from "react-native";
+
+import Section from "../components/Section";
+import SectionStyles from "../styles/components/Section";
+
+import PackenMapPin from "../components/PackenMapPin";
+
+class Dividers extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Section title="Map pins">
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="icon"
+            sub={{
+              icon: "box"
+            }}
+            dotPosition="top"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="icon"
+            sub={{
+              icon: "box"
+            }}
+            dotPosition="right"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="icon"
+            sub={{
+              icon: "box"
+            }}
+            dotPosition="bottom"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="icon"
+            sub={{
+              icon: "box"
+            }}
+            dotPosition="left"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="bottom"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="left"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="top"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="bottom"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="right"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              icon: "box",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="top"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            sub={{
+              character: "A",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="bottom"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
+            sub={{
+              character: "B",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Carrera 12 # 34A - 56"
+            }}
+            dotPosition="right"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white_primary"
+            sub={{
+              icon: "rotate-cw",
+              position: "right"
+            }}
+            main={{
+              label: "A",
+              text: "15 min."
+            }}
+          />
+        </View>
+      </Section>
+    );
+  }
+}
+
+export default Dividers;

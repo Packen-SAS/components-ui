@@ -72,11 +72,11 @@ describe("<PackenServiceStatus/>", () => {
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.currentStep).toEqual({
-          ...steps[0]
+          ...mock_steps[0]
         });
         expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
   });
 

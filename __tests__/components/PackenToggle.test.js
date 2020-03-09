@@ -140,7 +140,7 @@ describe("<PackenToggle/>", () => {
         expect(renderInstance.state.state).toBe("disabled");
         expect(renderInstance.set_disabled_styles).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets shape dimensions", () => {
@@ -201,7 +201,7 @@ describe("<PackenToggle/>", () => {
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
-        expect(renderInstance.state.on).toEqual({
+        expect(renderInstance.state.on).toBe({
           ...renderInstance.state.on,
           height: 10,
           width: 10
