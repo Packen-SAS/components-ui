@@ -33,7 +33,6 @@ class PackenTabItem extends Component {
         ...TabsStyles.item.default.icon
       }
     };
-
     return styles;
   }
 

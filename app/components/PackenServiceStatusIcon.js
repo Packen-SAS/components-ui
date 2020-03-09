@@ -37,12 +37,10 @@ class PackenServiceStatusIcon extends Component {
       this.setState({
         state: "active"
       });
-      return true;
     } else {
       this.setState({
         state: "default"
       });
-      return false;
     }
   }
 
