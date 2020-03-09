@@ -219,6 +219,8 @@ describe("<PackenModal/>", () => {
       renderInstance.get_gallery_dimensions({width: 100, height: 100});
       expect(renderInstance.state.dimensions.gallery.width).toBe(Math.floor(100));
       expect(renderInstance.state.dimensions.gallery.height).toBe(Math.floor(100));
+      
+      /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.set_gallery_arrows_position).toHaveBeenCalled();
         clearTimeout(timeout);
@@ -230,6 +232,8 @@ describe("<PackenModal/>", () => {
       renderInstance.get_gallery_arrow_dimensions({width: 10, height: 10});
       expect(renderInstance.state.dimensions.arrows.width).toBe(Math.floor(10));
       expect(renderInstance.state.dimensions.arrows.height).toBe(Math.floor(10));
+      
+      /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.set_gallery_arrows_position).toHaveBeenCalled();
         clearTimeout(timeout);
