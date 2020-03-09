@@ -2,19 +2,24 @@ import "react-native";
 import React from "react";
 import renderer from "react-test-renderer";
 
+import Colors from "../../app/styles/abstracts/colors";
 import Typography from "../../app/styles/abstracts/typography";
 import PackenText from "../../app/components/PackenText";
 
 describe("<PackenText/>", () => {
-  let render, renderInstance, renderJSON;
+  let render, renderNoPreset, renderInstance, renderJSON, renderJSONNoPreset;
 
   beforeAll(() => {
     render = renderer.create(
+      <PackenText preset="h1">Test</PackenText>
+    );
+    renderNoPreset = renderer.create(
       <PackenText>Test</PackenText>
     );
 
     renderInstance = render.getInstance();
     renderJSON = render.toJSON();
+    renderJSONNoPreset = renderNoPreset.toJSON();
 
     renderInstance.setState = state => {
       renderInstance.state = {
@@ -22,9 +27,6 @@ describe("<PackenText/>", () => {
         ...state
       }
     };
-    renderInstance.setState({
-      preset: "h1"
-    });
   });
 
   describe("rendering", () => {
@@ -39,10 +41,15 @@ describe("<PackenText/>", () => {
 
   describe("styling", () => {
     it("sets correct styles if preset is provided", () => {
-      renderInstance.props = { preset: "h1" };
-      expect(renderJSON.props.style.fontFamily).toBe(Typography.family.bold);
-      expect(renderJSON.props.style.fontSize).toBe(36);
-      expect(renderJSON.props.style.lineHeight).toBe(48);
+      expect(renderJSON.props.style.fontFamily).toBe(Typography.h1.fontFamily);
+      expect(renderJSON.props.style.fontSize).toBe(Typography.h1.fontSize);
+      expect(renderJSON.props.style.lineHeight).toBe(Typography.h1.lineHeight);
+    });
+
+    it("sets default styles if no preset is provided", () => {
+      expect(renderJSONNoPreset.props.style.fontFamily).toBe(Typography.family.regular);
+      expect(renderJSONNoPreset.props.style.fontSize).toBe(Typography.size.medium);
+      expect(renderJSONNoPreset.props.style.color).toBe(Colors.base.default);
     });
   });
 });
