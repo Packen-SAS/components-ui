@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import { View, TouchableWithoutFeedback } from "react-native";
 
+import Icon from "react-native-vector-icons/dist/Feather";
+
 import TabsStyles from "../styles/components/PackenTabs";
 import PackenText from "./PackenText";
 
@@ -109,7 +111,19 @@ class PackenTabItem extends Component {
     return (
       <TouchableWithoutFeedback onPress={() => { this.set_active_tab(); }} onPressIn={this.pressIn_handler} onPressOut={this.pressOut_handler}>
         <View style={this.state.itemStyles.shape}>
-          <View style={{ marginRight: 10 }}><PackenText style={this.state.itemStyles.icon}>»</PackenText></View>
+          {
+            this.props.icon ? (
+              <View style={{ marginRight: 10 }}>
+                {
+                  this.props.icon === "»" ? (
+                    <PackenText style={this.state.itemStyles.icon}>»</PackenText>
+                  ) : (
+                    <Icon name={this.props.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6}/>
+                  )
+                }
+              </View>
+            ) : null
+          }
           <PackenText style={this.state.itemStyles.label}>{this.props.label}</PackenText>
         </View>
       </TouchableWithoutFeedback>

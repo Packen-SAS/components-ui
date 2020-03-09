@@ -17,20 +17,60 @@ class Tabs extends Component {
     return (
       <Section title="Tabs">
         <View style={SectionStyles.section__content}>
-          <PackenTabs items={[
-            {
-              label: "Button",
-              callback: this.mock_callback
-            },
-            {
-              label: "Button",
-              callback: this.mock_callback
-            },
-            {
-              label: "Button",
-              callback: this.mock_callback
-            }
-          ]} activeIndex={0}/>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenTabs items={[
+              {
+                label: "Button",
+                icon: "»",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                icon: "»",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                icon: "»",
+                callback: this.mock_callback
+              }
+            ]} activeIndex={0}/>
+          </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenTabs items={[
+              {
+                label: "Button",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                callback: this.mock_callback
+              }
+            ]} activeIndex={1}/>
+          </View>
+          <View style={SectionStyles.section__contentItem}>
+            <PackenTabs items={[
+              {
+                label: "Button",
+                icon: "clock",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                icon: "rotate-cw",
+                callback: this.mock_callback
+              },
+              {
+                label: "Button",
+                icon: "check-circle",
+                callback: this.mock_callback
+              }
+            ]} activeIndex={2}/>
+          </View>
         </View>
       </Section>
     );
