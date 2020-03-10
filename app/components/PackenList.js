@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList, ScrollView } from "react-native";
+import { View, FlatList } from "react-native";
 
 import PackenListItem from "./PackenListItem";
 
@@ -34,6 +34,10 @@ class PackenList extends Component {
         items: newItems,
         selectedItems: [itemValue]
       });
+
+      if (this.props.toggleMenu) {
+        this.props.toggleMenu();
+      }
     } else {
 
     }

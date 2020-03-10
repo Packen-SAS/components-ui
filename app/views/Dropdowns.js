@@ -18,6 +18,7 @@ class Dividers extends Component {
       menus: {
         simple: {
           config: {
+            size: "medium",
             checkedIcon: "check",
             selectionType: "single"
           },
@@ -44,6 +45,73 @@ class Dividers extends Component {
               right: false,
               value: "Bucaramanga",
               isSelected: false,
+              isDisabled: true,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Santa Marta",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Cali",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Cartagena",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Leticia",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>)
+            }
+          ]
+        },
+        mulitple: {
+          config: {
+            size: "medium",
+            checkedIcon: "check",
+            selectionType: "multiple"
+          },
+          items: [
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Medellín",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
@@ -104,12 +172,30 @@ class Dividers extends Component {
     return (
       <Section title="Dropdowns">
         <View style={SectionStyles.section__content}>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
               list={this.state.menus.simple}
               input={{
-                label: "Conductor",
+                label: "Single selection",
+                placeholder: "Selecciona tu ciudad",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right",
+                  style: { color: Colors.brand.primary.drk }
+                },
+                theme: "default",
+                nonEditable: true
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
+              list={this.state.menus.simple}
+              input={{
+                label: "Multiple selections",
                 placeholder: "Selecciona tu ciudad",
                 onChangeText: () => { return; },
                 icon: {

@@ -37,9 +37,7 @@ export default {
         default: {},
         focus: {},
         active: {},
-        disabled: {
-          opacity: 0.2
-        }
+        disabled: {}
       }
     },
     left: {
@@ -51,6 +49,22 @@ export default {
     right: {
       marginLeft: 12
     }
+  },
+  avatar: {
+    state: {
+      default: {},
+      focus: {},
+      active: {},
+      disabled: {
+        opacity: 0.2
+      }
+    }
+  },
+  checkedIcon: {
+    position: "absolute",
+    zIndex: 1,
+    top: 2,
+    right: 16
   },
   icon: {
     base: {
@@ -65,7 +79,9 @@ export default {
       active: {
         color: Colors.basic.white.dft
       },
-      disabled: {}
+      disabled: {
+        color: Colors.basic.gray.dft
+      }
     }
   }
 }
