@@ -26,42 +26,56 @@ class Dividers extends Component {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Medellín",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Bucaramanga",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Santa Marta",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Cali",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Cartagena",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
             },
             {
               key: this.gen_key(),
               left: false,
               right: false,
+              value: "Leticia",
+              isSelected: false,
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>)
             }
           ]
