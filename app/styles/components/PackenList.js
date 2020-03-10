@@ -18,8 +18,7 @@ export default {
         backgroundColor: Colors.brand.primary.snw
       },
       active: {
-        backgroundColor: Colors.brand.primary.drk,
-        borderBottomColor: Colors.brand.primary.drk
+        backgroundColor: Colors.brand.primary.drk
       },
       disabled: {
         backgroundColor: Colors.basic.white.dft

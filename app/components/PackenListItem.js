@@ -20,7 +20,9 @@ class PackenListItem extends Component {
   }
 
   pressIn_handler = () => {
+    const prevState = this.state.state;
     this.setState({
+      prevState: prevState,
       state: this.props.mainContent.isSelected ? "active" : "focus"
     });
   }
@@ -38,8 +40,13 @@ class PackenListItem extends Component {
         state: "active"
       });
       this.props.updateSelectedItems(this.props.mainContent.value, true);
-    } else {
-
+    } else if (this.props.config.selectionType === "multiple") {
+      const newState = this.state.prevState === "default" ? "active" : "default";
+      this.setState({
+        prevState: newState,
+        state: newState
+      });
+      this.props.updateSelectedItems(this.props.mainContent.value, newState === "active" ? true : false);
     }
   }
 

@@ -38,8 +38,19 @@ class PackenList extends Component {
       if (this.props.toggleMenu) {
         this.props.toggleMenu();
       }
-    } else {
+    } else if (this.props.config.selectionType === "multiple") {
+      const newItems = [...this.state.items];
 
+      const foundItem = newItems.find(item => item.value === itemValue);
+      foundItem.isSelected = isSelected;
+
+      let newSelectedItems = newItems.filter(item => item.isSelected);
+      newSelectedItems = newSelectedItems.map(item => item.value);
+
+      this.setState({
+        items: newItems,
+        selectedItems: newSelectedItems
+      });
     }
   }
 
