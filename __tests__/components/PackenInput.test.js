@@ -130,5 +130,16 @@ describe("<PackenInput/>", () => {
       expect(renderInstance.state.value).toBe("Test");
       expect(mock_callback).toHaveBeenCalled();
     });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { value: "Test" };
+      renderInstance.props = { value: "Test-2" };
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      /* Review to avoid using setTimeout */
+      const timeout = setTimeout(() => {
+        expect(renderInstance.state.value).toBe("Test-2");
+      }, 1000);
+    });
   });
 });

@@ -8,7 +8,9 @@ class PackenList extends Component {
     super(props);
 
     this.state = {
-      height: "100%"
+      height: "100%",
+      items: [...this.props.items],
+      selectedItems: []
     }
   }
 
@@ -18,8 +20,43 @@ class PackenList extends Component {
     });
   }
 
+  update_selected_items = (itemValue, isSelected) => {
+    if (this.props.config.selectionType === "single") {
+      const newItems = [...this.state.items];
+      newItems.forEach(item => {
+        item.isSelected = false;
+      });
+
+      const foundItem = newItems.find(item => item.value === itemValue);
+      foundItem.isSelected = true;
+
+      this.setState({
+        items: newItems,
+        selectedItems: [itemValue]
+      });
+    } else {
+
+    }
+  }
+
   render_item = ({ item }) => {
-    return <PackenListItem config={this.props.config} mainContent={item} getItemHeight={this.get_item_height}/>;
+    return (
+      <PackenListItem
+        config={this.props.config}
+        mainContent={item}
+        getItemHeight={this.get_item_height}
+        updateSelectedItems={this.update_selected_items}
+      />
+    );
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.selectedItems !== this.state.selectedItems) {
+      /* Latest selected items can be used here */
+      if (this.props.getFinalSelection) {
+        this.props.getFinalSelection(this.state.selectedItems);
+      }
+    }
   }
 
   render() {
@@ -27,7 +64,7 @@ class PackenList extends Component {
       <View style={{ height: this.state.height }}>
         <FlatList
           nestedScrollEnabled
-          data={this.props.items}
+          data={this.state.items}
           renderItem={this.render_item}
           style={{ height: this.state.height }}
         />

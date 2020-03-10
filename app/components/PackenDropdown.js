@@ -19,7 +19,9 @@ class PackenDropdown extends Component {
       },
       styles: {
         menu: {}
-      }
+      },
+      finalSelection: [],
+      finalSelectionString: ""
     }
   }
 
@@ -53,6 +55,27 @@ class PackenDropdown extends Component {
     });
   }
 
+  get_final_selection = selectedItems => {
+    this.setState({
+      finalSelection: selectedItems
+    }, this.compose_final_selection_string);
+  }
+
+  compose_final_selection_string = () => {
+    let finalSelectionString = "";
+
+    this.state.finalSelection.forEach(item => {
+      finalSelectionString += `${item}, `;
+    });
+    finalSelectionString = finalSelectionString.slice(0, -2);
+
+    this.setState({
+      finalSelectionString: finalSelectionString
+    });
+
+    return finalSelectionString;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.isOpen !== this.state.isOpen) {
       this.setState({
@@ -73,6 +96,7 @@ class PackenDropdown extends Component {
         <TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggle_menu}>
           <View pointerEvents="box-only">
             <PackenInput
+              value={this.state.finalSelectionString}
               size={this.props.size}
               placeholder={this.props.input.placeholder}
               onChangeText={this.props.input.onChangeText}
@@ -94,6 +118,7 @@ class PackenDropdown extends Component {
             items={this.props.list.items}
             config={{ size: this.props.size, ...this.props.list.config }}
             numShownRows={4}
+            getFinalSelection={this.get_final_selection}
           />
         </View>
       </View>

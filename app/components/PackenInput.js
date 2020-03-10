@@ -12,7 +12,7 @@ class PackenInput extends Component {
     super(props);
 
     let initialState = {
-      value: "",
+      value: props.value ? props.value : "",
       state: props.disabled ? "disabled" : "default"
     };
 
@@ -134,6 +134,14 @@ class PackenInput extends Component {
       value: text
     });
     this.props.onChangeText(text);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({
+        value: this.props.value
+      });
+    }
   }
 
   render() {
