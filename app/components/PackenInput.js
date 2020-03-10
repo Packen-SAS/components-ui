@@ -159,7 +159,7 @@ class PackenInput extends Component {
                   name={this.props.icon.name}
                   size={InputStyles.icon.size[this.props.size].size}
                   color={InputStyles.icon.base.color}
-                  style={InputStyles.icon.state[this.state.state]}
+                  style={{ ...InputStyles.icon.state[this.state.state], ...this.props.icon.style }}
                 />
               </View>
             ) : null
@@ -181,6 +181,7 @@ class PackenInput extends Component {
               placeholder={this.props.placeholder}
               placeholderTextColor={InputStyles.placeholder.color}
               multiline={this.props.multiline ? true : false}
+              editable={this.props.disabled || this.props.nonEditable ? false : true}
             />
           </TouchableWithoutFeedback>
         </View>

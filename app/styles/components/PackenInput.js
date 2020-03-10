@@ -10,9 +10,7 @@ const heights = {
 }
 
 export default {
-  container: {
-    marginBottom: 15
-  },
+  container: {},
   header: {
     flexDirection: "row",
     alignItems: "flex-end",

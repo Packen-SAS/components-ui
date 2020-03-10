@@ -11,6 +11,7 @@ export default {
   size: {
     xtiny: 8,
     tiny: 10,
+    tiny_alt: 11,
     small: 12,
     medium: 14,
     large: 16,
