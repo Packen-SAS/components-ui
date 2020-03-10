@@ -18,6 +18,7 @@ import Checkboxes from "./views/Checkboxes";
 import Modals from "./views/Modals";
 import Inputs from "./views/Inputs";
 import MapPins from "./views/MapPins";
+import Dropdowns from "./views/Dropdowns";
 
 class UILibrary extends Component {
   render() {
@@ -27,6 +28,7 @@ class UILibrary extends Component {
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
             <MapPins/>
+            <Dropdowns/>
             <Modals/>
             <Inputs/>
             <Toggles/>

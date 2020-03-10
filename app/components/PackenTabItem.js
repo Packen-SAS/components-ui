@@ -102,9 +102,7 @@ class PackenTabItem extends Component {
   }
 
   pressOut_handler = () => {
-    this.setState({
-      itemStyles: this.get_item_styles()
-    });
+    this.set_active_tab();
   }
 
   render() {
