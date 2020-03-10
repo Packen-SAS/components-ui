@@ -193,7 +193,7 @@ class Dividers extends Component {
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
-              list={this.state.menus.simple}
+              list={this.state.menus.mulitple}
               input={{
                 label: "Multiple selections",
                 placeholder: "Selecciona tu ciudad",
