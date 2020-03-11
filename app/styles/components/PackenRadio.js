@@ -13,6 +13,11 @@ export default {
       alignItems: "center",
       justifyContent: "flex-start",
       flexWrap: "wrap"
+    },
+    dropdown: {
+      flexDirection: "column",
+      alignItems: "stretch",
+      justifyContent: "center"
     }
   },
   item: {
@@ -22,10 +27,13 @@ export default {
     row: {
       marginRight: 20,
       marginBottom: 10
+    },
+    dropdown: {
+      margin: 0
     }
   },
   shape: {
-    default: {
+    base: {
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "flex-start",
@@ -33,47 +41,39 @@ export default {
     }
   },
   control: {
-    default: {
+    base: {
       height: 18,
       width: 18,
       borderRadius: 18,
-      borderColor: Colors.primary.default,
       borderWidth: 2,
-      borderStyle: "solid"
+      borderStyle: "solid",
+      borderColor: Colors.primary.default
     },
     checked: {
-      height: 18,
-      width: 18,
-      borderRadius: 18,
-      borderColor: Colors.primary.default,
       borderWidth: 6,
-      borderStyle: "solid",
       backgroundColor: Colors.base.white
     },
     default_disabled: {
-      height: 18,
-      width: 18,
-      borderRadius: 18,
-      borderWidth: 2,
-      borderStyle: "solid",
       borderColor: Colors.base.disabled_alt
     },
     checked_disabled: {
-      height: 18,
-      width: 18,
-      borderRadius: 18,
-      borderColor: Colors.base.disabled_alt,
       borderWidth: 6,
-      borderStyle: "solid",
-      backgroundColor: Colors.base.white
+      backgroundColor: Colors.base.white,
+      borderColor: Colors.base.disabled_alt
     }
   },
   label: {
-    default: {
+    base: {
       marginLeft: 8,
       color: Colors.basic.independence.drk,
       fontSize: Typography.size.medium,
       lineHeight: Typography.lineheight.medium_alt
+    },
+    default_disabled: {
+      color: Colors.base.disabled_alt
+    },
+    checked_disabled: {
+      color: Colors.base.disabled_alt
     }
   }
 }

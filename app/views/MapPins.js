@@ -143,7 +143,37 @@ class Dividers extends Component {
         <View style={SectionStyles.section__content}>
           <PackenMapPin
             type="info"
-            theme="primary"
+            theme="white"
+            sub={{
+              character: "A",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="top"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
+            sub={{
+              character: "A",
+              position: "left"
+            }}
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+            dotPosition="left"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
             sub={{
               character: "A",
               position: "left"
@@ -167,7 +197,37 @@ class Dividers extends Component {
               label: "DE",
               text: "Carrera 12 # 34A - 56"
             }}
+            dotPosition="top"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
+            sub={{
+              character: "B",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Carrera 12 # 34A - 56"
+            }}
             dotPosition="right"
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
+            sub={{
+              character: "B",
+              position: "right"
+            }}
+            main={{
+              label: "DE",
+              text: "Carrera 12 # 34A - 56"
+            }}
+            dotPosition="bottom"
           />
         </View>
         <View style={SectionStyles.section__content}>
@@ -181,6 +241,40 @@ class Dividers extends Component {
             main={{
               label: "A",
               text: "15 min."
+            }}
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white_primary"
+            sub={{
+              icon: "rotate-cw",
+              position: "left"
+            }}
+            main={{
+              label: "A",
+              text: "15 min."
+            }}
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="primary"
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
+            }}
+          />
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenMapPin
+            type="info"
+            theme="white"
+            main={{
+              label: "DE",
+              text: "Calle 71 # 13 - 81"
             }}
           />
         </View>

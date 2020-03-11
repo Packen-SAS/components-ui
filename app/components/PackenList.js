@@ -10,47 +10,76 @@ class PackenList extends Component {
     this.state = {
       height: "100%",
       items: [...this.props.items],
-      selectedItems: []
+      selectedItems: [],
+      currentRadiosState: {
+        checkedValue: ""
+      },
+      currentCheckboxesState: {
+        checkedValues: []
+      }
     }
   }
 
   get_item_height = itemHeight => {
+    let finalNumShownRows;
+    if (this.state.items.length < this.props.numShownRows) {
+      finalNumShownRows = this.state.items.length;
+    } else {
+      finalNumShownRows = this.props.numShownRows;
+    }
+
     this.setState({
-      height: itemHeight * this.props.numShownRows
+      height: itemHeight * finalNumShownRows
     });
   }
 
-  update_selected_items = (itemValue, isSelected) => {
-    if (this.props.config.selectionType === "single") {
-      const newItems = [...this.state.items];
-      newItems.forEach(item => {
-        item.isSelected = false;
-      });
+  update_selected_items = (itemValue, isSelected, payload) => {
+    switch (this.props.config.selectionType) {
+      case "single":
+      case "radio": {
+        const newItems = [...this.state.items];
+        newItems.forEach(item => {
+          item.isSelected = false;
+        });
+  
+        const foundItem = newItems.find(item => item.value === itemValue);
+        foundItem.isSelected = true;
+ 
+        if (payload) {
+          if (payload.checkedType === "radio") {
+            
+          }
+        }
 
-      const foundItem = newItems.find(item => item.value === itemValue);
-      foundItem.isSelected = true;
+        this.setState({
+          items: newItems,
+          selectedItems: [itemValue],
+          currentRadiosState: {
+            checkedValue: payload.checkedValue
+          }
+        });
+  
+        if (this.props.toggleMenu) {
+          this.props.toggleMenu();
+        }
+      } break;
+      case "multiple":
+      case "checkbox": {
+        const newItems = [...this.state.items];
 
-      this.setState({
-        items: newItems,
-        selectedItems: [itemValue]
-      });
-
-      if (this.props.toggleMenu) {
-        this.props.toggleMenu();
-      }
-    } else if (this.props.config.selectionType === "multiple") {
-      const newItems = [...this.state.items];
-
-      const foundItem = newItems.find(item => item.value === itemValue);
-      foundItem.isSelected = isSelected;
-
-      let newSelectedItems = newItems.filter(item => item.isSelected);
-      newSelectedItems = newSelectedItems.map(item => item.value);
-
-      this.setState({
-        items: newItems,
-        selectedItems: newSelectedItems
-      });
+        const foundItem = newItems.find(item => item.value === itemValue);
+        foundItem.isSelected = isSelected;
+  
+        let newSelectedItems = newItems.filter(item => item.isSelected);
+        newSelectedItems = newSelectedItems.map(item => item.value);
+  
+        this.setState({
+          items: newItems,
+          selectedItems: newSelectedItems
+        });
+      } break;
+      default:
+        break;
     }
   }
 
@@ -61,6 +90,8 @@ class PackenList extends Component {
         mainContent={item}
         getItemHeight={this.get_item_height}
         updateSelectedItems={this.update_selected_items}
+        currentRadiosState={this.state.currentRadiosState}
+        currentCheckboxesState={this.state.currentCheckboxesState}
       />
     );
   }

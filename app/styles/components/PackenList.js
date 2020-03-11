@@ -23,6 +23,16 @@ export default {
       disabled: {
         backgroundColor: Colors.basic.white.dft
       }
+    },
+    selection: {
+      single: {},
+      multiple: {},
+      radio: {
+        padding: 0
+      },
+      checkbox: {
+        padding: 0
+      }
     }
   },
   content: {
@@ -40,30 +50,34 @@ export default {
       }
     },
     left: {
-      marginRight: 12
+      base: {
+        marginRight: 12,
+      },
+      state: {
+        default: {},
+        focus: {},
+        active: {},
+        disabled: {
+          opacity: 0.2
+        }
+      }
     },
     main: {
       flex: 1
     },
     right: {
-      marginLeft: 12
-    }
-  },
-  avatar: {
-    state: {
-      default: {},
-      focus: {},
-      active: {},
-      disabled: {
-        opacity: 0.2
+      base: {
+        marginLeft: 12
+      },
+      state: {
+        default: {},
+        focus: {},
+        active: {},
+        disabled: {
+          opacity: 0.2
+        }
       }
     }
-  },
-  checkedIcon: {
-    position: "absolute",
-    zIndex: 1,
-    top: 2,
-    right: 16
   },
   icon: {
     base: {
@@ -73,7 +87,9 @@ export default {
       ...InputStyles.icon.size
     },
     state: {
-      default: {},
+      default: {
+        color: Colors.basic.independence.dft
+      },
       focus: {},
       active: {
         color: Colors.basic.white.dft

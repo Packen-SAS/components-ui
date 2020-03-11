@@ -42,12 +42,22 @@ class PackenRadio extends Component {
     }
   }
 
+  setCheckedIndex = newCheckedIndex => {
+    this.setState({
+      checkedIndex: newCheckedIndex
+    });
+  }
+
   render() {
     return (
       <View style={RadioStyles.container[this.props.layout]}>
         {
           this.props.items.map((item, i) => (
-            <View key={i} style={RadioStyles.item[this.props.layout]}>
+            <View
+              key={i}
+              style={RadioStyles.item[this.props.layout]}
+              pointerEvents={this.props.layout === "dropdown" ?  "none" : "auto"}
+            >
               <PackenRadioControl
                 checkedIndex={this.state.checkedIndex}
                 selfIndex={i}
