@@ -17,7 +17,7 @@ class PackenMapPin extends Component {
           this.props.type === "info" ? (
             <View style={MapPinStyles.inner}>
               {
-                this.props.sub.position === "left" ? (
+                this.props.sub && this.props.sub.position === "left" ? (
                   <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition}/>
                 ) : null
               }
@@ -32,7 +32,7 @@ class PackenMapPin extends Component {
                 </PackenText>
               </View>
               {
-                this.props.sub.position === "right" ? (
+                this.props.sub && this.props.sub.position === "right" ? (
                   <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition}/>
                 ) : null
               }

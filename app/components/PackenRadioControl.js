@@ -66,10 +66,10 @@ class PackenRadioControl extends Component {
     return (
       <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.onPress_handler}>
-          <View style={RadioStyles.shape.default}>
-            <View style={RadioStyles.control[this.state.state]}></View>
+          <View style={RadioStyles.shape.base}>
+            <View style={{ ...RadioStyles.control.base, ...RadioStyles.control[this.state.state] }}></View>
             {
-              this.props.label ? <PackenText style={RadioStyles.label.default}>{this.props.label}</PackenText> : null
+              this.props.label ? <PackenText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}>{this.props.label}</PackenText> : null
             }
           </View>
         </TouchableWithoutFeedback>
