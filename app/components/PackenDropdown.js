@@ -119,6 +119,7 @@ class PackenDropdown extends Component {
             config={{ size: this.props.size, ...this.props.list.config }}
             numShownRows={4}
             getFinalSelection={this.get_final_selection}
+            finalSelectionArray={this.state.finalSelection}
             toggleMenu={this.toggle_menu}
           />
         </View>

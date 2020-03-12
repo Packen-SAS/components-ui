@@ -35,8 +35,30 @@ class PackenCheckbox extends Component {
     }
   }
 
-  setCheckedState = (valueToSearch, newState) => {
-    /* console.log(valueToSearch, newState); */
+  setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
+    /* console.log("-----------------");
+    console.log(valueToSearch, newState, finalSelectionArray);
+    console.log("-----------------"); */
+
+    let updatedCheckedItems = [...finalSelectionArray];
+    updatedCheckedItems = updatedCheckedItems.map(item => ({ label: item, isChecked: newState, isDisabled: false }))
+    /* let foundItem;
+
+    updatedCheckedItems.forEach(item => {
+      if (item.label === valueToSearch) {
+        foundItem = item;
+      }
+    });
+
+    console.log(founditem); */
+
+    const foundItem = updatedCheckedItems.find(item => item.label === valueToSearch);
+    if (foundItem) {
+      foundItem.isChecked = newState;
+      this.setState({
+        checkedItems: updatedCheckedItems
+      });
+    }
   }
 
   render() {
@@ -55,9 +77,10 @@ class PackenCheckbox extends Component {
               <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
                 <View style={{ alignSelf: "flex-start" }}>
                   <PackenCheckboxControl
+                    label={item.label}
+                    layout={this.props.layout}
                     isChecked={item.isChecked}
                     isDisabled={item.isDisabled}
-                    label={item.label}
                     checkedItems={this.state.checkedItems}
                   />
                 </View>

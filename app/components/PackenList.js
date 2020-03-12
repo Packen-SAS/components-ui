@@ -15,6 +15,7 @@ class PackenList extends Component {
         checkedValue: ""
       },
       currentCheckboxesState: {
+        finalSelectionArray: props.finalSelectionArray,
         checkedValues: []
       }
     }
@@ -87,6 +88,7 @@ class PackenList extends Component {
 
             this.setState({
               currentCheckboxesState: {
+                ...this.state.currentCheckboxesState,
                 checkedValues: newCheckedValues
               }
             });
@@ -116,6 +118,12 @@ class PackenList extends Component {
       /* Latest selected items can be used here */
       if (this.props.getFinalSelection) {
         this.props.getFinalSelection(this.state.selectedItems);
+        this.setState({
+          currentCheckboxesState: {
+            ...this.state.currentCheckboxesState,
+            finalSelectionArray: [...this.state.selectedItems]
+          }
+        });
       }
     }
   }

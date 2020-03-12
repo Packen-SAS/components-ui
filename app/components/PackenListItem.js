@@ -39,7 +39,8 @@ class PackenListItem extends Component {
       prevState: initialState,
       state: initialState,
       originalStyles: originalStyles,
-      mainContent: null
+      mainContent: null,
+      newSelectedState: false
     }
   }
 
@@ -49,6 +50,10 @@ class PackenListItem extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.checkIfUnselected();
+
+    if (this.checkboxRef && this.checkboxRef.setCheckedState) {
+      this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
+    }
   }
 
   checkIfUnselected = () => {
@@ -61,9 +66,7 @@ class PackenListItem extends Component {
       if (this.props.config.selectionType === "checkbox") {
         this.props.currentCheckboxesState.checkedValues.forEach(checkedValue => {
           if (checkedValue !== this.props.mainContent.value) {
-            this.checkboxRef.setCheckedState(this.props.mainContent.value, false);
-          } else {
-            this.checkboxRef.setCheckedState(this.props.mainContent.value, true);
+            this.checkboxRef.setCheckedState(this.props.mainContent.value, false, this.props.currentCheckboxesState.finalSelectionArray);
           }
         });
       }
@@ -105,13 +108,14 @@ class PackenListItem extends Component {
       case "multiple":
       case "checkbox": {
         const newState = this.state.prevState === "default" ? "active" : "default";
+        const newSelectedState = newState === "active" ? true : false;
         this.setState({
           prevState: newState,
-          state: newState
+          state: newState,
+          newSelectedState: newSelectedState
         });
-        const newSelectedState = newState === "active" ? true : false;
         if (this.checkboxRef) {
-          this.checkboxRef.setCheckedState(this.props.mainContent.value, newSelectedState);
+          /* this.checkboxRef.setCheckedState(this.props.mainContent.value, newSelectedState, this.props.currentCheckboxesState.finalSelectionArray); */
           this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState, {
             checkedType: "checkbox",
             checkedValue: this.props.mainContent.value
