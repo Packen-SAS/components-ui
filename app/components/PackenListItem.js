@@ -8,6 +8,7 @@ import ListStyles from "../styles/components/PackenList";
 
 import PackenAvatar from "./PackenAvatar";
 import PackenRadio from "./PackenRadio";
+import PackenCheckbox from "./PackenCheckbox";
 
 class PackenListItem extends Component {
   constructor(props) {
@@ -20,18 +21,18 @@ class PackenListItem extends Component {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
         originalStyles = [];
         this.props.mainContent.main.props.children.forEach(child => {
-          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckBox") {
+          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
             originalStyles.push({ color: child.props.style.color });
           }
         });
       } else {
-        if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckBox") {
+        if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
           originalStyles = { ...this.props.mainContent.main.props.style };
         }
       }
     } else {
       this.radioRef = createRef();
-      this.checkboxRed = createRef();
+      this.checkboxRef = createRef();
     }
 
     this.state = {
@@ -51,8 +52,21 @@ class PackenListItem extends Component {
   }
 
   checkIfUnselected = () => {
-    if (this.props.mainContent.main.control && (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value)) {
-      this.radioRef.setCheckedIndex(undefined);
+    if (this.props.mainContent.main.control) {
+      if (this.props.config.selectionType === "radio") {
+        if (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value) {
+          this.radioRef.setCheckedIndex(undefined);
+        }
+      }
+      if (this.props.config.selectionType === "checkbox") {
+        this.props.currentCheckboxesState.checkedValues.forEach(checkedValue => {
+          if (checkedValue !== this.props.mainContent.value) {
+            this.checkboxRef.setCheckedState(this.props.mainContent.value, false);
+          } else {
+            this.checkboxRef.setCheckedState(this.props.mainContent.value, true);
+          }
+        });
+      }
     }
   }
 
@@ -96,12 +110,15 @@ class PackenListItem extends Component {
           state: newState
         });
         const newSelectedState = newState === "active" ? true : false;
-        this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState);
-        /* if (newSelectedState) {
-          this.checkboxRef.setCheckedIndex(0);
+        if (this.checkboxRef) {
+          this.checkboxRef.setCheckedState(this.props.mainContent.value, newSelectedState);
+          this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState, {
+            checkedType: "checkbox",
+            checkedValue: this.props.mainContent.value
+          });
         } else {
-          this.checkboxRef.setCheckedIndex(undefined);
-        } */
+          this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState);
+        }
       } break;
       default:
         break;
@@ -156,7 +173,7 @@ class PackenListItem extends Component {
           leftContent = (
             <PackenAvatar
               size={this.props.mainContent.left.config.size}
-              src={require("../../assets/images/avatar.jpg")}
+              src={this.props.mainContent.left.config.src}
             />
           );
           break;
@@ -183,7 +200,7 @@ class PackenListItem extends Component {
           rightContent = (
             <PackenAvatar
               size={this.props.mainContent.right.config.size}
-              src={require("../../assets/images/avatar.jpg")}
+              src={this.props.mainContent.right.config.src}
             />
           );
           break;
@@ -236,12 +253,19 @@ class PackenListItem extends Component {
                 label: this.props.mainContent.main.control.label,
                 isDisabled: this.props.mainContent.main.control.isDisabled
               }]}
-              ref={radio => { this.radioRef = radio }}
+              ref={radio => { this.radioRef = radio; }}
             />
           );
         } break;
         case "checkbox": {
-
+          mainContent = (
+            <PackenCheckbox
+              layout="dropdown"
+              items={this.props.mainContent.main.control.items}
+              callback={this.props.mainContent.main.control.notifyParent}
+              ref={checkbox => { this.checkboxRef = checkbox; }}
+            />
+          );
         } break;
         default:
           break;
@@ -289,12 +313,12 @@ class PackenListItem extends Component {
     if (this.props.mainContent.isDisabled) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
         this.props.mainContent.main.props.children.forEach(child => {
-          if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckBox") {
+          if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
           }
         });
       } else {
-        if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckBox") {
+        if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
           this.props.mainContent.main.props.style.color = Colors.basic.gray.lgt;
         }
       }
@@ -303,13 +327,13 @@ class PackenListItem extends Component {
         if (Array.isArray(this.props.mainContent.main.props.children)) {
           this.props.mainContent.main.props.children.forEach(child => {
             if (child.type.displayName === "PackenText") {
-              if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckBox") {
+              if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
                 child.props.style.color = Colors.basic.white.dft;
               }
             }
           });
         } else {
-          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckBox") {
+          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
             this.props.mainContent.main.props.style.color = Colors.basic.white.dft;
           }
         }
@@ -321,7 +345,7 @@ class PackenListItem extends Component {
             }
           });
         } else {
-          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckBox") {
+          if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
             this.props.mainContent.main.props.style.color = this.state.originalStyles.color;
           }
         }

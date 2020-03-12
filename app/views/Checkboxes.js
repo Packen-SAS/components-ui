@@ -9,7 +9,7 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenText from "../components/PackenText";
 import PackenDivider from "../components/PackenDivider";
-import PackenCheckBox from "../components/PackenCheckBox";
+import PackenCheckbox from "../components/PackenCheckbox";
 
 class Checkboxes extends Component {
   constructor(props) {
@@ -18,65 +18,65 @@ class Checkboxes extends Component {
     this.state = {
       items: [
         {
-          checked: true,
-          title: "Checked",
-          disabled: false,
+          label: "Item 1",
+          isChecked: true,
+          isDisabled: false
         },
         {
-          checked: null,
-          title: "Unchecked",
-          disabled: false,
+          label: "Item 2",
+          isChecked: false,
+          isDisabled: false
         },
         {
-          checked: true,
-          title: "Checked",
-          disabled: true,
+          label: "Item 3",
+          isChecked: true,
+          isDisabled: true
         },
         {
-          checked: null,
-          title: "Unchecked",
-          disabled: true,
+          label: "Item 4",
+          isChecked: false,
+          isDisabled: true
         }
       ],
       itemsRow: [
         {
-          checked: true,
-          title: "Checked",
-          disabled: false,
+          label: "Item 1",
+          isChecked: true,
+          isDisabled: false
         },
         {
-          checked: null,
-          title: "Unchecked",
-          disabled: false,
+          label: "Item 2",
+          isChecked: false,
+          isDisabled: false
         },
         {
-          checked: true,
-          title: "Checked",
-          disabled: true,
+          label: "Item 3",
+          isChecked: true,
+          isDisabled: true
         },
         {
-          checked: null,
-          title: "Unchecked",
-          disabled: true,
+          label: "Item 4",
+          isChecked: false,
+          isDisabled: true
         }
       ]
     }
   }
 
   handleNotify = (index, value) => {
-    const newItems = [...this.state.items];
+    /* const newItems = [...this.state.items];
     newItems[index].checked = value;
     this.setState({
       items: newItems
-    });
+    }); */
   }
 
   handleNotifyRow = (index, value) => {
-    const newItems = [...this.state.itemsRow];
+    /* const newItems = [...this.state.itemsRow];
     newItems[index].checked = value;
     this.setState({
       itemsRow: newItems
-    });
+    }); */
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -92,19 +92,19 @@ class Checkboxes extends Component {
         <View style={{ marginTop: 10 }}>
           <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenText>
           <View style={SectionStyles.section__contentItem}>
-            <PackenCheckBox
+            <PackenCheckbox
               layout="column"
               items={this.state.items}
-              notifyParent={this.handleNotify}
+              callback={this.handleNotify}
             />
           </View>
           <PackenDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
           <PackenText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenText>
           <View style={SectionStyles.section__contentItem}>
-            <PackenCheckBox
+            <PackenCheckbox
               layout="row"
               items={this.state.itemsRow}
-              notifyParent={this.handleNotifyRow}
+              callback={this.handleNotifyRow}
             />
           </View>
         </View>
