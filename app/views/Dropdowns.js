@@ -714,7 +714,6 @@ class Dividers extends Component {
     return (
       <Section title="Dropdowns">
         <View style={SectionStyles.section__content}>
-          {/* 
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
@@ -823,7 +822,6 @@ class Dividers extends Component {
               }}
             />
           </View>
-           */}
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"

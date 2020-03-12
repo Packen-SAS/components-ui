@@ -44,20 +44,21 @@ class PackenList extends Component {
   
         const foundItem = newItems.find(item => item.value === itemValue);
         foundItem.isSelected = true;
- 
-        if (payload) {
-          if (payload.checkedType === "radio") {
-            
-          }
-        }
 
         this.setState({
           items: newItems,
-          selectedItems: [itemValue],
-          currentRadiosState: {
-            checkedValue: payload.checkedValue
-          }
+          selectedItems: [itemValue]
         });
+
+        if (payload) {
+          if (payload.checkedType === "radio") {
+            this.setState({
+              currentRadiosState: {
+                checkedValue: payload.checkedValue
+              }
+            });
+          }
+        }
   
         if (this.props.toggleMenu) {
           this.props.toggleMenu();
