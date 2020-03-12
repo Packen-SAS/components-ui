@@ -32,7 +32,11 @@ class PackenCheckBox extends Component {
       return CheckBoxStyles.content.disabled;
     }
     if (checked === true || checked === false) {
-      return CheckBoxStyles.content.active;
+      if (checked) {
+        return CheckBoxStyles.content.active;
+      } else {
+        return CheckBoxStyles.content.default;
+      }
     } else {
       return CheckBoxStyles.content.default;
     }
@@ -44,12 +48,20 @@ class PackenCheckBox extends Component {
         <TouchableWithoutFeedback onPress={() => this.change_state(index, check.disabled, check.checked)}>
           <View style={PackenCheckBoxStyle.contentCheckTitle}>
             <View style={this.get_styles_checkbox(check.disabled, check.checked)} >
-              {check.checked === true ? <Icon style={CheckBoxStyles.icon} name="check" /> : null}
-              {check.checked === false ? <Icon style={CheckBoxStyles.icon} name="minus" /> : null}
+              {
+                check.checked === true ? (
+                  <Icon style={CheckBoxStyles.icon} name="check" />
+                ) : null
+              }
             </View>
             {
               check.title ? (
-                <PackenText style={CheckBoxStyles.title}>{check.title}</PackenText>
+                <PackenText
+                  style={{
+                    ...CheckBoxStyles.title.base,
+                    ...CheckBoxStyles.title.state[check.disabled ? "disabled" : null]
+                  }}
+                >{check.title}</PackenText>
               ) : null
             }
           </View>
@@ -64,7 +76,7 @@ class PackenCheckBox extends Component {
     return (
       <View>
         <View style={{ flexDirection: this.props.layout, flexWrap: "wrap" }}>
-          { this.get_items() }
+          {this.get_items()}
         </View>
       </View>
     )

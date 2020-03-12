@@ -23,13 +23,8 @@ class Checkboxes extends Component {
           disabled: false,
         },
         {
-          checked: false,
-          title: "Unchecked",
-          disabled: false,
-        },
-        {
           checked: null,
-          title: "Null",
+          title: "Unchecked",
           disabled: false,
         },
         {
@@ -38,13 +33,30 @@ class Checkboxes extends Component {
           disabled: true,
         },
         {
-          checked: false,
+          checked: null,
           title: "Unchecked",
+          disabled: true,
+        }
+      ],
+      itemsRow: [
+        {
+          checked: true,
+          title: "Checked",
+          disabled: false,
+        },
+        {
+          checked: null,
+          title: "Unchecked",
+          disabled: false,
+        },
+        {
+          checked: true,
+          title: "Checked",
           disabled: true,
         },
         {
           checked: null,
-          title: "Null",
+          title: "Unchecked",
           disabled: true,
         }
       ]
@@ -52,10 +64,18 @@ class Checkboxes extends Component {
   }
 
   handleNotify = (index, value) => {
-    const newItems = this.state.items.slice();
+    const newItems = [...this.state.items];
     newItems[index].checked = value;
     this.setState({
       items: newItems
+    });
+  }
+
+  handleNotifyRow = (index, value) => {
+    const newItems = [...this.state.itemsRow];
+    newItems[index].checked = value;
+    this.setState({
+      itemsRow: newItems
     });
   }
 
@@ -83,8 +103,8 @@ class Checkboxes extends Component {
           <View style={SectionStyles.section__contentItem}>
             <PackenCheckBox
               layout="row"
-              items={this.state.items}
-              notifyParent={this.handleNotify}
+              items={this.state.itemsRow}
+              notifyParent={this.handleNotifyRow}
             />
           </View>
         </View>

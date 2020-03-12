@@ -593,7 +593,111 @@ class Dividers extends Component {
           ]
         },
         checkboxes: {
-
+          config: {
+            size: "medium",
+            selectionType: "checkbox"
+          },
+          items: [
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Bogotá, D.C.",
+                  isDisabled: false
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Medellín",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Medellín",
+                  isDisabled: false
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Bucaramanga",
+                  isDisabled: true
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Santa Marta",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Santa Marta",
+                  isDisabled: false
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Cali",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Cali",
+                  isDisabled: false
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Cartagena",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Cartagena",
+                  isDisabled: false
+                }
+              }
+            },
+            {
+              key: this.gen_key(),
+              left: false,
+              right: false,
+              value: "Leticia",
+              isSelected: false,
+              main: {
+                control: {
+                  type: "radio",
+                  label: "Leticia",
+                  isDisabled: false
+                }
+              }
+            }
+          ]
         },
         radio: {
           config: {
