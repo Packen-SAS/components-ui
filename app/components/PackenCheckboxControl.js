@@ -26,14 +26,22 @@ class PackenCheckboxControl extends Component {
   }
 
   setActiveStyles = () => {
-    if (this.props.checkedItems.includes(this.state.label)) {
+    if (this.props.layout === "dropdown") {
+      newCheckedItems = [...this.props.checkedItems];
+      const foundItem = newCheckedItems.find(item => item.label === this.state.label);
       this.setState({
-        isChecked: true
+        isChecked: foundItem.isChecked
       });
     } else {
-      this.setState({
-        isChecked: false
-      });
+      if (this.props.checkedItems.includes(this.state.label)) {
+        this.setState({
+          isChecked: true
+        });
+      } else {
+        this.setState({
+          isChecked: false
+        });
+      }
     }
   }
 
