@@ -148,6 +148,255 @@ class Dividers extends Component {
             }
           ]
         },
+        avatarsAlt: {
+          config: {
+            size: "medium",
+            selectionType: "multiple"
+          },
+          items: [
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Medellín",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Santa Marta",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Cali",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Cartagena",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Leticia",
+              isSelected: false,
+              main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>)
+            }
+          ]
+        },
+        avatarsInfo: {
+          config: {
+            size: "medium",
+            selectionType: "single"
+          },
+          items: [
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Medellín",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Santa Marta",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Cali",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Cartagena",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              left: {
+                type: "avatar",
+                config: {
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
+                }
+              },
+              right: false,
+              value: "Leticia",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            }
+          ]
+        },
         avatars: {
           config: {
             size: "medium",
@@ -480,6 +729,141 @@ class Dividers extends Component {
                 }
               },
               right: false,
+              value: "Leticia",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            }
+          ]
+        },
+        iconsAlt: {
+          config: {
+            size: "medium",
+            selectionType: "single"
+          },
+          items: [
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Medellín",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Santa Marta",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Cali",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
+              value: "Cartagena",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: this.gen_key(),
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              left: false,
               value: "Leticia",
               isSelected: false,
               main: (
@@ -881,6 +1265,42 @@ class Dividers extends Component {
                   position: "right",
                   style: { color: Colors.brand.primary.drk }
                 },
+                theme: "success",
+                nonEditable: true
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
+              list={this.state.menus.avatarsAlt}
+              input={{
+                label: "Multiple avatars selection",
+                placeholder: "Selecciona el usuario",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right",
+                  style: { color: Colors.brand.primary.drk }
+                },
+                theme: "default",
+                nonEditable: true
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
+              list={this.state.menus.avatarsInfo}
+              input={{
+                label: "Single avatar + info selection",
+                placeholder: "Selecciona el usuario",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right",
+                  style: { color: Colors.brand.primary.drk }
+                },
                 theme: "default",
                 nonEditable: true
               }}
@@ -925,6 +1345,24 @@ class Dividers extends Component {
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
+              list={this.state.menus.iconsAlt}
+              input={{
+                label: "Single icon selection",
+                placeholder: "Selecciona tu ciudad",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right",
+                  style: { color: Colors.brand.primary.drk }
+                },
+                theme: "danger",
+                nonEditable: true
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
               list={this.state.menus.tags}
               input={{
                 label: "Single tag selection",
@@ -935,7 +1373,7 @@ class Dividers extends Component {
                   position: "right",
                   style: { color: Colors.brand.primary.drk }
                 },
-                theme: "default",
+                theme: "primary",
                 nonEditable: true
               }}
             />

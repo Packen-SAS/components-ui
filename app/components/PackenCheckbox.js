@@ -36,21 +36,8 @@ class PackenCheckbox extends Component {
   }
 
   setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
-    /* console.log("-----------------");
-    console.log(valueToSearch, newState, finalSelectionArray);
-    console.log("-----------------"); */
-
     let updatedCheckedItems = [...finalSelectionArray];
     updatedCheckedItems = updatedCheckedItems.map(item => ({ label: item, isChecked: newState, isDisabled: false }))
-    /* let foundItem;
-
-    updatedCheckedItems.forEach(item => {
-      if (item.label === valueToSearch) {
-        foundItem = item;
-      }
-    });
-
-    console.log(founditem); */
 
     const foundItem = updatedCheckedItems.find(item => item.label === valueToSearch);
     if (foundItem) {
