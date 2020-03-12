@@ -159,7 +159,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -172,7 +173,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -185,7 +187,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -199,7 +202,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -212,7 +216,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -225,7 +230,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -238,7 +244,8 @@ class Dividers extends Component {
               right: {
                 type: "avatar",
                 config: {
-                  size: "small"
+                  size: "small",
+                  src: require("../../assets/images/avatar.jpg")
                 }
               },
               left: false,
@@ -606,9 +613,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Bogotá, D.C.",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Bogotá, D.C.", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -620,9 +628,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Medellín",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Medellín", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -635,9 +644,10 @@ class Dividers extends Component {
               isDisabled: true,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Bucaramanga",
-                  isDisabled: true
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Bucaramanga", isDisabled: true }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -649,9 +659,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Santa Marta",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Santa Marta", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -663,9 +674,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Cali",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Cali", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -677,9 +689,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Cartagena",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Cartagena", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             },
@@ -691,9 +704,10 @@ class Dividers extends Component {
               isSelected: false,
               main: {
                 control: {
-                  type: "radio",
-                  label: "Leticia",
-                  isDisabled: false
+                  type: "checkbox",
+                  layout: "dropdown",
+                  items: [{ isChecked: false, label: "Leticia", isDisabled: false }],
+                  notifyParent: () => { return; }
                 }
               }
             }
@@ -932,6 +946,24 @@ class Dividers extends Component {
               list={this.state.menus.radio}
               input={{
                 label: "Radio selection",
+                placeholder: "Selecciona tu ciudad",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right",
+                  style: { color: Colors.brand.primary.drk }
+                },
+                theme: "default",
+                nonEditable: true
+              }}
+            />
+          </View>
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
+              list={this.state.menus.checkboxes}
+              input={{
+                label: "Checkbox selection",
                 placeholder: "Selecciona tu ciudad",
                 onChangeText: () => { return; },
                 icon: {

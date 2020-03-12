@@ -78,6 +78,20 @@ class PackenList extends Component {
           items: newItems,
           selectedItems: newSelectedItems
         });
+
+        if (payload) {
+          if (payload.checkedType === "checkbox") {
+            let newCheckedValues = [...this.state.currentCheckboxesState.checkedValues];
+            newCheckedValues.push(payload.checkedValue);
+            newCheckedValues = [...new Set(newCheckedValues)];
+
+            this.setState({
+              currentCheckboxesState: {
+                checkedValues: newCheckedValues
+              }
+            });
+          }
+        }
       } break;
       default:
         break;
