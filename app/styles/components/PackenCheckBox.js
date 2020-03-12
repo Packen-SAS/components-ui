@@ -19,7 +19,7 @@ export default {
       backgroundColor: Colors.primary.default,
       borderRadius: 3,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "center"
     },
     disabled: {
       width: 18,
@@ -27,7 +27,7 @@ export default {
       backgroundColor: Colors.base.disabled_alt,
       borderRadius: 3,
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "center"
     },
     disabledCheckUnChecked: {
       width: 18,
@@ -55,11 +55,16 @@ export default {
     color: Colors.base.white
   },
   title: {
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: Typography.size.medium,
-    lineHeight: 18,
-    color: Colors.base.default_alt,
-    marginLeft: 8
+    base: {
+      fontSize: Typography.size.medium,
+      lineHeight: 18,
+      color: Colors.base.default_alt,
+      marginLeft: 8
+    },
+    state: {
+      disabled: {
+        color: Colors.base.disabled_alt
+      }
+    }
   }
 }
