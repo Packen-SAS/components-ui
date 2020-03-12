@@ -51,7 +51,7 @@ class PackenListItem extends Component {
   }
 
   checkIfUnselected = () => {
-    if (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value) {
+    if (this.props.mainContent.main.control && (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value)) {
       this.radioRef.setCheckedIndex(undefined);
     }
   }
