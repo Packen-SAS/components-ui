@@ -63,27 +63,14 @@ class Checkboxes extends Component {
     }
   }
 
-  handleNotify = (index, value) => {
-    /* const newItems = [...this.state.items];
-    newItems[index].checked = value;
-    this.setState({
-      items: newItems
-    }); */
+  handleNotify = newCheckedItems => {
+    /* New checked items can be used here */
+    /* console.log(newCheckedItems); */
   }
 
-  handleNotifyRow = (index, value) => {
-    /* const newItems = [...this.state.itemsRow];
-    newItems[index].checked = value;
-    this.setState({
-      itemsRow: newItems
-    }); */
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.items !== this.state.items) {
-      /* Latest items state can be used here */
-      /* console.log(this.state.items); */
-    }
+  handleNotifyRow = newCheckedItems => {
+    /* New checked items can be used here */
+    /* console.log(newCheckedItems); */
   }
 
   render() {

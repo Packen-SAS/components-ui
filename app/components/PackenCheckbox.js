@@ -31,7 +31,9 @@ class PackenCheckbox extends Component {
 
       this.setState({
         checkedItems: newCheckedItems
-      }, this.props.callback);
+      }, () => {
+        this.props.callback(newCheckedItems);
+      });
     }
   }
 
