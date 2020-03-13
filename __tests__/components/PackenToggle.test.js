@@ -82,7 +82,7 @@ describe("<PackenToggle/>", () => {
         expect(renderInstance.state.state).toBe("inactive");
         expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -208,7 +208,7 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.position_elements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets off dimensions", () => {
@@ -232,7 +232,7 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.position_elements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets state with position styles", () => {
@@ -257,7 +257,7 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.state.off).toEqual({ opacity: 0 });
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
   });
 

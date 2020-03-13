@@ -10,6 +10,8 @@ import PackenDropdown from "../components/PackenDropdown";
 import PackenTag from "../components/PackenTag";
 import PackenText from "../components/PackenText";
 
+import { genKey } from "../utils";
+
 class Dropdowns extends Component {
   constructor(props) {
     super(props);
@@ -24,7 +26,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -32,7 +34,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -40,7 +42,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -49,7 +51,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -57,7 +59,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -65,7 +67,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -73,7 +75,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -90,7 +92,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -98,7 +100,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -106,7 +108,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -115,7 +117,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -123,7 +125,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -131,7 +133,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -139,7 +141,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -155,7 +157,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -169,7 +171,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -183,7 +185,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -198,7 +200,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -212,7 +214,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -226,7 +228,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -240,7 +242,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -262,7 +264,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -281,7 +283,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -300,7 +302,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -320,7 +322,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -339,7 +341,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -358,7 +360,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -377,7 +379,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "avatar",
                 config: {
@@ -404,7 +406,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -418,7 +420,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -432,7 +434,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -447,7 +449,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -461,7 +463,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -475,7 +477,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -489,7 +491,7 @@ class Dropdowns extends Component {
               main: (<PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>)
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "avatar",
                 config: {
@@ -512,7 +514,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -525,7 +527,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -538,7 +540,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -552,7 +554,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -565,7 +567,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -578,7 +580,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -591,7 +593,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -612,7 +614,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -630,7 +632,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -648,7 +650,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -667,7 +669,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -685,7 +687,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -703,7 +705,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -721,7 +723,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: {
                 type: "icon",
                 config: {
@@ -747,7 +749,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -765,7 +767,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -783,7 +785,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -802,7 +804,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -820,7 +822,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -838,7 +840,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -856,7 +858,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               right: {
                 type: "icon",
                 config: {
@@ -883,7 +885,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -897,7 +899,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -911,7 +913,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -926,7 +928,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -940,7 +942,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -954,7 +956,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -968,7 +970,7 @@ class Dropdowns extends Component {
               )
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -990,7 +992,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -1005,7 +1007,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -1020,7 +1022,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -1036,7 +1038,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -1051,7 +1053,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -1066,7 +1068,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -1081,7 +1083,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -1104,7 +1106,7 @@ class Dropdowns extends Component {
           },
           items: [
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bogotá, D.C.",
@@ -1118,7 +1120,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Medellín",
@@ -1132,7 +1134,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Bucaramanga",
@@ -1147,7 +1149,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Santa Marta",
@@ -1161,7 +1163,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cali",
@@ -1175,7 +1177,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Cartagena",
@@ -1189,7 +1191,7 @@ class Dropdowns extends Component {
               }
             },
             {
-              key: this.gen_key(),
+              key: genKey(),
               left: false,
               right: false,
               value: "Leticia",
@@ -1206,10 +1208,6 @@ class Dropdowns extends Component {
         }
       }
     }
-  }
-
-  gen_key = () => {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
   render() {
