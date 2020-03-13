@@ -92,7 +92,10 @@ class PackenDropdown extends Component {
 
   render() {
     return (
-      <View style={DropdownStyles.wrapper}>
+      <View
+        style={DropdownStyles.wrapper}
+        pointerEvents={this.props.isDisabled ? "none" : "auto"}
+      >
         <TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggle_menu}>
           <View pointerEvents="box-only">
             <PackenInput
@@ -106,6 +109,7 @@ class PackenDropdown extends Component {
               help={this.props.input.help}
               theme={this.props.input.theme}
               nonEditable={this.props.input.nonEditable}
+              disabled={this.props.isDisabled}
             />
           </View>
         </TouchableWithoutFeedback>

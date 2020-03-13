@@ -115,7 +115,6 @@ class PackenListItem extends Component {
           newSelectedState: newSelectedState
         });
         if (this.checkboxRef) {
-          /* this.checkboxRef.setCheckedState(this.props.mainContent.value, newSelectedState, this.props.currentCheckboxesState.finalSelectionArray); */
           this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState, {
             checkedType: "checkbox",
             checkedValue: this.props.mainContent.value
