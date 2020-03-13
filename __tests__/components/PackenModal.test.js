@@ -224,7 +224,7 @@ describe("<PackenModal/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.set_gallery_arrows_position).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 4000);
     });
 
     it("sets gallery arrows dimensions", () => {
@@ -237,7 +237,7 @@ describe("<PackenModal/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.set_gallery_arrows_position).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("returns gallery box dimensions", () => {

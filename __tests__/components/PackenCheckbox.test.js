@@ -3,7 +3,6 @@ import React from "react";
 import renderer from "react-test-renderer";
 
 import PackenCheckbox from "../../app/components/PackenCheckbox";
-import CheckBoxStyles from "../../app/styles/components/PackenCheckbox";
 
 describe("<PackenCheckbox/>", () => {
   const items = [
@@ -31,7 +30,7 @@ describe("<PackenCheckbox/>", () => {
 
   const mock_callback = jest.fn();
 
-  let renderColumn, renderRow, renderColumnInstance, renderRowInstance;
+  let renderColumn, renderRow, renderColumnInstance;
 
   beforeAll(() => {
     renderColumn = renderer.create(
@@ -50,12 +49,18 @@ describe("<PackenCheckbox/>", () => {
     );
 
     renderColumnInstance = renderColumn.getInstance();
-    renderRowInstance = renderRow.getInstance();
 
     renderColumnInstance.setState = state => {
-      renderColumnInstance.state = state;
+      renderColumnInstance.state = {
+        ...renderColumnInstance.state,
+        ...state
+      };
     }
-    renderColumnInstance.setState({ items: items });
+    renderColumnInstance.setState({
+      items: items,
+      checkedItems: [],
+      selectedIndex: null
+    });
   });
 
   describe("rendering", () => {
@@ -66,56 +71,69 @@ describe("<PackenCheckbox/>", () => {
     it("renders row layout correctly", () => {
       expect(renderRow).toBeDefined();
     });
-
-    it("returns items", () => {
-      const returnedItems = renderColumnInstance.get_items();
-      const mappedItems = items.map(renderColumnInstance.map_items);
-      expect(returnedItems[0].key).toEqual(mappedItems[0].key);
-    });
-
-    it("maps an item", () => {
-      const renderedItem = renderColumnInstance.map_items({ checked: true, disabled: false, title: "Test" }, 0);
-      expect(renderedItem).toBeDefined();
-    });
   });
 
   describe("state changing", () => {
-    it("changes inner state if not disabled", () => {
-      renderColumnInstance.change_state(0, false, false);
-      expect(renderColumnInstance.state.items[0].checked).toBe(true);
-      expect(mock_callback).toHaveBeenCalled();
+    it("updates checked items if selectedIndex is defined", () => {
+      renderColumnInstance.setState({ selectedIndex: 0 });
+      renderColumnInstance.props.callback = jest.fn();
+      renderColumnInstance.updateCheckedItems();
+
+      /* Review to avoid using setTimeout */
+      const timeout = setTimeout(() => {
+        expect(renderColumnInstance.state.checkedItems).toStrictEqual([{
+          label: "This is checked",
+          isChecked: false,
+          isDisabled: false
+        },
+        {
+          label: "This is both checked and disabled",
+          isChecked: false,
+          isDisabled: false
+        }]);
+
+        const innerTimeout = setTimeout(() => {
+          expect(renderColumnInstance.props.callback).toHaveBeenCalledWith([items[2].label]);
+          clearTimeout(innerTimeout);
+        }, 2000);
+
+        clearTimeout(timeout);
+      }, 2000);
+    });
+
+    it("sets checked state programmatically if searched value matches", () => {
+      renderColumnInstance.setCheckedState("This is checked", false, ["This is checked", "This is both checked and disabled"]);
+      
+      /* Review to avoid using setTimeout */
+      const timeout = setTimeout(() => {
+        expect(renderColumnInstance.state.checkedItems).toStrictEqual([
+          {
+            label: "This is checked",
+            isChecked: false,
+            isDisabled: false
+          },
+          {
+            label: "This is both checked and disabled",
+            isChecked: false,
+            isDisabled: false
+          }
+        ]);
+        clearTimeout(timeout);
+      }, 2000);
     });
   });
 
-  describe("styling", () => {
-    it("returns correct styles if disabled and checked", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(true, true);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.disabled);
-    });
+  describe("triggering actions", () => {
+    it("updates selected item index on press", () => {
+      renderColumnInstance.updateCheckedItems = jest.fn();
+      renderColumnInstance.pressHandler(0);
+      expect(renderColumnInstance.state.selectedIndex).toBe(0);
 
-    it("returns correct styles if disabled and not checked", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(true, false);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.disabledUnChecked);
-    });
-
-    it("returns correct styles if disabled without a defined checked state", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(true, undefined);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.disabledCheckUnChecked);
-    });
-
-    it("returns correct styles if there's no defined disabled state and it's checked", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(undefined, true);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.active);
-    });
-
-    it("returns correct styles if there's no defined disabled state and it's not checked", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(undefined, false);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.active);
-    });
-
-    it("returns correct styles if there's no defined disabled and checked states", () => {
-      const returnedStyles = renderColumnInstance.get_styles_checkbox(undefined, undefined);
-      expect(returnedStyles).toBe(CheckBoxStyles.content.default);
+      /* Review to avoid using setTimeOut */
+      const timeout = setTimeout(() => {
+        expect(renderColumnInstance.updateCheckedItems).toHaveBeenCalled();
+        clearTimeout(timeout);
+      }, 4000);
     });
   });
 });

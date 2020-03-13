@@ -75,6 +75,16 @@ describe("<PackenRadio/>", () => {
       renderColumnInstance.update_current_selection("Test");
       expect(renderColumnInstance.state.currentSelection).toBe("Test");
     });
+
+    it("sets new checked index programmatically", () => {
+      renderColumnInstance.setCheckedIndex(0);
+
+      /* Review to avoid using setTimeout */
+      const timeout = setTimeout(() => {
+        expect(renderColumnInstance.state.checkedIndex).toBe(0);
+        clearTimeout(timeout);
+      }, 2000);
+    });
   });
 
   describe("triggering actions", () => {
@@ -113,6 +123,14 @@ describe("<PackenRadio/>", () => {
       renderColumnInstance.setState({ currentSelection: "Test 2" });
       const response = renderColumnInstance.componentDidUpdate(null, prevState, null);
       expect(response).toBe("Test 2");
+    });
+
+    it("executes callback if passed via props", () => {
+      renderColumnInstance.props.callback = jest.fn();
+      const prevState = { currentSelection: 1 };
+      renderColumnInstance.setState({ currentSelection: 0 });
+      renderColumnInstance.componentDidUpdate(null, prevState, null);
+      expect(renderColumnInstance.props.callback).toHaveBeenCalledWith(renderColumnInstance.state.currentSelection);
     });
   });
 });

@@ -97,9 +97,9 @@ describe("<PackenTabItem/>", () => {
             ...TabsStyles.item.active.icon
           }
         };
-        expect(renderInstance.state.itemStyles).toEqual(matchedStyles);
+        expect(renderInstance.state.itemStyles).toBe(matchedStyles);
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("sets active styles if indexes match", () => {
@@ -111,7 +111,7 @@ describe("<PackenTabItem/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.set_active_styles).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 4000);
     });
 
     it("sets default styles if prop indexes don't match", () => {
@@ -134,7 +134,7 @@ describe("<PackenTabItem/>", () => {
           }
         });
         clearTimeout(timeout);
-      }, 1000);
+      }, 4000);
     });
   });
 });
