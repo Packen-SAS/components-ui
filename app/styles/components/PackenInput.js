@@ -125,6 +125,20 @@ export default {
       disabled: {
         color: Colors.basic.gray.dft
       }
+    },
+    theme: {
+      default: {
+        color: Colors.basic.independence.dft
+      },
+      danger: {
+        color: Colors.danger.default
+      },
+      success: {
+        color: Colors.success.default
+      },
+      primary: {
+        color: Colors.primary.default
+      }
     }
   },
   placeholder: {

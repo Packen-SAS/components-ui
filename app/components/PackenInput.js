@@ -167,7 +167,11 @@ class PackenInput extends Component {
                   name={this.props.icon.name}
                   size={InputStyles.icon.size[this.props.size].size}
                   color={InputStyles.icon.base.color}
-                  style={{ ...InputStyles.icon.state[this.state.state], ...this.props.icon.style }}
+                  style={{
+                    ...InputStyles.icon.theme[this.props.theme],
+                    ...InputStyles.icon.state[this.state.state],
+                    ...this.props.icon.style
+                  }}
                 />
               </View>
             ) : null

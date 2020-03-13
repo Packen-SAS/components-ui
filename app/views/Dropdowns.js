@@ -1263,8 +1263,7 @@ class Dropdowns extends Component {
                 onChangeText: () => { return; },
                 icon: {
                   name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
+                  position: "right"
                 },
                 theme: "success",
                 nonEditable: true,
@@ -1326,8 +1325,7 @@ class Dropdowns extends Component {
                 onChangeText: () => { return; },
                 icon: {
                   name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
+                  position: "right"
                 },
                 theme: "default",
                 nonEditable: true
@@ -1362,8 +1360,7 @@ class Dropdowns extends Component {
                 onChangeText: () => { return; },
                 icon: {
                   name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
+                  position: "right"
                 },
                 theme: "danger",
                 nonEditable: true,
@@ -1385,8 +1382,7 @@ class Dropdowns extends Component {
                 onChangeText: () => { return; },
                 icon: {
                   name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
+                  position: "right"
                 },
                 theme: "primary",
                 nonEditable: true

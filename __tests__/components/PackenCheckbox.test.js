@@ -2,59 +2,50 @@ import "react-native";
 import React from "react";
 import renderer from "react-test-renderer";
 
-import PackenCheckBox from "../../app/components/PackenCheckBox";
-import CheckBoxStyles from "../../app/styles/components/PackenCheckBox";
+import PackenCheckbox from "../../app/components/PackenCheckbox";
+import CheckBoxStyles from "../../app/styles/components/PackenCheckbox";
 
-describe("<PackenCheckBox/>", () => {
+describe("<PackenCheckbox/>", () => {
   const items = [
     {
-      checked: true,
-      title: "Checked",
-      disabled: false,
+      label: "This is checked",
+      isChecked: true,
+      isDisabled: false
     },
     {
-      checked: false,
-      title: "Unchecked",
-      disabled: false,
+      label: "This is unchecked",
+      isChecked: false,
+      isDisabled: false
     },
     {
-      checked: null,
-      title: "Null",
-      disabled: false,
+      label: "This is both checked and disabled",
+      isChecked: true,
+      isDisabled: true
     },
     {
-      checked: true,
-      title: "Checked",
-      disabled: true,
-    },
-    {
-      checked: false,
-      title: "Unchecked",
-      disabled: true,
-    },
-    {
-      checked: null,
-      title: "Null",
-      disabled: true,
+      label: "This is both unchecked and disabled",
+      isChecked: false,
+      isDisabled: true
     }
   ];
+
   const mock_callback = jest.fn();
 
   let renderColumn, renderRow, renderColumnInstance, renderRowInstance;
 
   beforeAll(() => {
     renderColumn = renderer.create(
-      <PackenCheckBox
+      <PackenCheckbox
         layout="column"
         items={items}
-        notifyParent={mock_callback}
+        callback={mock_callback}
       />
     );
     renderRow = renderer.create(
-      <PackenCheckBox
+      <PackenCheckbox
         layout="row"
         items={items}
-        notifyParent={mock_callback}
+        callback={mock_callback}
       />
     );
 
@@ -83,7 +74,7 @@ describe("<PackenCheckBox/>", () => {
     });
 
     it("maps an item", () => {
-      const renderedItem = renderColumnInstance.map_items({ checked: true, disabled: false, title: "Test"}, 0);
+      const renderedItem = renderColumnInstance.map_items({ checked: true, disabled: false, title: "Test" }, 0);
       expect(renderedItem).toBeDefined();
     });
   });

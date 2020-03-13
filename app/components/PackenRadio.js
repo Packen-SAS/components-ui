@@ -38,7 +38,9 @@ class PackenRadio extends Component {
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
-      this.props.callback(this.state.currentSelection);
+      if (this.props.callback) {
+        this.props.callback(this.state.currentSelection);
+      }
       return this.state.currentSelection;
     }
   }
