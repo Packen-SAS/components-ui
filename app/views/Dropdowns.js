@@ -10,7 +10,7 @@ import PackenDropdown from "../components/PackenDropdown";
 import PackenTag from "../components/PackenTag";
 import PackenText from "../components/PackenText";
 
-class Dividers extends Component {
+class Dropdowns extends Component {
   constructor(props) {
     super(props);
 
@@ -1230,7 +1230,8 @@ class Dividers extends Component {
                   style: { color: Colors.brand.primary.drk }
                 },
                 theme: "default",
-                nonEditable: true
+                nonEditable: true,
+                help: "Help text"
               }}
             />
           </View>
@@ -1266,7 +1267,11 @@ class Dividers extends Component {
                   style: { color: Colors.brand.primary.drk }
                 },
                 theme: "success",
-                nonEditable: true
+                nonEditable: true,
+                message: {
+                  text: "Caption text, description, error notification",
+                  icon: "info"
+                }
               }}
             />
           </View>
@@ -1302,16 +1307,21 @@ class Dividers extends Component {
                   style: { color: Colors.brand.primary.drk }
                 },
                 theme: "default",
-                nonEditable: true
+                nonEditable: true,
+                message: {
+                  text: "Caption text, description, error notification",
+                  icon: "info"
+                }
               }}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
+              isDisabled
               size="medium"
               list={this.state.menus.avatars}
               input={{
-                label: "Single avatar selection",
+                label: "Disabled selection",
                 placeholder: "Selecciona el usuario",
                 onChangeText: () => { return; },
                 icon: {
@@ -1356,7 +1366,12 @@ class Dividers extends Component {
                   style: { color: Colors.brand.primary.drk }
                 },
                 theme: "danger",
-                nonEditable: true
+                nonEditable: true,
+                help: "Error help text",
+                message: {
+                  text: "Caption text, description, error notification",
+                  icon: "info"
+                }
               }}
             />
           </View>
@@ -1420,4 +1435,4 @@ class Dividers extends Component {
   }
 }
 
-export default Dividers;
+export default Dropdowns;

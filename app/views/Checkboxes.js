@@ -18,44 +18,44 @@ class Checkboxes extends Component {
     this.state = {
       items: [
         {
-          label: "Item 1",
+          label: "This is checked",
           isChecked: true,
           isDisabled: false
         },
         {
-          label: "Item 2",
+          label: "This is unchecked",
           isChecked: false,
           isDisabled: false
         },
         {
-          label: "Item 3",
+          label: "This is both checked and disabled",
           isChecked: true,
           isDisabled: true
         },
         {
-          label: "Item 4",
+          label: "This is both unchecked and disabled",
           isChecked: false,
           isDisabled: true
         }
       ],
       itemsRow: [
         {
-          label: "Item 1",
+          label: "This is checked",
           isChecked: true,
           isDisabled: false
         },
         {
-          label: "Item 2",
+          label: "This is unchecked",
           isChecked: false,
           isDisabled: false
         },
         {
-          label: "Item 3",
+          label: "This is both checked and disabled",
           isChecked: true,
           isDisabled: true
         },
         {
-          label: "Item 4",
+          label: "This is both unchecked and disabled",
           isChecked: false,
           isDisabled: true
         }
