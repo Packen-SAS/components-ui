@@ -877,7 +877,7 @@ class Dropdowns extends Component {
             }
           ]
         },
-        tags: {
+        iconsLeft: {
           config: {
             size: "medium",
             checkedIcon: "check",
@@ -886,35 +886,48 @@ class Dropdowns extends Component {
           items: [
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Bogotá, D.C.",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Medellín",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Bucaramanga",
               isSelected: false,
@@ -922,64 +935,79 @@ class Dropdowns extends Component {
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Santa Marta",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Cali",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Cartagena",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             },
             {
               key: genKey(),
-              left: false,
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
               right: false,
               value: "Leticia",
               isSelected: false,
               main: (
                 <>
                   <PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>
-                  <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-                  <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
                 </>
               )
             }
@@ -1373,9 +1401,9 @@ class Dropdowns extends Component {
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
-              list={this.state.menus.tags}
+              list={this.state.menus.iconsLeft}
               input={{
-                label: "Single tag selection",
+                label: "Single icon + check selection",
                 placeholder: "Selecciona tu ciudad",
                 onChangeText: () => { return; },
                 icon: {
