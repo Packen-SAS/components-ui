@@ -12,15 +12,15 @@ class PackenTabItem extends Component {
     super(props);
 
     this.state = {
-      itemStyles: this.get_item_styles()
+      itemStyles: this.getItemStyles()
     }
   }
 
   componentDidMount() {
-    this.check_if_active();
+    this.checkIfActive();
   }
 
-  get_item_styles = () => {
+  getItemStyles = () => {
     const styles = {
       shape: {
         ...TabsStyles.item.base.shape,
@@ -38,13 +38,13 @@ class PackenTabItem extends Component {
     return styles;
   }
 
-  set_active_tab = () => {
-    this.set_active_styles();
+  setActiveTab = () => {
+    this.setActiveStyles();
     this.props.updateActiveTabIndex(this.props.selfIndex);
     this.props.callback();
   }
 
-  set_active_styles = () => {
+  setActiveStyles = () => {
     let activeStyles = { ...this.state.itemStyles }
     activeStyles.shape = {
       ...activeStyles.shape,
@@ -64,23 +64,23 @@ class PackenTabItem extends Component {
     });
   }
 
-  check_if_active = () => {
+  checkIfActive = () => {
     if (this.props.activeTabIndex === this.props.selfIndex) {
-      this.set_active_styles();
+      this.setActiveStyles();
     } else {
       this.setState({
-        itemStyles: this.get_item_styles()
+        itemStyles: this.getItemStyles()
       });
     }
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.activeTabIndex !== this.props.activeTabIndex) {
-      this.check_if_active();
+      this.checkIfActive();
     }
   }
 
-  pressIn_handler = () => {
+  pressInHandler = () => {
     let newStyles = { ...this.state.itemStyles };
 
     newStyles.shape = {
@@ -101,13 +101,13 @@ class PackenTabItem extends Component {
     });
   }
 
-  pressOut_handler = () => {
-    this.set_active_tab();
+  pressOutHandler = () => {
+    this.setActiveTab();
   }
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => { this.set_active_tab(); }} onPressIn={this.pressIn_handler} onPressOut={this.pressOut_handler}>
+      <TouchableWithoutFeedback onPress={() => { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
         <View style={this.state.itemStyles.shape}>
           {
             this.props.icon ? (

@@ -28,7 +28,7 @@ describe("<PackenCheckbox/>", () => {
     }
   ];
 
-  const mock_callback = jest.fn();
+  const mockCallback = jest.fn();
 
   let renderColumn, renderRow, renderColumnInstance;
 
@@ -37,14 +37,14 @@ describe("<PackenCheckbox/>", () => {
       <PackenCheckbox
         layout="column"
         items={items}
-        callback={mock_callback}
+        callback={mockCallback}
       />
     );
     renderRow = renderer.create(
       <PackenCheckbox
         layout="row"
         items={items}
-        callback={mock_callback}
+        callback={mockCallback}
       />
     );
 

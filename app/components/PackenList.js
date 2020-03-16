@@ -21,7 +21,7 @@ class PackenList extends Component {
     }
   }
 
-  get_item_height = itemHeight => {
+  getItemHeight = itemHeight => {
     let finalNumShownRows;
     if (this.state.items.length < this.props.numShownRows) {
       finalNumShownRows = this.state.items.length;
@@ -34,7 +34,7 @@ class PackenList extends Component {
     });
   }
 
-  update_selected_items = (itemValue, isSelected, payload) => {
+  updateSelectedItems = (itemValue, isSelected, payload) => {
     switch (this.props.config.selectionType) {
       case "single":
       case "radio": {
@@ -100,13 +100,13 @@ class PackenList extends Component {
     }
   }
 
-  render_item = ({ item }) => {
+  renderItem = ({ item }) => {
     return (
       <PackenListItem
         config={this.props.config}
         mainContent={item}
-        getItemHeight={this.get_item_height}
-        updateSelectedItems={this.update_selected_items}
+        getItemHeight={this.getItemHeight}
+        updateSelectedItems={this.updateSelectedItems}
         currentRadiosState={this.state.currentRadiosState}
         currentCheckboxesState={this.state.currentCheckboxesState}
       />
@@ -134,7 +134,7 @@ class PackenList extends Component {
         <FlatList
           nestedScrollEnabled
           data={this.state.items}
-          renderItem={this.render_item}
+          renderItem={this.renderItem}
           style={{ height: this.state.height }}
         />
       </View>

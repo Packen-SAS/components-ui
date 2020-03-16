@@ -62,21 +62,21 @@ describe("<PackenButton/>", () => {
 
   describe("styling", () => {
     it("returns current styles", () => {
-      const returnedStyles = renderRegularInstance.get_styles();
+      const returnedStyles = renderRegularInstance.getStyles();
       expect(returnedStyles).toBeDefined();
     });
   });
 
   describe("getting dimensions", () => {
     it("returns shape dimensions", () => {
-      renderRegularInstance.get_shape_dimensions({height: 100, width: 100});
+      renderRegularInstance.getShapeDimensions({height: 100, width: 100});
       expect(renderRegularInstance.state.shapeHeight).toBe(100);
       expect(renderRegularInstance.state.shapeWidth).toBe(100);
     });
 
     it("returns icon dimensions", () => {
       renderRegularInstance.setState({ icon: { name: "arrow-right", position: "right" } });
-      renderRegularInstance.get_icon_dimensions({height: 10, width: 10});
+      renderRegularInstance.getIconDimensions({height: 10, width: 10});
       expect(renderRegularInstance.state.iconHeight).toBe(10);
       expect(renderRegularInstance.state.iconWidth).toBe(10);
     });
@@ -84,19 +84,19 @@ describe("<PackenButton/>", () => {
 
   describe("triggering actions", () => {
     it("executes callback", () => {
-      renderRegularInstance.execute_callback();
+      renderRegularInstance.executeCallback();
       expect(mock_callback).toHaveBeenCalled();
     });
 
     it("changes styles while onPressIn", () => {
       const prevStyles = renderRegularInstance.state.styles;
-      renderRegularInstance.pressIn_handler();
+      renderRegularInstance.pressInHandler();
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
     });
 
     it("changes styles while onPressOut", () => {
       const prevStyles = renderRegularInstance.state.styles;
-      renderRegularInstance.pressOut_handler();
+      renderRegularInstance.pressOutHandler();
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
     });
 

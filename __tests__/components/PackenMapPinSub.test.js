@@ -30,13 +30,13 @@ describe("<PackenMapPinSub/>", () => {
 
   describe("styling", () => {
     it("returns the default color if no 'theme' prop is provided", () => {
-      const returnedColor = renderInstance.get_icon_color();
+      const returnedColor = renderInstance.getIconColor();
       expect(returnedColor).toBe(MapPinStyles.icon.type.icon.color);
     });
 
     it("returns the correct color if a 'theme' prop is provided", () => {
       renderInstance.props = { theme: "primary" };
-      const returnedColor = renderInstance.get_icon_color();
+      const returnedColor = renderInstance.getIconColor();
       expect(returnedColor).toBe(MapPinStyles.icon.theme.primary.color);
     });
   });

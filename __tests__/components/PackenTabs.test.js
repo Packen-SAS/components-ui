@@ -8,20 +8,20 @@ describe("<PackenTabs/>", () => {
   let render, renderInstance;
 
   beforeAll(() => {
-    const mock_callback = jest.fn();
+    const mockCallback = jest.fn();
     render = renderer.create(
       <PackenTabs items={[
         {
           label: "Button",
-          callback: mock_callback
+          callback: mockCallback
         },
         {
           label: "Button",
-          callback: mock_callback
+          callback: mockCallback
         },
         {
           label: "Button",
-          callback: mock_callback
+          callback: mockCallback
         }
       ]} activeIndex={0} />
     );
@@ -44,7 +44,7 @@ describe("<PackenTabs/>", () => {
 
   describe("state changing", () => {
     it("updates the active tab index", () => {
-      renderInstance.update_active_index(1);
+      renderInstance.updateActiveIndex(1);
       expect(renderInstance.state.activeTabIndex).toBe(1);
     });
   });

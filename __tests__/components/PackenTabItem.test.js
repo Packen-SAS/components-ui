@@ -7,8 +7,8 @@ import PackenTabItem from "../../app/components/PackenTabItem";
 
 describe("<PackenTabItem/>", () => {
   let render, renderInstance;
-  const mock_updateActiveTabIndex = jest.fn();
-  const mock_callback = jest.fn();
+  const mockUpdateActiveTabIndex = jest.fn();
+  const mockCallback = jest.fn();
 
   beforeAll(() => {
     render = renderer.create(
@@ -17,8 +17,8 @@ describe("<PackenTabItem/>", () => {
         activeTabIndex={0}
         selfIndex={0}
         label="Test"
-        updateActiveTabIndex={mock_updateActiveTabIndex}
-        callback={mock_callback} />
+        updateActiveTabIndex={mockUpdateActiveTabIndex}
+        callback={mockCallback} />
     );
 
     renderInstance = render.getInstance();
@@ -39,15 +39,15 @@ describe("<PackenTabItem/>", () => {
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.check_if_active = jest.fn();
+      renderInstance.checkIfActive = jest.fn();
       renderInstance.componentDidMount();
-      expect(renderInstance.check_if_active).toHaveBeenCalled();
+      expect(renderInstance.checkIfActive).toHaveBeenCalled();
     });
   });
 
   describe("styling", () => {
     it("returns item styles", () => {
-      const returnedStyles = renderInstance.get_item_styles();
+      const returnedStyles = renderInstance.getItemStyles();
       expect(returnedStyles).toEqual({
         shape: {
           ...TabsStyles.item.base.shape,
@@ -67,16 +67,16 @@ describe("<PackenTabItem/>", () => {
 
   describe("state changing", () => {
     it("sets active tab", () => {
-      renderInstance.set_active_styles = jest.fn();
+      renderInstance.setActiveStyles = jest.fn();
       renderInstance.props = { updateActiveTabIndex: jest.fn(), callback: jest.fn(), selfIndex: 0 };
-      renderInstance.set_active_tab();
-      expect(renderInstance.set_active_styles).toHaveBeenCalled();
+      renderInstance.setActiveTab();
+      expect(renderInstance.setActiveStyles).toHaveBeenCalled();
       expect(renderInstance.props.updateActiveTabIndex).toHaveBeenCalledWith(0);
       expect(renderInstance.props.callback).toHaveBeenCalled();
     });
 
     it("sets active styles", () => {
-      renderInstance.set_active_styles();
+      renderInstance.setActiveStyles();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -104,19 +104,19 @@ describe("<PackenTabItem/>", () => {
 
     it("sets active styles if indexes match", () => {
       renderInstance.props = { activeTabIndex: 0, selfIndex: 0 };
-      renderInstance.set_active_styles = jest.fn();
-      renderInstance.check_if_active();
+      renderInstance.setActiveStyles = jest.fn();
+      renderInstance.checkIfActive();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
-        expect(renderInstance.set_active_styles).toHaveBeenCalled();
+        expect(renderInstance.setActiveStyles).toHaveBeenCalled();
         clearTimeout(timeout);
       }, 4000);
     });
 
     it("sets default styles if prop indexes don't match", () => {
       renderInstance.props = { activeTabIndex: 0, selfIndex: 1 };
-      renderInstance.check_if_active();
+      renderInstance.checkIfActive();
       
       const timeout = setTimeout(() => {
         expect(renderInstance.state.itemStyles).toEqual({

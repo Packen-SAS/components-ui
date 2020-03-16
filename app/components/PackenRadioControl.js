@@ -15,11 +15,11 @@ class PackenRadioControl extends Component {
   }
 
   componentDidMount() {
-    this.check_if_checked();
-    this.check_if_disabled();
+    this.checkIfChecked();
+    this.checkIfDisabled();
   }
 
-  onPress_handler = () => {
+  onPressHandler = () => {
     this.setState({
       state: "checked"
     });
@@ -27,7 +27,7 @@ class PackenRadioControl extends Component {
     this.props.updateCheckedIndex(this.props.selfIndex);
   }
 
-  check_if_disabled = () => {
+  checkIfDisabled = () => {
     if (this.props.isDisabled) {
       if (this.props.checkedIndex !== this.props.selfIndex) {
         this.setState({
@@ -43,7 +43,7 @@ class PackenRadioControl extends Component {
     }
   }
 
-  check_if_checked = () => {
+  checkIfChecked = () => {
     if (this.props.checkedIndex !== this.props.selfIndex) {
       this.setState({
         state: "default"
@@ -57,15 +57,15 @@ class PackenRadioControl extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.checkedIndex !== this.props.checkedIndex) {
-      this.check_if_checked();
-      this.check_if_disabled();
+      this.checkIfChecked();
+      this.checkIfDisabled();
     }
   }
 
   render() {
     return (
       <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
-        <TouchableWithoutFeedback onPress={this.onPress_handler}>
+        <TouchableWithoutFeedback onPress={this.onPressHandler}>
           <View style={RadioStyles.shape.base}>
             <View style={{ ...RadioStyles.control.base, ...RadioStyles.control[this.state.state] }}></View>
             {
