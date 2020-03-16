@@ -331,10 +331,8 @@ class PackenListItem extends Component {
       if (props.isSelected) {
         if (Array.isArray(props.main.props.children)) {
           props.main.props.children.forEach(child => {
-            if (child.type.displayName === "PackenText") {
-              if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
-                child.props.style.color = Colors.basic.white.dft;
-              }
+            if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
+              child.props.style.color = Colors.basic.white.dft;
             }
           });
         } else {
@@ -345,7 +343,7 @@ class PackenListItem extends Component {
       } else {
         if (Array.isArray(props.main.props.children)) {
           props.main.props.children.forEach((child, i) => {
-            if (child.type.displayName === "PackenText") {
+            if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
             }
           });
