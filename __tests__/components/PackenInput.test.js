@@ -6,14 +6,14 @@ import PackenInput from "../../app/components/PackenInput";
 
 describe("<PackenInput/>", () => {
   let render, renderInstance;
-  const mock_callback = jest.fn();
+  const mockCallback = jest.fn();
 
   beforeAll(() => {
     render = renderer.create(
       <PackenInput
         size="tiny"
         placeholder="Placeholder"
-        onChangeText={mock_callback}
+        onChangeText={mockCallback}
         icon={{
           name: "lock",
           position: "left"
@@ -60,44 +60,44 @@ describe("<PackenInput/>", () => {
 
   describe("styling", () => {
     it("returns icon position styles", () => {
-      const returnedStyles = renderInstance.set_icon_position_styles();
+      const returnedStyles = renderInstance.setIconPositionStyles();
       expect(returnedStyles).toBeDefined();
     });
 
     it("returns current padding styles if has an icon", () => {
       renderInstance.props = { icon: { position: "left" }, size: "tiny" };
-      const returnedStyles = renderInstance.get_padding_styles();
+      const returnedStyles = renderInstance.getPaddingStyles();
       expect(returnedStyles).toBeDefined();
     });
 
     it("returns empty padding styles if there's no icon", () => {
       renderInstance.props = {};
-      const returnedStyles = renderInstance.get_padding_styles();
+      const returnedStyles = renderInstance.getPaddingStyles();
       expect(returnedStyles).toEqual({});
     });
 
     it("returns multiline styles if it's a textarea", () => {
       renderInstance.props = { multiline: true, size: "tiny" };
-      const returnedStyles = renderInstance.get_multiline_styles();
+      const returnedStyles = renderInstance.getMultilineStyles();
       expect(returnedStyles).toBeDefined();
     });
 
     it("returns empty multiline styles if it's not a textarea", () => {
       renderInstance.props = {};
-      const returnedStyles = renderInstance.get_multiline_styles();
+      const returnedStyles = renderInstance.getMultilineStyles();
       expect(returnedStyles).toEqual({});
     });
   });
 
   describe("getting dimensions", () => {
     it("sets box dimensions", () => {
-      renderInstance.get_box_dimensions({width: 100, height: 100});
+      renderInstance.getBoxDimensions({width: 100, height: 100});
       expect(renderInstance.state.dimensions.box.width).toBe(100);
       expect(renderInstance.state.dimensions.box.height).toBe(100);
     });
 
     it("sets icon wrapper dimensions", () => {
-      renderInstance.get_icon_wrapper_dimensions({width: 10, height: 10});
+      renderInstance.getIconWrapperDimensions({width: 10, height: 10});
       expect(renderInstance.state.dimensions.iconWrapper.width).toBe(10);
       expect(renderInstance.state.dimensions.iconWrapper.height).toBe(10);
     });
@@ -105,30 +105,30 @@ describe("<PackenInput/>", () => {
 
   describe("triggering actions", () => {
     it("changes styles while onPressIn", () => {
-      renderInstance.handle_press_in();
+      renderInstance.handlePressIn();
       expect(renderInstance.state.state).toBe("hover");
     });
 
     it("changes styles while onPressOut", () => {
-      renderInstance.handle_press_out();
+      renderInstance.handlePressOut();
       expect(renderInstance.state.state).toBe("default");
     });
 
     it("changes styles while onFocus", () => {
-      renderInstance.handle_focus();
+      renderInstance.handleFocus();
       expect(renderInstance.state.state).toBe("focus");
     });
 
     it("changes styles while onBlur", () => {
-      renderInstance.handle_blur();
+      renderInstance.handleBlur();
       expect(renderInstance.state.state).toBe("default");
     });
 
     it("handles onChangeText", () => {
-      renderInstance.props = { onChangeText: mock_callback };
-      renderInstance.handle_change_text("Test");
+      renderInstance.props = { onChangeText: mockCallback };
+      renderInstance.handleChangeText("Test");
       expect(renderInstance.state.value).toBe("Test");
-      expect(mock_callback).toHaveBeenCalled();
+      expect(mockCallback).toHaveBeenCalled();
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -139,7 +139,8 @@ describe("<PackenInput/>", () => {
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.value).toBe("Test-2");
-      }, 1000);
+        clearTimeout(timeout);
+      }, 2000);
     });
   });
 });

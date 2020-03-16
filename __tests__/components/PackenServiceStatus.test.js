@@ -6,35 +6,35 @@ import PackenServiceStatus from "../../app/components/PackenServiceStatus";
 
 describe("<PackenServiceStatus/>", () => {
   let render, renderInstance;
-  const mock_callback = jest.fn();
-  const mock_steps = [
+  const mockCallback = jest.fn();
+  const mockSteps = [
     {
       title: "Solicitando Servicio",
       activeIcon: "clock",
       date: "Agosto 13, 2017",
       time: "05:08 pm",
-      callback: mock_callback
+      callback: mockCallback
     },
     {
       title: "Servicio Confirmado",
       activeIcon: "search",
       date: "Agosto 13, 2017",
       time: "05:13 pm",
-      callback: mock_callback
+      callback: mockCallback
     },
     {
       title: "Servicio Finalizado",
       activeIcon: "check-circle",
       date: "Agosto 13, 2017",
       time: "06:32 pm",
-      callback: mock_callback
+      callback: mockCallback
     }
   ];
 
   beforeAll(() => {
     render = renderer.create(
       <PackenServiceStatus
-        steps={mock_steps}
+        steps={mockSteps}
         currentStepIndex={0}/>
     );
 
@@ -65,14 +65,14 @@ describe("<PackenServiceStatus/>", () => {
           callback: jest.fn()
         }
       });
-      renderInstance.props = { steps: mock_steps, currentStepIndex: 0 };
+      renderInstance.props = { steps: mockSteps, currentStepIndex: 0 };
 
-      renderInstance.update_current_step();
+      renderInstance.updateCurrentStep();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.currentStep).toEqual({
-          ...mock_steps[0]
+          ...mockSteps[0]
         });
         expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
         clearTimeout(timeout);
@@ -84,9 +84,9 @@ describe("<PackenServiceStatus/>", () => {
     it("executes correct code on componentDidUpdate", () => {
       const prevProps = { currentStepIndex: 0 };
       renderInstance.props = { currentStepIndex: 1 };
-      renderInstance.update_current_step = jest.fn();
+      renderInstance.updateCurrentStep = jest.fn();
       renderInstance.componentDidUpdate(prevProps, null, null);
-      expect(renderInstance.update_current_step).toHaveBeenCalled();
+      expect(renderInstance.updateCurrentStep).toHaveBeenCalled();
     });
   });
 });

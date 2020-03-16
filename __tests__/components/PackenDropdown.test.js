@@ -129,15 +129,15 @@ describe("<PackenDropdown/>", () => {
 
   describe("state changing", () => {
     it("sets menu height", () => {
-      renderInstance.get_menu_dimensions({ height: 100 });
-      renderInstance.set_custom_styles = jest.fn();
+      renderInstance.getMenuDimensions({ height: 100 });
+      renderInstance.setCustomStyles = jest.fn();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.dimensions.menu.height).toBe(100);
 
         const innerTimeout = setTimeout(() => {
-          expect(renderInstance.set_custom_styles).toHaveBeenCalled();
+          expect(renderInstance.setCustomStyles).toHaveBeenCalled();
           clearTimeout(innerTimeout);
         }, 2000);
 
@@ -147,7 +147,7 @@ describe("<PackenDropdown/>", () => {
 
     it("sets custom styles to position the menu", () => {
       renderInstance.setState({ dimensions: { menu: { height: 100 } } });
-      renderInstance.set_custom_styles();
+      renderInstance.setCustomStyles();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -158,7 +158,7 @@ describe("<PackenDropdown/>", () => {
 
     it("toggles 'isOpen' state", () => {
       renderInstance.setState({ isOpen: false });
-      renderInstance.toggle_menu();
+      renderInstance.toggleMenu();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -169,15 +169,15 @@ describe("<PackenDropdown/>", () => {
 
     it("sets selected items", () => {
       const items = ["Test", "Test 2"];
-      renderInstance.compose_final_selection_string = jest.fn();
-      renderInstance.get_final_selection(items);
+      renderInstance.composeFinalSelectionString = jest.fn();
+      renderInstance.getFinalSelection(items);
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.finalSelection).toEqual(items);
 
         const innerTimeout = setTimeout(() => {
-          expect(renderInstance.compose_final_selection_string).toHaveBeenCalled();
+          expect(renderInstance.composeFinalSelectionString).toHaveBeenCalled();
           clearTimeout(innerTimeout);
         }, 2000);
 
@@ -187,7 +187,7 @@ describe("<PackenDropdown/>", () => {
 
     it("composes selected items as a single string", () => {
       renderInstance.setState({ finalSelection: ["Test", "Test 2"] });
-      renderInstance.compose_final_selection_string();
+      renderInstance.composeFinalSelectionString();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {

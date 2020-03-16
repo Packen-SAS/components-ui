@@ -16,10 +16,10 @@ class PackenServiceStatusIcon extends Component {
   }
 
   componentDidMount() {
-    this.check_if_active();
+    this.checkIfActive();
   }
 
-  get_icon = () => {
+  getIcon = () => {
     let stateIcon = this.props.activeIcon;
     
     if (!this.state.isCurrent) {
@@ -32,7 +32,7 @@ class PackenServiceStatusIcon extends Component {
     return stateIcon;
   }
 
-  check_if_current = () => {
+  checkIfCurrent = () => {
     if (this.props.activeIndex === this.props.selfIndex) {
       this.setState({
         state: "active"
@@ -46,8 +46,8 @@ class PackenServiceStatusIcon extends Component {
     }
   }
 
-  check_if_active = () => {
-    const newState = this.check_if_current();
+  checkIfActive = () => {
+    const newState = this.checkIfCurrent();
     this.setState({
       isCurrent: newState
     });
@@ -55,7 +55,7 @@ class PackenServiceStatusIcon extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.activeIndex !== this.props.activeIndex) {
-      this.check_if_active();
+      this.checkIfActive();
     }
   }
 
@@ -63,7 +63,7 @@ class PackenServiceStatusIcon extends Component {
     return (
       <View style={ServiceStatusStyles.timeline__item}>
         <View style={ServiceStatusStyles.timeline__icon_wrapper}>
-          <Icon name={this.get_icon()} size={ServiceStatusStyles.icon[this.state.state].fontSize} color={ServiceStatusStyles.icon[this.state.state].color} />
+          <Icon name={this.getIcon()} size={ServiceStatusStyles.icon[this.state.state].fontSize} color={ServiceStatusStyles.icon[this.state.state].color} />
         </View>
         {
           this.props.selfIndex !== this.props.stepsLength - 1 ? (

@@ -45,7 +45,7 @@ class PackenListItem extends Component {
   }
 
   componentDidMount() {
-    this.set_main_content();
+    this.setMainContent();
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -73,7 +73,7 @@ class PackenListItem extends Component {
     }
   }
 
-  pressIn_handler = () => {
+  pressInHandler = () => {
     const prevState = this.state.state;
     this.setState({
       prevState: prevState,
@@ -81,13 +81,13 @@ class PackenListItem extends Component {
     });
   }
 
-  pressOut_handler = () => {
+  pressOutHandler = () => {
     this.setState({
       state: this.state.prevState
     });
   }
 
-  press_handler = () => {
+  pressHandler = () => {
     switch (this.props.config.selectionType) {
       case "single":
       case "radio": {
@@ -128,7 +128,7 @@ class PackenListItem extends Component {
     }
   }
 
-  get_active_styles = () => {
+  getActiveStyles = () => {
     let activeStyles = {};
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
@@ -142,7 +142,7 @@ class PackenListItem extends Component {
     return activeStyles;
   }
 
-  get_focus_styles = () => {
+  getFocusStyles = () => {
     let focusStyles = {};
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
@@ -235,15 +235,15 @@ class PackenListItem extends Component {
     };
   }
 
-  get_left_content = () => {
+  getLeftContent = () => {
     return this.getSidesContent().left;
   }
 
-  get_right_content = () => {
+  getRightContent = () => {
     return this.getSidesContent().right;
   }
 
-  set_main_content = () => {
+  setMainContent = () => {
     let mainContent;
 
     if (this.props.mainContent.main.control) {
@@ -286,11 +286,11 @@ class PackenListItem extends Component {
     });
   }
 
-  get_item_height = ({ height }) => {
+  getItemHeight = ({ height }) => {
     this.props.getItemHeight(height);
   }
 
-  get_disabled_styles = () => {
+  getDisabledStyles = () => {
     let disabledStyles = {
       box: {},
       content: { wrapper: {} }
@@ -312,7 +312,7 @@ class PackenListItem extends Component {
     return disabledStyles;
   }
 
-  check_main_content_styles = () => {
+  checkMainContentStyles = () => {
     const props = this.props.mainContent;
     
     if (props.isDisabled) {
@@ -360,30 +360,30 @@ class PackenListItem extends Component {
 
   render() {
     if (!this.props.mainContent.main.control) {
-      this.check_main_content_styles();
+      this.checkMainContentStyles();
     }
 
     return (
       <View pointerEvents={this.props.mainContent.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback
-          onPressIn={this.pressIn_handler}
-          onPressOut={this.pressOut_handler}
-          onPress={this.press_handler}
-          onLayout={e => { this.get_item_height(e.nativeEvent.layout); }}
+          onPressIn={this.pressInHandler}
+          onPressOut={this.pressOutHandler}
+          onPress={this.pressHandler}
+          onLayout={e => { this.getItemHeight(e.nativeEvent.layout); }}
         >
           <View
             style={{
               ...ListStyles.box.base,
-              ...this.get_active_styles(),
-              ...this.get_focus_styles(),
+              ...this.getActiveStyles(),
+              ...this.getFocusStyles(),
               ...ListStyles.box.selection[this.props.config.selectionType],
-              ...this.get_disabled_styles().box
+              ...this.getDisabledStyles().box
             }}
           >
-            <View style={{ ...ListStyles.content.wrapper.base, ...this.get_disabled_styles().content.wrapper }}>
-              {this.get_left_content()}
+            <View style={{ ...ListStyles.content.wrapper.base, ...this.getDisabledStyles().content.wrapper }}>
+              {this.getLeftContent()}
               {this.state.mainContent}
-              {this.get_right_content()}
+              {this.getRightContent()}
               {
                 this.props.mainContent.isSelected && this.props.config.checkedIcon ? (
                   <Icon

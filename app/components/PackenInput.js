@@ -35,7 +35,7 @@ class PackenInput extends Component {
     this.state = { ...initialState }
   }
 
-  set_icon_position_styles = () => {
+  setIconPositionStyles = () => {
     let positionStyles = {};
 
     if (this.props.icon) {
@@ -58,7 +58,7 @@ class PackenInput extends Component {
     return positionStyles;
   }
 
-  get_box_dimensions = ({ width, height }) => {
+  getBoxDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -67,10 +67,10 @@ class PackenInput extends Component {
           height: height
         }
       }
-    }, this.set_icon_position_styles);
+    }, this.setIconPositionStyles);
   }
 
-  get_icon_wrapper_dimensions = ({ width, height }) => {
+  getIconWrapperDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -79,10 +79,10 @@ class PackenInput extends Component {
           height: height
         }
       }
-    }, this.set_icon_position_styles);
+    }, this.setIconPositionStyles);
   }
 
-  get_padding_styles = () => {
+  getPaddingStyles = () => {
     let paddingStyles = {};
 
     if (this.props.icon) {
@@ -92,7 +92,7 @@ class PackenInput extends Component {
     return paddingStyles;
   }
 
-  get_multiline_styles = () => {
+  getMultilineStyles = () => {
     let multilineStyles = {};
 
     if (this.props.multiline) {
@@ -105,31 +105,31 @@ class PackenInput extends Component {
     return multilineStyles;
   }
 
-  handle_press_in = () => {
+  handlePressIn = () => {
     this.setState({
       state: "hover"
     });
   }
 
-  handle_press_out = () => {
+  handlePressOut = () => {
     this.setState({
       state: "default"
     });
   }
 
-  handle_focus = () => {
+  handleFocus = () => {
     this.setState({
       state: "focus"
     });
   }
 
-  handle_blur = () => {
+  handleBlur = () => {
     this.setState({
       state: "default"
     });
   }
 
-  handle_change_text = text => {
+  handleChangeText = text => {
     this.setState({
       value: text
     });
@@ -159,10 +159,10 @@ class PackenInput extends Component {
             ) : null
           }
         </View>
-        <View style={InputStyles.box} onLayout={e => { this.get_box_dimensions(e.nativeEvent.layout); }}>
+        <View style={InputStyles.box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
           {
             this.props.icon ? (
-              <View style={{ ...InputStyles.icon_wrapper.base, ...this.set_icon_position_styles() }} onLayout={e => { this.get_icon_wrapper_dimensions(e.nativeEvent.layout); }}>
+              <View style={{ ...InputStyles.icon_wrapper.base, ...this.setIconPositionStyles() }} onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}>
                 <Icon
                   name={this.props.icon.name}
                   size={InputStyles.icon.size[this.props.size].size}
@@ -176,20 +176,20 @@ class PackenInput extends Component {
               </View>
             ) : null
           }
-          <TouchableWithoutFeedback onPressIn={this.handle_press_in} onPressOut={this.handle_press_out}>
+          <TouchableWithoutFeedback onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
             <TextInput
               style={{
                 ...InputStyles.input.base,
                 ...InputStyles.input.size[this.props.size],
                 ...InputStyles.input.theme[this.props.theme],
                 ...InputStyles.input.state[this.state.state],
-                ...this.get_padding_styles(),
-                ...this.get_multiline_styles()
+                ...this.getPaddingStyles(),
+                ...this.getMultilineStyles()
               }}
               value={this.state.value}
-              onFocus={this.handle_focus}
-              onBlur={this.handle_blur}
-              onChangeText={this.handle_change_text}
+              onFocus={this.handleFocus}
+              onBlur={this.handleBlur}
+              onChangeText={this.handleChangeText}
               placeholder={this.props.placeholder}
               placeholderTextColor={InputStyles.placeholder.color}
               multiline={this.props.multiline ? true : false}

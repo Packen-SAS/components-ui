@@ -14,7 +14,7 @@ class PackenTabs extends Component {
     }
   }
 
-  update_active_index = newActiveIndex => {
+  updateActiveIndex = newActiveIndex => {
     this.setState({
       activeTabIndex: newActiveIndex
     });
@@ -31,7 +31,7 @@ class PackenTabs extends Component {
               selfIndex={i}
               label={item.label}
               icon={item.icon}
-              updateActiveTabIndex={this.update_active_index}
+              updateActiveTabIndex={this.updateActiveIndex}
               callback={item.callback}/>
           ))
         }

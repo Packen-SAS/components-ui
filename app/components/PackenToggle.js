@@ -39,11 +39,11 @@ class PackenToggle extends Component {
   }
 
   componentDidMount = () => {
-    this.position_elements();
-    this.check_if_disabled();
+    this.positionElement();
+    this.checkIfDisabled();
   }
 
-  set_disabled_styles = () => {
+  setDisabledStyles = () => {
     this.setState({
       shape: {
         ...this.state.shape,
@@ -72,15 +72,15 @@ class PackenToggle extends Component {
     });
   }
 
-  check_if_disabled = () => {
+  checkIfDisabled = () => {
     if (this.props.isDisabled) {
       this.setState({
         state: "disabled"
-      }, this.set_disabled_styles);
+      }, this.setDisabledStyles);
     }
   }
 
-  get_shape_dimensions = e => {
+  getShapeDimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       shape: {
@@ -88,10 +88,10 @@ class PackenToggle extends Component {
         height: height,
         width: width
       }
-    }, this.position_elements);
+    }, this.positionElement);
   }
 
-  get_dot_dimensions = e => {
+  getDotDimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       dot: {
@@ -99,10 +99,10 @@ class PackenToggle extends Component {
         height: height,
         width: width
       }
-    }, this.position_elements);
+    }, this.positionElement);
   }
 
-  get_on_dimensions = e => {
+  getOnDimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       on: {
@@ -110,10 +110,10 @@ class PackenToggle extends Component {
         height: height,
         width: width
       }
-    }, this.position_elements);
+    }, this.positionElement);
   }
 
-  get_off_dimensions = e => {
+  getOffDimensions = e => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       off: {
@@ -121,11 +121,11 @@ class PackenToggle extends Component {
         height: height,
         width: width
       }
-    }, this.position_elements);
+    }, this.positionElement);
   }
 
-  position_elements = () => {
-    const positionStyles = this.get_position_styles();
+  positionElement = () => {
+    const positionStyles = this.getPositionStyles();
     this.setState({
       dot: {
         ...this.state.dot,
@@ -142,7 +142,7 @@ class PackenToggle extends Component {
     });
   }
 
-  get_position_styles = () => {
+  getPositionStyles = () => {
     let positionStyles = {};
     const state = this.state.isDisabled ? this.state.initialState : this.state.state;
 
@@ -195,8 +195,8 @@ class PackenToggle extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.state !== this.state.state) {
-      this.position_elements();
-      this.check_if_disabled();
+      this.positionElement();
+      this.checkIfDisabled();
     }
   }
 
@@ -208,21 +208,21 @@ class PackenToggle extends Component {
             ...ToggleStyles.shape.default,
             ...ToggleStyles.shape[this.state.state],
             ...this.state.shape.disabled
-          }} onLayout={e => { this.get_shape_dimensions(e); }}>
+          }} onLayout={e => { this.getShapeDimensions(e); }}>
             <View style={{
               ...ToggleStyles.dot.default,
               ...ToggleStyles.dot[this.state.state],
               ...this.state.dot.positioning,
               ...this.state.dot.disabled
-            }} onLayout={e => { this.get_dot_dimensions(e); }}></View>
-            <View onLayout={e => { this.get_on_dimensions(e); }} style={this.state.on.positioning}>
+            }} onLayout={e => { this.getDotDimensions(e); }}></View>
+            <View onLayout={e => { this.getOnDimensions(e); }} style={this.state.on.positioning}>
               <PackenText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.on[this.state.state],
                 ...this.state.on.disabled
               }}>{this.props.onLabel}</PackenText>
             </View>
-            <View onLayout={e => { this.get_off_dimensions(e); }} style={this.state.off.positioning}>
+            <View onLayout={e => { this.getOffDimensions(e); }} style={this.state.off.positioning}>
               <PackenText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.off[this.state.state],

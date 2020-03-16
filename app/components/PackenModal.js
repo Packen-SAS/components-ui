@@ -50,16 +50,16 @@ class PackenModal extends Component {
 
     this.state = {...initialState};
 
-    this.carousel_ref;
+    this.carouselRef;
   }
 
   componentDidMount() {
     if (this.props.type === "gallery") {
-      this.set_gallery_arrows_position();
+      this.setGalleryArrowsPosition();
     }
   }
 
-  get_content_styles = () => {
+  getContentStyles = () => {
     let contentStyles = { ...ModalStyles.content.base };
 
     if (this.props.banner) {
@@ -77,7 +77,7 @@ class PackenModal extends Component {
     return contentStyles;
   }
 
-  get_text_styles = () => {
+  getTextStyles = () => {
     let textStyles = {};
 
     if (this.props.banner) {
@@ -93,7 +93,7 @@ class PackenModal extends Component {
     return textStyles;
   }
 
-  set_backdrop_styles = () => {
+  setBackdropStyles = () => {
     if (this.props.isOpen) {
       this.setState({
         backdropStyles: {
@@ -113,19 +113,19 @@ class PackenModal extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.isOpen !== this.props.isOpen) {
-      this.set_backdrop_styles();
+      this.setBackdropStyles();
     }
     if (this.props.type === "gallery") {
       if (prevState.dimensions !== this.state.dimensions) {
-        this.set_gallery_arrows_position();
+        this.setGalleryArrowsPosition();
       }
       if (prevProps.isOpen !== this.props.isOpen) {
-        this.reinit_gallery();
+        this.reinitGallery();
       }
     }
   }
 
-  reinit_gallery = () => {
+  reinitGallery = () => {
     this.setState({
       has: {
         next: true,
@@ -135,22 +135,22 @@ class PackenModal extends Component {
   }
 
   prevSlide = () => {
-    this.carousel_ref.snapToPrev();
+    this.carouselRef.snapToPrev();
   }
 
   nextSlide = () => {
-    this.carousel_ref.snapToNext();
+    this.carouselRef.snapToNext();
   }
 
-  render_gallery_slide = ({item, index}) => {
+  renderGallerySlide = ({item, index}) => {
     return (
       <View key={index} style={ModalStyles.gallery.slide}>
-        <Image source={item} style={this.get_gallery_box_dimensions()}/>
+        <Image source={item} style={this.getGalleryBoxDimensions()}/>
       </View>
     );
   }
 
-  get_gallery_dimensions = ({width, height}) => {
+  getGalleryDimensions = ({width, height}) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -159,10 +159,10 @@ class PackenModal extends Component {
           width: Math.floor(width)
         }
       }
-    }, this.set_gallery_arrows_position);
+    }, this.setGalleryArrowsPosition);
   }
 
-  get_gallery_arrow_dimensions = ({width, height}) => {
+  getGalleryArrowsDimensions = ({width, height}) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -171,10 +171,10 @@ class PackenModal extends Component {
           width: Math.floor(width)
         }
       }
-    }, this.set_gallery_arrows_position);
+    }, this.setGalleryArrowsPosition);
   }
 
-  set_gallery_arrows_position = () => {
+  setGalleryArrowsPosition = () => {
     const verticalOffset = this.state.dimensions.gallery.height / 2.25;
     const horizontalOffset = this.state.dimensions.arrows.width + 20;
 
@@ -192,14 +192,14 @@ class PackenModal extends Component {
     });
   }
 
-  get_gallery_box_dimensions = () => {
+  getGalleryBoxDimensions = () => {
     return {
       height: Dimensions.get("screen").height / 3,
       width: Dimensions.get("screen").width - 50
     };
   }
 
-  handle_before_snap = slideIndex => {
+  handleBeforeSnap = slideIndex => {
     this.setState({
       has: {
         next: slideIndex === this.props.images.length - 1 ? false : true,
@@ -232,9 +232,9 @@ class PackenModal extends Component {
                         </View>
                       ) : null
                     }
-                    <View style={this.get_content_styles()}>
+                    <View style={this.getContentStyles()}>
                       <PackenText preset="h3" style={ModalStyles.title}>{this.props.info.title}</PackenText>
-                      <PackenText preset="p1" style={{...ModalStyles.text.base, ...this.get_text_styles()}}>{this.props.info.text}</PackenText>
+                      <PackenText preset="p1" style={{...ModalStyles.text.base, ...this.getTextStyles()}}>{this.props.info.text}</PackenText>
                       {
                         this.props.info.btn ? (
                           <View style={ModalStyles.btn}>
@@ -246,14 +246,14 @@ class PackenModal extends Component {
                   </View>
                 ) : (
                     /* Gallery modal */
-                    <View style={this.get_gallery_box_dimensions()} onLayout={e => { this.get_gallery_dimensions(e.nativeEvent.layout); }}>
+                    <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
                       {
                         this.props.images.length > 1 ? (
                           <>
                             {
                               this.state.has.prev ? (
                                 <TouchableWithoutFeedback onPress={this.prevSlide}>
-                                  <View onLayout={e => { this.get_gallery_arrow_dimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
+                                  <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
                                     <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon}/>
                                   </View>
                                 </TouchableWithoutFeedback>
@@ -272,12 +272,12 @@ class PackenModal extends Component {
                         ) : null
                       }
                       <Carousel
-                        ref={c => { this.carousel_ref = c; }}
-                        onBeforeSnapToItem={this.handle_before_snap}
+                        ref={c => { this.carouselRef = c; }}
+                        onBeforeSnapToItem={this.handleBeforeSnap}
                         data={this.props.images}
-                        renderItem={this.render_gallery_slide}
-                        itemWidth={this.get_gallery_box_dimensions().width}
-                        sliderWidth={this.get_gallery_box_dimensions().width}
+                        renderItem={this.renderGallerySlide}
+                        itemWidth={this.getGalleryBoxDimensions().width}
+                        sliderWidth={this.getGalleryBoxDimensions().width}
                         inactiveSlideOpacity={1}
                         inactiveSlideScale={1}
                       />

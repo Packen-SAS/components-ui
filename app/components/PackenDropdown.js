@@ -25,7 +25,7 @@ class PackenDropdown extends Component {
     }
   }
 
-  get_menu_dimensions = ({ height }) => {
+  getMenuDimensions = ({ height }) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -33,10 +33,10 @@ class PackenDropdown extends Component {
           height: height
         }
       }
-    }, this.set_custom_styles);
+    }, this.setCustomStyles);
   }
 
-  set_custom_styles = () => {
+  setCustomStyles = () => {
     let customStyles = {
       bottom: -(this.state.dimensions.menu.height + 8)
     };
@@ -49,19 +49,19 @@ class PackenDropdown extends Component {
     });
   }
 
-  toggle_menu = () => {
+  toggleMenu = () => {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
 
-  get_final_selection = selectedItems => {
+  getFinalSelection = selectedItems => {
     this.setState({
       finalSelection: selectedItems
-    }, this.compose_final_selection_string);
+    }, this.composeFinalSelectionString);
   }
 
-  compose_final_selection_string = () => {
+  composeFinalSelectionString = () => {
     let finalSelectionString = "";
 
     this.state.finalSelection.forEach(item => {
@@ -96,7 +96,7 @@ class PackenDropdown extends Component {
         style={DropdownStyles.wrapper}
         pointerEvents={this.props.isDisabled ? "none" : "auto"}
       >
-        <TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggle_menu}>
+        <TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggleMenu}>
           <View pointerEvents="box-only">
             <PackenInput
               value={this.state.finalSelectionString}
@@ -114,7 +114,7 @@ class PackenDropdown extends Component {
           </View>
         </TouchableWithoutFeedback>
         <View
-          onLayout={e => { this.get_menu_dimensions(e.nativeEvent.layout) }}
+          onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
           style={{ ...DropdownStyles.menu, ...this.state.styles.menu }}
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         >
@@ -122,9 +122,9 @@ class PackenDropdown extends Component {
             items={this.props.list.items}
             config={{ size: this.props.size, ...this.props.list.config }}
             numShownRows={4}
-            getFinalSelection={this.get_final_selection}
+            getFinalSelection={this.getFinalSelection}
             finalSelectionArray={this.state.finalSelection}
-            toggleMenu={this.toggle_menu}
+            toggleMenu={this.toggleMenu}
           />
         </View>
       </View>

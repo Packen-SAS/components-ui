@@ -151,21 +151,21 @@ describe("<PackenListItem/>", () => {
     });
 
     it("returns left content", () => {
-      const returnedContent = renderInstance.get_left_content();
+      const returnedContent = renderInstance.getLeftContent();
       expect(returnedContent).not.toBe(undefined);
     });
 
     it("returns right content", () => {
-      const returnedContent = renderInstance.get_right_content();
+      const returnedContent = renderInstance.getRightContent();
       expect(returnedContent).not.toBe(undefined);
     });
   });
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.set_main_content = jest.fn();
+      renderInstance.setMainContent = jest.fn();
       renderInstance.componentDidMount();
-      expect(renderInstance.set_main_content).toHaveBeenCalled();
+      expect(renderInstance.setMainContent).toHaveBeenCalled();
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -242,7 +242,7 @@ describe("<PackenListItem/>", () => {
     it("executes correct code on pressIn", () => {
       renderInstance.setState({ state: "active" });
       renderInstance.props.mainContent.isSelected = false;
-      renderInstance.pressIn_handler();
+      renderInstance.pressInHandler();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -273,7 +273,7 @@ describe("<PackenListItem/>", () => {
         updateSelectedItems: jest.fn()
       };
 
-      renderInstance.press_handler();
+      renderInstance.pressHandler();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -298,7 +298,7 @@ describe("<PackenListItem/>", () => {
         setCheckedIndex: jest.fn()
       };
 
-      renderInstance.press_handler();
+      renderInstance.pressHandler();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -326,7 +326,7 @@ describe("<PackenListItem/>", () => {
       };
       renderInstance.setState({ prevState: "default" });
 
-      renderInstance.press_handler();
+      renderInstance.pressHandler();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -351,7 +351,7 @@ describe("<PackenListItem/>", () => {
       renderInstance.checkboxRef = true;
       renderInstance.setState({ prevState: "default" });
 
-      renderInstance.press_handler();
+      renderInstance.pressHandler();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -369,7 +369,7 @@ describe("<PackenListItem/>", () => {
 
     it("gets item height", () => {
       renderInstance.props.getItemHeight = jest.fn();
-      renderInstance.get_item_height({ height: 10 });
+      renderInstance.getItemHeight({ height: 10 });
       expect(renderInstance.props.getItemHeight).toHaveBeenCalledWith(10);
     });
   });
@@ -381,7 +381,7 @@ describe("<PackenListItem/>", () => {
           selectionType: "radio"
         }
       };
-      const returnedStyles = renderInstance.get_active_styles();
+      const returnedStyles = renderInstance.getActiveStyles();
       expect(returnedStyles).toEqual({});
     });
 
@@ -394,7 +394,7 @@ describe("<PackenListItem/>", () => {
           isSelected: true
         }
       };
-      const returnedStyles = renderInstance.get_active_styles();
+      const returnedStyles = renderInstance.getActiveStyles();
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
     });
 
@@ -407,13 +407,13 @@ describe("<PackenListItem/>", () => {
           isSelected: false
         }
       };
-      const returnedStyles = renderInstance.get_active_styles();
+      const returnedStyles = renderInstance.getActiveStyles();
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
     });
 
     it("returns an empty focus styles object if selection type is 'radio' or 'checkbox'", () => {
       renderInstance.props.config.selectionType = "radio";
-      const returnedStyles = renderInstance.get_focus_styles();
+      const returnedStyles = renderInstance.getFocusStyles();
       expect(returnedStyles).toEqual({});
     });
 
@@ -426,7 +426,7 @@ describe("<PackenListItem/>", () => {
           isSelected: true
         }
       };
-      const returnedStyles = renderInstance.get_focus_styles();
+      const returnedStyles = renderInstance.getFocusStyles();
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
     });
 
@@ -440,7 +440,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.setState({ state: "focus" });
-      const returnedStyles = renderInstance.get_focus_styles();
+      const returnedStyles = renderInstance.getFocusStyles();
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.focus });
     });
 
@@ -454,7 +454,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.setState({ state: "default" });
-      const returnedStyles = renderInstance.get_focus_styles();
+      const returnedStyles = renderInstance.getFocusStyles();
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
     });
 
@@ -464,7 +464,7 @@ describe("<PackenListItem/>", () => {
           isDisabled: false
         }
       };
-      const returnedStyles = renderInstance.get_disabled_styles();
+      const returnedStyles = renderInstance.getDisabledStyles();
       expect(returnedStyles).toEqual({
         box: {},
         content: { wrapper: {} }
@@ -477,7 +477,7 @@ describe("<PackenListItem/>", () => {
           isDisabled: true
         }
       };
-      const returnedStyles = renderInstance.get_disabled_styles();
+      const returnedStyles = renderInstance.getDisabledStyles();
       expect(returnedStyles).toEqual({
         box: {
           ...ListStyles.box.state.disabled
@@ -508,7 +508,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
@@ -527,7 +527,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
@@ -548,7 +548,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.white.dft);
     });
 
@@ -574,7 +574,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.white.dft);
     });
 
@@ -598,7 +598,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.style.color).toBe("#000000");
     });
 
@@ -629,7 +629,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.check_main_content_styles();
+      renderInstance.checkMainContentStyles();
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe("#000000");
     });
   });
@@ -637,7 +637,7 @@ describe("<PackenListItem/>", () => {
   describe("state changing", () => {
     it("sets main content if it's not a control type", () => {
       renderInstance.props.mainContent.main = {};
-      renderInstance.set_main_content();
+      renderInstance.setMainContent();
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -656,7 +656,7 @@ describe("<PackenListItem/>", () => {
           }
         }
       };
-      renderInstance.set_main_content();
+      renderInstance.setMainContent();
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {

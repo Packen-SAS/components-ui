@@ -118,7 +118,7 @@ describe("<PackenList/>", () => {
     });
 
     it("renders an item correctly", () => {
-      const rendered = renderInstance.render_item({ item: { ...list.items[0] } });
+      const rendered = renderInstance.renderItem({ item: { ...list.items[0] } });
       expect(rendered).toBeDefined();
     });
   });
@@ -143,7 +143,7 @@ describe("<PackenList/>", () => {
     it("sets correct item height if items length is less than declared number of rows via props", () => {
       renderInstance.props = { numShownRows: 4 };
       renderInstance.setState({ items: ["Test", "Test 2", "Test 3"] });
-      renderInstance.get_item_height(10);
+      renderInstance.getItemHeight(10);
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -155,7 +155,7 @@ describe("<PackenList/>", () => {
     it("sets correct item height if items length is not less than declared number of rows via props", () => {
       renderInstance.props = { numShownRows: 1 };
       renderInstance.setState({ items: ["Test", "Test 2"] });
-      renderInstance.get_item_height(10);
+      renderInstance.getItemHeight(10);
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -167,7 +167,7 @@ describe("<PackenList/>", () => {
     it("updates selected items if selection type is 'single' or 'radio' and no payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
       renderInstance.props = { config: { selectionType: "single" }, toggleMenu: jest.fn() };
-      renderInstance.update_selected_items("Medellín", true);
+      renderInstance.updateSelectedItems("Medellín", true);
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -183,7 +183,7 @@ describe("<PackenList/>", () => {
     it("updates selected items if selection type is 'single' or 'radio' and a payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
       renderInstance.props = { config: { selectionType: "single" }, toggleMenu: jest.fn() };
-      renderInstance.update_selected_items("Medellín", true, { checkedType: "radio", checkedValue: "Medellín" });
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: "radio", checkedValue: "Medellín" });
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -200,7 +200,7 @@ describe("<PackenList/>", () => {
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
       renderInstance.props = { config: { selectionType: "single" } };
-      renderInstance.update_selected_items("Medellín", true);
+      renderInstance.updateSelectedItems("Medellín", true);
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -213,7 +213,7 @@ describe("<PackenList/>", () => {
     it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]], currentCheckboxesState: { checkedValues: [] } });
       renderInstance.props = { config: { selectionType: "single" } };
-      renderInstance.update_selected_items("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
