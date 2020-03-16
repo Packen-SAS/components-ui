@@ -177,7 +177,7 @@ describe("<PackenList/>", () => {
         expect(renderInstance.state.selectedItems).toBe(["Medellín"]);
         expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and a payload is passed", () => {
