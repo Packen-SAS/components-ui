@@ -108,8 +108,10 @@ class PackenDropdown extends Component {
               label={this.props.input.label}
               help={this.props.input.help}
               theme={this.props.input.theme}
+              isDropdown={true}
               nonEditable={this.props.input.nonEditable}
               disabled={this.props.isDisabled}
+              isOpen={this.state.isOpen}
             />
           </View>
         </TouchableWithoutFeedback>
