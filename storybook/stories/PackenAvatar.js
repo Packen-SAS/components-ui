@@ -6,7 +6,16 @@ import PackenAvatar from "../../app/components/PackenAvatar";
 
 storiesOf("PackenAvatar", module)
   .add("Tiny", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenAvatar"
+      description="Avatar with size set to tiny."
+      code={
+`<PackenAvatar
+  size="tiny"
+  src={require("../../assets/images/avatar.jpg")}
+/>`
+      }
+    >
       <PackenAvatar
         size="tiny"
         src={require("../../assets/images/avatar.jpg")}
@@ -14,7 +23,16 @@ storiesOf("PackenAvatar", module)
     </Wrapper>
   ))
   .add("Small", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenAvatar"
+      description="Avatar with size set to small."
+      code={
+`<PackenAvatar
+  size="small"
+  src={require("../../assets/images/avatar.jpg")}
+/>`
+      }
+    >
       <PackenAvatar
         size="small"
         src={require("../../assets/images/avatar.jpg")}
@@ -22,7 +40,16 @@ storiesOf("PackenAvatar", module)
     </Wrapper>
   ))
   .add("Medium", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenAvatar"
+      description="Avatar with size set to medium."
+      code={
+`<PackenAvatar
+  size="medium"
+  src={require("../../assets/images/avatar.jpg")}
+/>`
+      }
+    >
       <PackenAvatar
         size="medium"
         src={require("../../assets/images/avatar.jpg")}
@@ -30,7 +57,16 @@ storiesOf("PackenAvatar", module)
     </Wrapper>
   ))
   .add("Large", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenAvatar"
+      description="Avatar with size set to large."
+      code={
+`<PackenAvatar
+  size="large"
+  src={require("../../assets/images/avatar.jpg")}
+/>`
+      }
+    >
       <PackenAvatar
         size="large"
         src={require("../../assets/images/avatar.jpg")}
@@ -38,7 +74,16 @@ storiesOf("PackenAvatar", module)
     </Wrapper>
   ))
   .add("Giant", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenAvatar"
+      description="Avatar with size set to giant."
+      code={
+`<PackenAvatar
+  size="giant"
+  src={require("../../assets/images/avatar.jpg")}
+/>`
+      }
+    >
       <PackenAvatar
         size="giant"
         src={require("../../assets/images/avatar.jpg")}

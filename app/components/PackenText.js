@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   base: {
     fontFamily: Typography.family.regular,
     fontSize: Typography.size.medium,
-    color: Colors.base.default
+    color: Colors.basic.independence.drk
   }
 });
 

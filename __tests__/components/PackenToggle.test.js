@@ -208,7 +208,7 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.positionElements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("sets off dimensions", () => {

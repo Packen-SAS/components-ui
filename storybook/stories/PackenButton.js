@@ -6,7 +6,19 @@ import PackenButton from "../../app/components/PackenButton";
 
 storiesOf("PackenButton", module)
   .add("Icon primary tiny", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenButton"
+      description="Icon button with size set to tiny."
+      code={
+`<PackenButton
+  icon={{ name: "arrow-right-circle" }}
+  type="icon"
+  level="primary"
+  size="tiny"
+  callback={() => { return; }}
+/>`
+      }
+    >
       <PackenButton
         icon={{ name: "arrow-right-circle" }}
         type="icon"
@@ -16,7 +28,19 @@ storiesOf("PackenButton", module)
     </Wrapper>
   ))
   .add("Icon primary small", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenButton"
+      description="Icon button with size set to small."
+      code={
+`<PackenButton
+  icon={{ name: "arrow-right-circle" }}
+  type="icon"
+  level="primary"
+  size="small"
+  callback={() => { return; }}
+/>`
+      }
+    >
       <PackenButton
         icon={{ name: "arrow-right-circle" }}
         type="icon"
@@ -26,7 +50,19 @@ storiesOf("PackenButton", module)
     </Wrapper>
   ))
   .add("Icon primary medium", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenButton"
+      description="Icon button with size set to medium."
+      code={
+`<PackenButton
+  icon={{ name: "arrow-right-circle" }}
+  type="icon"
+  level="primary"
+  size="medium"
+  callback={() => { return; }}
+/>`
+        }
+    >
       <PackenButton
         icon={{ name: "arrow-right-circle" }}
         type="icon"
@@ -36,7 +72,19 @@ storiesOf("PackenButton", module)
     </Wrapper>
   ))
   .add("Icon primary large", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenButton"
+      description="Icon button with size set to large."
+      code={
+`<PackenButton
+  icon={{ name: "arrow-right-circle" }}
+  type="icon"
+  level="primary"
+  size="large"
+  callback={() => { return; }}
+/>`
+        }
+    >
       <PackenButton
         icon={{ name: "arrow-right-circle" }}
         type="icon"
@@ -46,7 +94,20 @@ storiesOf("PackenButton", module)
     </Wrapper>
   ))
   .add("Icon primary large disabled", () => (
-    <Wrapper>
+    <Wrapper
+      title="PackenButton"
+      description="Icon button with size set to giant."
+      code={
+`<PackenButton
+  icon={{ name: "arrow-right-circle" }}
+  type="icon"
+  level="primary"
+  size="giant"
+  callback={() => { return; }}
+  isDisabled
+/>`
+      }
+    >
       <PackenButton
         icon={{ name: "arrow-right-circle" }}
         type="icon"
