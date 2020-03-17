@@ -11,7 +11,7 @@ class Wrapper extends Component {
   render() {
     return (
       <View style={styles.wrapper}>
-        <View style={styles.inner}>
+        <View style={this.props.full ? styles.innerFull : styles.inner}>
           {this.props.children}
         </View>
       </View>
@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     padding: 25,
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -34,6 +33,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     elevation: 5,
     width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Colors.basic.white.dft
+  },
+  innerFull: {
+    padding: 25,
+    borderRadius: 5,
+    elevation: 5,
+    width: "100%",
+    alignItems: "stretch",
+    justifyContent: "flex-start",
     backgroundColor: Colors.basic.white.dft
   }
 });
