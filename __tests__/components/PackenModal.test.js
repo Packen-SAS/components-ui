@@ -237,7 +237,7 @@ describe("<PackenModal/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("returns gallery box dimensions", () => {

@@ -171,7 +171,11 @@ describe("<PackenListItem/>", () => {
     it("executes correct code on componentDidUpdate", () => {
       renderInstance.checkIfUnselected = jest.fn();
       renderInstance.checkboxRef = { setCheckedState: jest.fn() }
+      const prevProps = {
+        selectedItems: ["Test"]
+      };
       renderInstance.props = {
+        selectedItems: ["Test 2"],
         mainContent: {
           value: ""
         },
@@ -180,7 +184,10 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.setState({ newSelectedState: true });
-      renderInstance.componentDidUpdate(null, null, null);
+      renderInstance.componentDidUpdate(prevProps, null, null);
+      expect(renderInstance.checkIfUnselected).toHaveBeenCalled();
+      expect(renderInstance.state.prevState).toBe("default");
+      expect(renderInstance.state.state).toBe("default");
       expect(renderInstance.checkboxRef.setCheckedState)
         .toHaveBeenCalledWith(renderInstance.props.mainContent.value, renderInstance.state.newSelectedState, renderInstance.props.currentCheckboxesState.finalSelectionArray);
     });
@@ -249,7 +256,7 @@ describe("<PackenListItem/>", () => {
         expect(renderInstance.state.prevState).toBe("active");
         expect(renderInstance.state.state).toBe("focus");
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on pressOut", () => {
@@ -259,7 +266,7 @@ describe("<PackenListItem/>", () => {
       const timeout = setTimeout(() => {
         expect(renderInstance.state.state).toBe("active");
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on press if selection type is 'single'", () => {
@@ -281,7 +288,7 @@ describe("<PackenListItem/>", () => {
         expect(renderInstance.state.state).toBe("active");
         expect(renderInstance.props.updateSelectedItems).toHaveBeenCalledWith("Test", true);
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on press if selection type is 'radio'", () => {

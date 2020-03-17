@@ -140,7 +140,7 @@ describe("<PackenToggle/>", () => {
         expect(renderInstance.state.state).toBe("disabled");
         expect(renderInstance.setDisabledStyles).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("sets shape dimensions", () => {
@@ -184,7 +184,7 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.positionElements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets on dimensions", () => {

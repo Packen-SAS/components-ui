@@ -106,6 +106,7 @@ class PackenList extends Component {
         config={this.props.config}
         mainContent={item}
         getItemHeight={this.getItemHeight}
+        selectedItems={this.state.selectedItems}
         updateSelectedItems={this.updateSelectedItems}
         currentRadiosState={this.state.currentRadiosState}
         currentCheckboxesState={this.state.currentCheckboxesState}
