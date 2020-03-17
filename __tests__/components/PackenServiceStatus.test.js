@@ -76,7 +76,7 @@ describe("<PackenServiceStatus/>", () => {
         });
         expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
   });
 

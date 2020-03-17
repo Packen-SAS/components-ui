@@ -1,6 +1,6 @@
 const families = {
   regular: "Muli-Regular",
-  semibold: "Muli-Semibold",
+  semibold: "Muli-SemiBold",
   bold: "Muli-Bold"
 }
 

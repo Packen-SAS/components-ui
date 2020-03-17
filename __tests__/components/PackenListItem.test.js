@@ -318,7 +318,7 @@ describe("<PackenListItem/>", () => {
             checkedValue: "Test"
           });
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on press if selection type is 'multiple'", () => {

@@ -205,7 +205,7 @@ describe("<PackenList/>", () => {
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.items).toEqual([...renderInstance.state.items]);
-        expect(renderInstance.state.selectedItems).toBe(["Medellín"]);
+        expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
         clearTimeout(timeout);
       }, 2000);
     });

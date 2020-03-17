@@ -1228,10 +1228,33 @@ const menus = {
 };
 
 storiesOf("PackenDropdown", module)
-  .add("Tiny", () => (
-    <Wrapper full>
+  .add("Tiny single simple", () => (
+    <Wrapper
+      full
+      title="PackenDropdown"
+      description="Dropdown with single selection, simple content, optional help text and size set to tiny."
+      code={
+`<PackenDropdown
+  size="tiny"
+  list={menus.simple}
+  input={{
+    label: "Single selection",
+    placeholder: "Selecciona tu ciudad",
+    onChangeText: () => { return; },
+    icon: {
+      name: "chevron-down",
+      position: "right",
+      style: { color: Colors.brand.primary.drk }
+    },
+    theme: "default",
+    nonEditable: true,
+    help: "Help text"
+  }}
+/>`
+      }
+    >
       <PackenDropdown
-        size="medium"
+        size="tiny"
         list={menus.simple}
         input={{
           label: "Single selection",
@@ -1245,6 +1268,48 @@ storiesOf("PackenDropdown", module)
           theme: "default",
           nonEditable: true,
           help: "Help text"
+        }}
+      />
+    </Wrapper>
+  ))
+  .add("Small multiple simple", () => (
+    <Wrapper
+      full
+      title="PackenDropdown"
+      description="Dropdown with multiple selections, simple content and size set to small."
+      code={
+`<PackenDropdown
+  size="small"
+  list={menus.mulitple}
+  input={{
+    label: "Multiple selections",
+    placeholder: "Selecciona tu ciudad",
+    onChangeText: () => { return; },
+    icon: {
+      name: "chevron-down",
+      position: "right",
+      style: { color: Colors.brand.primary.drk }
+    },
+    theme: "default",
+    nonEditable: true
+  }}
+/>`
+      }
+    >
+      <PackenDropdown
+        size="small"
+        list={menus.mulitple}
+        input={{
+          label: "Multiple selections",
+          placeholder: "Selecciona tu ciudad",
+          onChangeText: () => { return; },
+          icon: {
+            name: "chevron-down",
+            position: "right",
+            style: { color: Colors.brand.primary.drk }
+          },
+          theme: "default",
+          nonEditable: true
         }}
       />
     </Wrapper>
