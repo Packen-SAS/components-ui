@@ -7,7 +7,6 @@ import { genKey } from "../../app/utils/index";
 import Wrapper from "../wrapper";
 import PackenDropdown from "../../app/components/PackenDropdown";
 import PackenText from "../../app/components/PackenText";
-import PackenTag from "../../app/components/PackenTag";
 
 const menus = {
   simple: {
@@ -869,7 +868,7 @@ const menus = {
       }
     ]
   },
-  tags: {
+  iconsLeft: {
     config: {
       size: "medium",
       checkedIcon: "check",
@@ -878,35 +877,48 @@ const menus = {
     items: [
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Bogotá, D.C.",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Medellín",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Bucaramanga",
         isSelected: false,
@@ -914,64 +926,79 @@ const menus = {
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Santa Marta",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Cali",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Cartagena",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.brand.primary.drk }}>Facturado</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       },
       {
         key: genKey(),
-        left: false,
+        left: {
+          type: "icon",
+          config: {
+            name: "arrow-up"
+          }
+        },
         right: false,
         value: "Leticia",
         isSelected: false,
         main: (
           <>
             <PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>
-            <PackenText style={{ marginBottom: 5, color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
-            <PackenTag style={{ color: Colors.basic.independence.lgt }}>NGH152</PackenTag>
+            <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
           </>
         )
       }
@@ -1202,7 +1229,7 @@ const menus = {
 
 storiesOf("PackenDropdown", module)
   .add("Tiny", () => (
-    <Wrapper>
+    <Wrapper full>
       <PackenDropdown
         size="medium"
         list={menus.simple}
