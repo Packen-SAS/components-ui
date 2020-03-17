@@ -51,6 +51,18 @@ class PackenListItem extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     this.checkIfUnselected();
 
+    if (prevProps.selectedItems !== this.props.selectedItems) {
+      if (!this.props.mainContent.isDisabled) {
+        const found = this.props.selectedItems.find(item => item === this.props.mainContent.value);
+        if (!found) {
+          this.setState({
+            prevState: "default",
+            state: "default"
+          });
+        }
+      }
+    }
+
     if (this.checkboxRef && this.checkboxRef.setCheckedState) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
     }

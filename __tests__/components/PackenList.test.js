@@ -194,7 +194,7 @@ describe("<PackenList/>", () => {
         expect(renderInstance.currentRadiosState.checkedValue).toBe("Medellín");
         expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
@@ -204,7 +204,7 @@ describe("<PackenList/>", () => {
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
-        expect(renderInstance.state.items).toBe([...renderInstance.state.items]);
+        expect(renderInstance.state.items).toEqual([...renderInstance.state.items]);
         expect(renderInstance.state.selectedItems).toBe(["Medellín"]);
         clearTimeout(timeout);
       }, 2000);

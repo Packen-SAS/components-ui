@@ -1397,7 +1397,7 @@ class Dropdowns extends Component {
                 }
               }}
             />
-          </View>
+          </View>          
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
@@ -1414,7 +1414,7 @@ class Dropdowns extends Component {
                 nonEditable: true
               }}
             />
-          </View>
+          </View>          
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
