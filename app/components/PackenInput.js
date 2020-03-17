@@ -164,7 +164,7 @@ class PackenInput extends Component {
             this.props.icon ? (
               <View style={{ ...InputStyles.icon_wrapper.base, ...this.setIconPositionStyles() }} onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}>
                 <Icon
-                  name={this.props.icon.name}
+                  name={this.props.isDropdown ? this.props.isOpen ? "chevron-up" : "chevron-down" : this.props.icon.name}
                   size={InputStyles.icon.size[this.props.size].size}
                   color={InputStyles.icon.base.color}
                   style={{
