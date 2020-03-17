@@ -170,6 +170,7 @@ class PackenListItem extends Component {
 
   getSidesContent = () => {
     let leftContent, rightContent;
+    const iconSizeMultiplier = 1.5;
 
     if (!this.props.mainContent.left) {
       leftContent = null;
@@ -180,7 +181,7 @@ class PackenListItem extends Component {
             <Icon
               name={this.props.mainContent.left.config.name}
               color={ListStyles.icon.state[this.state.state].color}
-              size={ListStyles.icon.size[this.props.config.size].size * 1.5}
+              size={ListStyles.icon.size[this.props.config.size].size * iconSizeMultiplier}
             />
           );
           break;
@@ -207,7 +208,7 @@ class PackenListItem extends Component {
             <Icon
               name={this.props.mainContent.right.config.name}
               color={ListStyles.icon.state[this.state.state].color}
-              size={ListStyles.icon.size[this.props.config.size].size * 1.2}
+              size={ListStyles.icon.size[this.props.config.size].size * iconSizeMultiplier}
             />
           );
           break;

@@ -1013,6 +1013,176 @@ class Dropdowns extends Component {
             }
           ]
         },
+        iconsBoth: {
+          config: {
+            size: "medium",
+            selectionType: "single"
+          },
+          items: [
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Bogotá, D.C.",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Medellín",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Bucaramanga",
+              isSelected: false,
+              isDisabled: true,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Santa Marta",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Cali",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cali</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Cartagena",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            },
+            {
+              key: genKey(),
+              left: {
+                type: "icon",
+                config: {
+                  name: "arrow-up"
+                }
+              },
+              right: {
+                type: "icon",
+                config: {
+                  name: "arrow-down"
+                }
+              },
+              value: "Leticia",
+              isSelected: false,
+              main: (
+                <>
+                  <PackenText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenText>
+                  <PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}>Information</PackenText>
+                </>
+              )
+            }
+          ]
+        },
         checkboxes: {
           config: {
             size: "medium",
@@ -1415,6 +1585,23 @@ class Dropdowns extends Component {
               }}
             />
           </View>          
+          <View style={{ marginBottom: 20 }}>
+            <PackenDropdown
+              size="medium"
+              list={this.state.menus.iconsBoth}
+              input={{
+                label: "Double icon selection",
+                placeholder: "Selecciona tu ciudad",
+                onChangeText: () => { return; },
+                icon: {
+                  name: "chevron-down",
+                  position: "right"
+                },
+                theme: "primary",
+                nonEditable: true
+              }}
+            />
+          </View>
           <View style={{ marginBottom: 20 }}>
             <PackenDropdown
               size="medium"
