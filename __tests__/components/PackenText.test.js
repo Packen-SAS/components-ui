@@ -49,7 +49,7 @@ describe("<PackenText/>", () => {
     it("sets default styles if no preset is provided", () => {
       expect(renderJSONNoPreset.props.style.fontFamily).toBe(Typography.family.regular);
       expect(renderJSONNoPreset.props.style.fontSize).toBe(Typography.size.medium);
-      expect(renderJSONNoPreset.props.style.color).toBe(Colors.base.default);
+      expect(renderJSONNoPreset.props.style.color).toBe(Colors.basic.independence.drk);
     });
   });
 });
