@@ -21,7 +21,10 @@
     ]
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "__tests__/setup.js"
+    ]
   },
   "devDependencies": {
     "@babel/core": "^7.8.7",
