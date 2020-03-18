@@ -221,7 +221,7 @@ describe("<PackenList/>", () => {
         expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
         expect(renderInstance.state.currentCheckboxesState.checkedValues).toEqual(["Medellín"]);
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
   });
 });
