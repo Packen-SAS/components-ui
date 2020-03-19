@@ -66,11 +66,13 @@ class Checkboxes extends Component {
   handleNotify = newCheckedItems => {
     /* New checked items can be used here */
     /* console.log(newCheckedItems); */
+    return newCheckedItems;
   }
 
   handleNotifyRow = newCheckedItems => {
     /* New checked items can be used here */
     /* console.log(newCheckedItems); */
+    return newCheckedItems;
   }
 
   render() {

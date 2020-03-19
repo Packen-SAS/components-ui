@@ -11,7 +11,7 @@ class Buttons extends Component {
     super(props);
   }
 
-  mock_callback = () => { return; }
+  mockCallback = () => { return true; }
 
   render() {
     return (
@@ -24,7 +24,7 @@ class Buttons extends Component {
                 type="icon"
                 level="primary"
                 size="tiny"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -32,7 +32,7 @@ class Buttons extends Component {
                 type="icon"
                 level="primary"
                 size="small"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -40,7 +40,7 @@ class Buttons extends Component {
                 type="icon"
                 level="primary"
                 size="medium"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -48,7 +48,7 @@ class Buttons extends Component {
                 type="icon"
                 level="primary"
                 size="large"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -56,7 +56,7 @@ class Buttons extends Component {
                 type="icon"
                 level="primary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled />
             </View>
             <View style={SectionStyles.section__contentItem}>
@@ -65,7 +65,7 @@ class Buttons extends Component {
                 type="regular"
                 level="primary"
                 size="tiny"
-                callback={this.mock_callback}>Tiny</PackenButton>
+                callback={this.mockCallback}>Tiny</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -73,7 +73,7 @@ class Buttons extends Component {
                 type="regular"
                 level="primary"
                 size="small"
-                callback={this.mock_callback}>Small</PackenButton>
+                callback={this.mockCallback}>Small</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -81,7 +81,7 @@ class Buttons extends Component {
                 type="regular"
                 level="primary"
                 size="medium"
-                callback={this.mock_callback}>Medium</PackenButton>
+                callback={this.mockCallback}>Medium</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -89,7 +89,7 @@ class Buttons extends Component {
                 type="regular"
                 level="primary"
                 size="large"
-                callback={this.mock_callback}>Large</PackenButton>
+                callback={this.mockCallback}>Large</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -97,7 +97,7 @@ class Buttons extends Component {
                 type="regular"
                 level="primary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled>Giant</PackenButton>
             </View>
           </View>
@@ -110,7 +110,7 @@ class Buttons extends Component {
                 type="icon"
                 level="secondary"
                 size="tiny"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -118,7 +118,7 @@ class Buttons extends Component {
                 type="icon"
                 level="secondary"
                 size="small"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -126,7 +126,7 @@ class Buttons extends Component {
                 type="icon"
                 level="secondary"
                 size="medium"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -134,7 +134,7 @@ class Buttons extends Component {
                 type="icon"
                 level="secondary"
                 size="large"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -142,7 +142,7 @@ class Buttons extends Component {
                 type="icon"
                 level="secondary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled />
             </View>
             <View style={SectionStyles.section__contentItem}>
@@ -151,7 +151,7 @@ class Buttons extends Component {
                 type="regular"
                 level="secondary"
                 size="tiny"
-                callback={this.mock_callback}>Tiny</PackenButton>
+                callback={this.mockCallback}>Tiny</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -159,7 +159,7 @@ class Buttons extends Component {
                 type="regular"
                 level="secondary"
                 size="small"
-                callback={this.mock_callback}>Small</PackenButton>
+                callback={this.mockCallback}>Small</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -167,7 +167,7 @@ class Buttons extends Component {
                 type="regular"
                 level="secondary"
                 size="medium"
-                callback={this.mock_callback}>Medium</PackenButton>
+                callback={this.mockCallback}>Medium</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -175,7 +175,7 @@ class Buttons extends Component {
                 type="regular"
                 level="secondary"
                 size="large"
-                callback={this.mock_callback}>Large</PackenButton>
+                callback={this.mockCallback}>Large</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -183,7 +183,7 @@ class Buttons extends Component {
                 type="regular"
                 level="secondary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled>Giant</PackenButton>
             </View>
           </View>
@@ -196,7 +196,7 @@ class Buttons extends Component {
                 type="icon"
                 level="tertiary"
                 size="tiny"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -204,7 +204,7 @@ class Buttons extends Component {
                 type="icon"
                 level="tertiary"
                 size="small"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -212,7 +212,7 @@ class Buttons extends Component {
                 type="icon"
                 level="tertiary"
                 size="medium"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -220,7 +220,7 @@ class Buttons extends Component {
                 type="icon"
                 level="tertiary"
                 size="large"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -228,7 +228,7 @@ class Buttons extends Component {
                 type="icon"
                 level="tertiary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled />
             </View>
             <View style={SectionStyles.section__contentItem}>
@@ -237,7 +237,7 @@ class Buttons extends Component {
                 type="regular"
                 level="tertiary"
                 size="tiny"
-                callback={this.mock_callback}>Tiny</PackenButton>
+                callback={this.mockCallback}>Tiny</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -245,7 +245,7 @@ class Buttons extends Component {
                 type="regular"
                 level="tertiary"
                 size="small"
-                callback={this.mock_callback}>Small</PackenButton>
+                callback={this.mockCallback}>Small</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -253,7 +253,7 @@ class Buttons extends Component {
                 type="regular"
                 level="tertiary"
                 size="medium"
-                callback={this.mock_callback}>Medium</PackenButton>
+                callback={this.mockCallback}>Medium</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -261,7 +261,7 @@ class Buttons extends Component {
                 type="regular"
                 level="tertiary"
                 size="large"
-                callback={this.mock_callback}>Large</PackenButton>
+                callback={this.mockCallback}>Large</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -269,7 +269,7 @@ class Buttons extends Component {
                 type="regular"
                 level="tertiary"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled>Giant</PackenButton>
             </View>
           </View>
@@ -282,7 +282,7 @@ class Buttons extends Component {
                 type="icon"
                 level="ghost"
                 size="tiny"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -290,7 +290,7 @@ class Buttons extends Component {
                 type="icon"
                 level="ghost"
                 size="small"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -298,7 +298,7 @@ class Buttons extends Component {
                 type="icon"
                 level="ghost"
                 size="medium"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -306,7 +306,7 @@ class Buttons extends Component {
                 type="icon"
                 level="ghost"
                 size="large"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -314,7 +314,7 @@ class Buttons extends Component {
                 type="icon"
                 level="ghost"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled />
             </View>
             <View style={SectionStyles.section__contentItem}>
@@ -323,7 +323,7 @@ class Buttons extends Component {
                 type="regular"
                 level="ghost"
                 size="tiny"
-                callback={this.mock_callback}>Tiny</PackenButton>
+                callback={this.mockCallback}>Tiny</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -331,7 +331,7 @@ class Buttons extends Component {
                 type="regular"
                 level="ghost"
                 size="small"
-                callback={this.mock_callback}>Small</PackenButton>
+                callback={this.mockCallback}>Small</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -339,7 +339,7 @@ class Buttons extends Component {
                 type="regular"
                 level="ghost"
                 size="medium"
-                callback={this.mock_callback}>Medium</PackenButton>
+                callback={this.mockCallback}>Medium</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -347,7 +347,7 @@ class Buttons extends Component {
                 type="regular"
                 level="ghost"
                 size="large"
-                callback={this.mock_callback}>Large</PackenButton>
+                callback={this.mockCallback}>Large</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -355,7 +355,7 @@ class Buttons extends Component {
                 type="regular"
                 level="ghost"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled>Giant</PackenButton>
             </View>
           </View>
@@ -368,7 +368,7 @@ class Buttons extends Component {
                 type="icon"
                 level="danger"
                 size="tiny"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -376,7 +376,7 @@ class Buttons extends Component {
                 type="icon"
                 level="danger"
                 size="small"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -384,7 +384,7 @@ class Buttons extends Component {
                 type="icon"
                 level="danger"
                 size="medium"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -392,7 +392,7 @@ class Buttons extends Component {
                 type="icon"
                 level="danger"
                 size="large"
-                callback={this.mock_callback} />
+                callback={this.mockCallback} />
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -400,7 +400,7 @@ class Buttons extends Component {
                 type="icon"
                 level="danger"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled />
             </View>
             <View style={SectionStyles.section__contentItem}>
@@ -409,7 +409,7 @@ class Buttons extends Component {
                 type="regular"
                 level="danger"
                 size="tiny"
-                callback={this.mock_callback}>Tiny</PackenButton>
+                callback={this.mockCallback}>Tiny</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -417,7 +417,7 @@ class Buttons extends Component {
                 type="regular"
                 level="danger"
                 size="small"
-                callback={this.mock_callback}>Small</PackenButton>
+                callback={this.mockCallback}>Small</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -425,7 +425,7 @@ class Buttons extends Component {
                 type="regular"
                 level="danger"
                 size="medium"
-                callback={this.mock_callback}>Medium</PackenButton>
+                callback={this.mockCallback}>Medium</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -433,7 +433,7 @@ class Buttons extends Component {
                 type="regular"
                 level="danger"
                 size="large"
-                callback={this.mock_callback}>Large</PackenButton>
+                callback={this.mockCallback}>Large</PackenButton>
             </View>
             <View style={SectionStyles.section__contentItem}>
               <PackenButton
@@ -441,7 +441,7 @@ class Buttons extends Component {
                 type="regular"
                 level="danger"
                 size="giant"
-                callback={this.mock_callback}
+                callback={this.mockCallback}
                 isDisabled>Giant</PackenButton>
             </View>
           </View>

@@ -11,7 +11,7 @@ class Tabs extends Component {
     super(props);
   }
 
-  mock_callback = () => { return; }
+  mockCallback = () => { return true; }
   
   render() {
     return (
@@ -22,17 +22,17 @@ class Tabs extends Component {
               {
                 label: "Button",
                 icon: "»",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
                 icon: "»",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
                 icon: "»",
-                callback: this.mock_callback
+                callback: this.mockCallback
               }
             ]} activeIndex={0}/>
           </View>
@@ -40,15 +40,15 @@ class Tabs extends Component {
             <PackenTabs items={[
               {
                 label: "Button",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
-                callback: this.mock_callback
+                callback: this.mockCallback
               }
             ]} activeIndex={1}/>
           </View>
@@ -57,17 +57,17 @@ class Tabs extends Component {
               {
                 label: "Button",
                 icon: "clock",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
                 icon: "rotate-cw",
-                callback: this.mock_callback
+                callback: this.mockCallback
               },
               {
                 label: "Button",
                 icon: "check-circle",
-                callback: this.mock_callback
+                callback: this.mockCallback
               }
             ]} activeIndex={2}/>
           </View>
