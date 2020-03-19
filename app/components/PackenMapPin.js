@@ -10,6 +10,14 @@ class PackenMapPin extends Component {
     super(props);
   }
 
+  getLabel = () => {
+    if (this.props.main.label) {
+      return <PackenText style={{ ...MapPinStyles.label.base, ...MapPinStyles.label.theme[this.props.theme] }}>{this.props.main.label.toUpperCase() + " "}</PackenText>;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     return (
       <View style={MapPinStyles.container}>
@@ -18,28 +26,24 @@ class PackenMapPin extends Component {
             <View style={MapPinStyles.inner}>
               {
                 this.props.sub && this.props.sub.position === "left" ? (
-                  <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition}/>
+                  <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
                 ) : null
               }
               <View style={{ ...MapPinStyles.main.base, ...MapPinStyles.main.theme[this.props.theme] }}>
                 <PackenText style={{ ...MapPinStyles.text.base, ...MapPinStyles.text.theme[this.props.theme] }}>
-                  {
-                    this.props.main.label ? (
-                      <PackenText style={{ ...MapPinStyles.label.base, ...MapPinStyles.label.theme[this.props.theme] }}>{this.props.main.label.toUpperCase() + " "}</PackenText>
-                    ) : null
-                  }
-                  { this.props.main.text }
+                  {this.getLabel()}
+                  {this.props.main.text}
                 </PackenText>
               </View>
               {
                 this.props.sub && this.props.sub.position === "right" ? (
-                  <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition}/>
+                  <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
                 ) : null
               }
             </View>
           ) : (
-            <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition}/>
-          )
+              <PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
+            )
         }
       </View>
     );

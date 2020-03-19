@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import ModalStyles from "../../app/styles/components/PackenModal";
 import PackenModal from "../../app/components/PackenModal";
@@ -11,7 +11,7 @@ describe("<PackenModal/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenModal
         isOpen={false}
         size="default"
@@ -27,7 +27,7 @@ describe("<PackenModal/>", () => {
       />
     );
 
-    renderGallery = renderer.create(
+    renderGallery = shallow(
       <PackenModal
         isOpen={false}
         size="small"
@@ -38,14 +38,8 @@ describe("<PackenModal/>", () => {
       />
     );
 
-    renderInstance = render.getInstance();
+    renderInstance = render.instance();
 
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      };
-    }
     renderInstance.setState({
       backdropStyles: { ...ModalStyles.backdrop.base },
       dimensions: {
@@ -89,38 +83,55 @@ describe("<PackenModal/>", () => {
         item: require("../../assets/images/placeholder.png"),
         index: 0
       });
+      
       expect(gallerySlide).toBeDefined();
     });
   });
 
   describe("styling", () => {
     it("returns correct content styles if there's a banner", () => {
-      renderInstance.props = { banner: {}, size: "small" };
+      /* renderInstance.props = { banner: {}, size: "small" }; */
+      render.setProps({
+        banner: {},
+        size: "small"
+      });
       const returnedStyles = renderInstance.getContentStyles();
+      
       expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.banner.small});
     });
 
     it("returns correct content styles if there's no banner", () => {
       renderInstance.props = {};
       const returnedStyles = renderInstance.getContentStyles();
+      
       expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.default});
     });
 
     it("returns correct text styles if there's a banner", () => {
-      renderInstance.props = { banner: {}, size: "default" };
+      /* renderInstance.props = { banner: {}, size: "default" }; */
+      render.setProps({
+        banner: {},
+        size: "default"
+      });
       const returnedStyles = renderInstance.getTextStyles();
+      
       expect(returnedStyles).toEqual({ ...ModalStyles.text.banner.default });
     });
 
     it("returns correct text styles if there's no banner", () => {
       renderInstance.props = {};
       const returnedStyles = renderInstance.getTextStyles();
+      
       expect(returnedStyles).toEqual({ ...ModalStyles.text.default });
     });
 
     it("sets correct backdrop styles if it's open", () => {
-      renderInstance.props = { isOpen: true };
+      /* renderInstance.props = { isOpen: true }; */
+      render.setProps({
+        isOpen: true
+      });
       renderInstance.setBackdropStyles();
+
       expect(renderInstance.state.backdropStyles).toEqual({
         ...renderInstance.state.backdropStyles,
         ...ModalStyles.backdrop.open
@@ -128,8 +139,12 @@ describe("<PackenModal/>", () => {
     });
 
     it("sets correct backdrop styles if it's closed", () => {
-      renderInstance.props = { isOpen: false };
+      /* renderInstance.props = { isOpen: false }; */
+      render.setProps({
+        isOpen: false
+      });
       renderInstance.setBackdropStyles();
+      
       expect(renderInstance.state.backdropStyles).toEqual({
         ...renderInstance.state.backdropStyles,
         ...ModalStyles.backdrop.closed
@@ -139,15 +154,20 @@ describe("<PackenModal/>", () => {
 
   describe("triggering actions", () => {
     it("sets correct backdrop styles if open prop changed", () => {
+      const spySetBackdropStyles = jest.spyOn(renderInstance, "setBackdropStyles");
       const prevProps = { isOpen: false };
-      renderInstance.props = { isOpen: true };
-      renderInstance.setBackdropStyles = jest.fn();
+      /* renderInstance.props = { isOpen: true }; */
+      render.setProps({
+        isOpen: true
+      });
       renderInstance.componentDidUpdate(prevProps, null, null);
-      expect(renderInstance.setBackdropStyles).toHaveBeenCalled();
+      
+      expect(spySetBackdropStyles).toHaveBeenCalled();
+      spySetBackdropStyles.mockRestore();
     });
 
     it("sets gallery arrows position on componentDidUpdate", () => {
-      renderInstance.setGalleryArrowsPosition = jest.fn();
+      const spySetGalleryArrowsPosition = jest.spyOn(renderInstance, "setGalleryArrowsPosition");
       const prevState = {
         dimensions: {
           gallery: {
@@ -158,18 +178,24 @@ describe("<PackenModal/>", () => {
             height: 1,
             width: 1
           }
-        },
+        }
       };
       const prevProps = {
         isOpen: false
       };
-      renderInstance.props = { isOpen: false, type: "gallery" };
+      render.setProps({
+        isOpen: false,
+        type: "gallery",
+        images: []
+      });
       renderInstance.componentDidUpdate(prevProps, prevState, null);
-      expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
+
+      expect(spySetGalleryArrowsPosition).toHaveBeenCalled();
+      spySetGalleryArrowsPosition.mockRestore();
     });
 
     it("reinitializes gallery on componentDidUpdate", () => {
-      renderInstance.reinitGallery = jest.fn();
+      const spyReinitGallery = jest.spyOn(renderInstance, "reinitGallery");
       const prevState = {
         dimensions: {
           gallery: {
@@ -180,18 +206,24 @@ describe("<PackenModal/>", () => {
             height: 1,
             width: 1
           }
-        },
+        }
       };
       const prevProps = {
-        isOpen: false
+        isOpen: true
       };
-      renderInstance.props = { isOpen: true, type: "gallery" };
+      render.setProps({
+        isOpen: false,
+        type: "gallery"
+      });
       renderInstance.componentDidUpdate(prevProps, prevState, null);
-      expect(renderInstance.reinitGallery).toHaveBeenCalled();
+      
+      expect(spyReinitGallery).toHaveBeenCalled();
+      spyReinitGallery.mockRestore();
     });
 
-    it("reinitGallery", () => {
+    it("reinitializes gallery slides position", () => {
       renderInstance.reinitGallery();
+      
       expect(renderInstance.state.has.next).toBe(true);
       expect(renderInstance.state.has.prev).toBe(false);
     });
@@ -201,6 +233,7 @@ describe("<PackenModal/>", () => {
         snapToPrev: jest.fn()
       };
       renderInstance.prevSlide();
+
       expect(renderInstance.carouselRef.snapToPrev).toHaveBeenCalled();
     });
 
@@ -209,39 +242,41 @@ describe("<PackenModal/>", () => {
         snapToNext: jest.fn()
       };
       renderInstance.nextSlide();
+
       expect(renderInstance.carouselRef.snapToNext).toHaveBeenCalled();
     });
   });
 
   describe("getting dimensions", () => {
     it("sets gallery dimensions", () => {
-      renderInstance.setGalleryArrowsPosition = jest.fn();
       renderInstance.getGalleryDimensions({width: 100, height: 100});
+
       expect(renderInstance.state.dimensions.gallery.width).toBe(Math.floor(100));
       expect(renderInstance.state.dimensions.gallery.height).toBe(Math.floor(100));
-      
+
       /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
+      /* const timeout = setTimeout(() => {
         expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 4000);
+      }, 4000); */
     });
 
     it("sets gallery arrows dimensions", () => {
-      renderInstance.setGalleryArrowsPosition = jest.fn();
       renderInstance.getGalleryArrowsDimensions({width: 10, height: 10});
+      
       expect(renderInstance.state.dimensions.arrows.width).toBe(Math.floor(10));
       expect(renderInstance.state.dimensions.arrows.height).toBe(Math.floor(10));
       
       /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
+      /* const timeout = setTimeout(() => {
         expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 4000);
+      }, 4000); */
     });
 
     it("returns gallery box dimensions", () => {
       const returnedDimensions = renderInstance.getGalleryBoxDimensions();
+      
       expect(typeof returnedDimensions.height).toBe("number");
       expect(typeof returnedDimensions.width).toBe("number");
     });
@@ -249,37 +284,40 @@ describe("<PackenModal/>", () => {
 
   describe("state changing", () => {
     it("sets correct 'has' state if on initial slide", () => {
-      renderInstance.props = {
+      render.setProps({
         images: [
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png")]
-      };
+      });
       renderInstance.handleBeforeSnap(0);
+
       expect(renderInstance.state.has.next).toBe(true);
       expect(renderInstance.state.has.prev).toBe(false);
     });
 
     it("sets correct 'has' state if on middle slide", () => {
-      renderInstance.props = {
+      render.setProps({
         images: [
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png")]
-      };
+      });
       renderInstance.handleBeforeSnap(1);
+
       expect(renderInstance.state.has.next).toBe(true);
       expect(renderInstance.state.has.prev).toBe(true);
     });
 
     it("sets correct 'has' state if on final slide", () => {
-      renderInstance.props = {
+      render.setProps({
         images: [
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png"),
           require("../../assets/images/placeholder.png")]
-      };
+      });
       renderInstance.handleBeforeSnap(2);
+
       expect(renderInstance.state.has.next).toBe(false);
       expect(renderInstance.state.has.prev).toBe(true);
     });

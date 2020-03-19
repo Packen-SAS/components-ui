@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenListItem from "../../app/components/PackenListItem";
 import PackenText from "../../app/components/PackenText";
@@ -80,7 +80,7 @@ describe("<PackenListItem/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenListItem
         config={{ size: "medium", ...list.config }}
         mainContent={list.items[0]}
@@ -96,14 +96,7 @@ describe("<PackenListItem/>", () => {
       />
     );
 
-    renderInstance = render.getInstance();
-
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    }
+    renderInstance = render.instance();
 
     renderInstance.setState({
       prevState: "default",
@@ -120,72 +113,140 @@ describe("<PackenListItem/>", () => {
     });
 
     it("renders nothing if there's no left or right defined", () => {
-      renderInstance.props.mainContent = {
-        left: undefined,
-        right: undefined
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            props: {
+              style: {
+                color: ""
+              }
+            },
+            type: {}
+          },
+          left: undefined,
+          right: undefined
+        }
       };
       const renderedSidesContent = renderInstance.getSidesContent();
+
       expect(renderedSidesContent.left).toBe(null);
       expect(renderedSidesContent.right).toBe(null);
     });
 
     it("renders correct content if left and right are defined", () => {
-      renderInstance.props.mainContent = {
-        left: {
-          type: "avatar",
-          config: {
-            size: "small",
-            src: require("../../assets/images/avatar.jpg")
-          }
+      renderInstance.props = {
+        config: {
+          size: "small"
         },
-        right: {
-          type: "icon",
-          config: {
-            name: "arrow-up"
+        mainContent: {
+          main: {
+            props: {
+              children: {},
+              style: {
+                color: ""
+              }
+            },
+            type: {
+              displayName: "PackenText"
+            }
+          },
+          left: {
+            type: "avatar",
+            config: {
+              size: "small",
+              src: require("../../assets/images/avatar.jpg")
+            }
+          },
+          right: {
+            type: "icon",
+            config: {
+              name: "arrow-up"
+            }
           }
         }
-      }
+      };
       const renderedSidesContent = renderInstance.getSidesContent();
+
       expect(renderedSidesContent.left).toBeDefined();
       expect(renderedSidesContent.right).toBeDefined();
     });
 
     it("returns left content", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          left: {},
+          right: {},
+          main: {}
+        }
+      };
       const returnedContent = renderInstance.getLeftContent();
+      
       expect(returnedContent).not.toBe(undefined);
     });
 
     it("returns right content", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          left: {},
+          right: {},
+          main: {}
+        }
+      };
       const returnedContent = renderInstance.getRightContent();
+      
       expect(returnedContent).not.toBe(undefined);
     });
   });
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.setMainContent = jest.fn();
+      const spySetMainContent = jest.spyOn(renderInstance, "setMainContent");
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            type: {
+              displayName: "PackenText"
+            },
+            props: {
+              children: {}
+            }
+          }
+        }
+      };
       renderInstance.componentDidMount();
-      expect(renderInstance.setMainContent).toHaveBeenCalled();
+      
+      expect(spySetMainContent).toHaveBeenCalled();
+      spySetMainContent.mockRestore();
     });
 
     it("executes correct code on componentDidUpdate", () => {
-      renderInstance.checkIfUnselected = jest.fn();
-      renderInstance.checkboxRef = { setCheckedState: jest.fn() }
+      renderInstance.checkboxRef = { setCheckedState: mockCallback }
+      const spyCheckIfUnselected = jest.spyOn(renderInstance, "checkIfUnselected");
       const prevProps = {
         selectedItems: ["Test"]
       };
       renderInstance.props = {
-        selectedItems: ["Test 2"],
+        selectedItems: ["Test 2", "Test 3"],
         mainContent: {
-          value: ""
+          value: "",
+          main: {}
         },
         currentCheckboxesState: {
           finalSelectionArray: []
         }
-      };
+      }
       renderInstance.setState({ newSelectedState: true });
       renderInstance.componentDidUpdate(prevProps, null, null);
-      expect(renderInstance.checkIfUnselected).toHaveBeenCalled();
+
+      expect(spyCheckIfUnselected).toHaveBeenCalled();
+      spyCheckIfUnselected.mockRestore();
+
       expect(renderInstance.state.prevState).toBe("default");
       expect(renderInstance.state.state).toBe("default");
       expect(renderInstance.checkboxRef.setCheckedState)
@@ -193,7 +254,7 @@ describe("<PackenListItem/>", () => {
     });
 
     it("checks if unselected if selection type is 'radio'", () => {
-      renderInstance.radioRef = { setCheckedIndex: jest.fn() };
+      renderInstance.radioRef = { setCheckedIndex: mockCallback };
       renderInstance.props = {
         config: {
           selectionType: "radio"
@@ -208,18 +269,13 @@ describe("<PackenListItem/>", () => {
           checkedValue: "Test 2"
         }
       };
-
       renderInstance.checkIfUnselected();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.radioRef.setCheckedIndex).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.radioRef.setCheckedIndex).toHaveBeenCalled();
     });
 
     it("checks if unselected if selection type is 'checkbox'", () => {
-      renderInstance.checkboxRef = { setCheckedState: jest.fn() };
+      renderInstance.checkboxRef = { setCheckedState: mockCallback };
       renderInstance.props = {
         config: {
           selectionType: "checkbox"
@@ -238,35 +294,28 @@ describe("<PackenListItem/>", () => {
 
       renderInstance.checkIfUnselected();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.checkboxRef.setCheckedState)
-          .toHaveBeenCalledWith(renderInstance.props.mainContent.value, false, renderInstance.props.currentCheckboxesState.finalSelectionArray);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.checkboxRef.setCheckedState)
+        .toHaveBeenCalledWith(renderInstance.props.mainContent.value, false, renderInstance.props.currentCheckboxesState.finalSelectionArray);
     });
 
     it("executes correct code on pressIn", () => {
-      renderInstance.setState({ state: "active" });
+      renderInstance.props = {
+        mainContent: {
+          isSelected: false
+        }
+      };
       renderInstance.props.mainContent.isSelected = false;
       renderInstance.pressInHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.prevState).toBe("active");
-        expect(renderInstance.state.state).toBe("focus");
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.state).toBe("focus");
     });
 
     it("executes correct code on pressOut", () => {
       renderInstance.setState({ prevState: "active" });
+      renderInstance.state.prevState = "active";
+      renderInstance.pressOutHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.state).toBe("active");
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.state).toBe("active");
     });
 
     it("executes correct code on press if selection type is 'single'", () => {
@@ -277,18 +326,14 @@ describe("<PackenListItem/>", () => {
         mainContent: {
           value: "Test"
         },
-        updateSelectedItems: jest.fn()
+        updateSelectedItems: mockCallback
       };
 
       renderInstance.pressHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.prevState).toBe("active");
-        expect(renderInstance.state.state).toBe("active");
-        expect(renderInstance.props.updateSelectedItems).toHaveBeenCalledWith("Test", true);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.prevState).toBe("active");
+      expect(renderInstance.state.state).toBe("active");
+      expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
     it("executes correct code on press if selection type is 'radio'", () => {
@@ -299,26 +344,16 @@ describe("<PackenListItem/>", () => {
         mainContent: {
           value: "Test"
         },
-        updateSelectedItems: jest.fn()
+        updateSelectedItems: mockCallback
       };
-      renderInstance.radioRef = {
-        setCheckedIndex: jest.fn()
-      };
+      renderInstance.radioRef = { setCheckedIndex: mockCallback };
 
       renderInstance.pressHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.prevState).toBe("active");
-        expect(renderInstance.state.state).toBe("active");
-        expect(renderInstance.radioRef.setCheckedIndex).toHaveBeenCalledWith(0);
-        expect(renderInstance.props.updateSelectedItems)
-          .toHaveBeenCalledWith("Test", true, {
-            checkedType: "radio",
-            checkedValue: "Test"
-          });
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.prevState).toBe("active");
+      expect(renderInstance.state.state).toBe("active");
+      expect(renderInstance.radioRef.setCheckedIndex).toHaveBeenCalled();
+      expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
     it("executes correct code on press if selection type is 'multiple'", () => {
@@ -329,20 +364,16 @@ describe("<PackenListItem/>", () => {
         mainContent: {
           value: "Test"
         },
-        updateSelectedItems: jest.fn()
+        updateSelectedItems: mockCallback
       };
       renderInstance.setState({ prevState: "default" });
 
       renderInstance.pressHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.prevState).toBe("active");
-        expect(renderInstance.state.state).toBe("active");
-        expect(renderInstance.state.newSelectedState).toBe(true);
-        expect(renderInstance.props.updateSelectedItems).toHaveBeenCalledWith("Test", true);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.prevState).toBe("active");
+      expect(renderInstance.state.state).toBe("active");
+      expect(renderInstance.state.newSelectedState).toBe(true);
+      expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
     it("executes correct code on press if selection type is 'checkbox'", () => {
@@ -360,35 +391,25 @@ describe("<PackenListItem/>", () => {
 
       renderInstance.pressHandler();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.prevState).toBe("active");
-        expect(renderInstance.state.state).toBe("active");
-        expect(renderInstance.state.newSelectedState).toBe(true);
-        expect(renderInstance.props.updateSelectedItems)
-          .toHaveBeenCalledWith("Test", true, {
-            checkedType: "checkbox",
-            checkedValue: "Test"
-          });
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.prevState).toBe("active");
+      expect(renderInstance.state.state).toBe("active");
+      expect(renderInstance.state.newSelectedState).toBe(true);
+      expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
     it("gets item height", () => {
-      renderInstance.props.getItemHeight = jest.fn();
+      renderInstance.props.getItemHeight = mockCallback;
       renderInstance.getItemHeight({ height: 10 });
+      
       expect(renderInstance.props.getItemHeight).toHaveBeenCalledWith(10);
     });
   });
 
   describe("styling", () => {
     it("returns an empty active styles object if selection type is 'radio' or 'checkbox'", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "radio"
-        }
-      };
+      renderInstance.props.config.selectionType = "radio";
       const returnedStyles = renderInstance.getActiveStyles();
+      
       expect(returnedStyles).toEqual({});
     });
 
@@ -402,6 +423,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       const returnedStyles = renderInstance.getActiveStyles();
+      
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
     });
 
@@ -415,12 +437,18 @@ describe("<PackenListItem/>", () => {
         }
       };
       const returnedStyles = renderInstance.getActiveStyles();
+      
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
     });
 
     it("returns an empty focus styles object if selection type is 'radio' or 'checkbox'", () => {
-      renderInstance.props.config.selectionType = "radio";
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        }
+      };
       const returnedStyles = renderInstance.getFocusStyles();
+      
       expect(returnedStyles).toEqual({});
     });
 
@@ -434,6 +462,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       const returnedStyles = renderInstance.getFocusStyles();
+      
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
     });
 
@@ -446,8 +475,9 @@ describe("<PackenListItem/>", () => {
           isSelected: false
         }
       };
-      renderInstance.setState({ state: "focus" });
+      renderInstance.state.state = "focus";
       const returnedStyles = renderInstance.getFocusStyles();
+      
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.focus });
     });
 
@@ -460,8 +490,9 @@ describe("<PackenListItem/>", () => {
           isSelected: false
         }
       };
-      renderInstance.setState({ state: "default" });
+      renderInstance.state.state = "default";
       const returnedStyles = renderInstance.getFocusStyles();
+      
       expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
     });
 
@@ -472,6 +503,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       const returnedStyles = renderInstance.getDisabledStyles();
+      
       expect(returnedStyles).toEqual({
         box: {},
         content: { wrapper: {} }
@@ -485,6 +517,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       const returnedStyles = renderInstance.getDisabledStyles();
+      
       expect(returnedStyles).toEqual({
         box: {
           ...ListStyles.box.state.disabled
@@ -516,6 +549,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
@@ -535,6 +569,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
@@ -556,6 +591,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.white.dft);
     });
 
@@ -582,6 +618,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.white.dft);
     });
 
@@ -606,6 +643,7 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.style.color).toBe("#000000");
     });
 
@@ -637,20 +675,21 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.checkMainContentStyles();
+      
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe("#000000");
     });
   });
 
   describe("state changing", () => {
     it("sets main content if it's not a control type", () => {
-      renderInstance.props.mainContent.main = {};
+      renderInstance.props = {
+        mainContent: {
+          main: {}
+        }
+      };
       renderInstance.setMainContent();
-      
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.mainContent).toBeDefined();
-        clearTimeout(timeout);
-      }, 2000);
+
+      expect(renderInstance.state.mainContent).toBeDefined();
     });
 
     it("sets main content if it's a control", () => {
@@ -664,12 +703,8 @@ describe("<PackenListItem/>", () => {
         }
       };
       renderInstance.setMainContent();
-      
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.mainContent).toBeDefined();
-        clearTimeout(timeout);
-      }, 2000);
+
+      expect(renderInstance.state.mainContent).toBeDefined();
     });
   });
 });

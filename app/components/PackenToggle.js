@@ -20,19 +20,19 @@ class PackenToggle extends Component {
       dot: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       on: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       off: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       }
     }

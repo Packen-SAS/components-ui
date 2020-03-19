@@ -1,13 +1,13 @@
 import "react-native";
 import React from "react";
+import { shallow } from "enzyme";
 
 import App from "../App";
 
-import renderer from "react-test-renderer";
-
 describe("<App/>", () => {
   it("renders correctly", () => {
-    const render = renderer.create(<App/>).toJSON();
+    const render = shallow(<App/>);
+    
     expect(render).toBeDefined();
   });
 });

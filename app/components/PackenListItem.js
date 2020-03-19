@@ -52,7 +52,7 @@ class PackenListItem extends Component {
     this.checkIfUnselected();
 
     if (prevProps.selectedItems !== this.props.selectedItems) {
-      if (!this.props.mainContent.isDisabled) {
+      if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
         const found = this.props.selectedItems.find(item => item === this.props.mainContent.value);
         if (!found) {
           this.setState({
@@ -326,43 +326,43 @@ class PackenListItem extends Component {
   }
 
   checkMainContentStyles = () => {
-    const props = this.props.mainContent;
+    const mainContent = this.props.mainContent;
     
-    if (props.isDisabled) {
-      if (Array.isArray(props.main.props.children)) {
-        props.main.props.children.forEach(child => {
+    if (mainContent.isDisabled) {
+      if (Array.isArray(mainContent.main.props.children)) {
+        mainContent.main.props.children.forEach(child => {
           if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
           }
         });
       } else {
-        if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-          props.main.props.style.color = Colors.basic.gray.lgt;
+        if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+          mainContent.main.props.style.color = Colors.basic.gray.lgt;
         }
       }
     } else {
-      if (props.isSelected) {
-        if (Array.isArray(props.main.props.children)) {
-          props.main.props.children.forEach(child => {
+      if (mainContent.isSelected) {
+        if (Array.isArray(mainContent.main.props.children)) {
+          mainContent.main.props.children.forEach(child => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = Colors.basic.white.dft;
             }
           });
         } else {
-          if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-            props.main.props.style.color = Colors.basic.white.dft;
+          if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+            mainContent.main.props.style.color = Colors.basic.white.dft;
           }
         }
       } else {
-        if (Array.isArray(props.main.props.children)) {
-          props.main.props.children.forEach((child, i) => {
+        if (Array.isArray(mainContent.main.props.children)) {
+          mainContent.main.props.children.forEach((child, i) => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
             }
           });
         } else {
-          if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-            props.main.props.style.color = this.state.originalStyles.color;
+          if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+            mainContent.main.props.style.color = this.state.originalStyles.color;
           }
         }
       }

@@ -1,52 +1,50 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenServiceStatus from "../../app/components/PackenServiceStatus";
 
 describe("<PackenServiceStatus/>", () => {
   let render, renderInstance;
   const mockCallback = jest.fn();
+
   const mockSteps = [
     {
       title: "Solicitando Servicio",
       activeIcon: "clock",
       date: "Agosto 13, 2017",
       time: "05:08 pm",
-      callback: mockCallback
+      callback: mockCallback,
+      isComplete: false
     },
     {
       title: "Servicio Confirmado",
       activeIcon: "search",
       date: "Agosto 13, 2017",
       time: "05:13 pm",
-      callback: mockCallback
+      callback: mockCallback,
+      isComplete: false
     },
     {
       title: "Servicio Finalizado",
       activeIcon: "check-circle",
       date: "Agosto 13, 2017",
       time: "06:32 pm",
-      callback: mockCallback
+      callback: mockCallback,
+      isComplete: false
     }
   ];
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenServiceStatus
         steps={mockSteps}
         currentStepIndex={0}/>
     );
+    renderInstance = render.instance();
 
-    renderInstance = render.getInstance();
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    };
     renderInstance.setState({
-      finalSteps: [],
+      finalSteps: [...mockSteps],
       currentStep: {}
     });
   });
@@ -62,31 +60,31 @@ describe("<PackenServiceStatus/>", () => {
       renderInstance.setState({
         currentStep: {
           ...renderInstance.state.currentStep,
-          callback: jest.fn()
+          callback: mockCallback
         }
       });
-      renderInstance.props = { steps: mockSteps, currentStepIndex: 0 };
-
+      render.setProps({
+        steps: mockSteps,
+        currentStepIndex: 0
+      });
       renderInstance.updateCurrentStep();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.currentStep).toEqual({
-          ...mockSteps[0]
-        });
-        expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.currentStep).toEqual({
+        ...mockSteps[0]
+      });
+      expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
     });
   });
 
   describe("triggering action", () => {
     it("executes correct code on componentDidUpdate", () => {
+      const spyUpdateCurrentStep = jest.spyOn(renderInstance, "updateCurrentStep");
       const prevProps = { currentStepIndex: 0 };
-      renderInstance.props = { currentStepIndex: 1 };
-      renderInstance.updateCurrentStep = jest.fn();
+      render.setProps({ currentStepIndex: 1 });
       renderInstance.componentDidUpdate(prevProps, null, null);
-      expect(renderInstance.updateCurrentStep).toHaveBeenCalled();
+      
+      expect(spyUpdateCurrentStep).toHaveBeenCalled();
+      spyUpdateCurrentStep.mockRestore();
     });
   });
 });
