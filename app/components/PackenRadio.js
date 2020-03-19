@@ -6,10 +6,6 @@ import RadioStyles from "../styles/components/PackenRadio";
 import PackenRadioControl from "./PackenRadioControl";
 
 class PackenRadio extends Component {
-  /* const { layout, items, initialIndex } = props;
-  const [checkedIndex, setCheckedIndex] = useState(initialIndex);
-  const [currentSelection, setCurrentSelection] = useState(""); */
-
   constructor(props) {
     super(props);
 
@@ -20,7 +16,6 @@ class PackenRadio extends Component {
   }
 
   update_checked_index = newCheckedIndex => {
-    /* setCheckedIndex(newCheckedIndex); */
     this.setState({
       checkedIndex: newCheckedIndex
     });
@@ -31,19 +26,10 @@ class PackenRadio extends Component {
   }
 
   update_current_selection = newSelection => {
-    /* setCurrentSelection(newSelection); */
     this.setState({
       currentSelection: newSelection
     });
   }
-
-  /* useEffect(() => {
-    update_current_selection(find_current_selection());
-  }, [checkedIndex]);
-
-  useEffect(() => {
-
-  }, [currentSelection]); */
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.checkedIndex !== this.state.checkedIndex) {
