@@ -10,8 +10,12 @@ class PackenRadioControl extends Component {
     super(props);
 
     this.state = {
-      state: props.isDisabled ? "default_disabled" : "default"
+      state: this.setInitialState()
     }
+  }
+
+  setInitialState = () => {
+    return this.props.isDisabled ? "default_disabled" : "default";
   }
 
   componentDidMount() {

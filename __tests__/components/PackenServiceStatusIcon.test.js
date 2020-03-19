@@ -29,6 +29,52 @@ describe("<PackenServiceStatusIcon/>", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
     });
+
+    it("render a divider if it's not the last step", () => {
+      render.setProps({
+        selfIndex: 0,
+        stepsLength: 3
+      });
+      const returnedElement = renderInstance.getDivider();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns a null element if it's the last step", () => {
+      render.setProps({
+        selfIndex: 2,
+        stepsLength: 3
+      });
+      const returnedElement = renderInstance.getDivider();
+
+      expect(returnedElement).toBe(null);
+    });
+  });
+
+  describe("styling", () => {
+    it("returns the correct icon name if it's the current step", () => {
+      renderInstance.setState({ isCurrent: true });
+      render.setProps({ activeIcon: "search" });
+      const returnedIconName = renderInstance.getIcon();
+      
+      expect(returnedIconName).toBe("search");
+    });
+
+    it("returns the correct icon name if it's not the current step and is not complete", () => {
+      renderInstance.setState({ isCurrent: false });
+      render.setProps({ isComplete: false });
+      const returnedIconName = renderInstance.getIcon();
+      
+      expect(returnedIconName).toBe("minus-circle");
+    });
+
+    it("returns the correct icon name if it's not the current step and is complete", () => {
+      renderInstance.setState({ isCurrent: false });
+      render.setProps({ isComplete: true });
+      const returnedIconName = renderInstance.getIcon();
+      
+      expect(returnedIconName).toBe("check-circle");
+    });
   });
 
   describe("state changing", () => {
@@ -40,12 +86,6 @@ describe("<PackenServiceStatusIcon/>", () => {
       renderInstance.checkIfCurrent();
 
       expect(renderInstance.state.state).toBe("active");
-
-      /* Review to avoid using setTimeout */
-      /* const timeout = setTimeout(() => {
-        expect(renderInstance.state.state).toBe("active");
-        clearTimeout(timeout);
-      }, 2000); */
     });
 
     it("sets 'state' as 'default' if prop indexes don't match", () => {
@@ -56,12 +96,6 @@ describe("<PackenServiceStatusIcon/>", () => {
       renderInstance.checkIfCurrent();
 
       expect(renderInstance.state.state).toBe("default");
-
-      /* Review to avoid using setTimeout */
-      /* const timeout = setTimeout(() => {
-        expect(renderInstance.state.state).toBe("default");
-        clearTimeout(timeout);
-      }, 1000); */
     });
   });
 

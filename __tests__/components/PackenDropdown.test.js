@@ -119,6 +119,22 @@ describe("<PackenDropdown/>", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
     });
+
+    it("disables pointer events if set so via props", () => {
+      render.setProps({
+        isDisabled: true
+      });
+
+      expect(render.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not disabled", () => {
+      render.setProps({
+        isDisabled: false
+      });
+      
+      expect(render.props().pointerEvents).toBe("auto");
+    });
   });
 
   describe("state changing", () => {
