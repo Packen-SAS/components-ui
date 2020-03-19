@@ -34,6 +34,8 @@ class PackenCheckbox extends Component {
       }, () => {
         this.props.callback(newCheckedItems);
       });
+    } else {
+      return false;
     }
   }
 

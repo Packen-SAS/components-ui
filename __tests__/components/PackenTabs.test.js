@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenTabs from "../../app/components/PackenTabs";
 
@@ -9,7 +9,7 @@ describe("<PackenTabs/>", () => {
 
   beforeAll(() => {
     const mockCallback = jest.fn();
-    render = renderer.create(
+    render = shallow(
       <PackenTabs items={[
         {
           label: "Button",
@@ -25,14 +25,8 @@ describe("<PackenTabs/>", () => {
         }
       ]} activeIndex={0} />
     );
-
-    renderInstance = render.getInstance();
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    };
+    renderInstance = render.instance();
+    
     renderInstance.setState({ activeTabIndex: 0 });
   });
 
@@ -45,6 +39,7 @@ describe("<PackenTabs/>", () => {
   describe("state changing", () => {
     it("updates the active tab index", () => {
       renderInstance.updateActiveIndex(1);
+      
       expect(renderInstance.state.activeTabIndex).toBe(1);
     });
   });

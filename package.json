@@ -23,7 +23,7 @@
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "__tests__/setup.js"
+      "./jest/setup.js"
     ]
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenList from "../../app/components/PackenList";
 import PackenText from "../../app/components/PackenText";
@@ -79,7 +79,7 @@ describe("<PackenList/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenList
         items={list.items}
         config={{ size: "medium", ...list.config }}
@@ -90,14 +90,8 @@ describe("<PackenList/>", () => {
       />
     );
 
-    renderInstance = render.getInstance();
+    renderInstance = render.instance();
 
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      };
-    }
     renderInstance.setState({
       height: "100%",
       items: list.items,
@@ -126,102 +120,100 @@ describe("<PackenList/>", () => {
   describe("triggering actions", () => {
     it("executes correct code on componentDidUpdate", () => {
       const prevState = { selectedItems: [list.items[0]] };
-      renderInstance.props = { getFinalSelection: jest.fn() };
+      render.setProps({
+        getFinalSelection: mockCallback
+      });
       renderInstance.setState({ selectedItems: [list.items[0], list.items[1]] });
       renderInstance.componentDidUpdate(null, prevState, null);
-      expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
+      expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
     });
   });
 
   describe("state changing", () => {
     it("sets correct item height if items length is less than declared number of rows via props", () => {
-      renderInstance.props = { numShownRows: 4 };
+      render.setProps({
+        numShownRows: 4
+      });
       renderInstance.setState({ items: ["Test", "Test 2", "Test 3"] });
       renderInstance.getItemHeight(10);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.height).toBe(30);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.height).toBe(30);
     });
 
     it("sets correct item height if items length is not less than declared number of rows via props", () => {
-      renderInstance.props = { numShownRows: 1 };
+      render.setProps({
+        numShownRows: 1
+      });
       renderInstance.setState({ items: ["Test", "Test 2"] });
       renderInstance.getItemHeight(10);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.height).toBe(10);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.height).toBe(10);
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and no payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      renderInstance.props = { config: { selectionType: "single" }, toggleMenu: jest.fn() };
+      render.setProps({
+        config: {
+          selectionType: "single"
+        },
+        toggleMenu: mockCallback
+      });
       renderInstance.updateSelectedItems("Medellín", true);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        let newItems = [...renderInstance.state.items];
-        newItems = newItems.forEach(item => item.isSelected = false);
-        expect(renderInstance.state.items).toBe(newItems);
-        expect(renderInstance.state.selectedItems).toBe(["Medellín"]);
-        expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      const newItems = [...list.items];
+      newItems.forEach(item => item.isSelected = false);
+
+      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
+      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
+      expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and a payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      renderInstance.props = { config: { selectionType: "single" }, toggleMenu: jest.fn() };
+      render.setProps({
+        config: {
+          selectionType: "radio"
+        },
+        toggleMenu: mockCallback
+      });
       renderInstance.updateSelectedItems("Medellín", true, { checkedType: "radio", checkedValue: "Medellín" });
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        let newItems = [...renderInstance.state.items];
-        newItems = newItems.forEach(item => item.isSelected = false);
-        expect(renderInstance.state.items).toBe(newItems);
-        expect(renderInstance.state.selectedItems).toBe(["Medellín"]);
-        expect(renderInstance.currentRadiosState.checkedValue).toBe("Medellín");
-        expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      const newItems = [...list.items];
+      newItems.forEach(item => item.isSelected = false);
+      
+      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
+      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
+      expect(renderInstance.state.currentRadiosState.checkedValue).toEqual("Medellín");
+      expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      renderInstance.props = { config: { selectionType: "single" } };
+      render.setProps({
+        config: {
+          selectionType: "multiple"
+        }
+      });
       renderInstance.updateSelectedItems("Medellín", true);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.items).toEqual([...renderInstance.state.items]);
-        expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
+      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]], currentCheckboxesState: { checkedValues: [] } });
-      renderInstance.props = { config: { selectionType: "single" } };
+      render.setProps({
+        config: {
+          selectionType: "checkbox"
+        }
+      });
       renderInstance.updateSelectedItems("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.items).toEqual([...renderInstance.state.items]);
-        expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-        expect(renderInstance.state.currentCheckboxesState.checkedValues).toEqual(["Medellín"]);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
+      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
+      expect(renderInstance.state.currentCheckboxesState.checkedValues).toEqual(["Medellín"]);
     });
   });
 });

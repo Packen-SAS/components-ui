@@ -45,7 +45,7 @@ class PackenTabItem extends Component {
   }
 
   setActiveStyles = () => {
-    let activeStyles = { ...this.state.itemStyles }
+    let activeStyles = { ...this.state.itemStyles };
     activeStyles.shape = {
       ...activeStyles.shape,
       ...TabsStyles.item.active.shape
@@ -62,6 +62,8 @@ class PackenTabItem extends Component {
     this.setState({
       itemStyles: activeStyles
     });
+
+    return activeStyles;
   }
 
   checkIfActive = () => {

@@ -1,55 +1,49 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import Colors from "../../app/styles/abstracts/colors";
 import Typography from "../../app/styles/abstracts/typography";
+
 import PackenText from "../../app/components/PackenText";
 
 describe("<PackenText/>", () => {
-  let render, renderNoPreset, renderInstance, renderJSON, renderJSONNoPreset;
+  let render, renderNoPreset, renderJSON, renderJSONNoPreset;
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenText preset="h1">Test</PackenText>
     );
-    renderNoPreset = renderer.create(
-      <PackenText>Test</PackenText>
+    renderNoPreset = shallow(
+      <PackenText>Test 2</PackenText>
     );
-
-    renderInstance = render.getInstance();
-    renderJSON = render.toJSON();
-    renderJSONNoPreset = renderNoPreset.toJSON();
-
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    };
+    renderJSON = render.props();
+    renderJSONNoPreset = renderNoPreset.props();
   });
 
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+      expect(renderNoPreset).toBeDefined();
     });
 
     it("renders content correctly", () => {
-      expect(renderJSON.children[0]).toBe("Test");
+      expect(renderJSON.children).toBe("Test");
+      expect(renderJSONNoPreset.children).toBe("Test 2");
     });
   });
 
   describe("styling", () => {
     it("sets correct styles if preset is provided", () => {
-      expect(renderJSON.props.style.fontFamily).toBe(Typography.h1.fontFamily);
-      expect(renderJSON.props.style.fontSize).toBe(Typography.h1.fontSize);
-      expect(renderJSON.props.style.lineHeight).toBe(Typography.h1.lineHeight);
+      expect(renderJSON.style.fontFamily).toBe(Typography.h1.fontFamily);
+      expect(renderJSON.style.fontSize).toBe(Typography.h1.fontSize);
+      expect(renderJSON.style.lineHeight).toBe(Typography.h1.lineHeight);
     });
 
     it("sets default styles if no preset is provided", () => {
-      expect(renderJSONNoPreset.props.style.fontFamily).toBe(Typography.family.regular);
-      expect(renderJSONNoPreset.props.style.fontSize).toBe(Typography.size.medium);
-      expect(renderJSONNoPreset.props.style.color).toBe(Colors.basic.independence.drk);
+      expect(renderJSONNoPreset.style.fontFamily).toBe(Typography.family.regular);
+      expect(renderJSONNoPreset.style.fontSize).toBe(Typography.size.medium);
+      expect(renderJSONNoPreset.style.color).toBe(Colors.basic.independence.drk);
     });
   });
 });

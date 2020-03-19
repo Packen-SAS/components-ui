@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenRadio from "../../app/components/PackenRadio";
 
@@ -8,7 +8,7 @@ describe("<PackenRadio/>", () => {
   let renderColumn, renderRow, renderColumnInstance;
 
   beforeAll(() => {
-    renderColumn = renderer.create(
+    renderColumn = shallow(
       <PackenRadio layout="column" items={[
         {
           label: "Place your text",
@@ -25,7 +25,7 @@ describe("<PackenRadio/>", () => {
       ]} initialIndex={2}/>
     );
 
-    renderRow = renderer.create(
+    renderRow = shallow(
       <PackenRadio layout="row" items={[
         {
           label: "Placeholder",
@@ -41,17 +41,14 @@ describe("<PackenRadio/>", () => {
         }
       ]} initialIndex={1}/>
     );
+    renderColumnInstance = renderColumn.instance();
 
-    renderColumnInstance = renderColumn.getInstance();
-    renderColumnInstance.setState = state => {
-      renderColumnInstance.state = {
-        ...renderColumnInstance.state,
-        ...state
-      }
-    }
-    renderColumnInstance.setState({
+    renderColumn.setState({
       checkedIndex: 2,
-      currentSelection: ""
+      currentSelection: {
+        label: "Different text",
+        isDisabled: false
+      }
     });
   });
 
@@ -68,28 +65,26 @@ describe("<PackenRadio/>", () => {
   describe("state changing", () => {
     it("updates checked index", () => {
       renderColumnInstance.updateCheckedIndex(0);
+
       expect(renderColumnInstance.state.checkedIndex).toBe(0);
     });
 
     it("updates current selection", () => {
       renderColumnInstance.updateCurrentSelection("Test");
+      
       expect(renderColumnInstance.state.currentSelection).toBe("Test");
     });
 
     it("sets new checked index programmatically", () => {
       renderColumnInstance.setCheckedIndex(0);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderColumnInstance.state.checkedIndex).toBe(0);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderColumnInstance.state.checkedIndex).toBe(0);
     });
   });
 
   describe("triggering actions", () => {
     it("find current selection", () => {
-      renderColumnInstance.props = {
+      renderColumn.setProps({
         items: [
           {
             label: "Place your text",
@@ -104,32 +99,52 @@ describe("<PackenRadio/>", () => {
             isDisabled: true
           }
         ]
-      };
+      });
       renderColumnInstance.setState({ checkedIndex: 2 });
       const foundSelection = renderColumnInstance.findCurrentSelection();
+      
       expect(foundSelection.label).toBe("This text is both checked and disabled");
     });
 
     it("updates current selection on checkedIndex change", () => {
-      const prevState = { checkedIndex: 0 };
-      renderColumnInstance.updateCurrentSelection = jest.fn();
+      const spyUpdateCurrentSelection = jest.spyOn(renderColumnInstance, "updateCurrentSelection");
+      const prevState = {
+        checkedIndex: 0,
+        currentSelection: {
+          label: "Test",
+          isDisabled: false
+        }
+      };
       renderColumnInstance.setState({ checkedIndex: 1 });
       renderColumnInstance.componentDidUpdate(null, prevState, null);
-      expect(renderColumnInstance.updateCurrentSelection).toHaveBeenCalled();
+      
+      expect(spyUpdateCurrentSelection).toHaveBeenCalled();
+      spyUpdateCurrentSelection.mockRestore();
     });
 
     it("can use latest currentSelection", () => {
-      const prevState = { currentSelection: "Test 1" };
-      renderColumnInstance.setState({ currentSelection: "Test 2" });
+      const prevState = {
+        currentSelection: {
+          label: "Test",
+          isDisabled: false
+        }
+      };
       const response = renderColumnInstance.componentDidUpdate(null, prevState, null);
-      expect(response).toBe("Test 2");
+      
+      expect(response).toEqual({
+        label: "Different text",
+        isDisabled: false
+      });
     });
 
     it("executes callback if passed via props", () => {
-      renderColumnInstance.props.callback = jest.fn();
+      renderColumn.setProps({
+        callback: jest.fn()
+      });
       const prevState = { currentSelection: 1 };
       renderColumnInstance.setState({ currentSelection: 0 });
       renderColumnInstance.componentDidUpdate(null, prevState, null);
+      
       expect(renderColumnInstance.props.callback).toHaveBeenCalledWith(renderColumnInstance.state.currentSelection);
     });
   });
