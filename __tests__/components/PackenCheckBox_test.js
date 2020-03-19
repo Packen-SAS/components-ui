@@ -2,14 +2,6 @@ import PackenCheckBox from '../../app/components/PackenCheckBox';
 import renderer from 'react-test-renderer';
 import React from 'react';
 
-state = {
-    checked: null
-}
-
-handleNotify = (newState) => {
-    this.setState({ checked: newState })
-}
-
 describe('Render PackenCheck', () => {
     let c;
     beforeAll(() => {
@@ -84,14 +76,9 @@ describe('Render PackenCheck', () => {
                     key: 3
                 }]}
 
-            />).toJSON();
-            
-            
+            />).toJSON();            
             expect(render);
-
-        
     })
-
 
     it('rends correctly change state', async () => {
         c.setState = (state) => {
@@ -100,6 +87,5 @@ describe('Render PackenCheck', () => {
         let state = c.changeState();
         expect(state);
     })
-
 
 })

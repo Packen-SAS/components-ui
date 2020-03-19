@@ -43,10 +43,12 @@ export default {
         color: Colors.base.white, marginTop: 2
     },
     title: {
-        left: 5,
-        
-        fontSize: Typography.size.medium,
-        color: Colors.base.default_alt
+        fontStyle: 'normal',
+        fontWeight: 'normal', 
+        fontSize: Typography.size.medium, 
+        lineHeight: 18, 
+        color: Colors.base.default_alt,
+        left: 5
     }
 
 }

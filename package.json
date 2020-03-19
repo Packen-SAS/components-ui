@@ -6,7 +6,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "test": "jest",
-    "unit": "jest --coverage --coverageDirectory=unit __tests__/components/PackenCheckBox_test.js"
+    "unit": "jest --coverage --coverageDirectory=unit __tests__/components/PackenTextArea_test.js"
   },
   "dependencies": {
     "react": "16.8.3",
