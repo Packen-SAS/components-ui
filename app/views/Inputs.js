@@ -11,9 +11,10 @@ class Inputs extends Component {
     super(props);
   }
 
-  handle_change_text = value => {
+  handleChangeText = value => {
     /* Content can be used here */
     /* console.log(value); */
+    return value;
   }
 
   render() {
@@ -24,7 +25,7 @@ class Inputs extends Component {
             <PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "lock",
                 position: "left"
@@ -42,7 +43,7 @@ class Inputs extends Component {
             <PackenInput
               size="small"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "x-circle",
                 position: "right"
@@ -60,7 +61,7 @@ class Inputs extends Component {
             <PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -74,7 +75,7 @@ class Inputs extends Component {
             <PackenInput
               size="large"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "lock",
                 position: "left"
@@ -92,7 +93,7 @@ class Inputs extends Component {
             <PackenInput
               size="giant"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "user",
                 position: "right"
@@ -106,7 +107,7 @@ class Inputs extends Component {
             <PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "clock",
                 position: "left"
@@ -125,7 +126,7 @@ class Inputs extends Component {
             <PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -140,7 +141,7 @@ class Inputs extends Component {
             <PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -154,7 +155,7 @@ class Inputs extends Component {
             <PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -168,7 +169,7 @@ class Inputs extends Component {
             <PackenInput
               size="large"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"

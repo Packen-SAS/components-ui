@@ -22,9 +22,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -36,16 +36,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -54,7 +54,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -243,7 +243,8 @@
 <a name='L185'></a><a href='#L185'>185</a>
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
-<a name='L188'></a><a href='#L188'>188</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L188'></a><a href='#L188'>188</a>
+<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -253,16 +254,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -439,24 +441,25 @@ import Section from "../components/Section";
 import PackenInput from "../components/PackenInput";
 &nbsp;
 class Inputs extends Component {
-<span class="fstat-no" title="function not covered" >  co</span>nstructor(props) {
-<span class="cstat-no" title="statement not covered" >    super(props);</span>
+  constructor(props) {
+    super(props);
   }
 &nbsp;
-  handle_change_text = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >va</span>lue =&gt; {</span>
+  handleChangeText = value =&gt; {
     /* Content can be used here */
     /* console.log(value); */
+    return value;
   }
 &nbsp;
-<span class="fstat-no" title="function not covered" >  re</span>nder() {
-<span class="cstat-no" title="statement not covered" >    return (</span>
+  render() {
+    return (
       &lt;Section title="Inputs"&gt;
         &lt;View style={SectionStyles.section__content}&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "lock",
                 position: "left"
@@ -474,7 +477,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="small"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "x-circle",
                 position: "right"
@@ -492,7 +495,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -506,7 +509,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="large"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "lock",
                 position: "left"
@@ -524,7 +527,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="giant"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "user",
                 position: "right"
@@ -538,7 +541,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               icon={{
                 name: "clock",
                 position: "left"
@@ -557,7 +560,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="medium"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -572,7 +575,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -586,7 +589,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="tiny"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -600,7 +603,7 @@ class Inputs extends Component {
             &lt;PackenInput
               size="large"
               placeholder="Placeholder"
-              onChangeText={this.handle_change_text}
+              onChangeText={this.handleChangeText}
               message={{
                 text: "Caption text, description, error notification",
                 icon: "info"
@@ -624,7 +627,7 @@ export default Inputs;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Mar 19 2020 13:29:32 GMT-0500 (-05)
+                at Thu Mar 19 2020 15:13:13 GMT-0500 (-05)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

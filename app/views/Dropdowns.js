@@ -7,7 +7,6 @@ import SectionStyles from "../styles/components/Section";
 import Colors from "../styles/abstracts/colors";
 
 import PackenDropdown from "../components/PackenDropdown";
-import PackenTag from "../components/PackenTag";
 import PackenText from "../components/PackenText";
 
 import { genKey } from "../utils";
@@ -1200,7 +1199,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Bogotá, D.C.", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1215,7 +1214,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Medellín", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1231,7 +1230,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Bucaramanga", isDisabled: true }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1246,7 +1245,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Santa Marta", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1261,7 +1260,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Cali", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1276,7 +1275,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Cartagena", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             },
@@ -1291,7 +1290,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Leticia", isDisabled: false }],
-                  notifyParent: () => { return; }
+                  notifyParent: this.mockCallback
                 }
               }
             }
@@ -1408,6 +1407,8 @@ class Dropdowns extends Component {
     }
   }
 
+  mockCallback = () => { return true; }
+
   render() {
     return (
       <Section title="Dropdowns">
@@ -1419,7 +1420,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Single selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1438,7 +1439,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Multiple selections",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1456,7 +1457,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Single information selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right"
@@ -1477,7 +1478,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Multiple avatars selection",
                 placeholder: "Selecciona el usuario",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1495,7 +1496,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Single avatar + info selection",
                 placeholder: "Selecciona el usuario",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1518,7 +1519,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Disabled selection",
                 placeholder: "Selecciona el usuario",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right"
@@ -1535,7 +1536,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Multiple icon selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1553,7 +1554,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Single icon selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right"
@@ -1575,7 +1576,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Single icon + check selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right"
@@ -1592,7 +1593,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Double icon selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right"
@@ -1609,7 +1610,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Radio selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
@@ -1627,7 +1628,7 @@ class Dropdowns extends Component {
               input={{
                 label: "Checkbox selection",
                 placeholder: "Selecciona tu ciudad",
-                onChangeText: () => { return; },
+                onChangeText: this.mockCallback,
                 icon: {
                   name: "chevron-down",
                   position: "right",
