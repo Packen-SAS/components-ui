@@ -6,7 +6,7 @@ import PackenText from '../components/PackenText';
 import Colors from '../styles/abstracts/colors';
 import Typography from '../styles/abstracts/typography';
 
-export default class PackenCheckBox extends React.Component {
+export default class PackecnCheckBox extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -42,7 +42,7 @@ export default class PackenCheckBox extends React.Component {
     return (
       <View key={index} style={PackenCheckBoxStyle.contentView}>
         <TouchableOpacity onPress={() => this.changeState(index, check.disabled, check.checked)} >
-          <View style={PackenCheckBoxStyle.contentCheckTitle } >
+          <View style={PackenCheckBoxStyle.contentCheckTitle} >
             <View style={this.getStylesCheckBox(check.disabled, check.checked)} >
               {check.checked === true ? <Icon style={CheckBoxStyles.icon} name="check" /> : null}
               {check.checked === false ? <Icon style={CheckBoxStyles.icon} name="minus" /> : null}
@@ -72,11 +72,11 @@ export default class PackenCheckBox extends React.Component {
 
 const PackenCheckBoxStyle = StyleSheet.create({
   contentView: {
-    marginRight: 10, 
+    marginRight: 10,
     marginBottom: 10
   },
-  contentCheckTitle:{
-    flexDirection: 'row', 
+  contentCheckTitle: {
+    flexDirection: 'row',
     marginLeft: 10
   }
 });
