@@ -52,14 +52,14 @@ class PackenCheckboxControl extends Component {
     let disabledStyles = {};
 
     if (this.state.isDisabled) {
+      const correctStyles = CheckboxStyles.iconBox.state.disabled[this.state.isChecked ? "active" : "inactive"];
       this.setState({
         styles: {
           ...this.state.styles,
-          disabled: {
-            ...CheckboxStyles.iconBox.state.disabled[this.state.isChecked ? "active" : "inactive"]
-          }
+          disabled: { ...correctStyles }
         }
       });
+      disabledStyles = correctStyles
     }
 
     return disabledStyles;

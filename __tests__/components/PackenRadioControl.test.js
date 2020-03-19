@@ -49,6 +49,20 @@ describe("<PackenRadioControl/>", () => {
   });
 
   describe("state changing", () => {
+    it("sets initial state to 'default' if it's not disabled", () => {
+      render.setProps({ isDisabled: false });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("default");
+    });
+
+    it("sets initial state to 'default_disabled' if it's disabled", () => {
+      render.setProps({ isDisabled: true });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("default_disabled");
+    });
+
     it("sets state as 'default_disabled'", () => {
       render.setProps({
         isDisabled: true,

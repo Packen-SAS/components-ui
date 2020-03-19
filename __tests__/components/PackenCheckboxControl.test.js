@@ -2,6 +2,8 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
+import CheckboxStyles from "../../app/styles/components/PackenCheckbox";
+
 import PackenCheckboxControl from "../../app/components/PackenCheckboxControl";
 
 describe("<PackenCheckboxControl/>", () => {
@@ -38,10 +40,11 @@ describe("<PackenCheckboxControl/>", () => {
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.setDisabledStyles = jest.fn();
+      const spySetDisabledStyles = jest.spyOn(renderInstance, "setDisabledStyles");
       renderInstance.componentDidMount();
 
-      expect(renderInstance.setDisabledStyles).toHaveBeenCalled();
+      expect(spySetDisabledStyles).toHaveBeenCalled();
+      spySetDisabledStyles.mockRestore();
     });
 
     it("executes correct code on componentDidUpdate if checked items don't match", () => {
@@ -96,6 +99,47 @@ describe("<PackenCheckboxControl/>", () => {
       const res = renderInstance.setActiveStyles();
 
       expect(res).toBe(false);
+    });
+
+    it("sets and returns disabled styles if it's checked and set so via props", () => {
+      renderInstance.state.isDisabled = true;
+      renderInstance.state.isChecked = true;
+      const returnedStyles = renderInstance.setDisabledStyles();
+
+      expect(renderInstance.state.styles).toEqual({
+        ...renderInstance.state.styles,
+        disabled: {
+          ...CheckboxStyles.iconBox.state.disabled.active
+        }
+      });
+      expect(returnedStyles).toEqual(CheckboxStyles.iconBox.state.disabled.active);
+    });
+
+    it("sets and returns disabled styles if it's unchecked and set so via props", () => {
+      renderInstance.state.isDisabled = true;
+      renderInstance.state.isChecked = false;
+      const returnedStyles = renderInstance.setDisabledStyles();
+
+      expect(renderInstance.state.styles).toEqual({
+        ...renderInstance.state.styles,
+        disabled: {
+          ...CheckboxStyles.iconBox.state.disabled.inactive
+        }
+      });
+      expect(returnedStyles).toEqual(CheckboxStyles.iconBox.state.disabled.inactive);
+    });
+
+    it("sets and returns an empty disabled styles object if it's not disabled", () => {
+      renderInstance.state.isDisabled = false;
+      const returnedStyles = renderInstance.setDisabledStyles();
+
+      expect(renderInstance.state.styles).toEqual({
+        ...renderInstance.state.styles,
+        disabled: {
+          ...renderInstance.state.styles.disabled
+        }
+      });
+      expect(returnedStyles).toEqual({});
     });
   });
 });
