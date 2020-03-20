@@ -280,12 +280,89 @@ describe("<PackenListItem/>", () => {
       spySetMainContent.mockRestore();
     });
 
-    it("executes correct code on componentDidUpdate", () => {
-      renderInstance.checkboxRef = { setCheckedState: mockCallback }
-      const spyCheckIfUnselected = jest.spyOn(renderInstance, "checkIfUnselected");
+    it("checks selected items state", () => {
       const prevProps = {
         selectedItems: ["Test"]
       };
+      renderInstance.props = {
+        selectedItems: ["Test 2", "Test 3"],
+        mainContent: {
+          isDisabled: false,
+          value: "",
+          main: {}
+        },
+        currentCheckboxesState: {
+          finalSelectionArray: []
+        }
+      }
+      renderInstance.checkSelectedItems(prevProps);
+
+      expect(renderInstance.state.prevState).toBe("default");
+      expect(renderInstance.state.state).toBe("default");
+    });
+
+    it("returns false while checking selected items state if found", () => {
+      const prevProps = {
+        selectedItems: ["Test"]
+      };
+      renderInstance.props = {
+        selectedItems: ["Test 2", "Test 3"],
+        mainContent: {
+          isDisabled: false,
+          value: "Test 2",
+          main: {}
+        },
+        currentCheckboxesState: {
+          finalSelectionArray: []
+        }
+      }
+      const res = renderInstance.checkSelectedItems(prevProps);
+
+      expect(res).toBe(false);
+    });
+
+    it("returns false while checking selected items state if it's disabled", () => {
+      const prevProps = {
+        selectedItems: ["Test"]
+      };
+      renderInstance.props = {
+        selectedItems: ["Test 2", "Test 3"],
+        mainContent: {
+          isDisabled: true,
+          value: "Test 2",
+          main: {}
+        },
+        currentCheckboxesState: {
+          finalSelectionArray: []
+        }
+      }
+      const res = renderInstance.checkSelectedItems(prevProps);
+
+      expect(res).toBe(false);
+    });
+
+    it("returns false while checking selected items state if they didn't change", () => {
+      const prevProps = {
+        selectedItems: ["Test 2", "Test 3"]
+      };
+      renderInstance.props = {
+        selectedItems: ["Test 2", "Test 3"],
+        mainContent: {
+          isDisabled: false,
+          value: "",
+          main: {}
+        },
+        currentCheckboxesState: {
+          finalSelectionArray: []
+        }
+      }
+      const res = renderInstance.checkSelectedItems(prevProps);
+
+      expect(res).toBe(false);
+    });
+
+    it("checks checkbox state", () => {
+      renderInstance.checkboxRef = { setCheckedState: mockCallback }
       renderInstance.props = {
         selectedItems: ["Test 2", "Test 3"],
         mainContent: {
@@ -296,16 +373,32 @@ describe("<PackenListItem/>", () => {
           finalSelectionArray: []
         }
       }
-      renderInstance.setState({ newSelectedState: true });
+      renderInstance.state.newSelectedState = true;
+      renderInstance.checkCheckbox();
+
+      expect(renderInstance.checkboxRef.setCheckedState)
+        .toHaveBeenCalledWith(
+          renderInstance.props.mainContent.value,
+          renderInstance.state.newSelectedState,
+          renderInstance.props.currentCheckboxesState.finalSelectionArray
+        );
+    });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const spyCheckIfUnselected = jest.spyOn(renderInstance, "checkIfUnselected");
+      const spyCheckSelectedItems = jest.spyOn(renderInstance, "checkSelectedItems");
+      const spyCheckCheckbox = jest.spyOn(renderInstance, "checkCheckbox");
+      const prevProps = {
+        selectedItems: ["Test"]
+      };
       renderInstance.componentDidUpdate(prevProps, null, null);
 
       expect(spyCheckIfUnselected).toHaveBeenCalled();
+      expect(spyCheckSelectedItems).toHaveBeenCalled();
+      expect(spyCheckCheckbox).toHaveBeenCalled();
       spyCheckIfUnselected.mockRestore();
-
-      expect(renderInstance.state.prevState).toBe("default");
-      expect(renderInstance.state.state).toBe("default");
-      expect(renderInstance.checkboxRef.setCheckedState)
-        .toHaveBeenCalledWith(renderInstance.props.mainContent.value, renderInstance.state.newSelectedState, renderInstance.props.currentCheckboxesState.finalSelectionArray);
+      spyCheckSelectedItems.mockRestore();
+      spyCheckCheckbox.mockRestore();
     });
 
     it("checks if unselected if selection type is 'radio'", () => {
@@ -383,6 +476,7 @@ describe("<PackenListItem/>", () => {
         },
         updateSelectedItems: mockCallback
       };
+      renderInstance.radioRef = false;
 
       renderInstance.pressHandler();
 
@@ -421,7 +515,8 @@ describe("<PackenListItem/>", () => {
         },
         updateSelectedItems: mockCallback
       };
-      renderInstance.setState({ prevState: "default" });
+      renderInstance.checkboxRef = false;
+      renderInstance.state.prevState = "default";
 
       renderInstance.pressHandler();
 
@@ -442,10 +537,10 @@ describe("<PackenListItem/>", () => {
         updateSelectedItems: jest.fn()
       };
       renderInstance.checkboxRef = true;
-      renderInstance.setState({ prevState: "default" });
+      renderInstance.state.prevState = "default";
 
       renderInstance.pressHandler();
-
+      
       expect(renderInstance.state.prevState).toBe("active");
       expect(renderInstance.state.state).toBe("active");
       expect(renderInstance.state.newSelectedState).toBe(true);
@@ -913,7 +1008,7 @@ describe("<PackenListItem/>", () => {
     });
 
     it("returns correct styles if it's not a control, it's not an array, and it's not a radio or checkbox", () => {
-      render.setProps({
+      renderInstance.props = {
         mainContent: {
           main: {
             control: undefined,
@@ -928,8 +1023,7 @@ describe("<PackenListItem/>", () => {
             }
           }
         }
-      });
-      renderInstance.props.mainContent.main.props.style.color = "#FFFFFF";
+      };
       const returnedStyles = renderInstance.getOriginalStyles();
 
       expect(returnedStyles).toEqual({ color: "#FFFFFF" });
@@ -941,7 +1035,7 @@ describe("<PackenListItem/>", () => {
           main: {
             control: undefined,
             type: {
-              displayName: "PackenText"
+              displayName: "View"
             },
             props: {
               children: [

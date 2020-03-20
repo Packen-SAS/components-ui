@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import ListStyles from "../styles/components/PackenList";
+import { arraysEqual } from "../utils";
 
 import PackenAvatar from "./PackenAvatar";
 import PackenRadio from "./PackenRadio";
@@ -39,11 +40,10 @@ class PackenListItem extends Component {
   }
 
   getOriginalStyles = () => {
-    let originalStyles;
+    let originalStyles = [];
 
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
-        originalStyles = [];
         this.props.mainContent.main.props.children.forEach(child => {
           if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
             originalStyles.push({ color: child.props.style.color });
@@ -65,10 +65,8 @@ class PackenListItem extends Component {
     this.setMainContent();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    this.checkIfUnselected();
-
-    if (prevProps.selectedItems !== this.props.selectedItems) {
+  checkSelectedItems = prevProps => {
+    if (!arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
       if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
         const found = this.props.selectedItems.find(item => item === this.props.mainContent.value);
         if (!found) {
@@ -76,13 +74,27 @@ class PackenListItem extends Component {
             prevState: "default",
             state: "default"
           });
+        } else {
+          return false;
         }
+      } else {
+        return false;
       }
+    } else {
+      return false;
     }
+  }
 
+  checkCheckbox = () => {
     if (this.checkboxRef && this.checkboxRef.setCheckedState) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
     }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.checkIfUnselected();
+    this.checkSelectedItems(prevProps);
+    this.checkCheckbox();
   }
 
   checkIfUnselected = () => {
@@ -119,7 +131,7 @@ class PackenListItem extends Component {
   pressHandler = () => {
     switch (this.props.config.selectionType) {
       case "single":
-      case "radio": {
+      case "radio":
         this.setState({
           prevState: "active",
           state: "active"
@@ -133,9 +145,9 @@ class PackenListItem extends Component {
         } else {
           this.props.updateSelectedItems(this.props.mainContent.value, true);
         }
-      } break;
+        break;
       case "multiple":
-      case "checkbox": {
+      case "checkbox":
         const newState = this.state.prevState === "default" ? "active" : "default";
         const newSelectedState = newState === "active" ? true : false;
         this.setState({
@@ -151,7 +163,6 @@ class PackenListItem extends Component {
         } else {
           this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState);
         }
-      } break;
       default:
         return false;
     }
@@ -352,7 +363,7 @@ class PackenListItem extends Component {
 
   checkMainContentStyles = () => {
     const mainContent = this.props.mainContent;
-    
+
     if (mainContent.isDisabled) {
       if (Array.isArray(mainContent.main.props.children)) {
         mainContent.main.props.children.forEach(child => {
