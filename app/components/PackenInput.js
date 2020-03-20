@@ -11,12 +11,16 @@ class PackenInput extends Component {
   constructor(props) {
     super(props);
 
+    this.state = { ...this.setInitialState() }
+  }
+
+  setInitialState = () => {
     let initialState = {
-      value: props.value ? props.value : "",
-      state: props.disabled ? "disabled" : "default"
+      value: this.props.value ? this.props.value : "",
+      state: this.props.disabled ? "disabled" : "default"
     };
 
-    if (props.icon) {
+    if (this.props.icon) {
       initialState = {
         ...initialState,
         dimensions: {
@@ -32,7 +36,7 @@ class PackenInput extends Component {
       }
     }
 
-    this.state = { ...initialState }
+    return initialState;
   }
 
   setIconPositionStyles = () => {
@@ -136,6 +140,88 @@ class PackenInput extends Component {
     this.props.onChangeText(text);
   }
 
+  setEditable = () => {
+    let isEditable = true;
+
+    if (this.props.disabled || this.props.nonEditable) {
+      isEditable = false;
+    }
+
+    return isEditable;
+  }
+
+  getIconName = () => {
+    let name = "";
+
+    if (this.props.isDropdown) {
+      if (this.props.isOpen) {
+        name = "chevron-up";
+      } else {
+        name = "chevron-down";
+      }
+    } else {
+      name = this.props.icon.name;
+    }
+
+    return name;
+  }
+
+  getHelp = () => {
+    let help = null;
+
+    if (this.props.help) {
+      help = (
+        <PackenText
+          style={{
+            ...InputStyles.help.base,
+            ...InputStyles.help.size[this.props.size]
+          }}
+        >{this.props.help}</PackenText>
+      );
+    }
+
+    return help;
+  }
+
+  getMessageIcon = () => {
+    let icon = null;
+
+    if (this.props.message.icon) {
+      icon = (
+        <Icon
+          name={this.props.message.icon}
+          size={InputStyles.message.icon.size[this.props.size].size}
+          color={InputStyles.message.icon.theme[this.props.theme].color}
+          style={{
+            ...InputStyles.message.icon.base,
+            ...InputStyles.message.icon.state[this.state.state]
+          }}
+        />
+      );
+    }
+
+    return icon;
+  }
+
+  getMessage = () => {
+    let message = null;
+
+    if (this.props.message) {
+      message = (
+        <View style={InputStyles.message.box}>
+          {this.getMessageIcon()}
+          <PackenText style={{
+            ...InputStyles.message.text.size[this.props.size],
+            ...InputStyles.message.text.theme[this.props.theme],
+            ...InputStyles.message.text.state[this.state.state]
+          }}>{this.props.message.text}</PackenText>
+        </View>
+      );
+    }
+
+    return message;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.value !== this.props.value) {
       this.setState({
@@ -153,18 +239,14 @@ class PackenInput extends Component {
             ...InputStyles.label.size[this.props.size],
             ...InputStyles.label.state[this.state.state]
           }}>{this.props.label.toUpperCase()}</PackenText>
-          {
-            this.props.help ? (
-              <PackenText style={{ ...InputStyles.help.base, ...InputStyles.help.size[this.props.size] }}>{this.props.help}</PackenText>
-            ) : null
-          }
+          {this.getHelp()}
         </View>
         <View style={InputStyles.box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
           {
             this.props.icon ? (
               <View style={{ ...InputStyles.icon_wrapper.base, ...this.setIconPositionStyles() }} onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}>
                 <Icon
-                  name={this.props.isDropdown ? this.props.isOpen ? "chevron-up" : "chevron-down" : this.props.icon.name}
+                  name={this.getIconName()}
                   size={InputStyles.icon.size[this.props.size].size}
                   color={InputStyles.icon.base.color}
                   style={{
@@ -193,34 +275,11 @@ class PackenInput extends Component {
               placeholder={this.props.placeholder}
               placeholderTextColor={InputStyles.placeholder.color}
               multiline={this.props.multiline ? true : false}
-              editable={this.props.disabled || this.props.nonEditable ? false : true}
+              editable={this.setEditable()}
             />
           </TouchableWithoutFeedback>
         </View>
-        {
-          this.props.message ? (
-            <View style={InputStyles.message.box}>
-              {
-                this.props.message.icon ? (
-                  <Icon
-                    name={this.props.message.icon}
-                    size={InputStyles.message.icon.size[this.props.size].size}
-                    color={InputStyles.message.icon.theme[this.props.theme].color}
-                    style={{
-                      ...InputStyles.message.icon.base,
-                      ...InputStyles.message.icon.state[this.state.state]
-                    }}
-                  />
-                ) : null
-              }
-              <PackenText style={{
-                ...InputStyles.message.text.size[this.props.size],
-                ...InputStyles.message.text.theme[this.props.theme],
-                ...InputStyles.message.text.state[this.state.state]
-              }}>{this.props.message.text}</PackenText>
-            </View>
-          ) : null
-        }
+        {this.getMessage()}
       </View>
     );
   }

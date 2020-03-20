@@ -3,6 +3,7 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import TabsStyles from "../../app/styles/components/PackenTabs";
+
 import PackenTabItem from "../../app/components/PackenTabItem";
 
 describe("<PackenTabItem/>", () => {
@@ -37,6 +38,52 @@ describe("<PackenTabItem/>", () => {
 
       expect(spyCheckIfActive).toHaveBeenCalled();
       spyCheckIfActive.mockRestore();
+    });
+
+    it("executes pressInHandler", () => {
+      renderInstance.pressInHandler();
+
+      expect(renderInstance.state.itemStyles).toEqual({
+        ...renderInstance.state.itemStyles,
+        shape: {
+          ...renderInstance.state.itemStyles.shape,
+          ...TabsStyles.item.focus.shape
+        },
+        label: {
+          ...renderInstance.state.itemStyles.label,
+          ...TabsStyles.item.focus.label
+        },
+        icon: {
+          ...renderInstance.state.itemStyles.icon,
+          ...TabsStyles.item.focus.icon
+        }
+      });
+    });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { activeTabIndex: 1 };
+      render.setProps({ activeTabIndex: 0 });
+      const spyCheckIfActive = jest.spyOn(renderInstance, "checkIfActive");
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(spyCheckIfActive).toHaveBeenCalled();
+      spyCheckIfActive.mockRestore();
+    });
+
+    it("executes pressOutHandler", () => {
+      const spySetActiveTab = jest.spyOn(renderInstance, "setActiveTab");
+      renderInstance.pressOutHandler();
+
+      expect(spySetActiveTab).toHaveBeenCalled();
+      spySetActiveTab.mockRestore();
+    });
+
+    it("executes onPress event callback for the touchable", () => {
+      const spySetActiveTab = jest.spyOn(renderInstance, "setActiveTab");
+      render.props().onPress();
+
+      expect(spySetActiveTab).toHaveBeenCalled();
+      spySetActiveTab.mockRestore();
     });
   });
 
@@ -113,6 +160,39 @@ describe("<PackenTabItem/>", () => {
           ...TabsStyles.item.default.icon
         }
       });
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders an icon if provided, and is not a '»'", () => {
+      render.setProps({
+        icon: "check"
+      });
+      renderInstance.state = {
+        itemStyles: {
+          icon: {
+            color: "#000000",
+            fontSize: 12
+          }
+        }
+      };
+      const returnedElement = renderInstance.getIcon();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders an icon if provided, and is a '»'", () => {
+      render.setProps({
+        icon: "»"
+      });
+      renderInstance.setState({
+        itemStyles: {
+          icon: {}
+        }
+      });
+      const returnedElement = renderInstance.getIcon();
+
+      expect(returnedElement).toBeDefined();
     });
   });
 });

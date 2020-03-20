@@ -63,6 +63,8 @@ class PackenList extends Component {
   
         if (this.props.toggleMenu) {
           this.props.toggleMenu();
+        } else {
+          return false;
         }
       } break;
       case "multiple":
@@ -96,7 +98,7 @@ class PackenList extends Component {
         }
       } break;
       default:
-        break;
+        return false;
     }
   }
 
@@ -125,6 +127,8 @@ class PackenList extends Component {
             finalSelectionArray: [...this.state.selectedItems]
           }
         });
+      } else {
+        return false;
       }
     }
   }

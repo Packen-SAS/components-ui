@@ -133,7 +133,7 @@ describe("<PackenListItem/>", () => {
       expect(renderedSidesContent.right).toBe(null);
     });
 
-    it("renders correct content if left and right are defined", () => {
+    it("renders correct content if left and right are defined with Avatar and Icon", () => {
       renderInstance.props = {
         config: {
           size: "small"
@@ -161,6 +161,44 @@ describe("<PackenListItem/>", () => {
             type: "icon",
             config: {
               name: "arrow-up"
+            }
+          }
+        }
+      };
+      const renderedSidesContent = renderInstance.getSidesContent();
+
+      expect(renderedSidesContent.left).toBeDefined();
+      expect(renderedSidesContent.right).toBeDefined();
+    });
+
+    it("renders correct content if left and right are defined with Icon and Avatar", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          main: {
+            props: {
+              children: {},
+              style: {
+                color: ""
+              }
+            },
+            type: {
+              displayName: "PackenText"
+            }
+          },
+          left: {
+            type: "icon",
+            config: {
+              name: "arrow-up"
+            }
+          },
+          right: {
+            type: "avatar",
+            config: {
+              size: "small",
+              src: require("../../assets/images/avatar.jpg")
             }
           }
         }
@@ -205,6 +243,23 @@ describe("<PackenListItem/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("executes onLayout event callback for the touchable", () => {
+      const spyGetItemHeight = jest.spyOn(renderInstance, "getItemHeight");
+      render.setProps({
+        getItemHeight: mockCallback
+      });
+      render.props().children.props.onLayout({
+        nativeEvent: {
+          layout: {
+            height: 10,
+            width: 10
+          }
+        }
+      });
+
+      expect(spyGetItemHeight).toHaveBeenCalled();
+    });
+
     it("executes correct code on componentDidMount", () => {
       const spySetMainContent = jest.spyOn(renderInstance, "setMainContent");
       renderInstance.props = {
@@ -397,6 +452,17 @@ describe("<PackenListItem/>", () => {
       expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
+    it("executes correct code on press if selection type is not defined", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: undefined
+        }
+      };
+      const res = renderInstance.pressHandler();
+
+      expect(res).toBe(false);
+    });
+
     it("gets item height", () => {
       renderInstance.props.getItemHeight = mockCallback;
       renderInstance.getItemHeight({ height: 10 });
@@ -405,9 +471,163 @@ describe("<PackenListItem/>", () => {
     });
   });
 
+  describe("state changing", () => {
+    it("sets correct initial state if it's disabled", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: true,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("disabled");
+    });
+
+    it("sets correct initial state if it's not disabled, and not selected", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: false,
+          isSelected: false,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("default");
+    });
+
+    it("sets correct initial state if it's not disabled, and selected", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("active");
+    });
+
+    it("creates refs if it's a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: {}
+          }
+        }
+      });
+      renderInstance.createRefs();
+
+      expect(renderInstance.radioRef).toBeDefined();
+      expect(renderInstance.checkboxRef).toBeDefined();
+    });
+
+    it("returns false if it's not a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: undefined,
+            props: {
+              children: []
+            }
+          }
+        }
+      });
+      const res = renderInstance.createRefs();
+
+      expect(res).toBe(false);
+    });
+
+    it("sets the radio ref", () => {
+      renderInstance.setRadioRef("ref");
+
+      expect(renderInstance.radioRef).toBe("ref");
+    });
+
+    it("sets the checkbox ref", () => {
+      renderInstance.setCheckboxRef("ref");
+
+      expect(renderInstance.checkboxRef).toBe("ref");
+    });
+
+    it("sets main content if it's not a control type", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {}
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+
+    it("sets main content if it's a control of type 'radio'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        },
+        mainContent: {
+          main: {
+            control: {
+              type: "radio"
+            }
+          }
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+
+    it("sets main content if it's a control of type 'checkbox'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "checkbox"
+        },
+        mainContent: {
+          main: {
+            control: {
+              type: "checkbox"
+            }
+          }
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+
+    it("sets main content if it's a control of type not defined", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            control: {
+              type: undefined
+            }
+          }
+        }
+      };
+      const res = renderInstance.setMainContent();
+
+      expect(res).toBe(false);
+    });
+  });
+
   describe("styling", () => {
     it("returns an empty active styles object if selection type is 'radio' or 'checkbox'", () => {
-      renderInstance.props.config.selectionType = "radio";
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        }
+      };
       const returnedStyles = renderInstance.getActiveStyles();
       
       expect(returnedStyles).toEqual({});
@@ -678,33 +898,79 @@ describe("<PackenListItem/>", () => {
       
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe("#000000");
     });
-  });
 
-  describe("state changing", () => {
-    it("sets main content if it's not a control type", () => {
-      renderInstance.props = {
+    it("returns an empty object if it's a control", () => {
+      render.setProps({
         mainContent: {
-          main: {}
+          main: {
+            control: {}
+          }
         }
-      };
-      renderInstance.setMainContent();
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
 
-      expect(renderInstance.state.mainContent).toBeDefined();
+      expect(returnedStyles).toEqual({});
     });
 
-    it("sets main content if it's a control", () => {
+    it("returns correct styles if it's not a control, it's not an array, and it's not a radio or checkbox", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: undefined,
+            type: {
+              displayName: "PackenText"
+            },
+            props: {
+              style: {
+                color: "#FFFFFF"
+              },
+              children: "Test"
+            }
+          }
+        }
+      });
+      renderInstance.props.mainContent.main.props.style.color = "#FFFFFF";
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual({ color: "#FFFFFF" });
+    });
+
+    it("returns correct styles if it's not a control, it's an array, and it's not a radio or checkbox", () => {
       renderInstance.props = {
         mainContent: {
           main: {
-            control: {
-              type: "radio"
+            control: undefined,
+            type: {
+              displayName: "PackenText"
+            },
+            props: {
+              children: [
+                {
+                  type: { displayName: "PackenText" },
+                  props: { style: { color: "#FFFFFF" } }
+                },
+                {
+                  type: { displayName: "PackenText" },
+                  props: { style: { color: "#FFFFFF" } }
+                }
+              ]
             }
           }
         }
       };
-      renderInstance.setMainContent();
+      renderInstance.state = {
+        ...renderInstance.state,
+        originalStyles: [
+          { color: "#FFFFFF" },
+          { color: "#FFFFFF" }
+        ]
+      };
+      const returnedStyles = renderInstance.getOriginalStyles();
 
-      expect(renderInstance.state.mainContent).toBeDefined();
+      expect(returnedStyles).toEqual([
+        { color: "#FFFFFF" },
+        { color: "#FFFFFF" }
+      ]);
     });
   });
 });

@@ -148,4 +148,24 @@ describe("<PackenRadio/>", () => {
       expect(renderColumnInstance.props.callback).toHaveBeenCalledWith(renderColumnInstance.state.currentSelection);
     });
   });
+
+  describe("styling", () => {
+    it("disables pointer events if it's part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "dropdown"
+      });
+      renderColumn.props().children.forEach(child => {
+        expect(child.props.pointerEvents).toBe("none");
+      });
+    });
+
+    it("enables pointer events if it's not part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "column"
+      });
+      renderColumn.props().children.forEach(child => {
+        expect(child.props.pointerEvents).toBe("auto");
+      });
+    });
+  });
 });

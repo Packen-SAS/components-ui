@@ -17,7 +17,7 @@ describe("<PackenModal/>", () => {
         size="default"
         type="info"
         theme="danger"
-        banner={{icon: "x-circle"}}
+        banner={{ icon: "x-circle" }}
         info={{
           title: "Title",
           text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
@@ -74,6 +74,47 @@ describe("<PackenModal/>", () => {
       expect(render).toBeDefined();
     });
 
+    it("renders a banner if provided via props", () => {
+      render.setProps({
+        theme: "primary",
+        banner: {
+          icon: "check"
+        }
+      });
+      const returnedElement = renderInstance.getBanner();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders null if a banner is not provided", () => {
+      render.setProps({ banner: undefined });
+      const returnedElement = renderInstance.getBanner();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders an info button if provided via props", () => {
+      render.setProps({
+        info: {
+          btn: "Test"
+        }
+      });
+      const returnedElement = renderInstance.getInfoButton();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders null if no info button is provided", () => {
+      render.setProps({
+        info: {
+          btn: undefined
+        }
+      });
+      const returnedElement = renderInstance.getInfoButton();
+
+      expect(returnedElement).toBe(null);
+    });
+
     it("renders a gallery modal correctly", () => {
       expect(renderGallery).toBeDefined();
     });
@@ -83,7 +124,7 @@ describe("<PackenModal/>", () => {
         item: require("../../assets/images/placeholder.png"),
         index: 0
       });
-      
+
       expect(gallerySlide).toBeDefined();
     });
   });
@@ -96,15 +137,15 @@ describe("<PackenModal/>", () => {
         size: "small"
       });
       const returnedStyles = renderInstance.getContentStyles();
-      
-      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.banner.small});
+
+      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.banner.small });
     });
 
     it("returns correct content styles if there's no banner", () => {
       renderInstance.props = {};
       const returnedStyles = renderInstance.getContentStyles();
-      
-      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.default});
+
+      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.default });
     });
 
     it("returns correct text styles if there's a banner", () => {
@@ -114,14 +155,14 @@ describe("<PackenModal/>", () => {
         size: "default"
       });
       const returnedStyles = renderInstance.getTextStyles();
-      
+
       expect(returnedStyles).toEqual({ ...ModalStyles.text.banner.default });
     });
 
     it("returns correct text styles if there's no banner", () => {
       renderInstance.props = {};
       const returnedStyles = renderInstance.getTextStyles();
-      
+
       expect(returnedStyles).toEqual({ ...ModalStyles.text.default });
     });
 
@@ -144,7 +185,7 @@ describe("<PackenModal/>", () => {
         isOpen: false
       });
       renderInstance.setBackdropStyles();
-      
+
       expect(renderInstance.state.backdropStyles).toEqual({
         ...renderInstance.state.backdropStyles,
         ...ModalStyles.backdrop.closed
@@ -161,9 +202,59 @@ describe("<PackenModal/>", () => {
         isOpen: true
       });
       renderInstance.componentDidUpdate(prevProps, null, null);
-      
+
       expect(spySetBackdropStyles).toHaveBeenCalled();
       spySetBackdropStyles.mockRestore();
+    });
+
+    it("executes onLayout event callback for gallery", () => {
+      const spyGetGalleryBoxDimensions = jest.spyOn(renderInstance, "getGalleryBoxDimensions");
+      const e = {
+        nativeEvent: {
+          layout: {}
+        }
+      };
+      render.setProps({
+        isOpen: false,
+        type: "gallery",
+        images: []
+      });
+      render.props().children.props.children.props.children.props.children[1].props.onLayout(e);
+
+      expect(spyGetGalleryBoxDimensions).toHaveBeenCalled();
+      spyGetGalleryBoxDimensions.mockRestore();
+    });
+
+    it("executes onLayout event callback for previous arrow", () => {
+      const spyGetGalleryArrowsDimensions = jest.spyOn(renderInstance, "getGalleryArrowsDimensions");
+      const e = {
+        nativeEvent: {
+          layout: {}
+        }
+      };
+      render.setProps({
+        isOpen: false,
+        type: "gallery",
+        images: ["", "", ""]
+      });
+      renderInstance.setState({ has: { prev: true } });
+      render.props().children.props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
+
+      expect(spyGetGalleryArrowsDimensions).toHaveBeenCalled();
+      spyGetGalleryArrowsDimensions.mockRestore();
+    });
+
+    it("executes ref event callback for the carousel", () => {
+      const c = "ref";
+      render.setProps({
+        isOpen: false,
+        type: "gallery",
+        images: ["", "", ""]
+      });
+      renderInstance.setState({ has: { prev: true } });
+      render.props().children.props.children.props.children.props.children[1].props.children[1].ref(c);
+
+      expect(renderInstance.carouselRef).toBe("ref");
     });
 
     it("sets gallery arrows position on componentDidUpdate", () => {
@@ -216,14 +307,14 @@ describe("<PackenModal/>", () => {
         type: "gallery"
       });
       renderInstance.componentDidUpdate(prevProps, prevState, null);
-      
+
       expect(spyReinitGallery).toHaveBeenCalled();
       spyReinitGallery.mockRestore();
     });
 
     it("reinitializes gallery slides position", () => {
       renderInstance.reinitGallery();
-      
+
       expect(renderInstance.state.has.next).toBe(true);
       expect(renderInstance.state.has.prev).toBe(false);
     });
@@ -249,34 +340,22 @@ describe("<PackenModal/>", () => {
 
   describe("getting dimensions", () => {
     it("sets gallery dimensions", () => {
-      renderInstance.getGalleryDimensions({width: 100, height: 100});
+      renderInstance.getGalleryDimensions({ width: 100, height: 100 });
 
       expect(renderInstance.state.dimensions.gallery.width).toBe(Math.floor(100));
       expect(renderInstance.state.dimensions.gallery.height).toBe(Math.floor(100));
-
-      /* Review to avoid using setTimeout */
-      /* const timeout = setTimeout(() => {
-        expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000); */
     });
 
     it("sets gallery arrows dimensions", () => {
-      renderInstance.getGalleryArrowsDimensions({width: 10, height: 10});
-      
+      renderInstance.getGalleryArrowsDimensions({ width: 10, height: 10 });
+
       expect(renderInstance.state.dimensions.arrows.width).toBe(Math.floor(10));
       expect(renderInstance.state.dimensions.arrows.height).toBe(Math.floor(10));
-      
-      /* Review to avoid using setTimeout */
-      /* const timeout = setTimeout(() => {
-        expect(renderInstance.setGalleryArrowsPosition).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000); */
     });
 
     it("returns gallery box dimensions", () => {
       const returnedDimensions = renderInstance.getGalleryBoxDimensions();
-      
+
       expect(typeof returnedDimensions.height).toBe("number");
       expect(typeof returnedDimensions.width).toBe("number");
     });

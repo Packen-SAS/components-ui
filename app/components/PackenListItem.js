@@ -14,9 +14,33 @@ class PackenListItem extends Component {
   constructor(props) {
     super(props);
 
-    const initialState = this.props.mainContent.isDisabled ? "disabled" : this.props.mainContent.isSelected ? "active" : "default";
+    this.state = {
+      prevState: this.setInitialState(),
+      state: this.setInitialState(),
+      originalStyles: this.getOriginalStyles(),
+      mainContent: null,
+      newSelectedState: false
+    }
 
-    let originalStyles = {};
+    this.createRefs();
+  }
+
+  createRefs = () => {
+    if (this.props.mainContent.main.control) {
+      this.radioRef = createRef();
+      this.checkboxRef = createRef();
+    } else {
+      return false;
+    }
+  }
+
+  setInitialState = () => {
+    return this.props.mainContent.isDisabled ? "disabled" : this.props.mainContent.isSelected ? "active" : "default";
+  }
+
+  getOriginalStyles = () => {
+    let originalStyles;
+
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
         originalStyles = [];
@@ -31,17 +55,10 @@ class PackenListItem extends Component {
         }
       }
     } else {
-      this.radioRef = createRef();
-      this.checkboxRef = createRef();
+      originalStyles = {};
     }
 
-    this.state = {
-      prevState: initialState,
-      state: initialState,
-      originalStyles: originalStyles,
-      mainContent: null,
-      newSelectedState: false
-    }
+    return originalStyles;
   }
 
   componentDidMount() {
@@ -136,7 +153,7 @@ class PackenListItem extends Component {
         }
       } break;
       default:
-        break;
+        return false;
     }
   }
 
@@ -256,6 +273,14 @@ class PackenListItem extends Component {
     return this.getSidesContent().right;
   }
 
+  setRadioRef = radio => {
+    this.radioRef = radio;
+  }
+
+  setCheckboxRef = checkbox => {
+    this.checkboxRef = checkbox;
+  }
+
   setMainContent = () => {
     let mainContent;
 
@@ -269,7 +294,7 @@ class PackenListItem extends Component {
                 label: this.props.mainContent.main.control.label,
                 isDisabled: this.props.mainContent.main.control.isDisabled
               }]}
-              ref={radio => { this.radioRef = radio; }}
+              ref={this.setRadioRef}
             />
           );
         } break;
@@ -279,12 +304,12 @@ class PackenListItem extends Component {
               layout="dropdown"
               items={this.props.mainContent.main.control.items}
               callback={this.props.mainContent.main.control.notifyParent}
-              ref={checkbox => { this.checkboxRef = checkbox; }}
+              ref={this.setCheckboxRef}
             />
           );
         } break;
         default:
-          break;
+          return false;
       }
     } else {
       mainContent = (

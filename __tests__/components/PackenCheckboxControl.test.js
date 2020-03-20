@@ -38,6 +38,30 @@ describe("<PackenCheckboxControl/>", () => {
     });
   });
 
+  describe("styling", () => {
+    it("sets disabled styles of label", () => {
+      render.setProps({
+        isDisabled: true
+      });
+
+      expect(render.props().children[1].props.style).toEqual({
+        ...CheckboxStyles.label.base,
+        ...CheckboxStyles.label.state.disabled
+      });
+    });
+
+    it("sets default styles of label", () => {
+      render.setProps({
+        isDisabled: false
+      });
+
+      expect(render.props().children[1].props.style).toEqual({
+        ...CheckboxStyles.label.base,
+        ...CheckboxStyles.label.state.default
+      });
+    });
+  });
+
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
       const spySetDisabledStyles = jest.spyOn(renderInstance, "setDisabledStyles");

@@ -67,6 +67,24 @@ describe("<PackenCheckbox/>", () => {
     });
   });
 
+  describe("styling", () => {
+    it("disables pointer events if it's part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "dropdown"
+      });
+
+      expect(renderColumn.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "column"
+      });
+
+      expect(renderColumn.props().pointerEvents).toBe("auto");
+    });
+  });
+
   describe("state changing", () => {
     it("updates checked items if selectedIndex is defined", () => {
       renderColumnInstance.setState({ selectedIndex: 0 });
@@ -97,6 +115,12 @@ describe("<PackenCheckbox/>", () => {
           isDisabled: false
         }
       ]);
+    });
+
+    it("returns false if searched value doesn't match", () => {
+      const res = renderColumnInstance.setCheckedState("This is checked", false, ["This is both checked and disabled"]);
+      
+      expect(res).toBe(false);
     });
   });
 

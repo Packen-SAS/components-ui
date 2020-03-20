@@ -49,6 +49,8 @@ class PackenCheckbox extends Component {
       this.setState({
         checkedItems: updatedCheckedItems
       });
+    } else {
+      return false;
     }
   }
 

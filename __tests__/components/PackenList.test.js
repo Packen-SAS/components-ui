@@ -129,6 +129,16 @@ describe("<PackenList/>", () => {
       expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
       expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
     });
+
+    it("returns false on componentDidUpdate if no 'getFinalSelection' is passed", () => {
+      const prevState = { selectedItems: [list.items[0]] };
+      render.setProps({
+        getFinalSelection: undefined
+      });
+      const res = renderInstance.componentDidUpdate(null, prevState, null);
+
+      expect(res).toBe(false);
+    });
   });
 
   describe("state changing", () => {
@@ -189,6 +199,37 @@ describe("<PackenList/>", () => {
       expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
     });
 
+    it("updates selected items if selection type is 'single' or 'radio' and a payload with 'checkedType' different to 'radio' is passed", () => {
+      renderInstance.setState({ items: [list.items[0], list.items[1]] });
+      render.setProps({
+        config: {
+          selectionType: "radio"
+        },
+        toggleMenu: mockCallback
+      });
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
+
+      expect(renderInstance.state.currentRadiosState).toEqual({
+        checkedValue: "Medellín"
+      });
+    });
+
+    it("updates selected items if selection type is 'single' or 'radio' and doesn't close the dropdown if no 'toggleMenu' is passed", () => {
+      renderInstance.setState({ items: [list.items[0], list.items[1]] });
+      render.setProps({
+        config: {
+          selectionType: "radio"
+        },
+        toggleMenu: undefined
+      });
+      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
+
+      expect(renderInstance.state.currentRadiosState).toEqual({
+        checkedValue: "Medellín"
+      });
+      expect(res).toBe(false);
+    });
+
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
       renderInstance.setState({ items: [list.items[0], list.items[1]] });
       render.setProps({
@@ -214,6 +255,33 @@ describe("<PackenList/>", () => {
       expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
       expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
       expect(renderInstance.state.currentCheckboxesState.checkedValues).toEqual(["Medellín"]);
+    });
+
+    it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload with 'checkedType' different to 'checkbox' is passed", () => {
+      renderInstance.setState({ items: [list.items[0], list.items[1]], currentCheckboxesState: { checkedValues: [] } });
+      renderInstance.state.checkedValues = ["Test"];
+      render.setProps({
+        config: {
+          selectionType: "checkbox"
+        }
+      });
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
+
+      expect(renderInstance.state.currentCheckboxesState).toEqual({
+        ...renderInstance.state.currentCheckboxesState,
+        checkedValues: []
+      });
+    });
+
+    it("returns false if selection type is not defined", () => {
+      render.setProps({
+        config: {
+          selectionType: undefined
+        }
+      });
+      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
+
+      expect(res).toBe(false);
     });
   });
 });
