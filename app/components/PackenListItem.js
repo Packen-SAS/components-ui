@@ -88,6 +88,8 @@ class PackenListItem extends Component {
   checkCheckbox = () => {
     if (this.checkboxRef && this.checkboxRef.setCheckedState) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
+    } else {
+      return false;
     }
   }
 
@@ -369,11 +371,17 @@ class PackenListItem extends Component {
         mainContent.main.props.children.forEach(child => {
           if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
+            return 1;
+          } else {
+            return false;
           }
         });
       } else {
         if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
           mainContent.main.props.style.color = Colors.basic.gray.lgt;
+          return 2;
+        } else {
+          return false;
         }
       }
     } else {
@@ -382,11 +390,17 @@ class PackenListItem extends Component {
           mainContent.main.props.children.forEach(child => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = Colors.basic.white.dft;
+              return 3;
+            } else {
+              return false;
             }
           });
         } else {
           if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
             mainContent.main.props.style.color = Colors.basic.white.dft;
+            return 4;
+          } else {
+            return false;
           }
         }
       } else {
@@ -394,15 +408,23 @@ class PackenListItem extends Component {
           mainContent.main.props.children.forEach((child, i) => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
+              return 5;
+            } else {
+              return false;
             }
           });
         } else {
           if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
             mainContent.main.props.style.color = this.state.originalStyles.color;
+            return 6;
+          } else {
+            return false;
           }
         }
       }
     }
+
+    return 7;
   }
 
   render() {

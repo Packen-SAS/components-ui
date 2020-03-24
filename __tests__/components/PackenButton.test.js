@@ -74,25 +74,23 @@ describe("<PackenButton/>", () => {
     });
   });
 
-  describe("styling", () => {
-    /* it("returns correct current styles if it's disabled and has a label", () => {
-      renderRegularInstance.props = { isDisabled: true };
-      const returnedStyles = renderRegularInstance.getStyles();
+  describe("state changing", () => {
+    it("sets initial icon if defined", () => {
+      renderRegular.setProps({
+        icon: "Test"
+      });
+      const returnedIcon = renderRegularInstance.getInitialIcon();
 
-      expect(returnedStyles.label.color).toEqual(Colors.base.white);
+      expect(returnedIcon).toBe("Test");
     });
 
-    it("returns correct current styles if it's disabled and has a shape with borders", () => {
-      renderRegularInstance.props = { isDisabled: true };
-      const returnedStyles = renderRegularInstance.getStyles();
+    it("sets initial icon as undefined if not provided via props", () => {
+      renderRegular.setProps({
+        icon: undefined
+      });
+      const returnedIcon = renderRegularInstance.getInitialIcon();
 
-      expect(returnedStyles.shape.borderWidth).toBe(0);
-    }); */
-
-    it("returns current styles", () => {
-      const returnedStyles = renderRegularInstance.getStyles();
-      
-      expect(returnedStyles).toBeDefined();
+      expect(returnedIcon).toBe(undefined);
     });
   });
 
@@ -194,6 +192,9 @@ describe("<PackenButton/>", () => {
     });
 
     it("executes onLayout event callback for icon", () => {
+      renderRegular.setProps({
+        icon: { name: "arrow-right", position: "right" }
+      });
       renderRegularInstance.getIconDimensions = jest.fn();
       renderRegular.props().children.props.children.props.children.props.children[1].props.onLayout({
         nativeEvent: {
@@ -208,6 +209,90 @@ describe("<PackenButton/>", () => {
         width: 10,
         height: 10
       });
+    });
+  });
+
+  describe("styling", () => {
+    it("returns current styles", () => {
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      
+      expect(returnedStyles).toBeDefined();
+    });
+
+    it("sets correct styles if it's disabled and not a ghost", () => {
+      renderRegular.setProps({
+        isDisabled: true
+      });
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.disabled);
+      expect(returnedStyles.icon.color).toBe(Colors.base.white);
+    });
+
+    it("sets correct styles if it's disabled, a ghost, and has no label", () => {
+      renderRegular.setProps({
+        isDisabled: true,
+        level: "ghost",
+        type: "icon"
+      });
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
+      expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
+    });
+
+    it("sets correct styles if it's disabled, a ghost, and has a label", () => {
+      renderRegular.setProps({
+        isDisabled: true,
+        level: "ghost",
+        type: "regular"
+      });
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
+      expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
+      expect(returnedStyles.label.color).toBe(Colors.base.disabled_alt);
+    });
+
+    it("sets correct styles if it's disabled and a secondary", () => {
+      renderRegular.setProps({
+        isDisabled: true,
+        level: "secondary",
+        type: "regular"
+      });
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+
+      expect(returnedStyles.shape.borderWidth).toBe(0);
+    });
+
+    it("sets correct 'iconWrapper' styles if an icon with position 'left' is passed", () => {
+      renderRegular.setProps({
+        isDisabled: false,
+        level: "primary",
+        type: "regular",
+        size: "medium",
+        icon: { name: "arrow-right", position: "left" }
+      });
+      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+
+      expect(returnedStyles.iconWrapper.right).toBe("auto");
+      expect(returnedStyles.iconWrapper.left).toBe(-12);
+    });
+
+    it("disables pointer events if set so via props", () => {
+      renderRegularInstance.setState({
+        isDisabled: true
+      });
+
+      expect(renderRegular.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not disabled", () => {
+      renderRegularInstance.setState({
+        isDisabled: false
+      });
+
+      expect(renderRegular.props().pointerEvents).toBe("auto");
     });
   });
 });

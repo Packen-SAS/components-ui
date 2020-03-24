@@ -11,107 +11,25 @@ class PackenButton extends Component {
   constructor(props) {
     super(props);
 
-    styles = {
-      shape: {
-        ...ButtonStyles.base.shape,
-        ...ButtonStyles[props.type][props.size].shape,
-        ...ButtonStyles[props.level].shape
-      },
-      content: {
-        position: "relative"
-      },
-      icon: {
-        ...ButtonStyles.base.icon,
-        ...ButtonStyles[props.type][props.size].icon,
-        ...ButtonStyles[props.level].icon
-      }
-    };
-
-    switch (props.type) {
-      case "icon":
-        styles = {
-          ...styles,
-          iconWrapper: {
-            position: "absolute",
-            top: 0,
-            left: 0
-          }
-        };
-        break;
-      case "regular":
-        styles = {
-          ...styles,
-          label: {
-            ...ButtonStyles.base.label,
-            ...ButtonStyles[props.type][props.size].label,
-            ...ButtonStyles[props.level].label
-          },
-          iconWrapper: {
-            position: "absolute",
-            top: 0,
-            right: props.icon ? props.icon.position === "left" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0) : 0,
-            left: props.icon ? props.icon.position === "right" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0) : 0
-          }
-        };
-        break;
-      default:
-        break;
-    }
-
-    switch (props.level) {
-      case "secondary":
-        styles.shape = {
-          ...styles.shape,
-          borderWidth: 1,
-          borderStyle: "solid",
-          borderColor: Color.secondary.default_drk
-        }
-        break;
-      default:
-      case "ghost":
-      case "primary":
-      case "tertiary":
-      case "danger":
-        break;
-    }
-
-    if (props.isDisabled) {
-      styles.shape.backgroundColor = Color.base.disabled;
-      styles.icon.color = Color.base.white;
-
-      if (styles.label) {
-        styles.label.color = Color.base.white;
-      }
-
-      if (styles.shape.borderWidth) {
-        styles.shape.borderWidth = 0;
-      }
-
-      if (props.level === "ghost") {
-        styles.shape.backgroundColor = Color.base.transparent;
-        styles.icon.color = Color.base.disabled_alt;
-
-        if (styles.label) {
-          styles.label.color = Color.base.disabled_alt;
-        }
-      }
-    }
-
     this.state = {
       type: props.type,
       level: props.level,
       size: props.size,
-      icon: props.icon ? props.icon : undefined,
+      icon: this.getInitialIcon(),
       isDisabled: props.isDisabled,
       shapeHeight: 0,
       shapeWidth: 0,
       iconHeight: 0,
       iconWidth: 0,
-      styles: styles
+      styles: this.getStyles(0, 0, 0, 0)
     }
   }
 
-  getStyles = () => {
+  getInitialIcon = () => {
+    return this.props.icon ? this.props.icon : undefined
+  }
+
+  getStyles = (shapeHeight, shapeWidth, iconHeight, iconWidth) => {
     let styles = {
       shape: {
         ...ButtonStyles.base.shape,
@@ -134,8 +52,8 @@ class PackenButton extends Component {
           ...styles,
           iconWrapper: {
             position: "absolute",
-            top: (this.state.shapeHeight/2) - (this.state.iconHeight/2),
-            left: (this.state.shapeWidth/2) - (this.state.iconWidth/2)
+            top: (shapeHeight/2) - (iconHeight/2),
+            left: (shapeWidth/2) - (iconWidth/2)
           }
         };
         break;
@@ -149,13 +67,11 @@ class PackenButton extends Component {
           },
           iconWrapper: {
             position: "absolute",
-            top: (this.state.shapeHeight/2) - (this.state.iconHeight/2),
-            right: this.props.icon ? this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)) : 0,
-            left: this.props.icon ? this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)) : 0
+            top: (shapeHeight/2) - (iconHeight/2),
+            right: this.props.icon ? this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0,
+            left: this.props.icon ? this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0
           }
         };
-        break;
-      default:
         break;
     }
 
@@ -168,12 +84,6 @@ class PackenButton extends Component {
           borderStyle: "solid",
           borderColor: Color.secondary.default_drk
         }
-        break;
-      default:
-      case "ghost":
-      case "primary":
-      case "tertiary":
-      case "danger":
         break;
     }
 
@@ -206,7 +116,7 @@ class PackenButton extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.shapeHeight !== this.state.shapeHeight || prevState.iconHeight !== this.state.iconHeight || prevState.iconWidth !== this.state.iconWidth) {
       this.setState({
-        styles: this.getStyles()
+        styles: this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)
       });
     }
   }
@@ -230,19 +140,13 @@ class PackenButton extends Component {
   }
 
   pressInHandler = () => {
-    let newStyles = {...this.getStyles()}
+    let newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
 
     /* Custom focus styles */
     switch (this.state.level) {
       case "secondary":
         newStyles.shape.borderColor = Color.secondary.focus;
-        break;
-      default:
-      case "primary":
-      case "tertiary":
-      case "ghost":
-      case "danger":
         break;
     }
 
@@ -252,7 +156,7 @@ class PackenButton extends Component {
   }
 
   pressOutHandler = () => {
-    const newStyles = {...this.getStyles()}
+    const newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     this.setState({
       styles: newStyles

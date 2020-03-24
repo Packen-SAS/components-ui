@@ -7,7 +7,7 @@ import PackenText from "../../app/components/PackenText";
 
 import Colors from "../../app/styles/abstracts/colors";
 import ListStyles from "../../app/styles/components/PackenList";
-import { genKey } from "../../app/utils/index";
+import { genKey, arraysEqual } from "../../app/utils/index";
 
 describe("<PackenListItem/>", () => {
   let render, renderInstance;
@@ -280,6 +280,18 @@ describe("<PackenListItem/>", () => {
       spySetMainContent.mockRestore();
     });
 
+    it("returns false while checking selected items state if they didn't change", () => {
+      const prevProps = {
+        selectedItems: ["Test 2", "Test 3"]
+      };
+      renderInstance.props = {
+        selectedItems: ["Test 2", "Test 3"]
+      };
+      const res = renderInstance.checkSelectedItems(prevProps);
+
+      expect(res).toBe(false);
+    });
+
     it("checks selected items state", () => {
       const prevProps = {
         selectedItems: ["Test"]
@@ -341,28 +353,8 @@ describe("<PackenListItem/>", () => {
       expect(res).toBe(false);
     });
 
-    it("returns false while checking selected items state if they didn't change", () => {
-      const prevProps = {
-        selectedItems: ["Test 2", "Test 3"]
-      };
-      renderInstance.props = {
-        selectedItems: ["Test 2", "Test 3"],
-        mainContent: {
-          isDisabled: false,
-          value: "",
-          main: {}
-        },
-        currentCheckboxesState: {
-          finalSelectionArray: []
-        }
-      }
-      const res = renderInstance.checkSelectedItems(prevProps);
-
-      expect(res).toBe(false);
-    });
-
     it("checks checkbox state", () => {
-      renderInstance.checkboxRef = { setCheckedState: mockCallback }
+      renderInstance.checkboxRef = { setCheckedState: mockCallback };
       renderInstance.props = {
         selectedItems: ["Test 2", "Test 3"],
         mainContent: {
@@ -382,6 +374,13 @@ describe("<PackenListItem/>", () => {
           renderInstance.state.newSelectedState,
           renderInstance.props.currentCheckboxesState.finalSelectionArray
         );
+    });
+
+    it("returns false if there's no checkbox ref", () => {
+      renderInstance.checkboxRef = undefined;
+      const res = renderInstance.checkCheckbox();
+
+      expect(res).toBe(false);
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -458,6 +457,18 @@ describe("<PackenListItem/>", () => {
       expect(renderInstance.state.state).toBe("focus");
     });
 
+    it("executes correct code on pressIn if it's selected", () => {
+      renderInstance.props = {
+        mainContent: {
+          isSelected: true
+        }
+      };
+      renderInstance.props.mainContent.isSelected = true;
+      renderInstance.pressInHandler();
+
+      expect(renderInstance.state.state).toBe("active");
+    });
+
     it("executes correct code on pressOut", () => {
       renderInstance.setState({ prevState: "active" });
       renderInstance.state.prevState = "active";
@@ -526,10 +537,31 @@ describe("<PackenListItem/>", () => {
       expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
     });
 
+    it("executes correct code on press if selection type is 'multiple' and 'prevState' is 'active'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "checkbox"
+        },
+        mainContent: {
+          value: "Test"
+        },
+        updateSelectedItems: jest.fn()
+      };
+      renderInstance.checkboxRef = true;
+      renderInstance.state.prevState = "active";
+
+      renderInstance.pressHandler();
+      
+      expect(renderInstance.state.prevState).toBe("default");
+      expect(renderInstance.state.state).toBe("default");
+      expect(renderInstance.state.newSelectedState).toBe(false);
+      expect(renderInstance.props.updateSelectedItems).toHaveBeenCalled();
+    });
+
     it("executes correct code on press if selection type is 'checkbox'", () => {
       renderInstance.props = {
         config: {
-          selectionType: "multiple"
+          selectionType: "checkbox"
         },
         mainContent: {
           value: "Test"
@@ -868,6 +900,25 @@ describe("<PackenListItem/>", () => {
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
+    /* it("returns false if it's disabled, a 'PackenRadio' or 'PackenCheckbox' and an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: true,
+          main: {
+            props: {
+              children: [
+                { type: { displayName: "PackenRadio" } },
+                { type: { displayName: "PackenCheckbox" } }
+              ]
+            }
+          }
+        }
+      };
+      const res = renderInstance.checkMainContentStyles();
+      
+      expect(res).toBe(false);
+    }); */
+
     it("checks main content styles before rendering if it's disabled, not a 'PackenRadio' or 'PackenCheckbox' and not an array", () => {
       renderInstance.props = {
         mainContent: {
@@ -891,6 +942,7 @@ describe("<PackenListItem/>", () => {
     it("checks main content styles before rendering if it's not disabled, is selected, not a 'PackenRadio' or 'PackenCheckbox', and not an array", () => {
       renderInstance.props = {
         mainContent: {
+          isDisabled: false,
           isSelected: true,
           main: {
             type: {
@@ -913,6 +965,7 @@ describe("<PackenListItem/>", () => {
     it("checks main content styles before rendering if it's not disabled, is selected, is a 'PackenText', not a 'PackenRadio' or 'PackenCheckbox', and an array", () => {
       renderInstance.props = {
         mainContent: {
+          isDisabled: false,
           isSelected: true,
           main: {
             props: {
@@ -945,6 +998,8 @@ describe("<PackenListItem/>", () => {
       });
       renderInstance.props = {
         mainContent: {
+          isDisabled: false,
+          isSelected: false,
           main: {
             type: {
               displayName: "Test"
@@ -968,6 +1023,8 @@ describe("<PackenListItem/>", () => {
       });
       renderInstance.props = {
         mainContent: {
+          isDisabled: false,
+          isSelected: false,
           main: {
             type: {
               displayName: "Test"
