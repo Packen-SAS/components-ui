@@ -40,7 +40,7 @@ describe("<PackenServiceStatusIcon/>", () => {
   describe("state changing", () => {
     it("sets 'state' as 'active' if prop indexes match", () => {
       renderInstance.props = { activeIndex: 0, selfIndex: 0 };
-      renderInstance.check_if_current();
+      renderInstance.checkIfCurrent();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -51,7 +51,7 @@ describe("<PackenServiceStatusIcon/>", () => {
 
     it("sets 'state' as 'default' if prop indexes don't match", () => {
       renderInstance.props = { activeIndex: 0, selfIndex: 1 };
-      renderInstance.check_if_current();
+      renderInstance.checkIfCurrent();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -63,9 +63,9 @@ describe("<PackenServiceStatusIcon/>", () => {
 
   describe("triggering action", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.check_if_active = jest.fn();
+      renderInstance.checkIfActive = jest.fn();
       renderInstance.componentDidMount();
-      expect(renderInstance.check_if_active).toHaveBeenCalled();
+      expect(renderInstance.checkIfActive).toHaveBeenCalled();
     });
   });
 });

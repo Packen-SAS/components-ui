@@ -11,7 +11,7 @@ class PackenMapPinSub extends Component {
     super(props);
   }
 
-  get_icon_color = () => {
+  getIconColor = () => {
     let color = MapPinStyles.icon.type.icon.color;
 
     if (this.props.theme) {
@@ -28,7 +28,7 @@ class PackenMapPinSub extends Component {
           this.props.icon ? (
             <Icon
               name={this.props.icon}
-              color={this.get_icon_color()}
+              color={this.getIconColor()}
               size={MapPinStyles.icon.type.icon.fontSize} />
           ) : null
         }

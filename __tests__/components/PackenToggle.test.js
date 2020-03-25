@@ -7,7 +7,7 @@ import PackenToggle from "../../app/components/PackenToggle";
 
 describe("<PackenToggle/>", () => {
   let render, renderInstance;
-  const mock_function = jest.fn();
+  const mockFunction = jest.fn();
 
   beforeAll(() => {
     render = renderer.create(
@@ -65,11 +65,11 @@ describe("<PackenToggle/>", () => {
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.position_elements = mock_function;
-      renderInstance.check_if_disabled = mock_function;
+      renderInstance.positionElements = mockFunction;
+      renderInstance.checkIfDisabled = mockFunction;
       renderInstance.componentDidMount();
-      expect(renderInstance.position_elements).toHaveBeenCalled();
-      expect(renderInstance.check_if_disabled).toHaveBeenCalled();
+      expect(renderInstance.positionElements).toHaveBeenCalled();
+      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
     });
 
     it("toggles inner state", () => {
@@ -82,23 +82,23 @@ describe("<PackenToggle/>", () => {
         expect(renderInstance.state.state).toBe("inactive");
         expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("executes correct code on componentDidUpdate", () => {
       renderInstance.setState({ state: "active" });
       const prevState = { state: "inactive" };
-      renderInstance.position_elements = mock_function;
-      renderInstance.check_if_disabled = mock_function;
+      renderInstance.positionElements = mockFunction;
+      renderInstance.checkIfDisabled = mockFunction;
       renderInstance.componentDidUpdate(null, prevState, null);
-      expect(renderInstance.position_elements).toHaveBeenCalled();
-      expect(renderInstance.check_if_disabled).toHaveBeenCalled();
+      expect(renderInstance.positionElements).toHaveBeenCalled();
+      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
     });
   });
 
   describe("state changing", () => {
     it("sets disabled styles", () => {
-      renderInstance.set_disabled_styles();
+      renderInstance.setDisabledStyles();
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         disabled: {
@@ -126,25 +126,25 @@ describe("<PackenToggle/>", () => {
     });
 
     it("checks if the component is not disabled", () => {
-      const response = renderInstance.check_if_disabled();
+      const response = renderInstance.checkIfDisabled();
       expect(response).toBe(false || undefined);
     });
 
     it("sets state as 'disabled' if prop is present", () => {
       renderInstance.props = { isDisabled: true };
-      renderInstance.set_disabled_styles = mock_function;
-      renderInstance.check_if_disabled();
+      renderInstance.setDisabledStyles = mockFunction;
+      renderInstance.checkIfDisabled();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
         expect(renderInstance.state.state).toBe("disabled");
-        expect(renderInstance.set_disabled_styles).toHaveBeenCalled();
+        expect(renderInstance.setDisabledStyles).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 2000);
+      }, 4000);
     });
 
     it("sets shape dimensions", () => {
-      renderInstance.get_shape_dimensions({
+      renderInstance.getShapeDimensions({
         nativeEvent: {
           layout: {
             height: 10,
@@ -153,18 +153,18 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.position_elements = mock_function;
+      renderInstance.positionElements = mockFunction;
       
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         height: 10,
         width: 10
       });
-      expect(renderInstance.position_elements).toHaveBeenCalled();
+      expect(renderInstance.positionElements).toHaveBeenCalled();
     });
 
     it("sets dot dimensions", () => {
-      renderInstance.get_dot_dimensions({
+      renderInstance.getDotDimensions({
         nativeEvent: {
           layout: {
             height: 10,
@@ -173,7 +173,7 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.position_elements = mock_function;
+      renderInstance.positionElements = mockFunction;
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -182,13 +182,13 @@ describe("<PackenToggle/>", () => {
           height: 10,
           width: 10
         });
-        expect(renderInstance.position_elements).toHaveBeenCalled();
+        expect(renderInstance.positionElements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets on dimensions", () => {
-      renderInstance.get_on_dimensions({
+      renderInstance.getOnDimensions({
         nativeEvent: {
           layout: {
             height: 10,
@@ -197,7 +197,7 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.position_elements = mock_function;
+      renderInstance.positionElements = mockFunction;
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -206,13 +206,13 @@ describe("<PackenToggle/>", () => {
           height: 10,
           width: 10
         });
-        expect(renderInstance.position_elements).toHaveBeenCalled();
+        expect(renderInstance.positionElements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 4000);
     });
 
     it("sets off dimensions", () => {
-      renderInstance.get_off_dimensions({
+      renderInstance.getOffDimensions({
         nativeEvent: {
           layout: {
             height: 10,
@@ -221,7 +221,7 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.position_elements = mock_function;
+      renderInstance.positionElements = mockFunction;
       
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -230,14 +230,14 @@ describe("<PackenToggle/>", () => {
           height: 10,
           width: 10
         });
-        expect(renderInstance.position_elements).toHaveBeenCalled();
+        expect(renderInstance.positionElements).toHaveBeenCalled();
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
 
     it("sets state with position styles", () => {
       renderInstance.setState({ state: "active", shape: { height: 10 }, on: { height: 10 } });
-      renderInstance.position_elements();
+      renderInstance.positionElements();
 
       /* Review to avoid using setTimeout */
       const timeout = setTimeout(() => {
@@ -257,14 +257,14 @@ describe("<PackenToggle/>", () => {
         });
         expect(renderInstance.state.off).toEqual({ opacity: 0 });
         clearTimeout(timeout);
-      }, 1000);
+      }, 2000);
     });
   });
 
   describe("styling", () => {
     it("returns correct position styles if 'state' is 'active'", () => {
       renderInstance.setState({ state: "active", shape: { height: 10 }, on: { height: 10 } });
-      const returnedStyles = renderInstance.get_position_styles();
+      const returnedStyles = renderInstance.getPositionStyles();
 
       expect(returnedStyles).toEqual({
         dot: {
@@ -286,7 +286,7 @@ describe("<PackenToggle/>", () => {
 
     it("returns correct position styles if 'state' is 'inactive'", () => {
       renderInstance.setState({ state: "inactive", shape: { height: 10 }, off: { height: 10 } });
-      const returnedStyles = renderInstance.get_position_styles();
+      const returnedStyles = renderInstance.getPositionStyles();
 
       expect(returnedStyles).toEqual({
         dot: {

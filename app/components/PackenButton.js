@@ -111,7 +111,7 @@ class PackenButton extends Component {
     }
   }
 
-  get_styles = () => {
+  getStyles = () => {
     let styles = {
       shape: {
         ...ButtonStyles.base.shape,
@@ -206,31 +206,31 @@ class PackenButton extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.shapeHeight !== this.state.shapeHeight || prevState.iconHeight !== this.state.iconHeight || prevState.iconWidth !== this.state.iconWidth) {
       this.setState({
-        styles: this.get_styles()
+        styles: this.getStyles()
       });
     }
   }
 
-  get_shape_dimensions = e => {
+  getShapeDimensions = e => {
     this.setState({
       shapeHeight: Math.floor(e.height),
       shapeWidth: Math.floor(e.width)
     });
   }
 
-  get_icon_dimensions = e => {
+  getIconDimensions = e => {
     this.setState({
       iconHeight: Math.floor(e.height),
       iconWidth: Math.floor(e.width)
     });
   }
 
-  execute_callback = () => {
+  executeCallback = () => {
     this.props.callback();
   }
 
-  pressIn_handler = () => {
-    let newStyles = {...this.get_styles()}
+  pressInHandler = () => {
+    let newStyles = {...this.getStyles()}
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
 
     /* Custom focus styles */
@@ -251,8 +251,8 @@ class PackenButton extends Component {
     });
   }
 
-  pressOut_handler = () => {
-    const newStyles = {...this.get_styles()}
+  pressOutHandler = () => {
+    const newStyles = {...this.getStyles()}
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     this.setState({
       styles: newStyles
@@ -262,13 +262,13 @@ class PackenButton extends Component {
   render() {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
-        <TouchableWithoutFeedback onPress={this.execute_callback} onPressIn={this.pressIn_handler} onPressOut={this.pressOut_handler}>
+        <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
           <View style={this.state.styles.shape}>
-            <View style={this.state.styles.shape__content} onLayout={e => { this.get_shape_dimensions(e.nativeEvent.layout); }}>
+            <View style={this.state.styles.shape__content} onLayout={e => { this.getShapeDimensions(e.nativeEvent.layout); }}>
               <PackenText style={this.state.styles.label}>{this.props.children}</PackenText>
               {
                 this.props.icon ? (
-                  <View style={this.state.styles.iconWrapper} onLayout={e => { this.get_icon_dimensions(e.nativeEvent.layout); }}>
+                  <View style={this.state.styles.iconWrapper} onLayout={e => { this.getIconDimensions(e.nativeEvent.layout); }}>
                     <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
                   </View>
                 ) : null

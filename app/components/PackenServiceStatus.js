@@ -23,7 +23,7 @@ class PackenServiceStatus extends Component {
     }
   }
 
-  update_current_step = () => {
+  updateCurrentStep = () => {
     for (let i = 0; i < this.props.currentStepIndex; i++) {
       this.state.finalSteps[i].isComplete = true;
     }
@@ -38,7 +38,7 @@ class PackenServiceStatus extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.currentStepIndex !== this.props.currentStepIndex) {
-      this.update_current_step();
+      this.updateCurrentStep();
     }
   }
 

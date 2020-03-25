@@ -67,13 +67,23 @@ describe("<PackenRadio/>", () => {
 
   describe("state changing", () => {
     it("updates checked index", () => {
-      renderColumnInstance.update_checked_index(0);
+      renderColumnInstance.updateCheckedIndex(0);
       expect(renderColumnInstance.state.checkedIndex).toBe(0);
     });
 
     it("updates current selection", () => {
-      renderColumnInstance.update_current_selection("Test");
+      renderColumnInstance.updateCurrentSelection("Test");
       expect(renderColumnInstance.state.currentSelection).toBe("Test");
+    });
+
+    it("sets new checked index programmatically", () => {
+      renderColumnInstance.setCheckedIndex(0);
+
+      /* Review to avoid using setTimeout */
+      const timeout = setTimeout(() => {
+        expect(renderColumnInstance.state.checkedIndex).toBe(0);
+        clearTimeout(timeout);
+      }, 2000);
     });
   });
 
@@ -96,16 +106,16 @@ describe("<PackenRadio/>", () => {
         ]
       };
       renderColumnInstance.setState({ checkedIndex: 2 });
-      const foundSelection = renderColumnInstance.find_current_selection();
+      const foundSelection = renderColumnInstance.findCurrentSelection();
       expect(foundSelection.label).toBe("This text is both checked and disabled");
     });
 
     it("updates current selection on checkedIndex change", () => {
       const prevState = { checkedIndex: 0 };
-      renderColumnInstance.update_current_selection = jest.fn();
+      renderColumnInstance.updateCurrentSelection = jest.fn();
       renderColumnInstance.setState({ checkedIndex: 1 });
       renderColumnInstance.componentDidUpdate(null, prevState, null);
-      expect(renderColumnInstance.update_current_selection).toHaveBeenCalled();
+      expect(renderColumnInstance.updateCurrentSelection).toHaveBeenCalled();
     });
 
     it("can use latest currentSelection", () => {
@@ -113,6 +123,14 @@ describe("<PackenRadio/>", () => {
       renderColumnInstance.setState({ currentSelection: "Test 2" });
       const response = renderColumnInstance.componentDidUpdate(null, prevState, null);
       expect(response).toBe("Test 2");
+    });
+
+    it("executes callback if passed via props", () => {
+      renderColumnInstance.props.callback = jest.fn();
+      const prevState = { currentSelection: 1 };
+      renderColumnInstance.setState({ currentSelection: 0 });
+      renderColumnInstance.componentDidUpdate(null, prevState, null);
+      expect(renderColumnInstance.props.callback).toHaveBeenCalledWith(renderColumnInstance.state.currentSelection);
     });
   });
 });

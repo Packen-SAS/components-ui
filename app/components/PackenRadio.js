@@ -15,17 +15,17 @@ class PackenRadio extends Component {
     }
   }
 
-  update_checked_index = newCheckedIndex => {
+  updateCheckedIndex = newCheckedIndex => {
     this.setState({
       checkedIndex: newCheckedIndex
     });
   }
 
-  find_current_selection = () => {
+  findCurrentSelection = () => {
     return this.props.items[this.state.checkedIndex];
   }
 
-  update_current_selection = newSelection => {
+  updateCurrentSelection = newSelection => {
     this.setState({
       currentSelection: newSelection
     });
@@ -33,13 +33,22 @@ class PackenRadio extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.checkedIndex !== this.state.checkedIndex) {
-      this.update_current_selection(this.find_current_selection());
+      this.updateCurrentSelection(this.findCurrentSelection());
     }
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
+      if (this.props.callback) {
+        this.props.callback(this.state.currentSelection);
+      }
       return this.state.currentSelection;
     }
+  }
+
+  setCheckedIndex = newCheckedIndex => {
+    this.setState({
+      checkedIndex: newCheckedIndex
+    });
   }
 
   render() {
@@ -47,13 +56,17 @@ class PackenRadio extends Component {
       <View style={RadioStyles.container[this.props.layout]}>
         {
           this.props.items.map((item, i) => (
-            <View key={i} style={RadioStyles.item[this.props.layout]}>
+            <View
+              key={i}
+              style={RadioStyles.item[this.props.layout]}
+              pointerEvents={this.props.layout === "dropdown" ?  "none" : "auto"}
+            >
               <PackenRadioControl
                 checkedIndex={this.state.checkedIndex}
                 selfIndex={i}
                 label={item.label}
                 isDisabled={item.isDisabled}
-                updateCheckedIndex={this.update_checked_index}/>
+                updateCheckedIndex={this.updateCheckedIndex}/>
             </View>
           ))
         }

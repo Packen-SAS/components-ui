@@ -10,9 +10,7 @@ const heights = {
 }
 
 export default {
-  container: {
-    marginBottom: 15
-  },
+  container: {},
   header: {
     flexDirection: "row",
     alignItems: "flex-end",
@@ -126,6 +124,20 @@ export default {
       focus: {},
       disabled: {
         color: Colors.basic.gray.dft
+      }
+    },
+    theme: {
+      default: {
+        color: Colors.basic.independence.dft
+      },
+      danger: {
+        color: Colors.danger.default
+      },
+      success: {
+        color: Colors.success.default
+      },
+      primary: {
+        color: Colors.primary.default
       }
     }
   },
