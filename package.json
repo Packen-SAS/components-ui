@@ -5,8 +5,7 @@
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
-    "test": "jest",
-    "unit": "jest --coverage --coverageDirectory=unit __tests__/components/PackenTextArea_test.js"
+    "test": "jest"
   },
   "dependencies": {
     "react": "16.8.3",

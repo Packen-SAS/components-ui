@@ -76,9 +76,7 @@ class PackenToggle extends Component {
     if (this.props.isDisabled) {
       this.setState({
         state: "disabled"
-      }, () => {
-        this.set_disabled_styles();
-      });
+      }, this.set_disabled_styles);
     }
   }
 

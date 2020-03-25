@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { TouchableWithoutFeedback, View } from "react-native"
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/dist/Feather";
+
 import Color from "../styles/abstracts/colors";
 import PackenText from "./PackenText";
 import * as ButtonStyles from "../styles/components/PackenButton";
