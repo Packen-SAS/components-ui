@@ -2,38 +2,41 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import ServiceStatusStyles from "../styles/components/PackenServiceStatus";
-import PackenText from "../components/PackenText";
-import PackenServiceStatusIcon from "./PackenServiceStatusIcon";
+import PackenServiceStatusItem from "./PackenServiceStatusItem";
 
 class PackenServiceStatus extends Component {
   constructor(props) {
     super(props);
 
-    updatedSteps = [...props.steps];
-    updatedSteps.forEach(step => {
-      step = {
-        ...step,
-        isComplete: false
-      }
-    });
-
     this.state = {
-      finalSteps: updatedSteps,
-      currentStep: {...props.steps[props.currentStepIndex]}
+      steps: [...props.steps],
+      currentStepIndex: props.currentStepIndex,
+      itemsHeights: []
     }
   }
 
   updateCurrentStep = () => {
     for (let i = 0; i < this.props.currentStepIndex; i++) {
-      this.state.finalSteps[i].isComplete = true;
+      this.state.steps[i].isComplete = true;
+      this.state.steps[i].isCurrent = false;
     }
-    for (let i = this.props.currentStepIndex; i < this.state.finalSteps.length; i++) {
-      this.state.finalSteps[i].isComplete = false;
+    for (let i = this.props.currentStepIndex; i < this.state.steps.length; i++) {
+      this.state.steps[i].isComplete = false;
+      this.state.steps[i].isCurrent = false;
     }
     
     this.setState({
-      currentStep: {...this.props.steps[this.props.currentStepIndex]}
-    }, this.state.currentStep.callback);
+      currentStepIndex: this.props.currentStepIndex
+    }, this.state.steps[this.props.currentStepIndex].callback);
+  }
+
+  setItemsHeights = (i, height) => {
+    const newHeights = [...this.state.itemsHeights];
+    newHeights[i] = height;
+
+    this.setState({
+      itemsHeights: newHeights
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -44,24 +47,19 @@ class PackenServiceStatus extends Component {
 
   render() {
     return (
-      <View>
-        <View style={ServiceStatusStyles.timeline}>
-          {
-            this.state.finalSteps.map((step, i) => (
-              <PackenServiceStatusIcon
-                key={i}
-                stepsLength={this.state.finalSteps.length}
-                activeIcon={step.activeIcon}
-                activeIndex={this.props.currentStepIndex}
-                selfIndex={i}
-                isComplete={step.isComplete}/>
-            ))
-          }
-        </View>
-        <View style={ServiceStatusStyles.copy}>
-          <PackenText style={ServiceStatusStyles.title}>{this.state.currentStep.title}</PackenText>
-          <PackenText style={ServiceStatusStyles.date}>{this.state.currentStep.date} - <PackenText style={ServiceStatusStyles.time}>{this.state.currentStep.time}</PackenText></PackenText>
-        </View>
+      <View style={ServiceStatusStyles.wrapper}>
+        {
+          this.state.steps.map((step, i) => (
+            <PackenServiceStatusItem
+              key={i}
+              index={i}
+              data={step}
+              currentStepIndex={this.state.currentStepIndex}
+              itemsHeights={this.state.itemsHeights}
+              setItemsHeights={this.setItemsHeights}
+            />
+          ))
+        }
       </View>
     );
   }

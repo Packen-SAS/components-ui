@@ -10,28 +10,57 @@ describe("<PackenServiceStatus/>", () => {
 
   const mockSteps = [
     {
-      title: "Solicitando Servicio",
-      activeIcon: "clock",
-      date: "Agosto 13, 2017",
-      time: "05:08 pm",
-      callback: mockCallback,
-      isComplete: false
+      title: "Vehículo asignado",
+      isComplete: true,
+      isCurrent: false,
+      time: "05:21 pm",
+      callback: mockCallback
     },
     {
-      title: "Servicio Confirmado",
-      activeIcon: "search",
-      date: "Agosto 13, 2017",
-      time: "05:13 pm",
-      callback: mockCallback,
-      isComplete: false
+      title: "En camino a origen",
+      subtitle: "Calle 71 # 13-81",
+      isComplete: true,
+      isCurrent: false,
+      time: "05:21 pm",
+      callback: mockCallback
     },
     {
-      title: "Servicio Finalizado",
-      activeIcon: "check-circle",
-      date: "Agosto 13, 2017",
-      time: "06:32 pm",
-      callback: mockCallback,
-      isComplete: false
+      title: "En origen",
+      subtitle: "Calle 71 # 13-81",
+      isComplete: false,
+      isCurrent: true,
+      time: "05:21 pm",
+      callback: mockCallback
+    },
+    {
+      title: "Cargue completo",
+      isComplete: false,
+      isCurrent: false,
+      callback: mockCallback
+    },
+    {
+      title: "En camino a destino A",
+      isComplete: false,
+      isCurrent: false,
+      callback: mockCallback
+    },
+    {
+      title: "En destino A",
+      isComplete: false,
+      isCurrent: false,
+      callback: mockCallback
+    },
+    {
+      title: "Descargue completo",
+      isComplete: false,
+      isCurrent: false,
+      callback: mockCallback
+    },
+    {
+      title: "Finalizado",
+      isComplete: false,
+      isCurrent: false,
+      callback: mockCallback
     }
   ];
 
@@ -39,13 +68,14 @@ describe("<PackenServiceStatus/>", () => {
     render = shallow(
       <PackenServiceStatus
         steps={mockSteps}
-        currentStepIndex={0}/>
+        currentStepIndex={2}/>
     );
     renderInstance = render.instance();
 
     renderInstance.setState({
-      finalSteps: [...mockSteps],
-      currentStep: {}
+      steps: [...mockSteps],
+      currentStepIndex: 2,
+      itemsHeights: [0, 0, 0, 0, 0, 0, 0, 0]
     });
   });
 
@@ -57,22 +87,20 @@ describe("<PackenServiceStatus/>", () => {
 
   describe("state changing", () => {
     it("updates current step", () => {
-      renderInstance.setState({
-        currentStep: {
-          ...renderInstance.state.currentStep,
-          callback: mockCallback
-        }
-      });
       render.setProps({
-        steps: mockSteps,
-        currentStepIndex: 0
+        steps: [...mockSteps],
+        currentStepIndex: 2
       });
       renderInstance.updateCurrentStep();
 
-      expect(renderInstance.state.currentStep).toEqual({
-        ...mockSteps[0]
-      });
-      expect(renderInstance.state.currentStep.callback).toHaveBeenCalled();
+      expect(renderInstance.state.currentStepIndex).toBe(2);
+      expect(renderInstance.state.steps[2].callback).toHaveBeenCalled();
+    });
+
+    it("sets items heights", () => {
+      renderInstance.setItemsHeights(0, 10);
+
+      expect(renderInstance.state.itemsHeights[0]).toBe(10);
     });
   });
 
