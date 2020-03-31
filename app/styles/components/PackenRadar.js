@@ -2,12 +2,21 @@ import Colors from "../abstracts/colors";
 
 export default {
   wrapper: {
+    height: 112,
+    width: 112,
+    borderRadius: 115,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "relative"
+  },
+  shadow: {
     base: {
       height: 112,
       width: 112,
       borderRadius: 115,
-      alignItems: "center",
-      justifyContent: "center"
+      position: "absolute",
+      top: 0,
+      left: 0
     },
     theme: {
       search: {
