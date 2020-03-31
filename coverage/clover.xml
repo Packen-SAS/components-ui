@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1585667355070" clover="3.2.0">
-  <project timestamp="1585667355070" name="All files">
-    <metrics statements="890" coveredstatements="884" conditionals="414" coveredconditionals="404" methods="294" coveredmethods="294" elements="1598" coveredelements="1582" complexity="0" loc="890" ncloc="890" packages="8" files="66" classes="66"/>
+<coverage generated="1585669370036" clover="3.2.0">
+  <project timestamp="1585669370037" name="All files">
+    <metrics statements="894" coveredstatements="888" conditionals="414" coveredconditionals="404" methods="298" coveredmethods="298" elements="1606" coveredelements="1590" complexity="0" loc="894" ncloc="894" packages="8" files="69" classes="69"/>
     <package name="ui_library">
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="App.js" path="/home/andres/projects/ui_library/ui_library/App.js">
@@ -13,12 +13,12 @@
       <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="UILibrary.js" path="/home/andres/projects/ui_library/ui_library/app/UILibrary.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="51" count="2" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
       </file>
     </package>
     <package name="ui_library.app.components">
-      <metrics statements="755" coveredstatements="749" conditionals="403" coveredconditionals="393" methods="220" coveredmethods="220"/>
+      <metrics statements="757" coveredstatements="751" conditionals="403" coveredconditionals="393" methods="222" coveredmethods="222"/>
       <file name="PackenAvatar.js" path="/home/andres/projects/ui_library/ui_library/app/components/PackenAvatar.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="9" count="1" type="stmt"/>
@@ -589,6 +589,11 @@
         <line num="60" count="17" type="stmt"/>
         <line num="64" count="10" type="stmt"/>
       </file>
+      <file name="PackenRadar.js" path="/home/andres/projects/ui_library/ui_library/app/components/PackenRadar.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+      </file>
       <file name="PackenRadio.js" path="/home/andres/projects/ui_library/ui_library/app/components/PackenRadio.js">
         <metrics statements="18" coveredstatements="18" conditionals="8" coveredconditionals="8" methods="8" coveredmethods="8"/>
         <line num="10" count="2" type="stmt"/>
@@ -787,7 +792,7 @@
         <line num="9" count="2" type="stmt"/>
         <line num="11" count="2" type="stmt"/>
         <line num="17" count="2" type="stmt"/>
-        <line num="27" count="36" type="stmt"/>
+        <line num="27" count="37" type="stmt"/>
       </file>
       <file name="PackenToggle.js" path="/home/andres/projects/ui_library/ui_library/app/components/PackenToggle.js">
         <metrics statements="46" coveredstatements="46" conditionals="16" coveredconditionals="16" methods="19" coveredmethods="19"/>
@@ -857,7 +862,7 @@
       </file>
       <file name="typography.js" path="/home/andres/projects/ui_library/ui_library/app/styles/abstracts/typography.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="1" count="36" type="stmt"/>
+        <line num="1" count="37" type="stmt"/>
       </file>
     </package>
     <package name="ui_library.app.styles.components">
@@ -917,6 +922,9 @@
       <file name="PackenNotificationBanner.js" path="/home/andres/projects/ui_library/ui_library/app/styles/components/PackenNotificationBanner.js">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
+      <file name="PackenRadar.js" path="/home/andres/projects/ui_library/ui_library/app/styles/components/PackenRadar.js">
+        <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      </file>
       <file name="PackenRadio.js" path="/home/andres/projects/ui_library/ui_library/app/styles/components/PackenRadio.js">
         <metrics statements="0" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       </file>
@@ -954,7 +962,7 @@
       </file>
     </package>
     <package name="ui_library.app.views">
-      <metrics statements="88" coveredstatements="88" conditionals="4" coveredconditionals="4" methods="70" coveredmethods="70"/>
+      <metrics statements="90" coveredstatements="90" conditionals="4" coveredconditionals="4" methods="72" coveredmethods="72"/>
       <file name="Avatars.js" path="/home/andres/projects/ui_library/ui_library/app/views/Avatars.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="11" count="1" type="stmt"/>
@@ -1045,6 +1053,11 @@
         <line num="161" count="1" type="stmt"/>
       </file>
       <file name="NotificationBanners.js" path="/home/andres/projects/ui_library/ui_library/app/views/NotificationBanners.js">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+      </file>
+      <file name="Radars.js" path="/home/andres/projects/ui_library/ui_library/app/views/Radars.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="11" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
