@@ -6,9 +6,9 @@ import SectionStyles from "../styles/components/Section";
 import Typography from "../styles/abstracts/typography";
 import Colors from "../styles/abstracts/colors";
 
-import PackenRadar from "../components/PackenRadar";
-import PackenText from "../components/PackenText";
-import PackenButton from "../components/PackenButton";
+import PackenUiRadar from "../components/PackenUiRadar";
+import PackenUiText from "../components/PackenUiText";
+import PackenUiButton from "../components/PackenUiButton";
 
 class Radars extends Component {
   constructor(props) {
@@ -29,22 +29,22 @@ class Radars extends Component {
     return (
       <Section title="Radars">
         <View style={SectionStyles.section__content}>
-          <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Animated by default</PackenText>
-          <PackenRadar theme="search" animated={true} isAnimating={true} />
+          <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Animated by default</PackenUiText>
+          <PackenUiRadar theme="search" animated={true} isAnimating={true} />
         </View>
         <View style={SectionStyles.section__content}>
-          <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, animatable</PackenText>
-          <PackenRadar theme="wait" animated={true} isAnimating={this.state.isWaitAnimating} />
+          <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, animatable</PackenUiText>
+          <PackenUiRadar theme="wait" animated={true} isAnimating={this.state.isWaitAnimating} />
           <View style={{ marginTop: 10 }}></View>
-          <PackenButton
+          <PackenUiButton
             type="regular"
             level="primary"
             size="small"
-            callback={this.toggleAnimation}>Toggle animation</PackenButton>
+            callback={this.toggleAnimation}>Toggle animation</PackenUiButton>
         </View>
         <View style={SectionStyles.section__content}>
-          <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, non-animatable</PackenText>
-          <PackenRadar theme="alert" animated={false} />
+          <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, non-animatable</PackenUiText>
+          <PackenUiRadar theme="alert" animated={false} />
         </View>
       </Section>
     );

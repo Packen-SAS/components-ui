@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenTabItem.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiTabItem.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenTabItem.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiTabItem.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -344,10 +344,10 @@ import { View, TouchableWithoutFeedback } from "react-native";
 &nbsp;
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import TabsStyles from "../styles/components/PackenTabs";
-import PackenText from "./PackenText";
+import TabsStyles from "../styles/components/PackenUiTabs";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenTabItem extends Component {
+class PackenUiTabItem extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -455,7 +455,7 @@ class PackenTabItem extends Component {
         &lt;View style={{ marginRight: 10 }}&gt;
           {
             this.props.icon === "»" ? (
-              &lt;PackenText style={this.state.itemStyles.icon}&gt;»&lt;/PackenText&gt;
+              &lt;PackenUiText style={this.state.itemStyles.icon}&gt;»&lt;/PackenUiText&gt;
             ) : (
                 &lt;Icon name={this.props.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6} /&gt;
               )
@@ -472,14 +472,14 @@ class PackenTabItem extends Component {
       &lt;TouchableWithoutFeedback onPress={() =&gt; { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}&gt;
         &lt;View style={this.state.itemStyles.shape}&gt;
           {this.getIcon()}
-          &lt;PackenText style={this.state.itemStyles.label}&gt;{this.props.label}&lt;/PackenText&gt;
+          &lt;PackenUiText style={this.state.itemStyles.label}&gt;{this.props.label}&lt;/PackenUiText&gt;
         &lt;/View&gt;
       &lt;/TouchableWithoutFeedback&gt;
     );
   }
 }
 &nbsp;
-export default PackenTabItem;</pre></td></tr></table></pre>
+export default PackenUiTabItem;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

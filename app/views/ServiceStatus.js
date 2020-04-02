@@ -4,8 +4,8 @@ import { View } from "react-native";
 import Section from "../components/Section";
 import SectionStyles from "../styles/components/Section";
 
-import PackenButton from "../components/PackenButton";
-import PackenServiceStatus from "../components/PackenServiceStatus";
+import PackenUiButton from "../components/PackenUiButton";
+import PackenUiServiceStatus from "../components/PackenUiServiceStatus";
 
 class ServiceStatus extends Component {
   constructor(props) {
@@ -89,23 +89,23 @@ class ServiceStatus extends Component {
     return (
       <Section title="Service Status">
         <View style={SectionStyles.section__content}>
-          <PackenServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex}/>
+          <PackenUiServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex}/>
           <View style={{marginTop: 20, flexDirection: "row"}}>
             <View style={{marginRight: 5}}>
-              <PackenButton
+              <PackenUiButton
                 type="regular"
                 level="primary"
                 size="tiny"
                 icon={{name: "arrow-left", position: "left"}}
-                callback={this.back}>Previous</PackenButton>
+                callback={this.back}>Previous</PackenUiButton>
             </View>
             <View style={{marginRight: 5}}>
-              <PackenButton
+              <PackenUiButton
                 type="regular"
                 level="primary"
                 size="tiny"
                 icon={{name: "arrow-right", position: "right"}}
-                callback={this.next}>Next</PackenButton>
+                callback={this.next}>Next</PackenUiButton>
             </View>
           </View>
         </View>

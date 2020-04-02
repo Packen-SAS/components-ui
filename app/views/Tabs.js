@@ -4,7 +4,7 @@ import { View } from "react-native";
 import Section from "../components/Section";
 import SectionStyles from "../styles/components/Section";
 
-import PackenTabs from "../components/PackenTabs";
+import PackenUiTabs from "../components/PackenUiTabs";
 
 class Tabs extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Tabs extends Component {
       <Section title="Tabs">
         <View style={SectionStyles.section__content}>
           <View style={SectionStyles.section__contentItem}>
-            <PackenTabs items={[
+            <PackenUiTabs items={[
               {
                 label: "Button",
                 icon: "»",
@@ -37,7 +37,7 @@ class Tabs extends Component {
             ]} activeIndex={0}/>
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenTabs items={[
+            <PackenUiTabs items={[
               {
                 label: "Button",
                 callback: this.mockCallback
@@ -53,7 +53,7 @@ class Tabs extends Component {
             ]} activeIndex={1}/>
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenTabs items={[
+            <PackenUiTabs items={[
               {
                 label: "Button",
                 icon: "clock",

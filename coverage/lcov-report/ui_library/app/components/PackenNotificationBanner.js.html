@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenNotificationBanner.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiNotificationBanner.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenNotificationBanner.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiNotificationBanner.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -217,12 +217,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View, Image } from "react-native"
 &nbsp;
-import NotificationBannerStyles from "../styles/components/PackenNotificationBanner";
+import NotificationBannerStyles from "../styles/components/PackenUiNotificationBanner";
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import PackenText from "./PackenText";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenNotificationBanner extends Component {
+class PackenUiNotificationBanner extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -283,17 +283,17 @@ class PackenNotificationBanner extends Component {
         ...NotificationBannerStyles.box.theme[this.state.theme].type[this.state.type]
       }}&gt;
         {this.getIcon()}
-        &lt;PackenText
+        &lt;PackenUiText
           style={{
             ...NotificationBannerStyles.title.base,
             ...NotificationBannerStyles.title.theme[this.state.theme].type[this.state.type]
-          }}&gt;{this.props.title}&lt;/PackenText&gt;
+          }}&gt;{this.props.title}&lt;/PackenUiText&gt;
       &lt;/View&gt;
     );
   }
 }
 &nbsp;
-export default PackenNotificationBanner;</pre></td></tr></table></pre>
+export default PackenUiNotificationBanner;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -4,7 +4,7 @@ import { View } from "react-native";
 import SectionStyles from "../styles/components/Section";
 import Section from "../components/Section";
 
-import PackenInput from "../components/PackenInput";
+import PackenUiInput from "../components/PackenUiInput";
 
 class Inputs extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class Inputs extends Component {
       <Section title="Inputs">
         <View style={SectionStyles.section__content}>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -40,7 +40,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="small"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -58,7 +58,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -72,7 +72,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -90,7 +90,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="giant"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -104,7 +104,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -123,7 +123,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -138,7 +138,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -152,7 +152,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -166,7 +166,7 @@ class Inputs extends Component {
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
-            <PackenInput
+            <PackenUiInput
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}

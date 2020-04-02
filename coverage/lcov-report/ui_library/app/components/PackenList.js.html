@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenList.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiList.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenList.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiList.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -357,9 +357,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View, FlatList } from "react-native";
 &nbsp;
-import PackenListItem from "./PackenListItem";
+import PackenUiListItem from "./PackenUiListItem";
 &nbsp;
-class PackenList extends Component {
+class PackenUiList extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -460,7 +460,7 @@ class PackenList extends Component {
 &nbsp;
   renderItem = ({ item }) =&gt; {
     return (
-      &lt;PackenListItem
+      &lt;PackenUiListItem
         config={this.props.config}
         mainContent={item}
         getItemHeight={this.getItemHeight}
@@ -503,7 +503,7 @@ class PackenList extends Component {
   }
 }
 &nbsp;
-export default PackenList;</pre></td></tr></table></pre>
+export default PackenUiList;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

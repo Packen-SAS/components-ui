@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenMapPinSub.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiMapPinSub.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenMapPinSub.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiMapPinSub.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -245,10 +245,10 @@ import { View } from "react-native";
 &nbsp;
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import MapPinStyles from "../styles/components/PackenMapPin";
-import PackenText from "./PackenText";
+import MapPinStyles from "../styles/components/PackenUiMapPin";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenMapPinSub extends Component {
+class PackenUiMapPinSub extends Component {
   constructor(props) {
     super(props);
   }
@@ -284,14 +284,14 @@ class PackenMapPinSub extends Component {
 &nbsp;
     if (this.props.label) {
       label = (
-        &lt;PackenText
+        &lt;PackenUiText
           style={{
             ...MapPinStyles.character.base,
             ...MapPinStyles.character.theme[this.props.theme]
           }}
         &gt;
           {this.props.label.toUpperCase()}
-        &lt;/PackenText&gt;
+        &lt;/PackenUiText&gt;
       );
     }
 &nbsp;
@@ -332,7 +332,7 @@ class PackenMapPinSub extends Component {
   }
 }
 &nbsp;
-export default PackenMapPinSub;</pre></td></tr></table></pre>
+export default PackenUiMapPinSub;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

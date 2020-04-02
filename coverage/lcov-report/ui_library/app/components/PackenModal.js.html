@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenModal.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiModal.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenModal.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiModal.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -683,11 +683,11 @@ import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
 import Colors from "../styles/abstracts/colors";
-import ModalStyles from "../styles/components/PackenModal";
+import ModalStyles from "../styles/components/PackenUiModal";
 &nbsp;
-import PackenText from "./PackenText";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenModal extends Component {
+class PackenUiModal extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -933,8 +933,8 @@ class PackenModal extends Component {
                   &lt;View style={ModalStyles.info}&gt;
                     {this.getBanner()}
                     &lt;View style={this.getContentStyles()}&gt;
-                      &lt;PackenText preset="h3" style={ModalStyles.title}&gt;{this.props.info.title}&lt;/PackenText&gt;
-                      &lt;PackenText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}&gt;{this.props.info.text}&lt;/PackenText&gt;
+                      &lt;PackenUiText preset="h3" style={ModalStyles.title}&gt;{this.props.info.title}&lt;/PackenUiText&gt;
+                      &lt;PackenUiText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}&gt;{this.props.info.text}&lt;/PackenUiText&gt;
                       {this.getInfoButton()}
                     &lt;/View&gt;
                   &lt;/View&gt;
@@ -986,7 +986,7 @@ class PackenModal extends Component {
   }
 }
 &nbsp;
-export default PackenModal;</pre></td></tr></table></pre>
+export default PackenUiModal;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

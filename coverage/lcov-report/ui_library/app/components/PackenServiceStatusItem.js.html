@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenServiceStatusItem.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiServiceStatusItem.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenServiceStatusItem.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiServiceStatusItem.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -486,10 +486,10 @@
 import { View } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import ServiceStatusStyles from "../styles/components/PackenServiceStatus";
-import PackenText from "./PackenText";
+import ServiceStatusStyles from "../styles/components/PackenUiServiceStatus";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenServiceStatusItem extends Component {
+class PackenUiServiceStatusItem extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -527,9 +527,9 @@ class PackenServiceStatusItem extends Component {
 &nbsp;
     if (this.props.data.time) {
       time = (
-        &lt;PackenText
+        &lt;PackenUiText
           style={ServiceStatusStyles.time}
-        &gt;{this.props.data.time}&lt;/PackenText&gt;
+        &gt;{this.props.data.time}&lt;/PackenUiText&gt;
       );
     }
 &nbsp;
@@ -547,9 +547,9 @@ class PackenServiceStatusItem extends Component {
 &nbsp;
     this.setState({
       time: (
-        &lt;PackenText
+        &lt;PackenUiText
           style={ServiceStatusStyles.time}
-        &gt;{strTime}&lt;/PackenText&gt;
+        &gt;{strTime}&lt;/PackenUiText&gt;
       )
     });
   }
@@ -559,12 +559,12 @@ class PackenServiceStatusItem extends Component {
 &nbsp;
     if (this.props.data.subtitle) {
       subtitle = (
-        &lt;PackenText
+        &lt;PackenUiText
           style={{
             ...ServiceStatusStyles.subtitle.base,
             ...ServiceStatusStyles.subtitle.state[this.state.state]
           }}
-        &gt;{this.props.data.subtitle}&lt;/PackenText&gt;
+        &gt;{this.props.data.subtitle}&lt;/PackenUiText&gt;
       );
     }
 &nbsp;
@@ -685,9 +685,9 @@ class PackenServiceStatusItem extends Component {
           &lt;/View&gt;
         &lt;/View&gt;
         &lt;View style={ServiceStatusStyles.main}&gt;
-          &lt;PackenText
+          &lt;PackenUiText
             style={ServiceStatusStyles.title.state[this.state.state]}
-          &gt;{this.props.data.title}&lt;/PackenText&gt;
+          &gt;{this.props.data.title}&lt;/PackenUiText&gt;
           {this.getSubtitle()}
         &lt;/View&gt;
       &lt;/View&gt;
@@ -695,7 +695,7 @@ class PackenServiceStatusItem extends Component {
   }
 }
 &nbsp;
-export default PackenServiceStatusItem;</pre></td></tr></table></pre>
+export default PackenUiServiceStatusItem;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenRadioControl.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiRadioControl.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenRadioControl.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiRadioControl.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -248,10 +248,10 @@
 &nbsp;
 import { TouchableWithoutFeedback, View } from "react-native";
 &nbsp;
-import RadioStyles from "../styles/components/PackenRadio";
-import PackenText from "../components/PackenText";
+import RadioStyles from "../styles/components/PackenUiRadio";
+import PackenUiText from "../components/PackenUiText";
 &nbsp;
-class PackenRadioControl extends Component {
+class PackenUiRadioControl extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -317,7 +317,7 @@ class PackenRadioControl extends Component {
 &nbsp;
     if (this.props.label) {
       label = (
-        &lt;PackenText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}&gt;{this.props.label}&lt;/PackenText&gt;
+        &lt;PackenUiText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}&gt;{this.props.label}&lt;/PackenUiText&gt;
       );
     }
 &nbsp;
@@ -338,7 +338,7 @@ class PackenRadioControl extends Component {
   }
 }
 &nbsp;
-export default PackenRadioControl;</pre></td></tr></table></pre>
+export default PackenUiRadioControl;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

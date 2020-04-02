@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenToggle.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiToggle.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenToggle.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiToggle.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -543,10 +543,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 &nbsp;
-import ToggleStyles from "../styles/components/PackenToggle";
-import PackenText from "../components/PackenText";
+import ToggleStyles from "../styles/components/PackenUiToggle";
+import PackenUiText from "../components/PackenUiText";
 &nbsp;
-class PackenToggle extends Component {
+class PackenUiToggle extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -762,18 +762,18 @@ class PackenToggle extends Component {
               ...this.state.dot.disabled
             }} onLayout={e =&gt; { this.getDotDimensions(e); }}&gt;&lt;/View&gt;
             &lt;View onLayout={e =&gt; { this.getOnDimensions(e); }} style={this.state.on.positioning}&gt;
-              &lt;PackenText style={{
+              &lt;PackenUiText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.on[this.state.state],
                 ...this.state.on.disabled
-              }}&gt;{this.props.onLabel}&lt;/PackenText&gt;
+              }}&gt;{this.props.onLabel}&lt;/PackenUiText&gt;
             &lt;/View&gt;
             &lt;View onLayout={e =&gt; { this.getOffDimensions(e); }} style={this.state.off.positioning}&gt;
-              &lt;PackenText style={{
+              &lt;PackenUiText style={{
                 ...ToggleStyles.label.default,
                 ...ToggleStyles.label.off[this.state.state],
                 ...this.state.off.disabled
-              }}&gt;{this.props.offLabel}&lt;/PackenText&gt;
+              }}&gt;{this.props.offLabel}&lt;/PackenUiText&gt;
             &lt;/View&gt;
           &lt;/View&gt;
         &lt;/TouchableWithoutFeedback&gt;
@@ -782,7 +782,7 @@ class PackenToggle extends Component {
   }
 }
 &nbsp;
-export default PackenToggle;</pre></td></tr></table></pre>
+export default PackenUiToggle;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
