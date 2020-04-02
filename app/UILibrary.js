@@ -20,6 +20,7 @@ import Inputs from "./views/Inputs";
 import MapPins from "./views/MapPins";
 import Dropdowns from "./views/Dropdowns";
 import NotificationBanners from "./views/NotificationBanners";
+import Radars from "./views/Radars";
 
 class UILibrary extends Component {
   render() {
@@ -28,6 +29,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <Radars/>
             <NotificationBanners/>
             <ServiceStatus/>
             <MapPins/>
