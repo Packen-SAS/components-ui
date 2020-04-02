@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenMapPin.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiMapPin.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenMapPin.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiMapPin.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -163,18 +163,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View } from "react-native";
 &nbsp;
-import MapPinStyles from "../styles/components/PackenMapPin";
-import PackenMapPinSub from "./PackenMapPinSub";
-import PackenText from "./PackenText";
+import MapPinStyles from "../styles/components/PackenUiMapPin";
+import PackenUiMapPinSub from "./PackenUiMapPinSub";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenMapPin extends Component {
+class PackenUiMapPin extends Component {
   constructor(props) {
     super(props);
   }
 &nbsp;
   getLabel = () =&gt; {
     if (this.props.main.label) {
-      return &lt;PackenText style={{ ...MapPinStyles.label.base, ...MapPinStyles.label.theme[this.props.theme] }}&gt;{this.props.main.label.toUpperCase() + " "}&lt;/PackenText&gt;;
+      return &lt;PackenUiText style={{ ...MapPinStyles.label.base, ...MapPinStyles.label.theme[this.props.theme] }}&gt;{this.props.main.label.toUpperCase() + " "}&lt;/PackenUiText&gt;;
     } else {
       return null;
     }
@@ -188,23 +188,23 @@ class PackenMapPin extends Component {
             &lt;View style={MapPinStyles.inner}&gt;
               {
                 this.props.sub &amp;&amp; this.props.sub.position === "left" ? (
-                  &lt;PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
+                  &lt;PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
                 ) : null
               }
               &lt;View style={{ ...MapPinStyles.main.base, ...MapPinStyles.main.theme[this.props.theme] }}&gt;
-                &lt;PackenText style={{ ...MapPinStyles.text.base, ...MapPinStyles.text.theme[this.props.theme] }}&gt;
+                &lt;PackenUiText style={{ ...MapPinStyles.text.base, ...MapPinStyles.text.theme[this.props.theme] }}&gt;
                   {this.getLabel()}
                   {this.props.main.text}
-                &lt;/PackenText&gt;
+                &lt;/PackenUiText&gt;
               &lt;/View&gt;
               {
                 this.props.sub &amp;&amp; this.props.sub.position === "right" ? (
-                  &lt;PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
+                  &lt;PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
                 ) : null
               }
             &lt;/View&gt;
           ) : (
-              &lt;PackenMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
+              &lt;PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} /&gt;
             )
         }
       &lt;/View&gt;
@@ -212,7 +212,7 @@ class PackenMapPin extends Component {
   }
 }
 &nbsp;
-export default PackenMapPin;</pre></td></tr></table></pre>
+export default PackenUiMapPin;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

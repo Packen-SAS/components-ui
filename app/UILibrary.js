@@ -5,7 +5,7 @@ import Typography from "./styles/abstracts/typography";
 import Spacing from "./styles/abstracts/spacing";
 import Colors from "./styles/abstracts/colors";
 
-import PackenText from "./components/PackenText";
+import PackenUiText from "./components/PackenUiText";
 
 import Buttons from "./views/Buttons";
 import Avatars from "./views/Avatars";
@@ -28,7 +28,7 @@ class UILibrary extends Component {
       <SafeAreaView>
         <ScrollView>
           <View style={styles.container}>
-            <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <PackenUiText style={styles.container__title}>UI Components Library</PackenUiText>
             <Radars/>
             <NotificationBanners/>
             <ServiceStatus/>

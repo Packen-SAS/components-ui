@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenListItem.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiListItem.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenListItem.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiListItem.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -1006,14 +1006,14 @@ import { TouchableWithoutFeedback, View } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
 import Colors from "../styles/abstracts/colors";
-import ListStyles from "../styles/components/PackenList";
+import ListStyles from "../styles/components/PackenUiList";
 import { arraysEqual } from "../utils";
 &nbsp;
-import PackenAvatar from "./PackenAvatar";
-import PackenRadio from "./PackenRadio";
-import PackenCheckbox from "./PackenCheckbox";
+import PackenUiAvatar from "./PackenUiAvatar";
+import PackenUiRadio from "./PackenUiRadio";
+import PackenUiCheckbox from "./PackenUiCheckbox";
 &nbsp;
-class PackenListItem extends Component {
+class PackenUiListItem extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -1047,12 +1047,12 @@ class PackenListItem extends Component {
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
         this.props.mainContent.main.props.children.forEach(child =&gt; {
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (this.props.mainContent.main.type.displayName !== "PackenRadio" &amp;&amp; this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (this.props.mainContent.main.type.displayName !== "PackenUiRadio" &amp;&amp; this.props.mainContent.main.type.displayName !== "PackenUiCheckbox") {
             originalStyles.push({ color: child.props.style.color });
           }
         });
       } else {
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (this.props.mainContent.main.type.displayName !== "PackenRadio" &amp;&amp; this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (this.props.mainContent.main.type.displayName !== "PackenUiRadio" &amp;&amp; this.props.mainContent.main.type.displayName !== "PackenUiCheckbox") {
           originalStyles = { ...this.props.mainContent.main.props.style };
         }
       }
@@ -1219,7 +1219,7 @@ class PackenListItem extends Component {
           break;
         case "avatar":
           leftContent = (
-            &lt;PackenAvatar
+            &lt;PackenUiAvatar
               size={this.props.mainContent.left.config.size}
               src={this.props.mainContent.left.config.src}
             /&gt;
@@ -1246,7 +1246,7 @@ class PackenListItem extends Component {
           break;
         case "avatar":
           rightContent = (
-            &lt;PackenAvatar
+            &lt;PackenUiAvatar
               size={this.props.mainContent.right.config.size}
               src={this.props.mainContent.right.config.src}
             /&gt;
@@ -1303,7 +1303,7 @@ class PackenListItem extends Component {
       switch (this.props.mainContent.main.control.type) {
         case "radio": {
           mainContent = (
-            &lt;PackenRadio
+            &lt;PackenUiRadio
               layout="dropdown"
               items={[{
                 label: this.props.mainContent.main.control.label,
@@ -1315,7 +1315,7 @@ class PackenListItem extends Component {
         } break;
         case "checkbox": {
           mainContent = (
-            &lt;PackenCheckbox
+            &lt;PackenUiCheckbox
               layout="dropdown"
               items={this.props.mainContent.main.control.items}
               callback={this.props.mainContent.main.control.notifyParent}
@@ -1371,7 +1371,7 @@ class PackenListItem extends Component {
     if (mainContent.isDisabled) {
       if (Array.isArray(mainContent.main.props.children)) {
         mainContent.main.props.children.forEach(child =&gt; {
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenRadio" &amp;&amp; child.type.displayName !== "PackenCheckbox") {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenUiRadio" &amp;&amp; child.type.displayName !== "PackenUiCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
             return 1;
           } else {
@@ -1379,7 +1379,7 @@ class PackenListItem extends Component {
           }
         });
       } else {
-        <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenCheckbox") {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenUiRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenUiCheckbox") {
           mainContent.main.props.style.color = Colors.basic.gray.lgt;
           return 2;
         } else {
@@ -1390,7 +1390,7 @@ class PackenListItem extends Component {
       if (mainContent.isSelected) {
         if (Array.isArray(mainContent.main.props.children)) {
           mainContent.main.props.children.forEach(child =&gt; {
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenRadio" &amp;&amp; child.type.displayName !== "PackenCheckbox") {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenUiRadio" &amp;&amp; child.type.displayName !== "PackenUiCheckbox") {
               child.props.style.color = Colors.basic.white.dft;
               return 3;
             } else {
@@ -1398,7 +1398,7 @@ class PackenListItem extends Component {
             }
           });
         } else {
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenCheckbox") {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenUiRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenUiCheckbox") {
             mainContent.main.props.style.color = Colors.basic.white.dft;
             return 4;
           } else {
@@ -1408,7 +1408,7 @@ class PackenListItem extends Component {
       } else {
         if (Array.isArray(mainContent.main.props.children)) {
           mainContent.main.props.children.forEach((child, i) =&gt; {
-            <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenRadio" &amp;&amp; child.type.displayName !== "PackenCheckbox") {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (child.type.displayName !== "PackenUiRadio" &amp;&amp; child.type.displayName !== "PackenUiCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
               return 5;
             } else {
@@ -1416,7 +1416,7 @@ class PackenListItem extends Component {
             }
           });
         } else {
-          <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenCheckbox") {
+          <span class="missing-if-branch" title="else path not taken" >E</span>if (mainContent.main.type.displayName !== "PackenUiRadio" &amp;&amp; mainContent.main.type.displayName !== "PackenUiCheckbox") {
             mainContent.main.props.style.color = this.state.originalStyles.color;
             return 6;
           } else {
@@ -1472,7 +1472,7 @@ class PackenListItem extends Component {
   }
 }
 &nbsp;
-export default PackenListItem;</pre></td></tr></table></pre>
+export default PackenUiListItem;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

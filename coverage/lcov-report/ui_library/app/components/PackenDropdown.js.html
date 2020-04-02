@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenDropdown.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiDropdown.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenDropdown.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiDropdown.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -331,12 +331,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 &nbsp;
-import DropdownStyles from "../styles/components/PackenDropdown";
+import DropdownStyles from "../styles/components/PackenUiDropdown";
 &nbsp;
-import PackenInput from "../components/PackenInput";
-import PackenList from "./PackenList";
+import PackenUiInput from "../components/PackenUiInput";
+import PackenUiList from "./PackenUiList";
 &nbsp;
-class PackenDropdown extends Component {
+class PackenUiDropdown extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -428,7 +428,7 @@ class PackenDropdown extends Component {
       &gt;
         &lt;TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggleMenu}&gt;
           &lt;View pointerEvents="box-only"&gt;
-            &lt;PackenInput
+            &lt;PackenUiInput
               value={this.state.finalSelectionString}
               size={this.props.size}
               placeholder={this.props.input.placeholder}
@@ -450,7 +450,7 @@ class PackenDropdown extends Component {
           style={{ ...DropdownStyles.menu, ...this.state.styles.menu }}
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         &gt;
-          &lt;PackenList
+          &lt;PackenUiList
             items={this.props.list.items}
             config={{ size: this.props.size, ...this.props.list.config }}
             numShownRows={4}
@@ -464,7 +464,7 @@ class PackenDropdown extends Component {
   }
 }
 &nbsp;
-export default PackenDropdown;</pre></td></tr></table></pre>
+export default PackenUiDropdown;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -400,10 +400,10 @@ import Typography from "../styles/abstracts/typography";
 import Colors from "../styles/abstracts/colors";
 import Spacing from "../styles/abstracts/spacing";
 &nbsp;
-import PackenButton from "../components/PackenButton";
-import PackenText from "../components/PackenText";
-import PackenDivider from "../components/PackenDivider";
-import PackenModal from "../components/PackenModal";
+import PackenUiButton from "../components/PackenUiButton";
+import PackenUiText from "../components/PackenUiText";
+import PackenUiDivider from "../components/PackenUiDivider";
+import PackenUiModal from "../components/PackenUiModal";
 &nbsp;
 class Modals extends Component {
   constructor(props) {
@@ -452,103 +452,103 @@ class Modals extends Component {
     return (
       &lt;Section title="Modals"&gt;
         &lt;View style={SectionStyles.section__content}&gt;
-          &lt;PackenText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}&gt;Information type&lt;/PackenText&gt;
+          &lt;PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}&gt;Information type&lt;/PackenUiText&gt;
           
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("primary.default"); }}&gt;Primary default&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("primary.default"); }}&gt;Primary default&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("primary.small"); }}&gt;Primary small&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("primary.small"); }}&gt;Primary small&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("warning.default"); }}&gt;Warning default&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("warning.default"); }}&gt;Warning default&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("warning.small"); }}&gt;Warning small&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("warning.small"); }}&gt;Warning small&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("danger.default"); }}&gt;Danger default&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("danger.default"); }}&gt;Danger default&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("danger.small"); }}&gt;Danger small&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("danger.small"); }}&gt;Danger small&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("info.default"); }}&gt;Info default&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("info.default"); }}&gt;Info default&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("info.small"); }}&gt;Info small&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("info.small"); }}&gt;Info small&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("success.default"); }}&gt;Success default&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("success.default"); }}&gt;Success default&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("success.small"); }}&gt;Success small&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("success.small"); }}&gt;Success small&lt;/PackenUiButton&gt;
           &lt;/View&gt;
 &nbsp;
-          &lt;PackenDivider size={1} type="light" margin={{top: 15, bottom: 15}}/&gt;
-          &lt;PackenText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}&gt;Gallery type&lt;/PackenText&gt;
+          &lt;PackenUiDivider size={1} type="light" margin={{top: 15, bottom: 15}}/&gt;
+          &lt;PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}&gt;Gallery type&lt;/PackenUiText&gt;
           
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("gallery.multiple"); }}&gt;Gallery multiple&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("gallery.multiple"); }}&gt;Gallery multiple&lt;/PackenUiButton&gt;
           &lt;/View&gt;
           &lt;View style={{marginBottom: Spacing[2]}}&gt;
-            &lt;PackenButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("gallery.single"); }}&gt;Gallery single&lt;/PackenButton&gt;
+            &lt;PackenUiButton type="regular" level="primary" size="small" callback={() =&gt; { this.toggleModal("gallery.single"); }}&gt;Gallery single&lt;/PackenUiButton&gt;
           &lt;/View&gt;
         &lt;/View&gt;
 &nbsp;
         &lt;View&gt;
-          &lt;PackenModal isOpen={this.state.primary.default} size="default" type="info" theme="primary" info={{
+          &lt;PackenUiModal isOpen={this.state.primary.default} size="default" type="info" theme="primary" info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("primary.default"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("primary.default"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("primary.default"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.primary.small} size="small" type="info" theme="primary" info={{
+          &lt;PackenUiModal isOpen={this.state.primary.small} size="small" type="info" theme="primary" info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("primary.small"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("primary.small"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("primary.small"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.warning.default} size="default" type="info" theme="warning" banner={{icon: "alert-triangle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.warning.default} size="default" type="info" theme="warning" banner={{icon: "alert-triangle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit."
           }} toggle={() =&gt; { this.toggleModal("warning.default"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.warning.small} size="small" type="info" theme="warning" banner={{icon: "alert-triangle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.warning.small} size="small" type="info" theme="warning" banner={{icon: "alert-triangle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("warning.small"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("warning.small"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("warning.small"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.danger.default} size="default" type="info" theme="danger" banner={{icon: "x-circle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.danger.default} size="default" type="info" theme="danger" banner={{icon: "x-circle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("danger.default"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("danger.default"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("danger.default"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.danger.small} size="small" type="info" theme="danger" banner={{icon: "x-circle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.danger.small} size="small" type="info" theme="danger" banner={{icon: "x-circle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit."
           }} toggle={() =&gt; { this.toggleModal("danger.small"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.info.default} size="default" type="info" theme="info" banner={{icon: "info"}} info={{
+          &lt;PackenUiModal isOpen={this.state.info.default} size="default" type="info" theme="info" banner={{icon: "info"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("info.default"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("info.default"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("info.default"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.info.small} size="small" type="info" theme="info" banner={{icon: "info"}} info={{
+          &lt;PackenUiModal isOpen={this.state.info.small} size="small" type="info" theme="info" banner={{icon: "info"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("info.small"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("info.small"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("info.small"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.success.default} size="default" type="info" theme="success" banner={{icon: "check-circle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.success.default} size="default" type="info" theme="success" banner={{icon: "check-circle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit."
           }} toggle={() =&gt; { this.toggleModal("success.default"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.success.small} size="small" type="info" theme="success" banner={{icon: "check-circle"}} info={{
+          &lt;PackenUiModal isOpen={this.state.success.small} size="small" type="info" theme="success" banner={{icon: "check-circle"}} info={{
             title: "Title",
             text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-            btn: &lt;PackenButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("success.small"); }}&gt;BUTTON&lt;/PackenButton&gt;
+            btn: &lt;PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() =&gt; { this.toggleModal("success.small"); }}&gt;BUTTON&lt;/PackenUiButton&gt;
           }} toggle={() =&gt; { this.toggleModal("success.small"); }}/&gt;
           
-          &lt;PackenModal isOpen={this.state.gallery.multiple} size="small" type="gallery" theme="white"
+          &lt;PackenUiModal isOpen={this.state.gallery.multiple} size="small" type="gallery" theme="white"
             images={[require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png")]}
             toggle={() =&gt; { this.toggleModal("gallery.multiple"); }}/&gt;
-          &lt;PackenModal isOpen={this.state.gallery.single} size="small" type="gallery" theme="white"
+          &lt;PackenUiModal isOpen={this.state.gallery.single} size="small" type="gallery" theme="white"
             images={[require("../../assets/images/placeholder.png")]}
             toggle={() =&gt; { this.toggleModal("gallery.single"); }}/&gt;
         &lt;/View&gt;
@@ -564,7 +564,7 @@ export default Modals;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 31 2020 13:57:22 GMT-0500 (Colombia Standard Time)
+                at Thu Apr 02 2020 16:00:47 GMT-0500 (Colombia Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

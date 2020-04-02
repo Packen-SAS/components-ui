@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenButton.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiButton.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenButton.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiButton.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -436,10 +436,10 @@ import { TouchableWithoutFeedback, View } from "react-native"
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
 import Color from "../styles/abstracts/colors";
-import PackenText from "./PackenText";
-import * as ButtonStyles from "../styles/components/PackenButton";
+import PackenUiText from "./PackenUiText";
+import * as ButtonStyles from "../styles/components/PackenUiButton";
 &nbsp;
-class PackenButton extends Component {
+class PackenUiButton extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -601,7 +601,7 @@ class PackenButton extends Component {
         &lt;TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}&gt;
           &lt;View style={this.state.styles.shape}&gt;
             &lt;View style={this.state.styles.shape__content} onLayout={e =&gt; { this.getShapeDimensions(e.nativeEvent.layout); }}&gt;
-              &lt;PackenText style={this.state.styles.label}&gt;{this.props.children}&lt;/PackenText&gt;
+              &lt;PackenUiText style={this.state.styles.label}&gt;{this.props.children}&lt;/PackenUiText&gt;
               {
                 this.props.icon ? (
                   &lt;View style={this.state.styles.iconWrapper} onLayout={e =&gt; { this.getIconDimensions(e.nativeEvent.layout); }}&gt;
@@ -617,7 +617,7 @@ class PackenButton extends Component {
   }
 }
 &nbsp;
-export default PackenButton;</pre></td></tr></table></pre>
+export default PackenUiButton;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

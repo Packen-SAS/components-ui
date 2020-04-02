@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import SectionStyles from "../styles/components/Section";
 
-import PackenText from "../components/PackenText";
+import PackenUiText from "./PackenUiText";
 
 class Section extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class Section extends Component {
   render() {
     return (
       <View style={SectionStyles.section}>
-        <PackenText style={SectionStyles.section__title}>{this.props.title}</PackenText>
+        <PackenUiText style={SectionStyles.section__title}>{this.props.title}</PackenUiText>
         {this.props.children}
       </View>
     );
