@@ -24,7 +24,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -45,7 +45,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -123,10 +123,7 @@
 <a name='L65'></a><a href='#L65'>65</a>
 <a name='L66'></a><a href='#L66'>66</a>
 <a name='L67'></a><a href='#L67'>67</a>
-<a name='L68'></a><a href='#L68'>68</a>
-<a name='L69'></a><a href='#L69'>69</a>
-<a name='L70'></a><a href='#L70'>70</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L68'></a><a href='#L68'>68</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,14 +134,7 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -152,13 +142,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">20x</span>
+<span class="cline-any cline-yes">20x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -174,12 +175,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">24x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">64x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -198,38 +194,41 @@
 import { View } from "react-native";
 &nbsp;
 import ServiceStatusStyles from "../styles/components/PackenServiceStatus";
-import PackenText from "../components/PackenText";
-import PackenServiceStatusIcon from "./PackenServiceStatusIcon";
+import PackenServiceStatusItem from "./PackenServiceStatusItem";
 &nbsp;
 class PackenServiceStatus extends Component {
   constructor(props) {
     super(props);
 &nbsp;
-    updatedSteps = [...props.steps];
-    updatedSteps.forEach(step =&gt; {
-      step = {
-        ...step,
-        isComplete: false
-      }
-    });
-&nbsp;
     this.state = {
-      finalSteps: updatedSteps,
-      currentStep: {...props.steps[props.currentStepIndex]}
+      steps: [...props.steps],
+      currentStepIndex: props.currentStepIndex,
+      itemsHeights: []
     }
   }
 &nbsp;
   updateCurrentStep = () =&gt; {
     for (let i = 0; i &lt; this.props.currentStepIndex; i++) {
-      this.state.finalSteps[i].isComplete = true;
+      this.state.steps[i].isComplete = true;
+      this.state.steps[i].isCurrent = false;
     }
-    for (let i = this.props.currentStepIndex; i &lt; this.state.finalSteps.length; i++) {
-      this.state.finalSteps[i].isComplete = false;
+    for (let i = this.props.currentStepIndex; i &lt; this.state.steps.length; i++) {
+      this.state.steps[i].isComplete = false;
+      this.state.steps[i].isCurrent = false;
     }
     
     this.setState({
-      currentStep: {...this.props.steps[this.props.currentStepIndex]}
-    }, this.state.currentStep.callback);
+      currentStepIndex: this.props.currentStepIndex
+    }, this.state.steps[this.props.currentStepIndex].callback);
+  }
+&nbsp;
+  setItemsHeights = (i, height) =&gt; {
+    const newHeights = [...this.state.itemsHeights];
+    newHeights[i] = height;
+&nbsp;
+    this.setState({
+      itemsHeights: newHeights
+    });
   }
 &nbsp;
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -240,24 +239,19 @@ class PackenServiceStatus extends Component {
 &nbsp;
   render() {
     return (
-      &lt;View&gt;
-        &lt;View style={ServiceStatusStyles.timeline}&gt;
-          {
-            this.state.finalSteps.map((step, i) =&gt; (
-              &lt;PackenServiceStatusIcon
-                key={i}
-                stepsLength={this.state.finalSteps.length}
-                activeIcon={step.activeIcon}
-                activeIndex={this.props.currentStepIndex}
-                selfIndex={i}
-                isComplete={step.isComplete}/&gt;
-            ))
-          }
-        &lt;/View&gt;
-        &lt;View style={ServiceStatusStyles.copy}&gt;
-          &lt;PackenText style={ServiceStatusStyles.title}&gt;{this.state.currentStep.title}&lt;/PackenText&gt;
-          &lt;PackenText style={ServiceStatusStyles.date}&gt;{this.state.currentStep.date} - &lt;PackenText style={ServiceStatusStyles.time}&gt;{this.state.currentStep.time}&lt;/PackenText&gt;&lt;/PackenText&gt;
-        &lt;/View&gt;
+      &lt;View style={ServiceStatusStyles.wrapper}&gt;
+        {
+          this.state.steps.map((step, i) =&gt; (
+            &lt;PackenServiceStatusItem
+              key={i}
+              index={i}
+              data={step}
+              currentStepIndex={this.state.currentStepIndex}
+              itemsHeights={this.state.itemsHeights}
+              setItemsHeights={this.setItemsHeights}
+            /&gt;
+          ))
+        }
       &lt;/View&gt;
     );
   }
@@ -270,7 +264,7 @@ export default PackenServiceStatus;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 24 2020 08:02:16 GMT-0500 (-05)
+                at Mon Mar 30 2020 17:18:06 GMT-0500 (Colombia Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
