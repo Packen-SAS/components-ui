@@ -1,6 +1,6 @@
 const families = {
   regular: "Muli-Regular",
-  semibold: "Muli-Semibold",
+  semibold: "Muli-SemiBold",
   bold: "Muli-Bold"
 }
 
@@ -11,11 +11,14 @@ export default {
   size: {
     xtiny: 8,
     tiny: 10,
+    tiny_alt: 11,
     small: 12,
     medium: 14,
     large: 16,
     giant: 18,
-    huge: 24
+    giant_alt: 20,
+    huge: 24,
+    xhuge: 30
   },
   lineheight: {
     xtiny: 12,

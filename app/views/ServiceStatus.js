@@ -12,34 +12,66 @@ class ServiceStatus extends Component {
     super(props);
 
     this.state = {
-      currentStepIndex: 0,
+      currentStepIndex: 2,
       steps: [
         {
-          title: "Solicitando Servicio",
-          activeIcon: "clock",
-          date: "Agosto 13, 2017",
-          time: "05:08 pm",
-          callback: this.mock_callback
+          title: "Vehículo asignado",
+          isComplete: true,
+          isCurrent: false,
+          time: "05:21 pm",
+          callback: this.mockCallback
         },
         {
-          title: "Servicio Confirmado",
-          activeIcon: "search",
-          date: "Agosto 13, 2017",
-          time: "05:13 pm",
-          callback: this.mock_callback
+          title: "En camino a origen",
+          subtitle: "Calle 71 # 13-81",
+          isComplete: true,
+          isCurrent: false,
+          time: "05:21 pm",
+          callback: this.mockCallback
         },
         {
-          title: "Servicio Finalizado",
-          activeIcon: "check-circle",
-          date: "Agosto 13, 2017",
-          time: "06:32 pm",
-          callback: this.mock_callback
+          title: "En origen",
+          subtitle: "Calle 71 # 13-81",
+          isComplete: false,
+          isCurrent: true,
+          time: "05:21 pm",
+          callback: this.mockCallback
+        },
+        {
+          title: "Cargue completo",
+          isComplete: false,
+          isCurrent: false,
+          callback: this.mockCallback
+        },
+        {
+          title: "En camino a destino A",
+          isComplete: false,
+          isCurrent: false,
+          callback: this.mockCallback
+        },
+        {
+          title: "En destino A",
+          isComplete: false,
+          isCurrent: false,
+          callback: this.mockCallback
+        },
+        {
+          title: "Descargue completo",
+          isComplete: false,
+          isCurrent: false,
+          callback: this.mockCallback
+        },
+        {
+          title: "Finalizado",
+          isComplete: false,
+          isCurrent: false,
+          callback: this.mockCallback
         }
       ]
     }
   }
 
-  mock_callback = () => { return; }
+  mockCallback = () => { return true; }
 
   back = () => {
     this.setState({

@@ -1,122 +1,35 @@
 import React, { Component } from "react";
 import { TouchableWithoutFeedback, View } from "react-native"
 
-import Icon from "react-native-vector-icons/Feather";
+import Icon from "react-native-vector-icons/dist/Feather";
+
 import Color from "../styles/abstracts/colors";
 import PackenText from "./PackenText";
 import * as ButtonStyles from "../styles/components/PackenButton";
 
 class PackenButton extends Component {
-  /* const { type, level, size, icon, isDisabled } = props;
-  const [shapeHeight, setShapeHeight] = useState(0);
-  const [shapeWidth, setShapeWidth] = useState(0);
-  const [iconHeight, setIconHeight] = useState(0);
-  const [iconWidth, setIconWidth] = useState(0); */
-
   constructor(props) {
     super(props);
-
-    styles = {
-      shape: {
-        ...ButtonStyles.base.shape,
-        ...ButtonStyles[props.type][props.size].shape,
-        ...ButtonStyles[props.level].shape
-      },
-      content: {
-        position: "relative"
-      },
-      icon: {
-        ...ButtonStyles.base.icon,
-        ...ButtonStyles[props.type][props.size].icon,
-        ...ButtonStyles[props.level].icon
-      }
-    };
-
-    switch (props.type) {
-      case "icon":
-        styles = {
-          ...styles,
-          iconWrapper: {
-            position: "absolute",
-            top: 0,
-            left: 0
-          }
-        };
-        break;
-      case "regular":
-        styles = {
-          ...styles,
-          label: {
-            ...ButtonStyles.base.label,
-            ...ButtonStyles[props.type][props.size].label,
-            ...ButtonStyles[props.level].label
-          },
-          iconWrapper: {
-            position: "absolute",
-            top: 0,
-            right: props.icon.position === "left" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0),
-            left: props.icon.position === "right" ? "auto" : -(ButtonStyles[props.type][props.size].label.marginHorizontal + 0)
-          }
-        };
-        break;
-      default:
-        break;
-    }
-
-    switch (props.level) {
-      case "secondary":
-        styles.shape = {
-          ...styles.shape,
-          borderWidth: 1,
-          borderStyle: "solid",
-          borderColor: Color.secondary.default_drk
-        }
-        break;
-      default:
-      case "ghost":
-      case "primary":
-      case "tertiary":
-      case "danger":
-        break;
-    }
-
-    if (props.isDisabled) {
-      styles.shape.backgroundColor = Color.base.disabled;
-      styles.icon.color = Color.base.white;
-
-      if (styles.label) {
-        styles.label.color = Color.base.white;
-      }
-
-      if (styles.shape.borderWidth) {
-        styles.shape.borderWidth = 0;
-      }
-
-      if (props.level === "ghost") {
-        styles.shape.backgroundColor = Color.base.transparent;
-        styles.icon.color = Color.base.disabled_alt;
-
-        if (styles.label) {
-          styles.label.color = Color.base.disabled_alt;
-        }
-      }
-    }
 
     this.state = {
       type: props.type,
       level: props.level,
       size: props.size,
-      icon: props.icon,
+      icon: this.getInitialIcon(),
       isDisabled: props.isDisabled,
       shapeHeight: 0,
       shapeWidth: 0,
       iconHeight: 0,
       iconWidth: 0,
-      styles: styles
+      styles: this.getStyles(0, 0, 0, 0)
     }
   }
 
-  get_styles = () => {
+  getInitialIcon = () => {
+    return this.props.icon ? this.props.icon : undefined
+  }
+
+  getStyles = (shapeHeight, shapeWidth, iconHeight, iconWidth) => {
     let styles = {
       shape: {
         ...ButtonStyles.base.shape,
@@ -139,8 +52,8 @@ class PackenButton extends Component {
           ...styles,
           iconWrapper: {
             position: "absolute",
-            top: (this.state.shapeHeight/2) - (this.state.iconHeight/2),
-            left: (this.state.shapeWidth/2) - (this.state.iconWidth/2)
+            top: (shapeHeight/2) - (iconHeight/2),
+            left: (shapeWidth/2) - (iconWidth/2)
           }
         };
         break;
@@ -154,13 +67,11 @@ class PackenButton extends Component {
           },
           iconWrapper: {
             position: "absolute",
-            top: (this.state.shapeHeight/2) - (this.state.iconHeight/2),
-            right: this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2)),
-            left: this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (this.state.iconWidth/2))
+            top: (shapeHeight/2) - (iconHeight/2),
+            right: this.props.icon ? this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0,
+            left: this.props.icon ? this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0
           }
         };
-        break;
-      default:
         break;
     }
 
@@ -173,12 +84,6 @@ class PackenButton extends Component {
           borderStyle: "solid",
           borderColor: Color.secondary.default_drk
         }
-        break;
-      default:
-      case "ghost":
-      case "primary":
-      case "tertiary":
-      case "danger":
         break;
     }
 
@@ -211,43 +116,37 @@ class PackenButton extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.shapeHeight !== this.state.shapeHeight || prevState.iconHeight !== this.state.iconHeight || prevState.iconWidth !== this.state.iconWidth) {
       this.setState({
-        styles: this.get_styles()
+        styles: this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)
       });
     }
   }
 
-  get_shape_dimensions = e => {
+  getShapeDimensions = e => {
     this.setState({
       shapeHeight: Math.floor(e.height),
       shapeWidth: Math.floor(e.width)
     });
   }
 
-  get_icon_dimensions = e => {
+  getIconDimensions = e => {
     this.setState({
       iconHeight: Math.floor(e.height),
       iconWidth: Math.floor(e.width)
     });
   }
 
-  execute_callback = () => {
+  executeCallback = () => {
     this.props.callback();
   }
 
-  pressIn_handler = () => {
-    let newStyles = {...this.get_styles()}
+  pressInHandler = () => {
+    let newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
 
     /* Custom focus styles */
     switch (this.state.level) {
       case "secondary":
         newStyles.shape.borderColor = Color.secondary.focus;
-        break;
-      default:
-      case "primary":
-      case "tertiary":
-      case "ghost":
-      case "danger":
         break;
     }
 
@@ -256,8 +155,8 @@ class PackenButton extends Component {
     });
   }
 
-  pressOut_handler = () => {
-    const newStyles = {...this.get_styles()}
+  pressOutHandler = () => {
+    const newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     this.setState({
       styles: newStyles
@@ -267,13 +166,17 @@ class PackenButton extends Component {
   render() {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
-        <TouchableWithoutFeedback onPress={this.execute_callback} onPressIn={this.pressIn_handler} onPressOut={this.pressOut_handler}>
+        <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
           <View style={this.state.styles.shape}>
-            <View style={this.state.styles.shape__content} onLayout={e => { this.get_shape_dimensions(e.nativeEvent.layout); }}>
+            <View style={this.state.styles.shape__content} onLayout={e => { this.getShapeDimensions(e.nativeEvent.layout); }}>
               <PackenText style={this.state.styles.label}>{this.props.children}</PackenText>
-              <View style={this.state.styles.iconWrapper} onLayout={e => { this.get_icon_dimensions(e.nativeEvent.layout); }}>
-                <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
-              </View>
+              {
+                this.props.icon ? (
+                  <View style={this.state.styles.iconWrapper} onLayout={e => { this.getIconDimensions(e.nativeEvent.layout); }}>
+                    <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
+                  </View>
+                ) : null
+              }
             </View>
           </View>
         </TouchableWithoutFeedback>

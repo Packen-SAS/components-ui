@@ -10,16 +10,20 @@ class PackenRadioControl extends Component {
     super(props);
 
     this.state = {
-      state: props.isDisabled ? "default_disabled" : "default"
+      state: this.setInitialState()
     }
   }
 
-  componentDidMount() {
-    this.check_if_checked();
-    this.check_if_disabled();
+  setInitialState = () => {
+    return this.props.isDisabled ? "default_disabled" : "default";
   }
 
-  onPress_handler = () => {
+  componentDidMount() {
+    this.checkIfChecked();
+    this.checkIfDisabled();
+  }
+
+  onPressHandler = () => {
     this.setState({
       state: "checked"
     });
@@ -27,7 +31,7 @@ class PackenRadioControl extends Component {
     this.props.updateCheckedIndex(this.props.selfIndex);
   }
 
-  check_if_disabled = () => {
+  checkIfDisabled = () => {
     if (this.props.isDisabled) {
       if (this.props.checkedIndex !== this.props.selfIndex) {
         this.setState({
@@ -38,10 +42,12 @@ class PackenRadioControl extends Component {
           state: "checked_disabled"
         });
       }
+    } else {
+      return false;
     }
   }
 
-  check_if_checked = () => {
+  checkIfChecked = () => {
     if (this.props.checkedIndex !== this.props.selfIndex) {
       this.setState({
         state: "default"
@@ -55,20 +61,30 @@ class PackenRadioControl extends Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.checkedIndex !== this.props.checkedIndex) {
-      this.check_if_checked();
-      this.check_if_disabled();
+      this.checkIfChecked();
+      this.checkIfDisabled();
     }
+  }
+
+  getLabel = () => {
+    let label = null;
+
+    if (this.props.label) {
+      label = (
+        <PackenText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}>{this.props.label}</PackenText>
+      );
+    }
+
+    return label;
   }
 
   render() {
     return (
       <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
-        <TouchableWithoutFeedback onPress={this.onPress_handler}>
-          <View style={RadioStyles.shape.default}>
-            <View style={RadioStyles.control[this.state.state]}></View>
-            {
-              this.props.label ? <PackenText style={RadioStyles.label.default}>{this.props.label}</PackenText> : null
-            }
+        <TouchableWithoutFeedback onPress={this.onPressHandler}>
+          <View style={RadioStyles.shape.base}>
+            <View style={{ ...RadioStyles.control.base, ...RadioStyles.control[this.state.state] }}></View>
+            {this.getLabel()}
           </View>
         </TouchableWithoutFeedback>
       </View>
