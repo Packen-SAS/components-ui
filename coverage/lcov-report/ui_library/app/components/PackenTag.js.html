@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenTag.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiTag.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenTag.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiTag.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -101,11 +101,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View } from "react-native";
 &nbsp;
-import TagStyles from "../styles/components/PackenTag";
+import TagStyles from "../styles/components/PackenUiTag";
 &nbsp;
-import PackenText from "./PackenText";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenTag extends Component {
+class PackenUiTag extends Component {
   constructor(props) {
     super(props);
   }
@@ -113,13 +113,13 @@ class PackenTag extends Component {
   render() {
     return (
       &lt;View style={TagStyles.box.base}&gt;
-        &lt;PackenText style={{ ...TagStyles.label.base, ...this.props.style }}&gt;{this.props.children}&lt;/PackenText&gt;
+        &lt;PackenUiText style={{ ...TagStyles.label.base, ...this.props.style }}&gt;{this.props.children}&lt;/PackenUiText&gt;
       &lt;/View&gt;
     );
   }
 }
 &nbsp;
-export default PackenTag;</pre></td></tr></table></pre>
+export default PackenUiTag;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

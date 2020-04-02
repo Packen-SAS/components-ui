@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenInput.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiInput.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenInput.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiInput.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -635,11 +635,11 @@ import { View, TextInput, TouchableWithoutFeedback } from "react-native";
 &nbsp;
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import InputStyles from "../styles/components/PackenInput";
+import InputStyles from "../styles/components/PackenUiInput";
 &nbsp;
-import PackenText from "../components/PackenText";
+import PackenUiText from "../components/PackenUiText";
 &nbsp;
-class PackenInput extends Component {
+class PackenUiInput extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -803,12 +803,12 @@ class PackenInput extends Component {
 &nbsp;
     if (this.props.help) {
       help = (
-        &lt;PackenText
+        &lt;PackenUiText
           style={{
             ...InputStyles.help.base,
             ...InputStyles.help.size[this.props.size]
           }}
-        &gt;{this.props.help}&lt;/PackenText&gt;
+        &gt;{this.props.help}&lt;/PackenUiText&gt;
       );
     }
 &nbsp;
@@ -842,11 +842,11 @@ class PackenInput extends Component {
       message = (
         &lt;View style={InputStyles.message.box}&gt;
           {this.getMessageIcon()}
-          &lt;PackenText style={{
+          &lt;PackenUiText style={{
             ...InputStyles.message.text.size[this.props.size],
             ...InputStyles.message.text.theme[this.props.theme],
             ...InputStyles.message.text.state[this.state.state]
-          }}&gt;{this.props.message.text}&lt;/PackenText&gt;
+          }}&gt;{this.props.message.text}&lt;/PackenUiText&gt;
         &lt;/View&gt;
       );
     }
@@ -866,11 +866,11 @@ class PackenInput extends Component {
     return (
       &lt;View style={InputStyles.container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}&gt;
         &lt;View style={InputStyles.header}&gt;
-          &lt;PackenText style={{
+          &lt;PackenUiText style={{
             ...InputStyles.label.base,
             ...InputStyles.label.size[this.props.size],
             ...InputStyles.label.state[this.state.state]
-          }}&gt;{this.props.label.toUpperCase()}&lt;/PackenText&gt;
+          }}&gt;{this.props.label.toUpperCase()}&lt;/PackenUiText&gt;
           {this.getHelp()}
         &lt;/View&gt;
         &lt;View style={InputStyles.box} onLayout={e =&gt; { this.getBoxDimensions(e.nativeEvent.layout); }}&gt;
@@ -917,7 +917,7 @@ class PackenInput extends Component {
   }
 }
 &nbsp;
-export default PackenInput;</pre></td></tr></table></pre>
+export default PackenUiInput;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -6,7 +6,7 @@ import SectionStyles from "../styles/components/Section";
 
 import Spacing from "../styles/abstracts/spacing";
 
-import PackenToggle from "../components/PackenToggle";
+import PackenUiToggle from "../components/PackenUiToggle";
 
 class Toggles extends Component {
   constructor(props) {
@@ -24,16 +24,16 @@ class Toggles extends Component {
       <Section title="Toggles">
         <View style={SectionStyles.section__content}>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggleHandler}/>
+            <PackenUiToggle onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggleHandler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle onLabel="SÍ" offLabel="NO" isActive={false} toggleHandler={this.toggleHandler}/>
+            <PackenUiToggle onLabel="SÍ" offLabel="NO" isActive={false} toggleHandler={this.toggleHandler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle onLabel="SÍ" offLabel="NO" isActive={true} toggleHandler={this.toggleHandler} isDisabled/>
+            <PackenUiToggle onLabel="SÍ" offLabel="NO" isActive={true} toggleHandler={this.toggleHandler} isDisabled/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenToggle onLabel="ON" offLabel="OFF" isActive={false} toggleHandler={this.toggleHandler} isDisabled/>
+            <PackenUiToggle onLabel="ON" offLabel="OFF" isActive={false} toggleHandler={this.toggleHandler} isDisabled/>
           </View>
         </View>
       </Section>

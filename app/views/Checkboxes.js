@@ -7,9 +7,9 @@ import SectionStyles from "../styles/components/Section";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
-import PackenText from "../components/PackenText";
-import PackenDivider from "../components/PackenDivider";
-import PackenCheckbox from "../components/PackenCheckbox";
+import PackenUiText from "../components/PackenUiText";
+import PackenUiDivider from "../components/PackenUiDivider";
+import PackenUiCheckbox from "../components/PackenUiCheckbox";
 
 class Checkboxes extends Component {
   constructor(props) {
@@ -79,18 +79,18 @@ class Checkboxes extends Component {
     return (
       <Section title="Checkboxes">
         <View style={{ marginTop: 10 }}>
-          <PackenText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenText>
+          <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
           <View style={SectionStyles.section__contentItem}>
-            <PackenCheckbox
+            <PackenUiCheckbox
               layout="column"
               items={this.state.items}
               callback={this.handleNotify}
             />
           </View>
-          <PackenDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
-          <PackenText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenText>
+          <PackenUiDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
+          <PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenUiText>
           <View style={SectionStyles.section__contentItem}>
-            <PackenCheckbox
+            <PackenUiCheckbox
               layout="row"
               items={this.state.itemsRow}
               callback={this.handleNotifyRow}

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenCheckboxControl.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiCheckboxControl.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenCheckboxControl.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiCheckboxControl.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -275,11 +275,11 @@ import { View } from "react-native";
 &nbsp;
 import Icon from "react-native-vector-icons/dist/Feather";
 &nbsp;
-import CheckboxStyles from "../styles/components/PackenCheckbox";
+import CheckboxStyles from "../styles/components/PackenUiCheckbox";
 &nbsp;
-import PackenText from "./PackenText";
+import PackenUiText from "./PackenUiText";
 &nbsp;
-class PackenCheckboxControl extends Component {
+class PackenUiCheckboxControl extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -366,18 +366,18 @@ class PackenCheckboxControl extends Component {
             ) : null
           }
         &lt;/View&gt;
-        &lt;PackenText
+        &lt;PackenUiText
           style={{
             ...CheckboxStyles.label.base,
             ...CheckboxStyles.label.state[this.props.isDisabled ? "disabled" : "default"]
           }}
-        &gt;{this.state.label}&lt;/PackenText&gt;
+        &gt;{this.state.label}&lt;/PackenUiText&gt;
       &lt;/View&gt;
     );
   }
 }
 &nbsp;
-export default PackenCheckboxControl;</pre></td></tr></table></pre>
+export default PackenUiCheckboxControl;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

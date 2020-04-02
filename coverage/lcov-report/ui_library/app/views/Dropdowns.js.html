@@ -3358,8 +3358,8 @@ import SectionStyles from "../styles/components/Section";
 &nbsp;
 import Colors from "../styles/abstracts/colors";
 &nbsp;
-import PackenDropdown from "../components/PackenDropdown";
-import PackenText from "../components/PackenText";
+import PackenUiDropdown from "../components/PackenUiDropdown";
+import PackenUiText from "../components/PackenUiText";
 &nbsp;
 import { genKey } from "../utils";
 &nbsp;
@@ -3382,7 +3382,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Bogotá, D.C.",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3390,7 +3390,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Medellín",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3399,7 +3399,7 @@ class Dropdowns extends Component {
               value: "Bucaramanga",
               isSelected: false,
               isDisabled: true,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3407,7 +3407,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Santa Marta",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3415,7 +3415,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cali",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3423,7 +3423,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cartagena",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3431,7 +3431,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Leticia",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;)
             }
           ]
         },
@@ -3448,7 +3448,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Bogotá, D.C.",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3456,7 +3456,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Medellín",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3465,7 +3465,7 @@ class Dropdowns extends Component {
               value: "Bucaramanga",
               isSelected: false,
               isDisabled: true,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3473,7 +3473,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Santa Marta",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3481,7 +3481,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cali",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3489,7 +3489,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cartagena",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3497,7 +3497,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Leticia",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;)
             }
           ]
         },
@@ -3519,7 +3519,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Bogotá, D.C.",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3533,7 +3533,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Medellín",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3548,7 +3548,7 @@ class Dropdowns extends Component {
               value: "Bucaramanga",
               isSelected: false,
               isDisabled: true,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3562,7 +3562,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Santa Marta",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3576,7 +3576,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cali",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3590,7 +3590,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Cartagena",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3604,7 +3604,7 @@ class Dropdowns extends Component {
               right: false,
               value: "Leticia",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;)
             }
           ]
         },
@@ -3628,8 +3628,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3647,8 +3647,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3667,8 +3667,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3686,8 +3686,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3705,8 +3705,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3724,8 +3724,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3743,8 +3743,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -3768,7 +3768,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Bogotá, D.C.",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3782,7 +3782,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Medellín",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3797,7 +3797,7 @@ class Dropdowns extends Component {
               value: "Bucaramanga",
               isSelected: false,
               isDisabled: true,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3811,7 +3811,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Santa Marta",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3825,7 +3825,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Cali",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3839,7 +3839,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Cartagena",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;)
             },
             {
               key: genKey(),
@@ -3853,7 +3853,7 @@ class Dropdowns extends Component {
               left: false,
               value: "Leticia",
               isSelected: false,
-              main: (&lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;)
+              main: (&lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;)
             }
           ]
         },
@@ -3872,8 +3872,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3885,8 +3885,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3899,8 +3899,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3912,8 +3912,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3925,8 +3925,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3938,8 +3938,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3951,8 +3951,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -3977,8 +3977,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -3995,8 +3995,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4014,8 +4014,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4032,8 +4032,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4050,8 +4050,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4068,8 +4068,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4086,8 +4086,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -4112,8 +4112,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4130,8 +4130,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4149,8 +4149,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4167,8 +4167,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4185,8 +4185,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4203,8 +4203,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4221,8 +4221,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -4248,8 +4248,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4266,8 +4266,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4285,8 +4285,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4303,8 +4303,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4321,8 +4321,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4339,8 +4339,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4357,8 +4357,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -4388,8 +4388,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bogotá, D.C.&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4411,8 +4411,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Medellín&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4435,8 +4435,8 @@ class Dropdowns extends Component {
               isDisabled: true,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Bucaramanga&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4458,8 +4458,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Santa Marta&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4481,8 +4481,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cali&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4504,8 +4504,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Cartagena&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             },
@@ -4527,8 +4527,8 @@ class Dropdowns extends Component {
               isSelected: false,
               main: (
                 &lt;&gt;
-                  &lt;PackenText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenText&gt;
-                  &lt;PackenText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.independence.dft }}&gt;Leticia&lt;/PackenUiText&gt;
+                  &lt;PackenUiText style={{ color: Colors.basic.gray.drk, fontSize: 12, lineHeight: 16 }}&gt;Information&lt;/PackenUiText&gt;
                 &lt;/&gt;
               )
             }
@@ -4766,7 +4766,7 @@ class Dropdowns extends Component {
       &lt;Section title="Dropdowns"&gt;
         &lt;View style={SectionStyles.section__content}&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.simple}
               input={{
@@ -4785,7 +4785,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.mulitple}
               input={{
@@ -4803,7 +4803,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.info}
               input={{
@@ -4824,7 +4824,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.avatarsAlt}
               input={{
@@ -4842,7 +4842,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.avatarsInfo}
               input={{
@@ -4864,7 +4864,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               isDisabled
               size="medium"
               list={this.state.menus.avatars}
@@ -4882,7 +4882,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.icons}
               input={{
@@ -4900,7 +4900,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.iconsAlt}
               input={{
@@ -4922,7 +4922,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;          
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.iconsLeft}
               input={{
@@ -4939,7 +4939,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;          
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.iconsBoth}
               input={{
@@ -4956,7 +4956,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.radio}
               input={{
@@ -4974,7 +4974,7 @@ class Dropdowns extends Component {
             /&gt;
           &lt;/View&gt;
           &lt;View style={{ marginBottom: 20 }}&gt;
-            &lt;PackenDropdown
+            &lt;PackenUiDropdown
               size="medium"
               list={this.state.menus.checkboxes}
               input={{
@@ -5004,7 +5004,7 @@ export default Dropdowns;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Mar 31 2020 13:57:22 GMT-0500 (Colombia Standard Time)
+                at Thu Apr 02 2020 16:00:47 GMT-0500 (Colombia Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

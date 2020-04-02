@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenCheckbox.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiCheckbox.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenCheckbox.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiCheckbox.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -235,11 +235,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 &nbsp;
-import CheckboxStyles from "../styles/components/PackenCheckbox";
+import CheckboxStyles from "../styles/components/PackenUiCheckbox";
 &nbsp;
-import PackenCheckboxControl from "./PackenCheckboxControl";
+import PackenUiCheckboxControl from "./PackenUiCheckboxControl";
 &nbsp;
-class PackenCheckbox extends Component {
+class PackenUiCheckbox extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -303,7 +303,7 @@ class PackenCheckbox extends Component {
             &gt;
               &lt;TouchableWithoutFeedback onPress={() =&gt; { this.pressHandler(i); }} &gt;
                 &lt;View style={{ alignSelf: "flex-start" }}&gt;
-                  &lt;PackenCheckboxControl
+                  &lt;PackenUiCheckboxControl
                     label={item.label}
                     layout={this.props.layout}
                     isChecked={item.isChecked}
@@ -320,7 +320,7 @@ class PackenCheckbox extends Component {
   }
 }
 &nbsp;
-export default PackenCheckbox;</pre></td></tr></table></pre>
+export default PackenUiCheckbox;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->

@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for ui_library/app/components/PackenServiceStatus.js</title>
+    <title>Code coverage report for ui_library/app/components/PackenUiServiceStatus.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -18,7 +18,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenServiceStatus.js</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">ui_library/app/components</a> PackenUiServiceStatus.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -193,10 +193,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { Component } from "react";
 import { View } from "react-native";
 &nbsp;
-import ServiceStatusStyles from "../styles/components/PackenServiceStatus";
-import PackenServiceStatusItem from "./PackenServiceStatusItem";
+import ServiceStatusStyles from "../styles/components/PackenUiServiceStatus";
+import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
 &nbsp;
-class PackenServiceStatus extends Component {
+class PackenUiServiceStatus extends Component {
   constructor(props) {
     super(props);
 &nbsp;
@@ -242,7 +242,7 @@ class PackenServiceStatus extends Component {
       &lt;View style={ServiceStatusStyles.wrapper}&gt;
         {
           this.state.steps.map((step, i) =&gt; (
-            &lt;PackenServiceStatusItem
+            &lt;PackenUiServiceStatusItem
               key={i}
               index={i}
               data={step}
@@ -257,7 +257,7 @@ class PackenServiceStatus extends Component {
   }
 }
 &nbsp;
-export default PackenServiceStatus;</pre></td></tr></table></pre>
+export default PackenUiServiceStatus;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
