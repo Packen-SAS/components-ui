@@ -17,31 +17,74 @@ class PackenMapPinSub extends Component {
     if (this.props.theme) {
       color = MapPinStyles.icon.theme[this.props.theme].color;
     }
-    
+
     return color;
+  }
+
+  getIcon = () => {
+    let icon = null;
+
+    if (this.props.icon) {
+      icon = (
+        <Icon
+          name={this.props.icon}
+          color={this.getIconColor()}
+          size={MapPinStyles.icon.type.icon.fontSize}
+        />
+      );
+    }
+
+    return icon;
+  }
+
+  getLabel = () => {
+    let label = null;
+
+    if (this.props.label) {
+      label = (
+        <PackenText
+          style={{
+            ...MapPinStyles.character.base,
+            ...MapPinStyles.character.theme[this.props.theme]
+          }}
+        >
+          {this.props.label.toUpperCase()}
+        </PackenText>
+      );
+    }
+
+    return label;
+  }
+
+  getDot = () => {
+    let dot = null;
+
+    if (this.props.dotPosition) {
+      dot = (
+        <View
+          style={{
+            ...MapPinStyles.dot.base,
+            ...MapPinStyles.dot.positioning.type[this.props.type][this.props.dotPosition]
+          }}
+        ></View>
+      );
+    }
+
+    return dot;
   }
 
   render() {
     return (
-      <View style={{ ...MapPinStyles.sub.base, ...MapPinStyles.sub.type[this.props.type], ...MapPinStyles.sub.theme[this.props.theme] }}>
-        {
-          this.props.icon ? (
-            <Icon
-              name={this.props.icon}
-              color={this.getIconColor()}
-              size={MapPinStyles.icon.type.icon.fontSize} />
-          ) : null
-        }
-        {
-          this.props.label ? (
-            <PackenText style={{ ...MapPinStyles.character.base, ...MapPinStyles.character.theme[this.props.theme] }}>{this.props.label.toUpperCase()}</PackenText>
-          ) : null
-        }
-        {
-          this.props.dotPosition ? (
-            <View style={{ ...MapPinStyles.dot.base, ...MapPinStyles.dot.positioning.type[this.props.type][this.props.dotPosition] }}></View>
-          ) : null
-        }
+      <View
+        style={{
+          ...MapPinStyles.sub.base,
+          ...MapPinStyles.sub.type[this.props.type],
+          ...MapPinStyles.sub.theme[this.props.theme]
+        }}
+      >
+        {this.getIcon()}
+        {this.getLabel()}
+        {this.getDot()}
       </View>
     );
   }

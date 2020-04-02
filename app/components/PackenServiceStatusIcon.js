@@ -21,7 +21,7 @@ class PackenServiceStatusIcon extends Component {
 
   getIcon = () => {
     let stateIcon = this.props.activeIcon;
-    
+
     if (!this.state.isCurrent) {
       stateIcon = "minus-circle";
       if (this.props.isComplete) {
@@ -59,17 +59,23 @@ class PackenServiceStatusIcon extends Component {
     }
   }
 
+  getDivider = () => {
+    let divider = null;
+
+    if (this.props.selfIndex !== this.props.stepsLength - 1) {
+      divider = <View style={ServiceStatusStyles.timeline__divider}></View>;
+    }
+
+    return divider;
+  }
+
   render() {
     return (
       <View style={ServiceStatusStyles.timeline__item}>
         <View style={ServiceStatusStyles.timeline__icon_wrapper}>
           <Icon name={this.getIcon()} size={ServiceStatusStyles.icon[this.state.state].fontSize} color={ServiceStatusStyles.icon[this.state.state].color} />
         </View>
-        {
-          this.props.selfIndex !== this.props.stepsLength - 1 ? (
-            <View style={ServiceStatusStyles.timeline__divider}></View>
-          ) : null
-        }
+        {this.getDivider()}
       </View>
     );
   }

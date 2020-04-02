@@ -19,27 +19,27 @@ class ServiceStatus extends Component {
           activeIcon: "clock",
           date: "Agosto 13, 2017",
           time: "05:08 pm",
-          callback: this.mock_callback
+          callback: this.mockCallback
         },
         {
           title: "Servicio Confirmado",
           activeIcon: "search",
           date: "Agosto 13, 2017",
           time: "05:13 pm",
-          callback: this.mock_callback
+          callback: this.mockCallback
         },
         {
           title: "Servicio Finalizado",
           activeIcon: "check-circle",
           date: "Agosto 13, 2017",
           time: "06:32 pm",
-          callback: this.mock_callback
+          callback: this.mockCallback
         }
       ]
     }
   }
 
-  mock_callback = () => { return; }
+  mockCallback = () => { return true; }
 
   back = () => {
     this.setState({

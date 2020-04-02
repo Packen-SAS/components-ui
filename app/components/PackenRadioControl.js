@@ -10,8 +10,12 @@ class PackenRadioControl extends Component {
     super(props);
 
     this.state = {
-      state: props.isDisabled ? "default_disabled" : "default"
+      state: this.setInitialState()
     }
+  }
+
+  setInitialState = () => {
+    return this.props.isDisabled ? "default_disabled" : "default";
   }
 
   componentDidMount() {
@@ -62,15 +66,25 @@ class PackenRadioControl extends Component {
     }
   }
 
+  getLabel = () => {
+    let label = null;
+
+    if (this.props.label) {
+      label = (
+        <PackenText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}>{this.props.label}</PackenText>
+      );
+    }
+
+    return label;
+  }
+
   render() {
     return (
       <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.onPressHandler}>
           <View style={RadioStyles.shape.base}>
             <View style={{ ...RadioStyles.control.base, ...RadioStyles.control[this.state.state] }}></View>
-            {
-              this.props.label ? <PackenText style={{ ...RadioStyles.label.base, ...RadioStyles.label[this.state.state] }}>{this.props.label}</PackenText> : null
-            }
+            {this.getLabel()}
           </View>
         </TouchableWithoutFeedback>
       </View>

@@ -1,33 +1,27 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import TabsStyles from "../../app/styles/components/PackenTabs";
+
 import PackenTabItem from "../../app/components/PackenTabItem";
 
 describe("<PackenTabItem/>", () => {
   let render, renderInstance;
-  const mockUpdateActiveTabIndex = jest.fn();
   const mockCallback = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenTabItem
         key={0}
         activeTabIndex={0}
         selfIndex={0}
         label="Test"
-        updateActiveTabIndex={mockUpdateActiveTabIndex}
+        updateActiveTabIndex={mockCallback}
         callback={mockCallback} />
     );
+    renderInstance = render.instance();
 
-    renderInstance = render.getInstance();
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    };
     renderInstance.setState({ itemStyles: {} });
   });
 
@@ -39,15 +33,64 @@ describe("<PackenTabItem/>", () => {
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.checkIfActive = jest.fn();
+      const spyCheckIfActive = jest.spyOn(renderInstance, "checkIfActive");
       renderInstance.componentDidMount();
-      expect(renderInstance.checkIfActive).toHaveBeenCalled();
+
+      expect(spyCheckIfActive).toHaveBeenCalled();
+      spyCheckIfActive.mockRestore();
+    });
+
+    it("executes pressInHandler", () => {
+      renderInstance.pressInHandler();
+
+      expect(renderInstance.state.itemStyles).toEqual({
+        ...renderInstance.state.itemStyles,
+        shape: {
+          ...renderInstance.state.itemStyles.shape,
+          ...TabsStyles.item.focus.shape
+        },
+        label: {
+          ...renderInstance.state.itemStyles.label,
+          ...TabsStyles.item.focus.label
+        },
+        icon: {
+          ...renderInstance.state.itemStyles.icon,
+          ...TabsStyles.item.focus.icon
+        }
+      });
+    });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { activeTabIndex: 1 };
+      render.setProps({ activeTabIndex: 0 });
+      const spyCheckIfActive = jest.spyOn(renderInstance, "checkIfActive");
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(spyCheckIfActive).toHaveBeenCalled();
+      spyCheckIfActive.mockRestore();
+    });
+
+    it("executes pressOutHandler", () => {
+      const spySetActiveTab = jest.spyOn(renderInstance, "setActiveTab");
+      renderInstance.pressOutHandler();
+
+      expect(spySetActiveTab).toHaveBeenCalled();
+      spySetActiveTab.mockRestore();
+    });
+
+    it("executes onPress event callback for the touchable", () => {
+      const spySetActiveTab = jest.spyOn(renderInstance, "setActiveTab");
+      render.props().onPress();
+
+      expect(spySetActiveTab).toHaveBeenCalled();
+      spySetActiveTab.mockRestore();
     });
   });
 
   describe("styling", () => {
     it("returns item styles", () => {
       const returnedStyles = renderInstance.getItemStyles();
+
       expect(returnedStyles).toEqual({
         shape: {
           ...TabsStyles.item.base.shape,
@@ -67,74 +110,89 @@ describe("<PackenTabItem/>", () => {
 
   describe("state changing", () => {
     it("sets active tab", () => {
-      renderInstance.setActiveStyles = jest.fn();
-      renderInstance.props = { updateActiveTabIndex: jest.fn(), callback: jest.fn(), selfIndex: 0 };
+      const spySetActiveStyles = jest.spyOn(renderInstance, "setActiveStyles");
+      render.setProps({
+        updateActiveTabIndex: mockCallback,
+        callback: mockCallback,
+        selfIndex: 0
+      });
       renderInstance.setActiveTab();
-      expect(renderInstance.setActiveStyles).toHaveBeenCalled();
+
+      expect(spySetActiveStyles).toHaveBeenCalled();
+      spySetActiveStyles.mockRestore();
+
       expect(renderInstance.props.updateActiveTabIndex).toHaveBeenCalledWith(0);
       expect(renderInstance.props.callback).toHaveBeenCalled();
     });
 
     it("sets active styles", () => {
-      renderInstance.setActiveStyles();
+      const returnedStyles = renderInstance.setActiveStyles();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        const matchedStyles = {
-          shape: {
-            ...TabsStyles.item.base.shape,
-            ...TabsStyles.item.default.shape,
-            ...TabsStyles.item.active.shape
-          },
-          label: {
-            ...TabsStyles.item.base.label,
-            ...TabsStyles.item.default.label,
-            ...TabsStyles.item.active.label
-          },
-          icon: {
-            ...TabsStyles.item.base.icon,
-            ...TabsStyles.item.default.icon,
-            ...TabsStyles.item.active.icon
-          }
-        };
-        expect(renderInstance.state.itemStyles).toBe(matchedStyles);
-        clearTimeout(timeout);
-      }, 4000);
+      expect(returnedStyles.shape).toEqual(TabsStyles.item.active.shape);
+      expect(returnedStyles.label).toEqual(TabsStyles.item.active.label);
+      expect(returnedStyles.icon).toEqual(TabsStyles.item.active.icon);
     });
 
     it("sets active styles if indexes match", () => {
-      renderInstance.props = { activeTabIndex: 0, selfIndex: 0 };
-      renderInstance.setActiveStyles = jest.fn();
+      const spySetActiveStyles = jest.spyOn(renderInstance, "setActiveStyles");
+      render.setProps({ activeTabIndex: 0, selfIndex: 0 });
       renderInstance.checkIfActive();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.setActiveStyles).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      expect(spySetActiveStyles).toHaveBeenCalled();
+      spySetActiveStyles.mockRestore();
     });
 
     it("sets default styles if prop indexes don't match", () => {
-      renderInstance.props = { activeTabIndex: 0, selfIndex: 1 };
+      render.setProps({ activeTabIndex: 0, selfIndex: 1 });
       renderInstance.checkIfActive();
-      
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.itemStyles).toEqual({
-          shape: {
-            ...TabsStyles.item.base.shape,
-            ...TabsStyles.item.default.shape
-          },
-          label: {
-            ...TabsStyles.item.base.label,
-            ...TabsStyles.item.default.label
-          },
+
+      expect(renderInstance.state.itemStyles).toEqual({
+        shape: {
+          ...TabsStyles.item.base.shape,
+          ...TabsStyles.item.default.shape
+        },
+        label: {
+          ...TabsStyles.item.base.label,
+          ...TabsStyles.item.default.label
+        },
+        icon: {
+          ...TabsStyles.item.base.icon,
+          ...TabsStyles.item.default.icon
+        }
+      });
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders an icon if provided, and is not a '»'", () => {
+      render.setProps({
+        icon: "check"
+      });
+      renderInstance.state = {
+        itemStyles: {
           icon: {
-            ...TabsStyles.item.base.icon,
-            ...TabsStyles.item.default.icon
+            color: "#000000",
+            fontSize: 12
           }
-        });
-        clearTimeout(timeout);
-      }, 4000);
+        }
+      };
+      const returnedElement = renderInstance.getIcon();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders an icon if provided, and is a '»'", () => {
+      render.setProps({
+        icon: "»"
+      });
+      renderInstance.setState({
+        itemStyles: {
+          icon: {}
+        }
+      });
+      const returnedElement = renderInstance.getIcon();
+
+      expect(returnedElement).toBeDefined();
     });
   });
 });

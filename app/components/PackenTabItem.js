@@ -45,7 +45,7 @@ class PackenTabItem extends Component {
   }
 
   setActiveStyles = () => {
-    let activeStyles = { ...this.state.itemStyles }
+    let activeStyles = { ...this.state.itemStyles };
     activeStyles.shape = {
       ...activeStyles.shape,
       ...TabsStyles.item.active.shape
@@ -62,6 +62,8 @@ class PackenTabItem extends Component {
     this.setState({
       itemStyles: activeStyles
     });
+
+    return activeStyles;
   }
 
   checkIfActive = () => {
@@ -105,23 +107,31 @@ class PackenTabItem extends Component {
     this.setActiveTab();
   }
 
+  getIcon = () => {
+    let icon = null;
+
+    if (this.props.icon) {
+      icon = (
+        <View style={{ marginRight: 10 }}>
+          {
+            this.props.icon === "»" ? (
+              <PackenText style={this.state.itemStyles.icon}>»</PackenText>
+            ) : (
+                <Icon name={this.props.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6} />
+              )
+          }
+        </View>
+      );
+    }
+
+    return icon;
+  }
+
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
         <View style={this.state.itemStyles.shape}>
-          {
-            this.props.icon ? (
-              <View style={{ marginRight: 10 }}>
-                {
-                  this.props.icon === "»" ? (
-                    <PackenText style={this.state.itemStyles.icon}>»</PackenText>
-                  ) : (
-                    <Icon name={this.props.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6}/>
-                  )
-                }
-              </View>
-            ) : null
-          }
+          {this.getIcon()}
           <PackenText style={this.state.itemStyles.label}>{this.props.label}</PackenText>
         </View>
       </TouchableWithoutFeedback>

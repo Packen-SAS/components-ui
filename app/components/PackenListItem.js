@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import ListStyles from "../styles/components/PackenList";
+import { arraysEqual } from "../utils";
 
 import PackenAvatar from "./PackenAvatar";
 import PackenRadio from "./PackenRadio";
@@ -14,12 +15,35 @@ class PackenListItem extends Component {
   constructor(props) {
     super(props);
 
-    const initialState = this.props.mainContent.isDisabled ? "disabled" : this.props.mainContent.isSelected ? "active" : "default";
+    this.state = {
+      prevState: this.setInitialState(),
+      state: this.setInitialState(),
+      originalStyles: this.getOriginalStyles(),
+      mainContent: null,
+      newSelectedState: false
+    }
 
-    let originalStyles = {};
+    this.createRefs();
+  }
+
+  createRefs = () => {
+    if (this.props.mainContent.main.control) {
+      this.radioRef = createRef();
+      this.checkboxRef = createRef();
+    } else {
+      return false;
+    }
+  }
+
+  setInitialState = () => {
+    return this.props.mainContent.isDisabled ? "disabled" : this.props.mainContent.isSelected ? "active" : "default";
+  }
+
+  getOriginalStyles = () => {
+    let originalStyles = [];
+
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
-        originalStyles = [];
         this.props.mainContent.main.props.children.forEach(child => {
           if (this.props.mainContent.main.type.displayName !== "PackenRadio" && this.props.mainContent.main.type.displayName !== "PackenCheckbox") {
             originalStyles.push({ color: child.props.style.color });
@@ -31,41 +55,48 @@ class PackenListItem extends Component {
         }
       }
     } else {
-      this.radioRef = createRef();
-      this.checkboxRef = createRef();
+      originalStyles = {};
     }
 
-    this.state = {
-      prevState: initialState,
-      state: initialState,
-      originalStyles: originalStyles,
-      mainContent: null,
-      newSelectedState: false
-    }
+    return originalStyles;
   }
 
   componentDidMount() {
     this.setMainContent();
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    this.checkIfUnselected();
-
-    if (prevProps.selectedItems !== this.props.selectedItems) {
-      if (!this.props.mainContent.isDisabled) {
+  checkSelectedItems = prevProps => {
+    if (!arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
+      if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
         const found = this.props.selectedItems.find(item => item === this.props.mainContent.value);
         if (!found) {
           this.setState({
             prevState: "default",
             state: "default"
           });
+        } else {
+          return false;
         }
+      } else {
+        return false;
       }
+    } else {
+      return false;
     }
+  }
 
+  checkCheckbox = () => {
     if (this.checkboxRef && this.checkboxRef.setCheckedState) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
+    } else {
+      return false;
     }
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.checkIfUnselected();
+    this.checkSelectedItems(prevProps);
+    this.checkCheckbox();
   }
 
   checkIfUnselected = () => {
@@ -102,7 +133,7 @@ class PackenListItem extends Component {
   pressHandler = () => {
     switch (this.props.config.selectionType) {
       case "single":
-      case "radio": {
+      case "radio":
         this.setState({
           prevState: "active",
           state: "active"
@@ -116,9 +147,9 @@ class PackenListItem extends Component {
         } else {
           this.props.updateSelectedItems(this.props.mainContent.value, true);
         }
-      } break;
+        break;
       case "multiple":
-      case "checkbox": {
+      case "checkbox":
         const newState = this.state.prevState === "default" ? "active" : "default";
         const newSelectedState = newState === "active" ? true : false;
         this.setState({
@@ -134,9 +165,8 @@ class PackenListItem extends Component {
         } else {
           this.props.updateSelectedItems(this.props.mainContent.value, newSelectedState);
         }
-      } break;
       default:
-        break;
+        return false;
     }
   }
 
@@ -256,6 +286,14 @@ class PackenListItem extends Component {
     return this.getSidesContent().right;
   }
 
+  setRadioRef = radio => {
+    this.radioRef = radio;
+  }
+
+  setCheckboxRef = checkbox => {
+    this.checkboxRef = checkbox;
+  }
+
   setMainContent = () => {
     let mainContent;
 
@@ -269,7 +307,7 @@ class PackenListItem extends Component {
                 label: this.props.mainContent.main.control.label,
                 isDisabled: this.props.mainContent.main.control.isDisabled
               }]}
-              ref={radio => { this.radioRef = radio; }}
+              ref={this.setRadioRef}
             />
           );
         } break;
@@ -279,12 +317,12 @@ class PackenListItem extends Component {
               layout="dropdown"
               items={this.props.mainContent.main.control.items}
               callback={this.props.mainContent.main.control.notifyParent}
-              ref={checkbox => { this.checkboxRef = checkbox; }}
+              ref={this.setCheckboxRef}
             />
           );
         } break;
         default:
-          break;
+          return false;
       }
     } else {
       mainContent = (
@@ -326,47 +364,67 @@ class PackenListItem extends Component {
   }
 
   checkMainContentStyles = () => {
-    const props = this.props.mainContent;
-    
-    if (props.isDisabled) {
-      if (Array.isArray(props.main.props.children)) {
-        props.main.props.children.forEach(child => {
+    const mainContent = this.props.mainContent;
+
+    if (mainContent.isDisabled) {
+      if (Array.isArray(mainContent.main.props.children)) {
+        mainContent.main.props.children.forEach(child => {
           if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
+            return 1;
+          } else {
+            return false;
           }
         });
       } else {
-        if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-          props.main.props.style.color = Colors.basic.gray.lgt;
+        if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+          mainContent.main.props.style.color = Colors.basic.gray.lgt;
+          return 2;
+        } else {
+          return false;
         }
       }
     } else {
-      if (props.isSelected) {
-        if (Array.isArray(props.main.props.children)) {
-          props.main.props.children.forEach(child => {
+      if (mainContent.isSelected) {
+        if (Array.isArray(mainContent.main.props.children)) {
+          mainContent.main.props.children.forEach(child => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = Colors.basic.white.dft;
+              return 3;
+            } else {
+              return false;
             }
           });
         } else {
-          if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-            props.main.props.style.color = Colors.basic.white.dft;
+          if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+            mainContent.main.props.style.color = Colors.basic.white.dft;
+            return 4;
+          } else {
+            return false;
           }
         }
       } else {
-        if (Array.isArray(props.main.props.children)) {
-          props.main.props.children.forEach((child, i) => {
+        if (Array.isArray(mainContent.main.props.children)) {
+          mainContent.main.props.children.forEach((child, i) => {
             if (child.type.displayName !== "PackenRadio" && child.type.displayName !== "PackenCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
+              return 5;
+            } else {
+              return false;
             }
           });
         } else {
-          if (props.main.type.displayName !== "PackenRadio" && props.main.type.displayName !== "PackenCheckbox") {
-            props.main.props.style.color = this.state.originalStyles.color;
+          if (mainContent.main.type.displayName !== "PackenRadio" && mainContent.main.type.displayName !== "PackenCheckbox") {
+            mainContent.main.props.style.color = this.state.originalStyles.color;
+            return 6;
+          } else {
+            return false;
           }
         }
       }
     }
+
+    return 7;
   }
 
   render() {

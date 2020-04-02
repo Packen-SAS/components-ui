@@ -9,8 +9,8 @@ class PackenToggle extends Component {
     super(props);
 
     this.state = {
-      initialState: props.isActive ? "active" : "inactive",
-      state: props.isActive ? "active" : "inactive",
+      initialState: this.setInitialState(),
+      state: this.setInitialState(),
       isDisabled: props.isDisabled,
       shape: {
         height: 0,
@@ -20,22 +20,26 @@ class PackenToggle extends Component {
       dot: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       on: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       off: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       }
     }
+  }
+
+  setInitialState = () => {
+    return this.props.isActive ? "active" : "inactive";
   }
 
   componentDidMount = () => {
@@ -201,12 +205,6 @@ class PackenToggle extends Component {
   }
 
   render() {
-    console.log("***********************");
-    console.log("-----------------------");
-    console.log("DISABLED", this.state.dot.disabled);
-    console.log("-----------------------");
-    console.log("POSITIONING", this.state.dot.positioning);
-
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>

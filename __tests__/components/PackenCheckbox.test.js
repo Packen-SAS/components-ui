@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenCheckbox from "../../app/components/PackenCheckbox";
 
@@ -33,14 +33,14 @@ describe("<PackenCheckbox/>", () => {
   let renderColumn, renderRow, renderColumnInstance;
 
   beforeAll(() => {
-    renderColumn = renderer.create(
+    renderColumn = shallow(
       <PackenCheckbox
         layout="column"
         items={items}
         callback={mockCallback}
       />
     );
-    renderRow = renderer.create(
+    renderRow = shallow(
       <PackenCheckbox
         layout="row"
         items={items}
@@ -48,14 +48,8 @@ describe("<PackenCheckbox/>", () => {
       />
     );
 
-    renderColumnInstance = renderColumn.getInstance();
+    renderColumnInstance = renderColumn.instance();
 
-    renderColumnInstance.setState = state => {
-      renderColumnInstance.state = {
-        ...renderColumnInstance.state,
-        ...state
-      };
-    }
     renderColumnInstance.setState({
       items: items,
       checkedItems: [],
@@ -73,15 +67,44 @@ describe("<PackenCheckbox/>", () => {
     });
   });
 
+  describe("styling", () => {
+    it("disables pointer events if it's part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "dropdown"
+      });
+
+      expect(renderColumn.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not part of a dropdown", () => {
+      renderColumn.setProps({
+        layout: "column"
+      });
+
+      expect(renderColumn.props().pointerEvents).toBe("auto");
+    });
+  });
+
   describe("state changing", () => {
     it("updates checked items if selectedIndex is defined", () => {
       renderColumnInstance.setState({ selectedIndex: 0 });
-      renderColumnInstance.props.callback = jest.fn();
       renderColumnInstance.updateCheckedItems();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderColumnInstance.state.checkedItems).toStrictEqual([{
+      expect(renderColumnInstance.state.checkedItems).toEqual(["This is both checked and disabled"]);
+      expect(renderColumnInstance.props.callback).toHaveBeenCalled();
+    });
+
+    it("doesn't update checked items if selectedIndex is not defined", () => {
+      renderColumnInstance.setState({ selectedIndex: null });
+      const response = renderColumnInstance.updateCheckedItems();
+      expect(response).toBe(false);
+    });
+
+    it("sets checked state programmatically if searched value matches", () => {
+      renderColumnInstance.setCheckedState("This is checked", false, ["This is checked", "This is both checked and disabled"]);
+      
+      expect(renderColumnInstance.state.checkedItems).toEqual([
+        {
           label: "This is checked",
           isChecked: false,
           isDisabled: false
@@ -90,36 +113,14 @@ describe("<PackenCheckbox/>", () => {
           label: "This is both checked and disabled",
           isChecked: false,
           isDisabled: false
-        }]);
-
-        const innerTimeout = setTimeout(() => {
-          expect(renderColumnInstance.props.callback).toHaveBeenCalledWith([items[2].label]);
-          clearTimeout(innerTimeout);
-        }, 2000);
-
-        clearTimeout(timeout);
-      }, 2000);
+        }
+      ]);
     });
 
-    it("sets checked state programmatically if searched value matches", () => {
-      renderColumnInstance.setCheckedState("This is checked", false, ["This is checked", "This is both checked and disabled"]);
+    it("returns false if searched value doesn't match", () => {
+      const res = renderColumnInstance.setCheckedState("This is checked", false, ["This is both checked and disabled"]);
       
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderColumnInstance.state.checkedItems).toStrictEqual([
-          {
-            label: "This is checked",
-            isChecked: false,
-            isDisabled: false
-          },
-          {
-            label: "This is both checked and disabled",
-            isChecked: false,
-            isDisabled: false
-          }
-        ]);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(res).toBe(false);
     });
   });
 
@@ -127,13 +128,16 @@ describe("<PackenCheckbox/>", () => {
     it("updates selected item index on press", () => {
       renderColumnInstance.updateCheckedItems = jest.fn();
       renderColumnInstance.pressHandler(0);
+      
       expect(renderColumnInstance.state.selectedIndex).toBe(0);
+      expect(renderColumnInstance.updateCheckedItems).toHaveBeenCalled();
+    });
 
-      /* Review to avoid using setTimeOut */
-      const timeout = setTimeout(() => {
-        expect(renderColumnInstance.updateCheckedItems).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+    it("executes onPress code", () => {
+      renderColumnInstance.pressHandler = jest.fn();
+      renderColumn.props().children[0].props.children.props.onPress();
+      
+      expect(renderColumnInstance.pressHandler).toHaveBeenCalledWith(0);
     });
   });
 });

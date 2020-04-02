@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import Colors from "../../app/styles/abstracts/colors";
 import PackenText from "../../app/components/PackenText";
@@ -78,7 +78,7 @@ describe("<PackenDropdown/>", () => {
   };
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenDropdown
         size="medium"
         list={list}
@@ -98,14 +98,8 @@ describe("<PackenDropdown/>", () => {
       />
     );
 
-    renderInstance = render.getInstance();
+    renderInstance = render.instance();
 
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      };
-    }
     renderInstance.setState({
       isOpen: false,
       dimensions: {
@@ -125,89 +119,89 @@ describe("<PackenDropdown/>", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
     });
+
+    it("disables pointer events if set so via props", () => {
+      render.setProps({
+        isDisabled: true
+      });
+
+      expect(render.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not disabled", () => {
+      render.setProps({
+        isDisabled: false
+      });
+      
+      expect(render.props().pointerEvents).toBe("auto");
+    });
   });
 
   describe("state changing", () => {
     it("sets menu height", () => {
       renderInstance.getMenuDimensions({ height: 100 });
-      renderInstance.setCustomStyles = jest.fn();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.dimensions.menu.height).toBe(100);
-
-        const innerTimeout = setTimeout(() => {
-          expect(renderInstance.setCustomStyles).toHaveBeenCalled();
-          clearTimeout(innerTimeout);
-        }, 2000);
-
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.dimensions.menu.height).toBe(100);
     });
 
     it("sets custom styles to position the menu", () => {
       renderInstance.setState({ dimensions: { menu: { height: 100 } } });
       renderInstance.setCustomStyles();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.styles.menu).toBe({ bottom: -108 });
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.styles.menu).toEqual({ bottom: -108 });
     });
 
     it("toggles 'isOpen' state", () => {
       renderInstance.setState({ isOpen: false });
       renderInstance.toggleMenu();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.isOpen).toBe(true);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.isOpen).toBe(true);
     });
 
     it("sets selected items", () => {
       const items = ["Test", "Test 2"];
-      renderInstance.composeFinalSelectionString = jest.fn();
       renderInstance.getFinalSelection(items);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.finalSelection).toEqual(items);
-
-        const innerTimeout = setTimeout(() => {
-          expect(renderInstance.composeFinalSelectionString).toHaveBeenCalled();
-          clearTimeout(innerTimeout);
-        }, 2000);
-
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.finalSelection).toEqual(items);
     });
 
     it("composes selected items as a single string", () => {
       renderInstance.setState({ finalSelection: ["Test", "Test 2"] });
       renderInstance.composeFinalSelectionString();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.finalSelectionString).toBe("Test, Test 2");
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.finalSelectionString).toBe("Test, Test 2");
     });
   });
 
   describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate", () => {
+    it("executes correct code on componentDidUpdate if is open", () => {
       const prevState = { isOpen: false };
       renderInstance.setState({ isOpen: true });
       renderInstance.componentDidUpdate(null, prevState, null);
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.styles.menu.opacity).toBe(1);
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.styles.menu.opacity).toBe(1);
+    });
+
+    it("executes correct code on componentDidUpdate if is not open", () => {
+      const prevState = { isOpen: true };
+      renderInstance.setState({ isOpen: false });
+      renderInstance.componentDidUpdate(null, prevState, null);
+
+      expect(renderInstance.state.styles.menu.opacity).toBe(0);
+    });
+
+    it("executes onLayout code for menu", () => {
+      renderInstance.getMenuDimensions = jest.fn();
+      render.props().children[1].props.onLayout({
+        nativeEvent: {
+          layout: {
+            width: 10,
+            height: 10
+          }
+        }
+      });
+
+      expect(renderInstance.getMenuDimensions).toHaveBeenCalledWith({ width: 10, height: 10 });
     });
   });
 });

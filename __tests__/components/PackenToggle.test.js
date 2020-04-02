@@ -1,8 +1,9 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import ToggleStyles from "../../app/styles/components/PackenToggle";
+
 import PackenToggle from "../../app/components/PackenToggle";
 
 describe("<PackenToggle/>", () => {
@@ -10,7 +11,7 @@ describe("<PackenToggle/>", () => {
   const mockFunction = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenToggle
         onLabel="SÍ"
         offLabel="NO"
@@ -18,15 +19,8 @@ describe("<PackenToggle/>", () => {
         toggleHandler={this.toggle_handler}
       />
     );
+    renderInstance = render.instance();
 
-    renderInstance = render.getInstance();
-
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      };
-    };
     renderInstance.setState({
       initialState: "active",
       state: "active",
@@ -39,19 +33,19 @@ describe("<PackenToggle/>", () => {
       dot: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       on: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       },
       off: {
         height: 0,
         width: 0,
-        position: {},
+        positioning: {},
         disabled: {}
       }
     });
@@ -65,40 +59,126 @@ describe("<PackenToggle/>", () => {
 
   describe("triggering actions", () => {
     it("executes correct code on componentDidMount", () => {
-      renderInstance.positionElements = mockFunction;
-      renderInstance.checkIfDisabled = mockFunction;
+      const spyPositionElement = jest.spyOn(renderInstance, "positionElement");
+      const spyCheckIfDisabled = jest.spyOn(renderInstance, "checkIfDisabled");
       renderInstance.componentDidMount();
-      expect(renderInstance.positionElements).toHaveBeenCalled();
-      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
+
+      expect(spyPositionElement).toHaveBeenCalled();
+      expect(spyCheckIfDisabled).toHaveBeenCalled();
+      spyPositionElement.mockRestore();
+      spyCheckIfDisabled.mockRestore();
     });
 
-    it("toggles inner state", () => {
-      renderInstance.props = { toggleHandler: jest.fn() };
+    it("toggles inner state if 'state' is 'active'", () => {
+      render.setProps({ toggleHandler: mockFunction });
       renderInstance.setState({ state: "active" });
       renderInstance.toggle();
 
-      /* Review to avoid using setTimeOut */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.state).toBe("inactive");
-        expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.state).toBe("inactive");
+      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
+    });
+
+    it("toggles inner state if 'state' is 'inactive'", () => {
+      render.setProps({ toggleHandler: mockFunction });
+      renderInstance.setState({ state: "inactive" });
+      renderInstance.toggle();
+
+      expect(renderInstance.state.state).toBe("active");
+      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("active");
     });
 
     it("executes correct code on componentDidUpdate", () => {
       renderInstance.setState({ state: "active" });
       const prevState = { state: "inactive" };
-      renderInstance.positionElements = mockFunction;
-      renderInstance.checkIfDisabled = mockFunction;
+      const spyPositionElement = jest.spyOn(renderInstance, "positionElement");
+      const spyCheckIfDisabled = jest.spyOn(renderInstance, "checkIfDisabled");
       renderInstance.componentDidUpdate(null, prevState, null);
-      expect(renderInstance.positionElements).toHaveBeenCalled();
-      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
+
+      expect(spyPositionElement).toHaveBeenCalled();
+      expect(spyCheckIfDisabled).toHaveBeenCalled();
+      spyPositionElement.mockRestore();
+      spyCheckIfDisabled.mockRestore();
+    });
+
+    it("executes onLayout event callback for the shape", () => {
+      const spyGetShapeDimensions = jest.spyOn(renderInstance, "getShapeDimensions");
+      render.props().children.props.children.props.onLayout({
+        nativeEvent: {
+          layout: {
+            width: 10,
+            height: 10
+          }
+        }
+      });
+
+      expect(spyGetShapeDimensions).toHaveBeenCalled();
+      spyGetShapeDimensions.mockRestore();
+    });
+
+    it("executes onLayout event callback for the dot", () => {
+      const spyGetDotDimensions = jest.spyOn(renderInstance, "getDotDimensions");
+      render.props().children.props.children.props.children[0].props.onLayout({
+        nativeEvent: {
+          layout: {
+            width: 10,
+            height: 10
+          }
+        }
+      });
+
+      expect(spyGetDotDimensions).toHaveBeenCalled();
+      spyGetDotDimensions.mockRestore();
+    });
+
+    it("executes onLayout event callback for the on label", () => {
+      const spyGetOnDimensions = jest.spyOn(renderInstance, "getOnDimensions");
+      render.props().children.props.children.props.children[1].props.onLayout({
+        nativeEvent: {
+          layout: {
+            width: 10,
+            height: 10
+          }
+        }
+      });
+
+      expect(spyGetOnDimensions).toHaveBeenCalled();
+      spyGetOnDimensions.mockRestore();
+    });
+
+    it("executes onLayout event callback for the on label", () => {
+      const spyGetOffDimensions = jest.spyOn(renderInstance, "getOffDimensions");
+      render.props().children.props.children.props.children[2].props.onLayout({
+        nativeEvent: {
+          layout: {
+            width: 10,
+            height: 10
+          }
+        }
+      });
+
+      expect(spyGetOffDimensions).toHaveBeenCalled();
+      spyGetOffDimensions.mockRestore();
     });
   });
 
   describe("state changing", () => {
+    it("sets initial state as 'active'", () => {
+      render.setProps({ isActive: true });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("active");
+    });
+
+    it("sets initial state as 'inactive'", () => {
+      render.setProps({ isActive: false });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("inactive");
+    });
+
     it("sets disabled styles", () => {
       renderInstance.setDisabledStyles();
+
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         disabled: {
@@ -127,20 +207,17 @@ describe("<PackenToggle/>", () => {
 
     it("checks if the component is not disabled", () => {
       const response = renderInstance.checkIfDisabled();
+
       expect(response).toBe(false || undefined);
     });
 
     it("sets state as 'disabled' if prop is present", () => {
-      renderInstance.props = { isDisabled: true };
-      renderInstance.setDisabledStyles = mockFunction;
+      render.setProps({ isDisabled: true });
+      const spySetDisabledStyles = jest.spyOn(renderInstance, "setDisabledStyles");
       renderInstance.checkIfDisabled();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.state).toBe("disabled");
-        expect(renderInstance.setDisabledStyles).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.state).toBe("disabled");
+      expect(spySetDisabledStyles).toHaveBeenCalled();
     });
 
     it("sets shape dimensions", () => {
@@ -152,15 +229,12 @@ describe("<PackenToggle/>", () => {
           }
         }
       });
-
-      renderInstance.positionElements = mockFunction;
       
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         height: 10,
         width: 10
       });
-      expect(renderInstance.positionElements).toHaveBeenCalled();
     });
 
     it("sets dot dimensions", () => {
@@ -173,18 +247,11 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.positionElements = mockFunction;
-      
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.dot).toEqual({
-          ...renderInstance.state.dot,
-          height: 10,
-          width: 10
-        });
-        expect(renderInstance.positionElements).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.dot).toEqual({
+        ...renderInstance.state.dot,
+        height: 10,
+        width: 10
+      });
     });
 
     it("sets on dimensions", () => {
@@ -197,18 +264,11 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.positionElements = mockFunction;
-      
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.on).toBe({
-          ...renderInstance.state.on,
-          height: 10,
-          width: 10
-        });
-        expect(renderInstance.positionElements).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 4000);
+      expect(renderInstance.state.on).toEqual({
+        ...renderInstance.state.on,
+        height: 10,
+        width: 10
+      });
     });
 
     it("sets off dimensions", () => {
@@ -221,48 +281,46 @@ describe("<PackenToggle/>", () => {
         }
       });
 
-      renderInstance.positionElements = mockFunction;
-      
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.off).toEqual({
-          ...renderInstance.state.off,
-          height: 10,
-          width: 10
-        });
-        expect(renderInstance.positionElements).toHaveBeenCalled();
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.off).toEqual({
+        ...renderInstance.state.off,
+        height: 10,
+        width: 10
+      });
     });
 
-    it("sets state with position styles", () => {
+    it("sets state with position styles is state is 'active'", () => {
       renderInstance.setState({ state: "active", shape: { height: 10 }, on: { height: 10 } });
-      renderInstance.positionElements();
+      renderInstance.state.state = "active";
+      renderInstance.positionElement();
 
-      /* Review to avoid using setTimeout */
-      const timeout = setTimeout(() => {
-        expect(renderInstance.state.dot).toEqual({
-          ...renderInstance.state.dot,
-          positioning: { top: 2, right: 2 }
-        });
-        expect(renderInstance.state.on).toEqual({
-          ...renderInstance.state.on,
-          positioning: {
-            position: "absolute",
-            top: 10,
-            left: 8,
-            bottom: "auto",
-            right: "auto"
-          }
-        });
-        expect(renderInstance.state.off).toEqual({ opacity: 0 });
-        clearTimeout(timeout);
-      }, 2000);
+      expect(renderInstance.state.dot).toEqual({
+        ...renderInstance.state.dot,
+        positioning: {
+          top: 2,
+          right: 2
+        }
+      });
+      expect(renderInstance.state.on).toEqual({
+        ...renderInstance.state.on,
+        positioning: {
+          position: "absolute",
+          top: 10,
+          left: 8,
+          bottom: "auto",
+          right: "auto"
+        }
+      });
+      expect(renderInstance.state.off).toEqual({
+        ...renderInstance.state.off,
+        positioning: {
+          opacity: 0
+        }
+      });
     });
   });
 
   describe("styling", () => {
-    it("returns correct position styles if 'state' is 'active'", () => {
+    it("returns correct position styles if 'state' is 'active' and is not disabled", () => {
       renderInstance.setState({ state: "active", shape: { height: 10 }, on: { height: 10 } });
       const returnedStyles = renderInstance.getPositionStyles();
 
@@ -284,8 +342,55 @@ describe("<PackenToggle/>", () => {
       });
     });
 
-    it("returns correct position styles if 'state' is 'inactive'", () => {
+    it("returns correct position styles if 'state' is 'inactive' and is not disabled", () => {
       renderInstance.setState({ state: "inactive", shape: { height: 10 }, off: { height: 10 } });
+      renderInstance.state.state = "inactive";
+      const returnedStyles = renderInstance.getPositionStyles();
+
+      expect(returnedStyles).toEqual({
+        dot: {
+          top: 2,
+          left: 2
+        },
+        off: {
+          position: "absolute",
+          top: 10,
+          right: 8,
+          bottom: "auto",
+          left: "auto"
+        },
+        on: {
+          opacity: 0
+        }
+      });
+    });
+
+    it("returns correct position styles if 'state' is 'active' and is disabled", () => {
+      renderInstance.setState({ isDisabled: true, initialState: "active", shape: { height: 10 }, on: { height: 10 } });
+      const returnedStyles = renderInstance.getPositionStyles();
+
+      expect(returnedStyles).toEqual({
+        dot: {
+          top: 2,
+          right: 2
+        },
+        on: {
+          position: "absolute",
+          top: 10,
+          left: 8,
+          bottom: "auto",
+          right: "auto"
+        },
+        off: {
+          opacity: 0
+        }
+      });
+    });
+    
+    it("returns correct position styles if 'state' is 'inactive' and is disabled", () => {
+      renderInstance.setState({ isDisabled: true, initialState: "inactive", shape: { height: 10 }, off: { height: 10 } });
+      renderInstance.state.isDisabled = true;
+      renderInstance.state.initialState = "inactive";
       const returnedStyles = renderInstance.getPositionStyles();
 
       expect(returnedStyles).toEqual({

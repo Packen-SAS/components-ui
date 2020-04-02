@@ -13,7 +13,7 @@ class PackenModal extends Component {
   constructor(props) {
     super(props);
 
-    let initialState = { backdropStyles: {...ModalStyles.backdrop.base} };
+    let initialState = { backdropStyles: { ...ModalStyles.backdrop.base } };
     if (props.type === "info") {
       initialState = {
         ...initialState
@@ -48,7 +48,7 @@ class PackenModal extends Component {
       }
     }
 
-    this.state = {...initialState};
+    this.state = { ...initialState };
 
     this.carouselRef;
   }
@@ -142,15 +142,15 @@ class PackenModal extends Component {
     this.carouselRef.snapToNext();
   }
 
-  renderGallerySlide = ({item, index}) => {
+  renderGallerySlide = ({ item, index }) => {
     return (
       <View key={index} style={ModalStyles.gallery.slide}>
-        <Image source={item} style={this.getGalleryBoxDimensions()}/>
+        <Image source={item} style={this.getGalleryBoxDimensions()} />
       </View>
     );
   }
 
-  getGalleryDimensions = ({width, height}) => {
+  getGalleryDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -162,7 +162,7 @@ class PackenModal extends Component {
     }, this.setGalleryArrowsPosition);
   }
 
-  getGalleryArrowsDimensions = ({width, height}) => {
+  getGalleryArrowsDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -208,16 +208,44 @@ class PackenModal extends Component {
     });
   }
 
+  getBanner = () => {
+    let banner = null;
+
+    if (this.props.banner) {
+      banner = (
+        <View style={{ ...ModalStyles.banner.base, ...ModalStyles.banner[this.props.theme] }}>
+          <Icon name={this.props.banner.icon} size={40} color={Colors[this.props.theme].default} />
+        </View>
+      );
+    }
+
+    return banner;
+  }
+
+  getInfoButton = () => {
+    let btn = null;
+
+    if (this.props.info.btn) {
+      btn = (
+        <View style={ModalStyles.btn}>
+          {this.props.info.btn}
+        </View>
+      );
+    }
+
+    return btn;
+  }
+
   render() {
     return (
       <Modal visible={this.props.isOpen} animationType="fade" transparent={true}>
         <View style={this.state.backdropStyles}>
           <View style={ModalStyles.wrapper[this.props.size]}>
             <View style={ModalStyles.box}>
-              <View style={ModalStyles.header}>        
+              <View style={ModalStyles.header}>
                 <View style={ModalStyles.header__inner}>
                   <TouchableWithoutFeedback onPress={this.props.toggle}>
-                    <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null}/>
+                    <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null} />
                   </TouchableWithoutFeedback>
                 </View>
               </View>
@@ -225,23 +253,11 @@ class PackenModal extends Component {
                 this.props.type === "info" ? (
                   /* Info modal */
                   <View style={ModalStyles.info}>
-                    {
-                      this.props.banner ? (
-                        <View style={{ ...ModalStyles.banner.base, ...ModalStyles.banner[this.props.theme] }}>
-                          <Icon name={this.props.banner.icon} size={40} color={Colors[this.props.theme].default} />
-                        </View>
-                      ) : null
-                    }
+                    {this.getBanner()}
                     <View style={this.getContentStyles()}>
                       <PackenText preset="h3" style={ModalStyles.title}>{this.props.info.title}</PackenText>
-                      <PackenText preset="p1" style={{...ModalStyles.text.base, ...this.getTextStyles()}}>{this.props.info.text}</PackenText>
-                      {
-                        this.props.info.btn ? (
-                          <View style={ModalStyles.btn}>
-                            {this.props.info.btn}
-                          </View>
-                        ) : null
-                      }
+                      <PackenText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenText>
+                      {this.getInfoButton()}
                     </View>
                   </View>
                 ) : (
@@ -254,7 +270,7 @@ class PackenModal extends Component {
                               this.state.has.prev ? (
                                 <TouchableWithoutFeedback onPress={this.prevSlide}>
                                   <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
-                                    <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon}/>
+                                    <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
                                   </View>
                                 </TouchableWithoutFeedback>
                               ) : null
@@ -263,7 +279,7 @@ class PackenModal extends Component {
                               this.state.has.next ? (
                                 <TouchableWithoutFeedback onPress={this.nextSlide}>
                                   <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
-                                    <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon}/>
+                                    <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
                                   </View>
                                 </TouchableWithoutFeedback>
                               ) : null

@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import renderer from "react-test-renderer";
+import { shallow } from "enzyme";
 
 import PackenRadioControl from "../../app/components/PackenRadioControl";
 
@@ -9,7 +9,7 @@ describe("<PackenRadioControl/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
-    render = renderer.create(
+    render = shallow(
       <PackenRadioControl
         checkedIndex={0}
         selfIndex={1}
@@ -17,14 +17,8 @@ describe("<PackenRadioControl/>", () => {
         isDisabled={false}
         updateCheckedIndex={mockCallback} />
     );
-
-    renderInstance = render.getInstance();
-    renderInstance.setState = state => {
-      renderInstance.state = {
-        ...renderInstance.state,
-        ...state
-      }
-    }
+    renderInstance = render.instance();
+    
     renderInstance.setState({
       state: "default"
     });
@@ -34,63 +28,128 @@ describe("<PackenRadioControl/>", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
     });
+
+    it("renders a label if provided via props", () => {
+      render.setProps({
+        label: "Test"
+      });
+      const res = renderInstance.getLabel();
+
+      expect(res).toBeDefined();
+    });
+
+    it("does not render a label if not provided via props", () => {
+      render.setProps({
+        label: undefined
+      });
+      const res = renderInstance.getLabel();
+
+      expect(res).toBe(null);
+    });
   });
 
   describe("state changing", () => {
+    it("sets initial state to 'default' if it's not disabled", () => {
+      render.setProps({ isDisabled: false });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("default");
+    });
+
+    it("sets initial state to 'default_disabled' if it's disabled", () => {
+      render.setProps({ isDisabled: true });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toBe("default_disabled");
+    });
+
     it("sets state as 'default_disabled'", () => {
-      renderInstance.props = { isDisabled: true, checkedIndex: 0, selfIndex: 1 };
+      render.setProps({
+        isDisabled: true,
+        checkedIndex: 0,
+        selfIndex: 1
+      });
       renderInstance.checkIfDisabled();
+      
       expect(renderInstance.state.state).toBe("default_disabled");
     });
 
     it("sets state as 'checked_disabled'", () => {
-      renderInstance.props = { isDisabled: true, checkedIndex: 0, selfIndex: 0 };
+      render.setProps({
+        isDisabled: true,
+        checkedIndex: 0,
+        selfIndex: 0
+      });
       renderInstance.checkIfDisabled();
+      
       expect(renderInstance.state.state).toBe("checked_disabled");
     });
 
     it("returns 'false' if it's not disabled", () => {
-      renderInstance.props = { isDisabled: false };
+      render.setProps({
+        isDisabled: false
+      });
       const newState = renderInstance.checkIfDisabled();
+      
       expect(newState).toBe(false);
     });
 
     it("sets state as 'default'", () => {
-      renderInstance.props = { checkedIndex: 0, selfIndex: 1 };
+      render.setProps({
+        checkedIndex: 0,
+        selfIndex: 1
+      });
       renderInstance.checkIfChecked();
+      
       expect(renderInstance.state.state).toBe("default");
     });
 
     it("sets state as 'checked'", () => {
-      renderInstance.props = { checkedIndex: 0, selfIndex: 0 };
+      render.setProps({
+        checkedIndex: 0,
+        selfIndex: 0
+      });
       renderInstance.checkIfChecked();
+      
       expect(renderInstance.state.state).toBe("checked");
     });
   });
 
   describe("triggering actions", () => {
     it("triggers actions on componentDidMount", () => {
-      renderInstance.checkIfChecked = mockCallback;
-      renderInstance.checkIfDisabled = mockCallback;
+      const spyCheckIfChecked = jest.spyOn(renderInstance, "checkIfChecked");
+      const spyCheckIfDisabled = jest.spyOn(renderInstance, "checkIfDisabled");
       renderInstance.componentDidMount();
-      expect(renderInstance.checkIfChecked).toHaveBeenCalled();
-      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
+      
+      expect(spyCheckIfChecked).toHaveBeenCalled();
+      expect(spyCheckIfDisabled).toHaveBeenCalled();
+      spyCheckIfChecked.mockRestore();
+      spyCheckIfDisabled.mockRestore();
     });
 
     it("sets checked state onPress", () => {
-      renderInstance.props = { updateCheckedIndex: mockCallback, selfIndex: 0 }
+      render.setProps({
+        selfIndex: 0,
+        updateCheckedIndex: mockCallback
+      });
       renderInstance.onPressHandler();
+      
       expect(renderInstance.state.state).toBe("checked");
     });
 
     it("triggers actions on componentDidUpdate if checkedIndex changed", () => {
+      const spyCheckIfChecked = jest.spyOn(renderInstance, "checkIfChecked");
+      const spyCheckIfDisabled = jest.spyOn(renderInstance, "checkIfDisabled");
       const prevProps = { checkedIndex: 0 };
-      renderInstance.props = { checkedIndex: 1 };
-      renderInstance.checkIfChecked = mockCallback;
-      renderInstance.checkIfDisabled = mockCallback;
+      render.setProps({
+        checkedIndex: 1
+      });
       renderInstance.componentDidUpdate(prevProps, null, null);
-      expect(renderInstance.checkIfChecked).toHaveBeenCalled();
-      expect(renderInstance.checkIfDisabled).toHaveBeenCalled();
+      
+      expect(spyCheckIfChecked).toHaveBeenCalled();
+      expect(spyCheckIfDisabled).toHaveBeenCalled();
+      spyCheckIfChecked.mockRestore();
+      spyCheckIfDisabled.mockRestore();
     });
   });
 });
