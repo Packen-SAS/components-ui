@@ -19,6 +19,7 @@ import Modals from "./views/Modals";
 import Inputs from "./views/Inputs";
 import MapPins from "./views/MapPins";
 import Dropdowns from "./views/Dropdowns";
+import NotificationBanners from "./views/NotificationBanners";
 
 class UILibrary extends Component {
   render() {
@@ -27,6 +28,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenText style={styles.container__title}>UI Components Library</PackenText>
+            <NotificationBanners/>
             <ServiceStatus/>
             <MapPins/>
             <Dropdowns/>
