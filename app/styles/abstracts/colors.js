@@ -47,7 +47,7 @@ export default {
     lgt: "#E2E9FE"
   },
   success: {
-    default: "#2EE2BC",
+    default: "#20D292",
     drk: "#1E9078",
     lgt: "#ECFCF8"
   },

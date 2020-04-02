@@ -20,13 +20,13 @@ export default {
     },
     theme: {
       search: {
-        backgroundColor: Colors.success.lgt
+        backgroundColor: "rgba(32, 210, 146, 0.15)"
       },
       wait: {
-        backgroundColor: Colors.brand.primary.snw
+        backgroundColor: "rgba(185, 247, 255, 0.4)"
       },
       alert: {
-        backgroundColor: Colors.danger.lgt
+        backgroundColor: "rgba(254, 88, 96, 0.1)"
       }
     }
   },

@@ -71,11 +71,11 @@ export default {
         backgroundColor: Colors.basic.independence.drk
       },
       active: {
-        height: 18,
-        width: 18,
+        height: 24,
+        width: 24,
         borderWidth: 6,
         borderStyle: "solid",
-        borderColor: Colors.success.lgt,
+        borderColor: "rgba(32, 210, 146, 0.3)",
         backgroundColor: Colors.success.default
       }
     }
