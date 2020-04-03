@@ -17,6 +17,11 @@ class Inputs extends Component {
     return value;
   }
 
+  mockCallback = () => {
+    /* console.log("Pressed"); */
+    return true;
+  };
+
   render() {
     return (
       <Section title="Inputs">
@@ -67,7 +72,11 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label medium"
-              help="Help text medium"
+              help={{
+                text: "This triggers an internal callback",
+                touchable: true,
+                callback: this.mockCallback
+              }}
               theme="success"
             />
           </View>

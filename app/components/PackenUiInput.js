@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import { View, TextInput, TouchableWithoutFeedback } from "react-native";
-
 import Icon from "react-native-vector-icons/dist/Feather";
 
+import Colors from "../styles/abstracts/colors";
 import InputStyles from "../styles/components/PackenUiInput";
-
 import PackenUiText from "./PackenUiText";
 
 class PackenUiInput extends Component {
@@ -166,18 +165,41 @@ class PackenUiInput extends Component {
     return name;
   }
 
+  triggerHelpCallback = () => {
+    this.props.help.callback();
+  }
+
   getHelp = () => {
     let help = null;
 
     if (this.props.help) {
-      help = (
-        <PackenUiText
-          style={{
-            ...InputStyles.help.base,
-            ...InputStyles.help.size[this.props.size]
-          }}
-        >{this.props.help}</PackenUiText>
-      );
+      if (typeof this.props.help === "string") {
+        help = (
+          <PackenUiText
+            style={{
+              ...InputStyles.help.base,
+              ...InputStyles.help.size[this.props.size]
+            }}
+          >{this.props.help}</PackenUiText>
+        );
+      } else if (this.props.help.touchable) {
+        help = (
+          <TouchableWithoutFeedback onPress={this.triggerHelpCallback}>
+            <View>
+              <PackenUiText
+                touchable={{
+                  color: Colors.brand.secondary.dft,
+                  underline: true
+                }}
+                style={{
+                  ...InputStyles.help.base,
+                  ...InputStyles.help.size[this.props.size]
+                }}
+              >{this.props.help.text}</PackenUiText>
+            </View>
+          </TouchableWithoutFeedback>
+        );
+      }
     }
 
     return help;
