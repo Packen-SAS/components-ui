@@ -185,20 +185,17 @@ class PackenUiInput extends Component {
         );
       } else if (this.props.help.touchable) {
         help = (
-          <TouchableWithoutFeedback onPress={this.triggerHelpCallback}>
-            <View>
-              <PackenUiText
-                touchable={{
-                  color: Colors.brand.secondary.dft,
-                  underline: true
-                }}
-                style={{
-                  ...InputStyles.help.base,
-                  ...InputStyles.help.size[this.props.size]
-                }}
-              >{this.props.help.text}</PackenUiText>
-            </View>
-          </TouchableWithoutFeedback>
+          <PackenUiText
+            touchable={{
+              color: Colors.brand.secondary.dft,
+              underline: true,
+              callback: this.triggerHelpCallback
+            }}
+            style={{
+              ...InputStyles.help.base,
+              ...InputStyles.help.size[this.props.size]
+            }}
+          >{this.props.help.text}</PackenUiText>
         );
       }
     }
