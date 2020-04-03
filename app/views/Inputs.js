@@ -11,11 +11,16 @@ class Inputs extends Component {
     super(props);
   }
 
-  handleChangeText = value => {
+  handleChangeText = (name, value) => {
     /* Content can be used here */
-    /* console.log(value); */
+    /* console.log(`New value for ${name} is: ${value}`); */
     return value;
   }
+
+  mockCallback = () => {
+    /* console.log("Pressed"); */
+    return true;
+  };
 
   render() {
     return (
@@ -23,6 +28,8 @@ class Inputs extends Component {
         <View style={SectionStyles.section__content}>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input1"
+              isFocused
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -35,12 +42,14 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label tiny"
-              help="Help text tiny"
+              help="Number-pad keyboard"
+              keyboardType="number-pad"
               theme="default"
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input2"
               size="small"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -53,26 +62,34 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label small"
-              help="Help text small"
+              help="Decimal keyboard"
+              keyboardType="decimal-pad"
               theme="danger"
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input3"
               size="medium"
+              isPassword
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
               message={{
-                text: "Caption text, description, error notification",
+                text: "This is a password input",
                 icon: "info"
               }}
               label="Label medium"
-              help="Help text medium"
+              help={{
+                text: "This triggers an internal callback",
+                touchable: true,
+                callback: this.mockCallback
+              }}
               theme="success"
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input4"
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -85,26 +102,31 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label large"
-              help="Help text large"
+              help="Phone-pad keyboard"
+              keyboardType="phone-pad"
               theme="primary"
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input5"
               size="giant"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
               icon={{
                 name: "user",
-                position: "right"
+                position: "right",
+                callback: this.mockCallback
               }}
               label="Label giant"
-              help="Help text giant"
+              help="Email-address keyboard"
+              keyboardType="email-address"
               theme="default"
             />
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input6"
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -124,6 +146,7 @@ class Inputs extends Component {
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input7"
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -139,6 +162,7 @@ class Inputs extends Component {
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input8"
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -153,6 +177,7 @@ class Inputs extends Component {
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input9"
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -167,6 +192,7 @@ class Inputs extends Component {
           </View>
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
+              name="input10"
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}

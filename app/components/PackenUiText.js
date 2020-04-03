@@ -9,8 +9,22 @@ class PackenUiText extends Component {
     super(props);
 
     this.state = {
-      preset: props.preset ? Typography[this.props.preset] : {}
+      preset: props.preset ? Typography[this.props.preset] : {},
+      touchable: this.getTouchableStyles()
     }
+  }
+
+  getTouchableStyles = () => {
+    let styles = {};
+
+    if (this.props.touchable) {
+      styles = {
+        color: this.props.touchable.color,
+        textDecorationLine: this.props.touchable.underline ? "underline" : "none"
+      };
+    }
+
+    return styles;
   }
 
   render() {
@@ -18,7 +32,8 @@ class PackenUiText extends Component {
       <Text style={{
         ...styles.base,
         ...this.state.preset,
-        ...this.props.style
+        ...this.props.style,
+        ...this.state.touchable
       }}>{this.props.children}</Text>
     );
   }

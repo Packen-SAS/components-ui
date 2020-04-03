@@ -15,9 +15,15 @@ describe("<Inputs/>", () => {
 
   describe("triggering actions", () => {
     it("executes event callback", () => {
-      const res = render.instance().handleChangeText("Test");
+      const res = render.instance().handleChangeText("input1", "Test");
 
       expect(res).toBe("Test");
+    });
+
+    it("executes the mock callback", () => {
+      const res = render.instance().mockCallback();
+
+      expect(res).toBe(true);
     });
   });
 });
