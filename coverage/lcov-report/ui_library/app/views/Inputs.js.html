@@ -24,7 +24,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -38,14 +38,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
@@ -244,7 +244,33 @@
 <a name='L186'></a><a href='#L186'>186</a>
 <a name='L187'></a><a href='#L187'>187</a>
 <a name='L188'></a><a href='#L188'>188</a>
-<a name='L189'></a><a href='#L189'>189</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L189'></a><a href='#L189'>189</a>
+<a name='L190'></a><a href='#L190'>190</a>
+<a name='L191'></a><a href='#L191'>191</a>
+<a name='L192'></a><a href='#L192'>192</a>
+<a name='L193'></a><a href='#L193'>193</a>
+<a name='L194'></a><a href='#L194'>194</a>
+<a name='L195'></a><a href='#L195'>195</a>
+<a name='L196'></a><a href='#L196'>196</a>
+<a name='L197'></a><a href='#L197'>197</a>
+<a name='L198'></a><a href='#L198'>198</a>
+<a name='L199'></a><a href='#L199'>199</a>
+<a name='L200'></a><a href='#L200'>200</a>
+<a name='L201'></a><a href='#L201'>201</a>
+<a name='L202'></a><a href='#L202'>202</a>
+<a name='L203'></a><a href='#L203'>203</a>
+<a name='L204'></a><a href='#L204'>204</a>
+<a name='L205'></a><a href='#L205'>205</a>
+<a name='L206'></a><a href='#L206'>206</a>
+<a name='L207'></a><a href='#L207'>207</a>
+<a name='L208'></a><a href='#L208'>208</a>
+<a name='L209'></a><a href='#L209'>209</a>
+<a name='L210'></a><a href='#L210'>210</a>
+<a name='L211'></a><a href='#L211'>211</a>
+<a name='L212'></a><a href='#L212'>212</a>
+<a name='L213'></a><a href='#L213'>213</a>
+<a name='L214'></a><a href='#L214'>214</a>
+<a name='L215'></a><a href='#L215'>215</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -263,8 +289,34 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -445,11 +497,16 @@ class Inputs extends Component {
     super(props);
   }
 &nbsp;
-  handleChangeText = value =&gt; {
+  handleChangeText = (name, value) =&gt; {
     /* Content can be used here */
-    /* console.log(value); */
+    /* console.log(`New value for ${name} is: ${value}`); */
     return value;
   }
+&nbsp;
+  mockCallback = () =&gt; {
+    /* console.log("Pressed"); */
+    return true;
+  };
 &nbsp;
   render() {
     return (
@@ -457,6 +514,8 @@ class Inputs extends Component {
         &lt;View style={SectionStyles.section__content}&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input1"
+              isFocused
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -469,12 +528,14 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label tiny"
-              help="Help text tiny"
+              help="Number-pad keyboard"
+              keyboardType="number-pad"
               theme="default"
             /&gt;
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input2"
               size="small"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -487,26 +548,34 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label small"
-              help="Help text small"
+              help="Decimal keyboard"
+              keyboardType="decimal-pad"
               theme="danger"
             /&gt;
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input3"
               size="medium"
+              isPassword
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
               message={{
-                text: "Caption text, description, error notification",
+                text: "This is a password input",
                 icon: "info"
               }}
               label="Label medium"
-              help="Help text medium"
+              help={{
+                text: "This triggers an internal callback",
+                touchable: true,
+                callback: this.mockCallback
+              }}
               theme="success"
             /&gt;
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input4"
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -519,26 +588,31 @@ class Inputs extends Component {
                 icon: "info"
               }}
               label="Label large"
-              help="Help text large"
+              help="Phone-pad keyboard"
+              keyboardType="phone-pad"
               theme="primary"
             /&gt;
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input5"
               size="giant"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
               icon={{
                 name: "user",
-                position: "right"
+                position: "right",
+                callback: this.mockCallback
               }}
               label="Label giant"
-              help="Help text giant"
+              help="Email-address keyboard"
+              keyboardType="email-address"
               theme="default"
             /&gt;
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input6"
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -558,6 +632,7 @@ class Inputs extends Component {
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input7"
               size="medium"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -573,6 +648,7 @@ class Inputs extends Component {
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input8"
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -587,6 +663,7 @@ class Inputs extends Component {
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input9"
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -601,6 +678,7 @@ class Inputs extends Component {
           &lt;/View&gt;
           &lt;View style={SectionStyles.section__contentItem}&gt;
             &lt;PackenUiInput
+              name="input10"
               size="large"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
@@ -627,7 +705,7 @@ export default Inputs;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Thu Apr 02 2020 16:00:47 GMT-0500 (Colombia Standard Time)
+                at Fri Apr 03 2020 12:59:59 GMT-0500 (Colombia Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>
