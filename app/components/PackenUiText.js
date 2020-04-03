@@ -10,15 +10,21 @@ class PackenUiText extends Component {
 
     this.state = {
       preset: props.preset ? Typography[this.props.preset] : {},
-      touchable: props.touchable ? this.getTouchableStyles() : {}
+      touchable: this.getTouchableStyles()
     }
   }
 
   getTouchableStyles = () => {
-    return {
-      color: this.props.touchable.color,
-      textDecorationLine: this.props.touchable.underline ? "underline" : "none"
-    };
+    let styles = {};
+
+    if (this.props.touchable) {
+      styles = {
+        color: this.props.touchable.color,
+        textDecorationLine: this.props.touchable.underline ? "underline" : "none"
+      };
+    }
+
+    return styles;
   }
 
   render() {

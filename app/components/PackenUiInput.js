@@ -16,7 +16,8 @@ class PackenUiInput extends Component {
   setInitialState = () => {
     let initialState = {
       value: this.props.value ? this.props.value : "",
-      state: this.props.disabled ? "disabled" : "default"
+      state: this.props.disabled ? "disabled" : "default",
+      ref: null
     };
 
     if (this.props.icon) {
@@ -136,7 +137,7 @@ class PackenUiInput extends Component {
     this.setState({
       value: text
     });
-    this.props.onChangeText(text);
+    this.props.onChangeText(this.props.name, text);
   }
 
   setEditable = () => {
@@ -244,11 +245,94 @@ class PackenUiInput extends Component {
     return message;
   }
 
+  getKeyboardType = () => {
+    return this.props.keyboardType ? this.props.keyboardType : "default";
+  }
+
+  getRef = input => {
+    this.setState({
+      ref: input
+    }, this.checkFocus);
+  }
+
+  focus = () => {
+    if (this.state.ref) {
+      this.state.ref.focus();
+    } else {
+      return false;
+    }
+  }
+
+  blur = () => {
+    if (this.state.ref) {
+      this.state.ref.blur();
+    } else {
+      return false;
+    }
+  }
+
+  checkFocus = () => {
+    if (this.props.isFocused) {
+      this.focus();
+    } else {
+      this.blur();
+    }
+  }
+
+  getIconWrapper = child => {
+    return (
+      <View
+        style={{ ...InputStyles.icon_wrapper.base, ...this.setIconPositionStyles() }}
+        onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}
+      >
+        {child}
+      </View>
+    );
+  }
+
+  getMainIcon = () => {
+    let icon = null;
+
+    if (this.props.icon) {
+      const inner = (
+        <Icon
+          name={this.getIconName()}
+          size={InputStyles.icon.size[this.props.size].size}
+          color={InputStyles.icon.base.color}
+          style={{
+            ...InputStyles.icon.theme[this.props.theme],
+            ...InputStyles.icon.state[this.state.state],
+            ...this.props.icon.style
+          }}
+        />
+      );
+
+      if (this.props.icon.callback) {
+        icon = this.getIconWrapper((
+          <TouchableWithoutFeedback onPress={this.props.icon.callback}>
+            {inner}
+          </TouchableWithoutFeedback>
+        ));
+      } else {
+        icon = this.getIconWrapper(inner);
+      }
+    }
+
+    return icon;
+  }
+
+  getSecureEntryType = () => {
+    return this.props.isPassword ? true : false;
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.value !== this.props.value) {
       this.setState({
         value: this.props.value
       });
+    }
+    if (prevProps.isFocused !== this.props.isFocused) {
+      this.checkFocus();
     }
   }
 
@@ -264,22 +348,7 @@ class PackenUiInput extends Component {
           {this.getHelp()}
         </View>
         <View style={InputStyles.box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
-          {
-            this.props.icon ? (
-              <View style={{ ...InputStyles.icon_wrapper.base, ...this.setIconPositionStyles() }} onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}>
-                <Icon
-                  name={this.getIconName()}
-                  size={InputStyles.icon.size[this.props.size].size}
-                  color={InputStyles.icon.base.color}
-                  style={{
-                    ...InputStyles.icon.theme[this.props.theme],
-                    ...InputStyles.icon.state[this.state.state],
-                    ...this.props.icon.style
-                  }}
-                />
-              </View>
-            ) : null
-          }
+          {this.getMainIcon()}
           <TouchableWithoutFeedback onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
             <TextInput
               style={{
@@ -290,6 +359,9 @@ class PackenUiInput extends Component {
                 ...this.getPaddingStyles(),
                 ...this.getMultilineStyles()
               }}
+              ref={this.getRef}
+              secureTextEntry={this.getSecureEntryType()}
+              keyboardType={this.getKeyboardType()}
               value={this.state.value}
               onFocus={this.handleFocus}
               onBlur={this.handleBlur}
