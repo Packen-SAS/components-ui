@@ -37,6 +37,59 @@ describe("<PackenUiText/>", () => {
       expect(renderJSON.children).toBe("Test");
       expect(renderJSONNoPreset.children).toBe("Test 2");
     });
+
+    it("returns simple content if it's not touchable or has an icon", () => {
+      render.setProps({ icon: undefined, touchable: undefined });
+      const returnedElement = renderInstance.getContent();
+      
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns clickable content if it's touchable", () => {
+      render.setProps({ icon: undefined, touchable: undefined });
+      const returnedElement = renderInstance.getContent();
+      
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns a left-aligned icon text if it's provided", () => {
+      render.setProps({
+        icon: {
+          name: "check",
+          position: "left",
+          color: "#FFFFFF",
+          size: 14
+        },
+        touchable: undefined
+      });
+      const returnedElement = renderInstance.getContent();
+      
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns a right-aligned icon text if it's provided", () => {
+      render.setProps({
+        icon: {
+          name: "check",
+          position: "right",
+          color: "#FFFFFF",
+          size: 14
+        },
+        touchable: undefined
+      });
+      const returnedElement = renderInstance.getContent();
+      
+      expect(returnedElement).toBeDefined();
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("triggers a callback if provided", () => {
+      render.setProps({ touchable: { callback: jest.fn() } });
+      renderInstance.triggerCallback();
+
+      expect(renderInstance.props.touchable.callback).toHaveBeenCalled();
+    });
   });
 
   describe("styling", () => {
