@@ -13,13 +13,28 @@ class PackenUiSelectionButtonsControl extends Component {
       data: {...props.data},
       selected: props.selected,
       selection: props.selection,
-      source: props.source,
-      state: this.getInitialState()
+      state: this.getInitialState(),
+      config: {
+        label: {
+          preset: "s2"
+        },
+        image: {
+          source: props.source
+        }
+      }
     }
   }
 
   getInitialState = () => {
-    return this.props.data.isSelected ? "active" : "default";
+    let state;
+
+    if (this.props.selection === "single") {
+      state = this.props.selected === this.props.data.value ? "active" : "default";
+    } else {
+      state = this.props.selected.includes(this.props.data.value) ? "active" : "default";
+    }
+
+    return state;
   }
 
   newSelection = () => {
@@ -34,7 +49,7 @@ class PackenUiSelectionButtonsControl extends Component {
         <TouchableWithoutFeedback onPress={this.newSelection}>
           <View style={[this.getStyles().box.type[this.state.type], this.getStyles().box.state[this.state.state]]}>
             <PackenUiText
-              preset="s2"
+              preset={this.state.config.label.preset}
               style={{
                 ...this.getStyles().label.type[this.state.type],
                 ...this.getStyles().label.state[this.state.state]
@@ -46,9 +61,8 @@ class PackenUiSelectionButtonsControl extends Component {
       box = (
         <TouchableWithoutFeedback onPress={this.newSelection}>
           <View style={[this.getStyles().box.type[this.state.type], this.getStyles().box.state[this.state.state]]}>
-            <Image source={this.state.source} />
+            <Image source={this.state.config.image.source} />
             <PackenUiText
-              preset="s2"
               style={{
                 ...this.getStyles().label.type[this.state.type],
                 ...this.getStyles().label.state[this.state.state]
@@ -62,29 +76,33 @@ class PackenUiSelectionButtonsControl extends Component {
   }
 
   checkIfActive = () => {
-    let newState = this.state.state;
+    let newState = {...this.state};
 
-    if (this.state.type === "label") {
+    if (this.state.selection === "single") {
       if (this.props.selected === this.state.data.value) {
-        newState = "active";
+        newState.state = "active";
       } else {
-        newState = "default";
+        newState.state = "default";
       }
     } else {
-      this.props.selected.forEach(element => {
-        if (element === this.state.data.value) {
-          newState = "active";
-        } else {
-          newState = "default";
-        }
-      });
+      if (this.props.selected.includes(this.state.data.value)) {
+        newState.state = "active";
+      } else {
+        newState.state = "default";
+      }
     }
 
-    this.setState({
-      state: newState,
-      selected: this.props.selected
-    });
+    if (this.state.type === "label") {
+      if (newState.state === "active") {
+        newState.config.label.preset = "s1";
+      } else {
+        newState.config.label.preset = "s2";
+      }
+    }
 
+    newState.selected = this.props.selected;
+    this.setState(newState);
+    
     return newState;
   }
 

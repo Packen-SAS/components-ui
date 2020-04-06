@@ -17,25 +17,46 @@ class PackenUiSelectionButtons extends Component {
   }
 
   getInitialSelected = () => {
-    return this.props.selection === "single" ? "" : [];
+    const items = [...this.props.items];
+    let selected;
+
+    if (this.props.selection === "single") {
+      const found = items.filter(item => item.isSelected)[0];
+      selected = found.value;
+    } else {
+      const preSelected = [];
+      items.forEach(item => {
+        if (item.isSelected) {
+          preSelected.push(item.value);
+        }
+      });
+      selected = [...preSelected];
+    }
+
+    return selected;
   }
 
   newSelectionHandler = newValue => {
     let newSelected;
 
-    if (this.state.type === "label") {
+    if (this.state.selection === "single") {
       newSelected = newValue;
     } else {
       newSelected = [...this.state.selected];
-      newSelected.push(newValue);
+      
+      if (newSelected.includes(newValue)) {
+        const foundIndex = newSelected.findIndex(item => item === newValue);
+        newSelected.splice(foundIndex, 1);
+      } else {
+        newSelected.push(newValue);
+      }
+
       newSelected = [...new Set(newSelected)];
     }
 
     this.setState({
       selected: newSelected
     });
-
-    console.log(newSelected);
 
     return newSelected;
   }
