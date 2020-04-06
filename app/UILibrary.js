@@ -23,6 +23,7 @@ import NotificationBanners from "./views/NotificationBanners";
 import Radars from "./views/Radars";
 import IconTexts from "./views/IconTexts";
 import InfoActions from "./views/InfoActions";
+import SelectionButtons from "./views/SelectionButtons";
 
 class UILibrary extends Component {
   render() {
@@ -31,6 +32,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenUiText style={styles.container__title}>UI Components Library</PackenUiText>
+            <SelectionButtons/>
             <InfoActions/>
             <IconTexts/>
             <Radars/>
