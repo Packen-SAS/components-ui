@@ -29,7 +29,6 @@ class Inputs extends Component {
           <View style={SectionStyles.section__contentItem}>
             <PackenUiInput
               name="input1"
-              isFocused
               size="tiny"
               placeholder="Placeholder"
               onChangeText={this.handleChangeText}
