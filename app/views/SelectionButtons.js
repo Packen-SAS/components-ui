@@ -15,7 +15,7 @@ class SelectionButtons extends Component {
   }
 
   newSelectionHandler = (name, newSelection) => {
-    console.log(`Nueva selección de ${name}: ${newSelection}`);
+    /* console.log(`Nueva selección de ${name}: ${newSelection}`); */
     return newSelection;
   }
 

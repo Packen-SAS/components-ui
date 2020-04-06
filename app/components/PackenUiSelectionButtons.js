@@ -51,7 +51,9 @@ class PackenUiSelectionButtons extends Component {
       
       if (newSelected.includes(newValue)) {
         const foundIndex = newSelected.findIndex(item => item === newValue);
-        newSelected.splice(foundIndex, 1);
+        if (newSelected.length > 1) {
+          newSelected.splice(foundIndex, 1); 
+        }
       } else {
         newSelected.push(newValue);
       }
