@@ -86,6 +86,11 @@ export default {
       borderBottomRightRadius: 8,
       backgroundColor: Colors.basic.white.dft
     },
+    custom: {
+      paddingTop: 40,
+      paddingBottom: 20,
+      paddingHorizontal: 28
+    },
     default: {
       paddingTop: 72,
       paddingBottom: 20,

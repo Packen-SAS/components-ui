@@ -14,7 +14,7 @@ class PackenUiModal extends Component {
     super(props);
 
     let initialState = { backdropStyles: { ...ModalStyles.backdrop.base } };
-    if (props.type === "info") {
+    if (props.type !== "gallery") {
       initialState = {
         ...initialState
       }
@@ -68,9 +68,16 @@ class PackenUiModal extends Component {
         ...ModalStyles.content.banner[this.props.size]
       }
     } else {
-      contentStyles = {
-        ...contentStyles,
-        ...ModalStyles.content.default
+      if (this.props.type === "custom") {
+        contentStyles = {
+          ...contentStyles,
+          ...ModalStyles.content.custom
+        }
+      } else {
+        contentStyles = {
+          ...contentStyles,
+          ...ModalStyles.content.default
+        }
       }
     }
 
@@ -236,70 +243,102 @@ class PackenUiModal extends Component {
     return btn;
   }
 
+  getHeader = () => {
+    let header = null;
+
+    if (this.props.type !== "custom") {
+      header = (
+        <View style={ModalStyles.header}>
+          <View style={ModalStyles.header__inner}>
+            <TouchableWithoutFeedback onPress={this.props.toggle}>
+              <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null} />
+            </TouchableWithoutFeedback>
+          </View>
+        </View>
+      );
+    }
+
+    return header;
+  }
+
+  getContent = () => {
+    let content = null;
+    
+    switch (this.props.type) {
+      case "custom":
+        content = (
+          <View style={ModalStyles.info}>
+            <View style={this.getContentStyles()}>
+              {this.props.content}
+            </View>
+          </View>
+        );
+        break;
+      case "info":
+          content = (
+            <View style={ModalStyles.info}>
+              {this.getBanner()}
+              <View style={this.getContentStyles()}>
+                <PackenUiText preset="h3" style={ModalStyles.title}>{this.props.info.title}</PackenUiText>
+                <PackenUiText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenUiText>
+                {this.getInfoButton()}
+              </View>
+            </View>
+          );
+        break;
+      case "gallery":
+        content = (
+          <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
+            {
+              this.props.images.length > 1 ? (
+                <>
+                  {
+                    this.state.has.prev ? (
+                      <TouchableWithoutFeedback onPress={this.prevSlide}>
+                        <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
+                          <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ) : null
+                  }
+                  {
+                    this.state.has.next ? (
+                      <TouchableWithoutFeedback onPress={this.nextSlide}>
+                        <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
+                          <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
+                        </View>
+                      </TouchableWithoutFeedback>
+                    ) : null
+                  }
+                </>
+              ) : null
+            }
+            <Carousel
+              ref={c => { this.carouselRef = c; }}
+              onBeforeSnapToItem={this.handleBeforeSnap}
+              data={this.props.images}
+              renderItem={this.renderGallerySlide}
+              itemWidth={this.getGalleryBoxDimensions().width}
+              sliderWidth={this.getGalleryBoxDimensions().width}
+              inactiveSlideOpacity={1}
+              inactiveSlideScale={1}
+            />
+          </View>
+        );
+        break;
+    }
+
+    return content;
+  }
+
   render() {
     return (
       <Modal visible={this.props.isOpen} animationType="fade" transparent={true}>
         <View style={this.state.backdropStyles}>
           <View style={ModalStyles.wrapper[this.props.size]}>
             <View style={ModalStyles.box}>
-              <View style={ModalStyles.header}>
-                <View style={ModalStyles.header__inner}>
-                  <TouchableWithoutFeedback onPress={this.props.toggle}>
-                    <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null} />
-                  </TouchableWithoutFeedback>
-                </View>
-              </View>
-              {
-                this.props.type === "info" ? (
-                  /* Info modal */
-                  <View style={ModalStyles.info}>
-                    {this.getBanner()}
-                    <View style={this.getContentStyles()}>
-                      <PackenUiText preset="h3" style={ModalStyles.title}>{this.props.info.title}</PackenUiText>
-                      <PackenUiText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenUiText>
-                      {this.getInfoButton()}
-                    </View>
-                  </View>
-                ) : (
-                    /* Gallery modal */
-                    <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
-                      {
-                        this.props.images.length > 1 ? (
-                          <>
-                            {
-                              this.state.has.prev ? (
-                                <TouchableWithoutFeedback onPress={this.prevSlide}>
-                                  <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
-                                    <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
-                                  </View>
-                                </TouchableWithoutFeedback>
-                              ) : null
-                            }
-                            {
-                              this.state.has.next ? (
-                                <TouchableWithoutFeedback onPress={this.nextSlide}>
-                                  <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
-                                    <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
-                                  </View>
-                                </TouchableWithoutFeedback>
-                              ) : null
-                            }
-                          </>
-                        ) : null
-                      }
-                      <Carousel
-                        ref={c => { this.carouselRef = c; }}
-                        onBeforeSnapToItem={this.handleBeforeSnap}
-                        data={this.props.images}
-                        renderItem={this.renderGallerySlide}
-                        itemWidth={this.getGalleryBoxDimensions().width}
-                        sliderWidth={this.getGalleryBoxDimensions().width}
-                        inactiveSlideOpacity={1}
-                        inactiveSlideScale={1}
-                      />
-                    </View>
-                  )
-              }
+              {this.getHeader()}
+              {this.getContent()}
             </View>
           </View>
         </View>
