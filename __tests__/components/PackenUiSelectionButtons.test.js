@@ -89,6 +89,39 @@ describe("<PackenUiSelectionButtons/>", () => {
       expect(returnedElement).toBe("Test");
       expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
     });
+
+    it("Adds to and returns the newly-set selected item(s) if any, selection is 'multiple' and selected items are more than 1", () => {
+      renderInstance.setState({
+        selection: "multiple",
+        selected: [items[0].value, items[1].value]
+      });
+      const returnedElement = renderInstance.newSelectionHandler("Test");
+
+      expect(returnedElement).toEqual([items[0].value, items[1].value, "Test"]);
+      expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
+    });
+
+    it("Removes from and returns the newly-set selected item(s) if any, selection is 'multiple' and selected items are more than 1", () => {
+      renderInstance.setState({
+        selection: "multiple",
+        selected: [items[0].value, items[1].value]
+      });
+      const returnedElement = renderInstance.newSelectionHandler(items[0].value);
+
+      expect(returnedElement).toEqual([items[1].value]);
+      expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
+    });
+
+    it("Returns the same newly-set selected item(s) if any, selection is 'multiple' and selected items are not more than 1", () => {
+      renderInstance.setState({
+        selection: "multiple",
+        selected: [items[0].value]
+      });
+      const returnedElement = renderInstance.newSelectionHandler(items[0].value);
+
+      expect(returnedElement).toEqual([items[0].value]);
+      expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
+    });
   });
 
   describe("styling", () => {
