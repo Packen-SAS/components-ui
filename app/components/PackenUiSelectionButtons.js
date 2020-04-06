@@ -8,6 +8,7 @@ class PackenUiSelectionButtons extends Component {
     super(props);
 
     this.state = {
+      name: props.name,
       type: props.type,
       items: [...props.items],
       selection: props.selection,
@@ -22,7 +23,11 @@ class PackenUiSelectionButtons extends Component {
 
     if (this.props.selection === "single") {
       const found = items.filter(item => item.isSelected)[0];
-      selected = found.value;
+      if (found) {
+        selected = found.value;
+      } else {
+        selected = "";
+      }
     } else {
       const preSelected = [];
       items.forEach(item => {
@@ -57,6 +62,8 @@ class PackenUiSelectionButtons extends Component {
     this.setState({
       selected: newSelected
     });
+
+    this.props.onNewSelection(this.state.name, newSelected);
 
     return newSelected;
   }
