@@ -131,7 +131,6 @@ describe("<PackenUiModal/>", () => {
 
   describe("styling", () => {
     it("returns correct content styles if there's a banner", () => {
-      /* renderInstance.props = { banner: {}, size: "small" }; */
       render.setProps({
         banner: {},
         size: "small"
@@ -141,8 +140,22 @@ describe("<PackenUiModal/>", () => {
       expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.banner.small });
     });
 
+    it("returns custom content styles if set so", () => {
+      render.setProps({
+        banner: undefined,
+        type: "custom"
+      });
+      const returnedStyles = renderInstance.getContentStyles();
+
+      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.custom });
+    });
+
     it("returns correct content styles if there's no banner", () => {
-      renderInstance.props = {};
+      renderInstance.props = {
+        banner: undefined,
+        type: "info",
+        size: "small"
+      };
       const returnedStyles = renderInstance.getContentStyles();
 
       expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.default });

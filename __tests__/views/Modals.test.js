@@ -12,6 +12,9 @@ describe("<Modals/>", () => {
     renderInstance = render.instance();
 
     renderInstance.setState({
+      custom: {
+        small: false
+      },
       primary: {
         default: false,
         small: false
@@ -47,6 +50,7 @@ describe("<Modals/>", () => {
 
   describe("triggering actions", () => {
     it("toggles each modal", () => {
+      renderInstance.toggleModal("custom.small");
       renderInstance.toggleModal("primary.default");
       renderInstance.toggleModal("primary.small");
       renderInstance.toggleModal("warning.default");
@@ -60,6 +64,7 @@ describe("<Modals/>", () => {
       renderInstance.toggleModal("gallery.multiple");
       renderInstance.toggleModal("gallery.single");
 
+      expect(renderInstance.state.custom.small).toBe(true);
       expect(renderInstance.state.primary.default).toBe(true);
       expect(renderInstance.state.primary.small).toBe(true);
       expect(renderInstance.state.warning.default).toBe(true);
@@ -88,6 +93,15 @@ describe("<Modals/>", () => {
       render.props().children[1].props.children.forEach(modalInstance => {
         const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
         modalInstance.props.toggle();
+
+        if (modalInstance.props.type === "custom") {
+          /* console.log(modalInstance.props.content.props.children[2].props.children); */
+          modalInstance.props.content.props.children[2].props.children.forEach(element => {
+            element.props.callback();
+
+            expect(spyToggleModal).toHaveBeenCalled();
+          });
+        }
 
         expect(spyToggleModal).toHaveBeenCalled();
 

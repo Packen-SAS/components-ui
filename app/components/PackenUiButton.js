@@ -167,7 +167,7 @@ class PackenUiButton extends Component {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
-          <View style={this.state.styles.shape}>
+          <View style={{ ...this.state.styles.shape, ...this.props.style }}>
             <View style={this.state.styles.shape__content} onLayout={e => { this.getShapeDimensions(e.nativeEvent.layout); }}>
               <PackenUiText style={this.state.styles.label}>{this.props.children}</PackenUiText>
               {
