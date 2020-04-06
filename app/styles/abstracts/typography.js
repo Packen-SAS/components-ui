@@ -1,3 +1,5 @@
+import Colors from "./colors";
+
 const families = {
   regular: "Muli-Regular",
   semibold: "Muli-SemiBold",
@@ -103,6 +105,8 @@ export default {
   label: {
     fontFamily: families.bold,
     fontSize: 12,
-    lineHeight: 16
+    lineHeight: 16,
+    letterSpacing: 1,
+    color: Colors.basic.independence.dft
   }
 }
