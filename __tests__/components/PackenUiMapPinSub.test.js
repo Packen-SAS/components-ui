@@ -2,7 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import MapPinStyles from "../../app/styles/components/PackenUiMapPin";
 import PackenUiMapPinSub from "../../app/components/PackenUiMapPinSub";
 
 describe("<PackenUiMapPinSub/>", () => {
@@ -89,14 +88,14 @@ describe("<PackenUiMapPinSub/>", () => {
       renderInstance.props = { theme: undefined };
       const returnedColor = renderInstance.getIconColor();
       
-      expect(returnedColor).toBe(MapPinStyles.icon.type.icon.color);
+      expect(returnedColor).toBe(renderInstance.getStyles().icon.type.icon.color);
     });
 
     it("returns the correct color if a 'theme' prop is provided", () => {
       renderInstance.props = { theme: "primary" };
       const returnedColor = renderInstance.getIconColor();
       
-      expect(returnedColor).toBe(MapPinStyles.icon.theme.primary.color);
+      expect(returnedColor).toBe(renderInstance.getStyles().icon.theme.primary.color);
     });
   });
 });

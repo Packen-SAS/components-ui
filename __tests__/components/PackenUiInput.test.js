@@ -2,8 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import InputStyles from "../../app/styles/components/PackenUiInput";
-
 import PackenUiInput from "../../app/components/PackenUiInput";
 
 describe("<PackenUiInput/>", () => {
@@ -201,7 +199,7 @@ describe("<PackenUiInput/>", () => {
       
       expect(returnedStyles).toEqual({
         top: 2,
-        left: InputStyles.icon_wrapper.offset.small
+        left: renderInstance.getStyles().icon_wrapper.offset.small
       });
     });
 
@@ -226,7 +224,7 @@ describe("<PackenUiInput/>", () => {
       
       expect(returnedStyles).toEqual({
         top: 2,
-        right: InputStyles.icon_wrapper.offset.small
+        right: renderInstance.getStyles().icon_wrapper.offset.small
       });
     });
 

@@ -2,8 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import CheckboxStyles from "../../app/styles/components/PackenUiCheckbox";
-
 import PackenUiCheckboxControl from "../../app/components/PackenUiCheckboxControl";
 
 describe("<PackenUiCheckboxControl/>", () => {
@@ -45,8 +43,8 @@ describe("<PackenUiCheckboxControl/>", () => {
       });
 
       expect(render.props().children[1].props.style).toEqual({
-        ...CheckboxStyles.label.base,
-        ...CheckboxStyles.label.state.disabled
+        ...renderInstance.getStyles().label.base,
+        ...renderInstance.getStyles().label.state.disabled
       });
     });
 
@@ -56,8 +54,8 @@ describe("<PackenUiCheckboxControl/>", () => {
       });
 
       expect(render.props().children[1].props.style).toEqual({
-        ...CheckboxStyles.label.base,
-        ...CheckboxStyles.label.state.default
+        ...renderInstance.getStyles().label.base,
+        ...renderInstance.getStyles().label.state.default
       });
     });
   });
@@ -133,10 +131,10 @@ describe("<PackenUiCheckboxControl/>", () => {
       expect(renderInstance.state.styles).toEqual({
         ...renderInstance.state.styles,
         disabled: {
-          ...CheckboxStyles.iconBox.state.disabled.active
+          ...renderInstance.getStyles().iconBox.state.disabled.active
         }
       });
-      expect(returnedStyles).toEqual(CheckboxStyles.iconBox.state.disabled.active);
+      expect(returnedStyles).toEqual(renderInstance.getStyles().iconBox.state.disabled.active);
     });
 
     it("sets and returns disabled styles if it's unchecked and set so via props", () => {
@@ -147,10 +145,10 @@ describe("<PackenUiCheckboxControl/>", () => {
       expect(renderInstance.state.styles).toEqual({
         ...renderInstance.state.styles,
         disabled: {
-          ...CheckboxStyles.iconBox.state.disabled.inactive
+          ...renderInstance.getStyles().iconBox.state.disabled.inactive
         }
       });
-      expect(returnedStyles).toEqual(CheckboxStyles.iconBox.state.disabled.inactive);
+      expect(returnedStyles).toEqual(renderInstance.getStyles().iconBox.state.disabled.inactive);
     });
 
     it("sets and returns an empty disabled styles object if it's not disabled", () => {

@@ -10,15 +10,13 @@ class PackenUiDivider extends Component {
 
   render() {
     return (
-      <View style={[
-        {
-          height: this.props.size,
-          marginTop: this.props.margin ? this.props.margin.top : 0,
-          marginBottom: this.props.margin ? this.props.margin.bottom : 0,
-        },
-        this.getStyles().base,
-        this.getStyles().type[this.props.type]
-      ]}></View>
+      <View style={{
+        height: this.props.size,
+        marginTop: this.props.margin ? this.props.margin.top : 0,
+        marginBottom: this.props.margin ? this.props.margin.bottom : 0,
+        ...this.getStyles().base,
+        ...this.getStyles().type[this.props.type]
+      }}></View>
     );
   }
 

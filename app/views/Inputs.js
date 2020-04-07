@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import SectionStyles from "../styles/components/Section";
+
 import Section from "../components/Section";
 
 import PackenUiInput from "../components/PackenUiInput";

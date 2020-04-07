@@ -2,8 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import ToggleStyles from "../../app/styles/components/PackenUiToggle";
-
 import PackenUiToggle from "../../app/components/PackenUiToggle";
 
 describe("<PackenUiToggle/>", () => {
@@ -182,25 +180,25 @@ describe("<PackenUiToggle/>", () => {
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         disabled: {
-          ...ToggleStyles.shape.disabled
+          ...renderInstance.getStyles().shape.disabled
         }
       });
       expect(renderInstance.state.dot).toEqual({
         ...renderInstance.state.dot,
         disabled: {
-          ...ToggleStyles.dot.disabled
+          ...renderInstance.getStyles().dot.disabled
         }
       });
       expect(renderInstance.state.on).toEqual({
         ...renderInstance.state.on,
         disabled: {
-          ...ToggleStyles.label.on.disabled
+          ...renderInstance.getStyles().label.on.disabled
         }
       });
       expect(renderInstance.state.off).toEqual({
         ...renderInstance.state.off,
         disabled: {
-          ...ToggleStyles.label.off.disabled
+          ...renderInstance.getStyles().label.off.disabled
         }
       });
     });

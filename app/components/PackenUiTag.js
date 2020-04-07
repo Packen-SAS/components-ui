@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import Typography from "../abstracts/typography";
-import Colors from "../abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 

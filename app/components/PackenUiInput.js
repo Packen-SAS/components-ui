@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
-import InputStyles from "../styles/components/PackenUiInput";
+
 import PackenUiText from "./PackenUiText";
 
 class PackenUiInput extends Component {
