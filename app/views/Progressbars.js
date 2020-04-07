@@ -15,7 +15,8 @@ class Progressbars extends Component {
     super(props);
 
     this.state = {
-      progress: 0.3
+      progress: 0.3,
+      isComplete: false
     }
   }
 
@@ -33,15 +34,31 @@ class Progressbars extends Component {
     return true;
   }
 
+  completeIndeterminate = () => {
+    this.setState({
+      isComplete: true
+    });
+    return true;
+  }
+
   render() {
     return (
       <Section title="Progressbars">
         <View style={SectionStyles.section__content}>
-        <PackenUiText
-          style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
-        >Determinate</PackenUiText>
+          <PackenUiText
+            style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
+          >Determinate</PackenUiText>
           <PackenUiProgressbar
-            determinate={true}
+            wrapperStyle={{ marginBottom: 10 }}
+            type="determinate"
+            height={12}
+            radius={4}
+            progress={this.state.progress}
+            trackColor="#E6E6E6"
+            indicatorColor="#20D292"
+          />
+          <PackenUiProgressbar
+            type="determinate"
             height={8}
             radius={0}
             progress={this.state.progress}
@@ -63,6 +80,36 @@ class Progressbars extends Component {
               size="small"
               callback={this.completeProgress}
             >Complete to 100%</PackenUiButton>
+          </View>
+        </View>
+        <View style={SectionStyles.section__content}>
+          <PackenUiText
+            style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
+          >Indeterminate</PackenUiText>
+          <PackenUiProgressbar
+            wrapperStyle={{ marginBottom: 10 }}
+            type="indeterminate"
+            height={12}
+            radius={4}
+            isComplete={this.state.isComplete}
+            trackColor="#E6E6E6"
+            indicatorColor="#20D292"
+          />
+          <PackenUiProgressbar
+            type="indeterminate"
+            height={8}
+            radius={0}
+            isComplete={this.state.isComplete}
+            trackColor="#E6E6E6"
+            indicatorColor="#00E5FF"
+          />
+          <View style={{ marginTop: 15 }}>
+            <PackenUiButton
+              type="regular"
+              level="primary"
+              size="small"
+              callback={this.completeIndeterminate}
+            >Complete</PackenUiButton>
           </View>
         </View>
       </Section>
