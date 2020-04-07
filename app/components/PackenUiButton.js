@@ -4,8 +4,8 @@ import { TouchableWithoutFeedback, View } from "react-native"
 import Icon from "react-native-vector-icons/dist/Feather";
 
 import Color from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
 import PackenUiText from "./PackenUiText";
-import * as ButtonStyles from "../styles/components/PackenUiButton";
 
 class PackenUiButton extends Component {
   constructor(props) {
@@ -51,17 +51,17 @@ class PackenUiButton extends Component {
 
     let styles = {
       shape: {
-        ...ButtonStyles.base.shape,
-        ...ButtonStyles[type][size].shape,
-        ...ButtonStyles[level].shape
+        ...this.createStyles().shape.base,
+        ...this.createStyles().shape.type[type][size],
+        ...this.createStyles().shape.level[level]
       },
       content: {
         position: "relative"
       },
       icon: {
-        ...ButtonStyles.base.icon,
-        ...ButtonStyles[type][size].icon,
-        ...ButtonStyles[level].icon
+        ...this.createStyles().base.icon,
+        ...this.createStyles()[type][size].icon,
+        ...this.createStyles()[level].icon
       }
     };
 
@@ -80,15 +80,15 @@ class PackenUiButton extends Component {
         styles = {
           ...styles,
           label: {
-            ...ButtonStyles.base.label,
-            ...ButtonStyles[type][size].label,
-            ...ButtonStyles[level].label
+            ...this.createStyles().base.label,
+            ...this.createStyles()[type][size].label,
+            ...this.createStyles()[level].label
           },
           iconWrapper: {
             position: "absolute",
             top: (shapeHeight/2) - (iconHeight/2),
-            right: icon ? icon.position === "left" ? "auto" : -(ButtonStyles[type][size].label.marginHorizontal + (iconWidth/2)) : 0,
-            left: icon ? icon.position === "right" ? "auto" : -(ButtonStyles[type][size].label.marginHorizontal + (iconWidth/2)) : 0
+            right: icon ? icon.position === "left" ? "auto" : -(this.createStyles()[type][size].label.marginHorizontal + (iconWidth/2)) : 0,
+            left: icon ? icon.position === "right" ? "auto" : -(this.createStyles()[type][size].label.marginHorizontal + (iconWidth/2)) : 0
           }
         };
         break;
@@ -216,6 +216,190 @@ class PackenUiButton extends Component {
         </TouchableWithoutFeedback>
       </View>
     );
+  }
+
+  createStyles = () => {
+    const iconSizeMultiplier = 1.5;
+    return {
+      shape: {
+        base: {
+          position: "relative",
+          flexDirection: "row",
+          alignSelf: "flex-start",
+          alignItems: "center",
+          justifyContent: "center"
+        },
+        size: {
+          tiny: {
+            minHeight: 24
+          },
+          small: {
+            minHeight: 32
+          },
+          medium: {
+            minHeight: 40
+          },
+          large: {
+            minHeight: 48
+          },
+          giant: {
+            minHeight: 56
+          }
+        },
+        level: {
+          primary: {
+            backgroundColor: Color.primary.default
+          },
+          secondary: {
+            backgroundColor: Color.secondary.default
+          },
+          tertiary: {
+            backgroundColor: Color.tertiary.default
+          },
+          ghost: {
+            backgroundColor: Color.ghost.default
+          },
+          danger: {
+            backgroundColor: Color.danger.default
+          }
+        },
+        type: {
+          icon: {
+            tiny: {
+              height: 24,
+              width: 24
+            },
+            small: {
+              height: 32,
+              width: 32
+            },
+            medium: {
+              height: 40,
+              width: 40
+            },
+            large: {
+              height: 48,
+              width: 48
+            },
+            giant: {
+              height: 56,
+              width: 56
+            }
+          },
+          regular: {
+            tiny: {
+              paddingVertical: 6,
+              paddingHorizontal: 32
+            },
+            small: {
+              paddingVertical: 8,
+              paddingHorizontal: 44
+            },
+            medium: {
+              paddingVertical: 12,
+              paddingHorizontal: 46
+            },
+            large: {
+              paddingVertical: 14,
+              paddingHorizontal: 56
+            },
+            giant: {
+              paddingVertical: 17,
+              paddingHorizontal: 74
+            }
+          }
+        }
+      },
+      label: {
+        base: {
+          textAlign: "center",
+          textTransform: "uppercase",
+          letterSpacing: 1,
+          fontFamily: Typography.family.bold
+        },
+        size: {
+          tiny: {
+            fontSize: Typography.size.tiny,
+            lineHeight: Typography.lineheight.tiny,
+            marginHorizontal: 10
+          },
+          small: {
+            fontSize: Typography.size.small,
+            lineHeight: Typography.lineheight.small,
+            marginHorizontal: 11
+          },
+          medium: {
+            fontSize: Typography.size.medium,
+            lineHeight: Typography.lineheight.medium,
+            marginHorizontal: 12
+          },
+          large: {
+            fontSize: Typography.size.large,
+            lineHeight: Typography.lineheight.large,
+            marginHorizontal: 12
+          },
+          giant: {
+            fontSize: Typography.size.giant,
+            lineHeight: Typography.lineheight.giant,
+            marginHorizontal: 22
+          }
+        },
+        level: {
+          primary: {
+            color: Color.base.white
+          },
+          secondary: {
+            color: Color.secondary.default_drk
+          },
+          tertiary: {
+            color: Color.base.white
+          },
+          ghost: {
+            color: Color.tertiary.default
+          },
+          danger: {
+            color: Color.base.white
+          }
+        }
+      },
+      icon: {
+        base: {},
+        size: {
+          tiny: {
+            fontSize: Typography.size.tiny * iconSizeMultiplier
+          },
+          small: {
+            fontSize: Typography.size.small * iconSizeMultiplier
+          },
+          medium: {
+            fontSize: Typography.size.medium * iconSizeMultiplier
+          },
+          large: {
+            fontSize: Typography.size.large * iconSizeMultiplier
+          },
+          giant: {
+            fontSize: Typography.size.giant * iconSizeMultiplier
+          }
+        },
+        level: {
+          primary: {
+            color: Color.base.white
+          },
+          secondary: {
+            color: Color.secondary.default_drk
+          },
+          tertiary: {
+            color: Color.base.white
+          },
+          ghost: {
+            color: Color.tertiary.default
+          },
+          danger: {
+            color: Color.base.white
+          }
+        }
+      }
+    };
   }
 }
 

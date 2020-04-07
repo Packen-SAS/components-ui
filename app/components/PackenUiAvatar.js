@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import { View, Image } from "react-native";
 
-import * as AvatarStyles from "../styles/components/PackenUiAvatar";
-
 class PackenUiAvatar extends Component {
   constructor(props) {
     super(props);
@@ -11,14 +9,53 @@ class PackenUiAvatar extends Component {
 
   render() {
     return (
-      <View style={AvatarStyles.container[this.props.size]}>
-        <Image source={this.props.src} style={{
-          height: "100%",
-          width: "100%",
-          borderRadius: AvatarStyles.container[this.props.size].borderRadius
-        }}/>
+      <View style={[
+        this.getStyles().container.base,
+        this.getStyles().container.size[this.props.size]
+      ]}>
+        <Image
+          source={this.props.src}
+          style={{
+            height: "100%",
+            width: "100%",
+            borderRadius: 100
+          }}
+        />
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      container: {
+        base: {
+          borderRadius: 100,
+          overflow: "hidden"
+        },
+        size: {
+          tiny: {
+            height: 32,
+            width: 32
+          },
+          small: {
+            height: 40,
+            width: 40
+          },
+          medium: {
+            height: 64,
+            width: 64
+          },
+          large: {
+            height: 80,
+            width: 80
+          },
+          giant: {
+            height: 96,
+            width: 96
+          }
+        }
+      }
+    };
   }
 }
 
