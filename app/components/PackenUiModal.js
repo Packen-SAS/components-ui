@@ -5,7 +5,7 @@ import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
-import ModalStyles from "../styles/components/PackenUiModal";
+import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
@@ -13,7 +13,7 @@ class PackenUiModal extends Component {
   constructor(props) {
     super(props);
 
-    let initialState = { backdropStyles: { ...ModalStyles.backdrop.base } };
+    let initialState = { backdropStyles: { ...this.getStyles().backdrop.base } };
     if (props.type !== "gallery") {
       initialState = {
         ...initialState
@@ -60,23 +60,23 @@ class PackenUiModal extends Component {
   }
 
   getContentStyles = () => {
-    let contentStyles = { ...ModalStyles.content.base };
+    let contentStyles = { ...this.getStyles().content.base };
 
     if (this.props.banner) {
       contentStyles = {
         ...contentStyles,
-        ...ModalStyles.content.banner[this.props.size]
+        ...this.getStyles().content.banner[this.props.size]
       }
     } else {
       if (this.props.type === "custom") {
         contentStyles = {
           ...contentStyles,
-          ...ModalStyles.content.custom
+          ...this.getStyles().content.custom
         }
       } else {
         contentStyles = {
           ...contentStyles,
-          ...ModalStyles.content.default
+          ...this.getStyles().content.default
         }
       }
     }
@@ -89,11 +89,11 @@ class PackenUiModal extends Component {
 
     if (this.props.banner) {
       textStyles = {
-        ...ModalStyles.text.banner[this.props.size]
+        ...this.getStyles().text.banner[this.props.size]
       }
     } else {
       textStyles = {
-        ...ModalStyles.text.default
+        ...this.getStyles().text.default
       }
     }
 
@@ -105,14 +105,14 @@ class PackenUiModal extends Component {
       this.setState({
         backdropStyles: {
           ...this.state.backdropStyles,
-          ...ModalStyles.backdrop.open
+          ...this.getStyles().backdrop.open
         }
       });
     } else {
       this.setState({
         backdropStyles: {
           ...this.state.backdropStyles,
-          ...ModalStyles.backdrop.closed
+          ...this.getStyles().backdrop.closed
         }
       });
     }
@@ -151,7 +151,7 @@ class PackenUiModal extends Component {
 
   renderGallerySlide = ({ item, index }) => {
     return (
-      <View key={index} style={ModalStyles.gallery.slide}>
+      <View key={index} style={this.getStyles().gallery.slide}>
         <Image source={item} style={this.getGalleryBoxDimensions()} />
       </View>
     );
@@ -220,7 +220,7 @@ class PackenUiModal extends Component {
 
     if (this.props.banner) {
       banner = (
-        <View style={{ ...ModalStyles.banner.base, ...ModalStyles.banner[this.props.theme] }}>
+        <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.props.theme] }}>
           <Icon name={this.props.banner.icon} size={40} color={Colors[this.props.theme].default} />
         </View>
       );
@@ -234,7 +234,7 @@ class PackenUiModal extends Component {
 
     if (this.props.info.btn) {
       btn = (
-        <View style={ModalStyles.btn}>
+        <View style={this.getStyles().btn}>
           {this.props.info.btn}
         </View>
       );
@@ -248,10 +248,10 @@ class PackenUiModal extends Component {
 
     if (this.props.type !== "custom") {
       header = (
-        <View style={ModalStyles.header}>
-          <View style={ModalStyles.header__inner}>
+        <View style={this.getStyles().header}>
+          <View style={this.getStyles().header__inner}>
             <TouchableWithoutFeedback onPress={this.props.toggle}>
-              <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? ModalStyles.header__close_icon : null} />
+              <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? this.getStyles().header__close_icon : null} />
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -267,7 +267,7 @@ class PackenUiModal extends Component {
     switch (this.props.type) {
       case "custom":
         content = (
-          <View style={ModalStyles.info}>
+          <View style={this.getStyles().info}>
             <View style={this.getContentStyles()}>
               {this.props.content}
             </View>
@@ -276,11 +276,11 @@ class PackenUiModal extends Component {
         break;
       case "info":
           content = (
-            <View style={ModalStyles.info}>
+            <View style={this.getStyles().info}>
               {this.getBanner()}
               <View style={this.getContentStyles()}>
-                <PackenUiText preset="h3" style={ModalStyles.title}>{this.props.info.title}</PackenUiText>
-                <PackenUiText preset="p1" style={{ ...ModalStyles.text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenUiText>
+                <PackenUiText preset="h3" style={this.getStyles().title}>{this.props.info.title}</PackenUiText>
+                <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenUiText>
                 {this.getInfoButton()}
               </View>
             </View>
@@ -295,8 +295,8 @@ class PackenUiModal extends Component {
                   {
                     this.state.has.prev ? (
                       <TouchableWithoutFeedback onPress={this.prevSlide}>
-                        <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.left]}>
-                          <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
+                        <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.left]}>
+                          <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
                         </View>
                       </TouchableWithoutFeedback>
                     ) : null
@@ -304,8 +304,8 @@ class PackenUiModal extends Component {
                   {
                     this.state.has.next ? (
                       <TouchableWithoutFeedback onPress={this.nextSlide}>
-                        <View style={[ModalStyles.gallery.arrows.base, this.state.arrowStyles.right]}>
-                          <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={ModalStyles.gallery.arrows.icon} />
+                        <View style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.right]}>
+                          <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
                         </View>
                       </TouchableWithoutFeedback>
                     ) : null
@@ -335,8 +335,8 @@ class PackenUiModal extends Component {
     return (
       <Modal visible={this.props.isOpen} animationType="fade" transparent={true}>
         <View style={this.state.backdropStyles}>
-          <View style={ModalStyles.wrapper[this.props.size]}>
-            <View style={ModalStyles.box}>
+          <View style={this.getStyles().wrapper[this.props.size]}>
+            <View style={this.getStyles().box}>
               {this.getHeader()}
               {this.getContent()}
             </View>
@@ -344,6 +344,166 @@ class PackenUiModal extends Component {
         </View>
       </Modal>
     );
+  }
+
+  getStyles = () => {
+    return {
+      backdrop: {
+        base: {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center"
+        },
+        open: {
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        },
+        closed: {
+          backgroundColor: "transparent"
+        }
+      },
+      wrapper: {
+        default: {
+          padding: 25
+        },
+        small: {
+          paddingVertical: 25,
+          paddingHorizontal: 50
+        }
+      },
+      box: {
+        position: "relative",
+        overflow: "hidden",
+        borderRadius: 8,
+        elevation: Shadows.md.elevation,
+        shadowColor: Colors.basic.black.dft,
+        shadowOffset: {
+          width: 0,
+          height: 0
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22
+      },
+      header: {
+        width: "100%",
+        position: "absolute",
+        zIndex: 1,
+        top: 0,
+        left: 0
+      },
+      header__inner: {
+        padding: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end"
+      },
+      header__close_icon: {
+        shadowOpacity: 0.05,
+        textShadowRadius: 5,
+        textShadowOffset: { width: 0, height: 1 }
+      },
+      info: {
+        backgroundColor: "transparent"
+      },
+      banner: {
+        base: {
+          borderTopLeftRadius: 8,
+          borderTopRightRadius: 8,
+          paddingVertical: 50,
+          textAlign: "center",
+          alignItems: "center",
+          justifyContent: "center"
+        },
+        warning: {
+          backgroundColor: Colors.warning.lgt
+        },
+        info: {
+          backgroundColor: Colors.info.lgt
+        },
+        danger: {
+          backgroundColor: Colors.danger.lgt
+        },
+        success: {
+          backgroundColor: Colors.success.lgt
+        }
+      },
+      content: {
+        base: {
+          borderBottomLeftRadius: 8,
+          borderBottomRightRadius: 8,
+          backgroundColor: Colors.basic.white.dft
+        },
+        custom: {
+          paddingTop: 40,
+          paddingBottom: 20,
+          paddingHorizontal: 28
+        },
+        default: {
+          paddingTop: 72,
+          paddingBottom: 20,
+          paddingHorizontal: 28
+        },
+        banner: {
+          default: {
+            paddingTop: 15,
+            paddingBottom: 20,
+            paddingHorizontal: 28
+          },
+          small: {
+            paddingTop: 15,
+            paddingBottom: 34,
+            paddingHorizontal: 34
+          }
+        }
+      },
+      title: {
+        textAlign: "center",
+        color: Colors.basic.yankees.dft
+      },
+      text: {
+        base: {
+          color: Colors.basic.independence.dft
+        },
+        default: {
+          marginTop: 21,
+          marginBottom: 46
+        },
+        banner: {
+          default: {
+            marginTop: 10,
+            marginBottom: 46
+          },
+          small: {
+            marginTop: 10,
+            marginBottom: 23
+          }
+        }
+      },
+      btn: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center"
+      },
+      gallery: {
+        arrows: {
+          base: {
+            position: "absolute",
+            zIndex: 2
+          },
+          icon: {
+            shadowOpacity: 0.05,
+            textShadowRadius: 5,
+            textShadowOffset: { width: 0, height: 1 }
+          }
+        },
+        slide: {
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: 8,
+          backgroundColor: Colors.basic.black.dft
+        }
+      }
+    };
   }
 }
 

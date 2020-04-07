@@ -19,7 +19,7 @@ class IconTexts extends Component {
   render() {
     return (
       <Section title="Icon Texts">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             preset="p2"
             touchable={{
@@ -35,7 +35,7 @@ class IconTexts extends Component {
             }}
           >This triggers an internal callback</PackenUiText>
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             preset="p2"
             icon={{

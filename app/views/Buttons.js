@@ -17,8 +17,8 @@ class Buttons extends Component {
     return (
       <>
         <Section title="Buttons Primary">
-          <View style={SectionStyles.section__content}>
-            <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -26,7 +26,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -34,7 +34,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -42,7 +42,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -50,7 +50,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -59,7 +59,7 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 isDisabled />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -67,7 +67,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback}>Tiny</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -75,7 +75,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback}>Small</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -83,7 +83,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback}>Medium</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -91,7 +91,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -103,8 +103,8 @@ class Buttons extends Component {
           </View>
         </Section>
         <Section title="Buttons Secondary">
-          <View style={SectionStyles.section__content}>
-            <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -112,7 +112,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -120,7 +120,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -128,7 +128,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -136,7 +136,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -145,7 +145,7 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 isDisabled />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -153,7 +153,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback}>Tiny</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -161,7 +161,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback}>Small</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -169,7 +169,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback}>Medium</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -177,7 +177,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -189,8 +189,8 @@ class Buttons extends Component {
           </View>
         </Section>
         <Section title="Buttons Tertiary">
-          <View style={SectionStyles.section__content}>
-            <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -198,7 +198,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -206,7 +206,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -214,7 +214,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -222,7 +222,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -231,7 +231,7 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 isDisabled />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -239,7 +239,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback}>Tiny</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -247,7 +247,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback}>Small</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -255,7 +255,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback}>Medium</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -263,7 +263,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -275,8 +275,8 @@ class Buttons extends Component {
           </View>
         </Section>
         <Section title="Buttons Ghost">
-          <View style={SectionStyles.section__content}>
-            <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -284,7 +284,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -292,7 +292,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -300,7 +300,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -308,7 +308,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -317,7 +317,7 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 isDisabled />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -325,7 +325,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback}>Tiny</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -333,7 +333,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback}>Small</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -341,7 +341,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback}>Medium</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -349,7 +349,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -361,8 +361,8 @@ class Buttons extends Component {
           </View>
         </Section>
         <Section title="Buttons Danger">
-          <View style={SectionStyles.section__content}>
-            <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -370,7 +370,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -378,7 +378,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -386,7 +386,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -394,7 +394,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback} />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
@@ -403,7 +403,7 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 isDisabled />
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -411,7 +411,7 @@ class Buttons extends Component {
                 size="tiny"
                 callback={this.mockCallback}>Tiny</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -419,7 +419,7 @@ class Buttons extends Component {
                 size="small"
                 callback={this.mockCallback}>Small</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"
@@ -427,7 +427,7 @@ class Buttons extends Component {
                 size="medium"
                 callback={this.mockCallback}>Medium</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-left", position: "left" }}
                 type="regular"
@@ -435,7 +435,7 @@ class Buttons extends Component {
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
             </View>
-            <View style={SectionStyles.section__contentItem}>
+            <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right", position: "right" }}
                 type="regular"

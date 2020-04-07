@@ -16,8 +16,8 @@ class Tabs extends Component {
   render() {
     return (
       <Section title="Tabs">
-        <View style={SectionStyles.section__content}>
-          <View style={SectionStyles.section__contentItem}>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiTabs items={[
               {
                 label: "Button",
@@ -36,7 +36,7 @@ class Tabs extends Component {
               }
             ]} activeIndex={0}/>
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiTabs items={[
               {
                 label: "Button",
@@ -52,7 +52,7 @@ class Tabs extends Component {
               }
             ]} activeIndex={1}/>
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiTabs items={[
               {
                 label: "Button",

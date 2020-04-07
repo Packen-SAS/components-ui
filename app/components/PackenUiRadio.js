@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-
 import { View } from "react-native";
 
-import RadioStyles from "../styles/components/PackenUiRadio";
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+
 import PackenUiRadioControl from "./PackenUiRadioControl";
 
 class PackenUiRadio extends Component {
@@ -53,12 +54,12 @@ class PackenUiRadio extends Component {
 
   render() {
     return (
-      <View style={RadioStyles.container[this.props.layout]}>
+      <View style={this.getStyles().container[this.props.layout]}>
         {
           this.props.items.map((item, i) => (
             <View
               key={i}
-              style={RadioStyles.item[this.props.layout]}
+              style={this.getStyles().item[this.props.layout]}
               pointerEvents={this.props.layout === "dropdown" ?  "none" : "auto"}
             >
               <PackenUiRadioControl
@@ -72,6 +73,41 @@ class PackenUiRadio extends Component {
         }
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      container: {
+        column: {
+          flexDirection: "column",
+          alignItems: "flex-start",
+          justifyContent: "center"
+        },
+        row: {
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start",
+          flexWrap: "wrap"
+        },
+        dropdown: {
+          flexDirection: "column",
+          alignItems: "stretch",
+          justifyContent: "center"
+        }
+      },
+      item: {
+        column: {
+          marginBottom: 10
+        },
+        row: {
+          marginRight: 20,
+          marginBottom: 10
+        },
+        dropdown: {
+          margin: 0
+        }
+      }
+    };
   }
 }
 

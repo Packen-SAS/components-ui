@@ -25,8 +25,8 @@ class Inputs extends Component {
   render() {
     return (
       <Section title="Inputs">
-        <View style={SectionStyles.section__content}>
-          <View style={SectionStyles.section__contentItem}>
+        <View style={{ marginTop: 20 }}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input1"
               size="tiny"
@@ -46,7 +46,7 @@ class Inputs extends Component {
               theme="default"
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input2"
               size="small"
@@ -66,7 +66,7 @@ class Inputs extends Component {
               theme="danger"
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input3"
               size="medium"
@@ -86,7 +86,7 @@ class Inputs extends Component {
               theme="success"
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input4"
               size="large"
@@ -106,7 +106,7 @@ class Inputs extends Component {
               theme="primary"
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input5"
               size="giant"
@@ -123,7 +123,7 @@ class Inputs extends Component {
               theme="default"
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input6"
               size="medium"
@@ -143,7 +143,7 @@ class Inputs extends Component {
               disabled
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input7"
               size="medium"
@@ -159,7 +159,7 @@ class Inputs extends Component {
               multiline
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input8"
               size="tiny"
@@ -174,7 +174,7 @@ class Inputs extends Component {
               multiline
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input9"
               size="tiny"
@@ -189,7 +189,7 @@ class Inputs extends Component {
               multiline
             />
           </View>
-          <View style={SectionStyles.section__contentItem}>
+          <View style={{ marginBottom: 10 }}>
             <PackenUiInput
               name="input10"
               size="large"

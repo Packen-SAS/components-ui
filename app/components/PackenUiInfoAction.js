@@ -10,8 +10,6 @@ import Typography from "../styles/abstracts/typography";
 class PackenUiInfoAction extends Component {
   constructor(props) {
     super(props);
-
-    this.styles = this.createStyles();
   }
 
   getCaption = () => {
@@ -21,7 +19,7 @@ class PackenUiInfoAction extends Component {
       caption = (
         <PackenUiText
           preset="c1"
-          style={this.styles.caption}
+          style={this.getStyles().caption}
         >{this.props.caption}</PackenUiText>
       );
     }
@@ -54,7 +52,7 @@ class PackenUiInfoAction extends Component {
         <PackenUiText
           preset="c1"
           icon={icon}
-          style={this.styles.subtitle.theme[this.props.theme]}
+          style={this.getStyles().subtitle.theme[this.props.theme]}
         >{this.props.subtitle}</PackenUiText>
       );
     }
@@ -65,22 +63,22 @@ class PackenUiInfoAction extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.props.callback}>
-        <View style={[this.styles.box.base, this.styles.box.theme[this.props.theme]]}>
-          <Image source={this.props.img.src} style={this.styles.img} />
-          <View style={this.styles.main}>
-            <View style={this.styles.mainTop}>
-              <PackenUiText preset="p1" style={this.styles.title}>{this.props.title}</PackenUiText>
+        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.props.theme]]}>
+          <Image source={this.props.img.src} style={this.getStyles().img} />
+          <View style={this.getStyles().main}>
+            <View style={this.getStyles().mainTop}>
+              <PackenUiText preset="p1" style={this.getStyles().title}>{this.props.title}</PackenUiText>
               {this.getCaption()}
             </View>
             {this.getSubtitle()}
           </View>
-          <Icon name={this.props.icon.name} size={this.props.icon.size} color={this.styles.icon.theme[this.props.theme].color} />
+          <Icon name={this.props.icon.name} size={this.props.icon.size} color={this.getStyles().icon.theme[this.props.theme].color} />
         </View>
       </TouchableWithoutFeedback>
     );
   }
 
-  createStyles = () => {
+  getStyles = () => {
     return {
       box: {
         base: {

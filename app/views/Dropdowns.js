@@ -1412,7 +1412,7 @@ class Dropdowns extends Component {
   render() {
     return (
       <Section title="Dropdowns">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <View style={{ marginBottom: 20 }}>
             <PackenUiDropdown
               size="medium"

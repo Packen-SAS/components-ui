@@ -22,7 +22,7 @@ class SelectionButtons extends Component {
   render() {
     return (
       <Section title="Selection Buttons">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, single selection</PackenUiText>
           <PackenUiSelectionButtons
             type="label"
@@ -42,7 +42,7 @@ class SelectionButtons extends Component {
             ]}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Image, single selection</PackenUiText>
           <PackenUiSelectionButtons
             type="image"
@@ -56,7 +56,7 @@ class SelectionButtons extends Component {
             ]}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, multiple selection</PackenUiText>
           <PackenUiSelectionButtons
             type="label"
@@ -76,7 +76,7 @@ class SelectionButtons extends Component {
             ]}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Image, multiple selection</PackenUiText>
           <PackenUiSelectionButtons
             type="image"

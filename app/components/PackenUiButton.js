@@ -59,9 +59,8 @@ class PackenUiButton extends Component {
         position: "relative"
       },
       icon: {
-        ...this.createStyles().base.icon,
-        ...this.createStyles()[type][size].icon,
-        ...this.createStyles()[level].icon
+        ...this.createStyles().icon.level[level],
+        ...this.createStyles().icon.size[size]
       }
     };
 
@@ -80,15 +79,15 @@ class PackenUiButton extends Component {
         styles = {
           ...styles,
           label: {
-            ...this.createStyles().base.label,
-            ...this.createStyles()[type][size].label,
-            ...this.createStyles()[level].label
+            ...this.createStyles().label.base,
+            ...this.createStyles().label.level[level],
+            ...this.createStyles().label.size[size]
           },
           iconWrapper: {
             position: "absolute",
             top: (shapeHeight/2) - (iconHeight/2),
-            right: icon ? icon.position === "left" ? "auto" : -(this.createStyles()[type][size].label.marginHorizontal + (iconWidth/2)) : 0,
-            left: icon ? icon.position === "right" ? "auto" : -(this.createStyles()[type][size].label.marginHorizontal + (iconWidth/2)) : 0
+            right: icon ? icon.position === "left" ? "auto" : -(this.createStyles().label.size[size].marginHorizontal + (iconWidth/2)) : 0,
+            left: icon ? icon.position === "right" ? "auto" : -(this.createStyles().label.size[size].marginHorizontal + (iconWidth/2)) : 0
           }
         };
         break;
@@ -363,7 +362,6 @@ class PackenUiButton extends Component {
         }
       },
       icon: {
-        base: {},
         size: {
           tiny: {
             fontSize: Typography.size.tiny * iconSizeMultiplier

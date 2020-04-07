@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 
-import TabsStyles from "../styles/components/PackenUiTabs";
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+
 import PackenUiText from "./PackenUiText";
 
 class PackenUiTabItem extends Component {
@@ -23,16 +24,16 @@ class PackenUiTabItem extends Component {
   getItemStyles = () => {
     const styles = {
       shape: {
-        ...TabsStyles.item.base.shape,
-        ...TabsStyles.item.default.shape
+        ...this.getStyles().item.base.shape,
+        ...this.getStyles().item.default.shape
       },
       label: {
-        ...TabsStyles.item.base.label,
-        ...TabsStyles.item.default.label
+        ...this.getStyles().item.base.label,
+        ...this.getStyles().item.default.label
       },
       icon: {
-        ...TabsStyles.item.base.icon,
-        ...TabsStyles.item.default.icon
+        ...this.getStyles().item.base.icon,
+        ...this.getStyles().item.default.icon
       }
     };
     return styles;
@@ -48,15 +49,15 @@ class PackenUiTabItem extends Component {
     let activeStyles = { ...this.state.itemStyles };
     activeStyles.shape = {
       ...activeStyles.shape,
-      ...TabsStyles.item.active.shape
+      ...this.getStyles().item.active.shape
     };
     activeStyles.label = {
       ...activeStyles.label,
-      ...TabsStyles.item.active.label
+      ...this.getStyles().item.active.label
     };
     activeStyles.icon = {
       ...activeStyles.icon,
-      ...TabsStyles.item.active.icon
+      ...this.getStyles().item.active.icon
     };
 
     this.setState({
@@ -87,15 +88,15 @@ class PackenUiTabItem extends Component {
 
     newStyles.shape = {
       ...newStyles.shape,
-      ...TabsStyles.item.focus.shape
+      ...this.getStyles().item.focus.shape
     };
     newStyles.label = {
       ...newStyles.label,
-      ...TabsStyles.item.focus.label
+      ...this.getStyles().item.focus.label
     };
     newStyles.icon = {
       ...newStyles.icon,
-      ...TabsStyles.item.focus.icon
+      ...this.getStyles().item.focus.icon
     };
 
     this.setState({
@@ -136,6 +137,73 @@ class PackenUiTabItem extends Component {
         </View>
       </TouchableWithoutFeedback>
     );
+  }
+
+  getStyles = () => {
+    return {
+      item: {
+        base: {
+          shape: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            flexGrow: 1,
+            borderBottomWidth: 4,
+            borderBottomStyle: "solid",
+            paddingTop: 12,
+            paddingBottom: 8
+          },
+          label: {
+            textAlign: "center",
+            fontFamily: Typography.family.semibold,
+            fontSize: Typography.size.medium,
+            lineHeight: Typography.lineheight.huge
+          },
+          icon: {
+            textAlign: "center",
+            fontFamily: Typography.family.semibold,
+            fontSize: Typography.size.medium,
+            lineHeight: Typography.lineheight.huge,
+            fontSize: Typography.size.medium * 1.65
+          }
+        },
+        default: {
+          shape: {
+            borderBottomColor: Colors.base.disabled_alt
+          },
+          label: {
+            color: Colors.base.disabled_alt_drk
+          },
+          icon: {
+            color: Colors.base.disabled_alt_drk
+          }
+        },
+        focus: {
+          shape: {
+            backgroundColor: Colors.ghost.focus,
+            borderBottomColor: Colors.base.disabled_alt_drk
+          },
+          label: {
+            color: Colors.secondary.focus
+          },
+          icon: {
+            color: Colors.secondary.focus
+          }
+        },
+        active: {
+          shape: {
+            backgroundColor: Colors.base.transparent,
+            borderBottomColor: Colors.primary.default
+          },
+          label: {
+            color: Colors.primary.default
+          },
+          icon: {
+            color: Colors.primary.default
+          }
+        }
+      }
+    };
   }
 }
 

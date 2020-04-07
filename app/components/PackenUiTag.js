@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import TagStyles from "../styles/components/PackenUiTag";
+import Typography from "../abstracts/typography";
+import Colors from "../abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 
@@ -12,10 +13,35 @@ class PackenUiTag extends Component {
 
   render() {
     return (
-      <View style={TagStyles.box.base}>
-        <PackenUiText style={{ ...TagStyles.label.base, ...this.props.style }}>{this.props.children}</PackenUiText>
+      <View style={this.getStyles().box.base}>
+        <PackenUiText style={{ ...this.getStyles().label.base, ...this.props.style }}>{this.props.children}</PackenUiText>
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      box: {
+        base: {
+          borderRadius: 3,
+          paddingVertical: 2,
+          paddingHorizontal: 8,
+          textAlign: "center",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: Colors.basic.white.drk,
+          alignSelf: "flex-start"
+        }
+      },
+      label: {
+        base: {
+          fontFamily: Typography.family.bold,
+          fontSize: Typography.size.tiny_alt,
+          lineHeight: Typography.lineheight.medium_alt
+        }
+      }
+    };
   }
 }
 

@@ -28,11 +28,11 @@ class Radars extends Component {
   render() {
     return (
       <Section title="Radars">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Animated by default</PackenUiText>
           <PackenUiRadar theme="search" animated={true} isAnimating={true} />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, animatable</PackenUiText>
           <PackenUiRadar theme="wait" animated={true} isAnimating={this.state.isWaitAnimating} />
           <View style={{ marginTop: 10 }}></View>
@@ -42,7 +42,7 @@ class Radars extends Component {
             size="small"
             callback={this.toggleAnimation}>Toggle animation</PackenUiButton>
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, non-animatable</PackenUiText>
           <PackenUiRadar theme="alert" animated={false} />
         </View>

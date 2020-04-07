@@ -88,7 +88,7 @@ class ServiceStatus extends Component {
   render() {
     return (
       <Section title="Service Status">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex}/>
           <View style={{marginTop: 20, flexDirection: "row"}}>
             <View style={{marginRight: 5}}>

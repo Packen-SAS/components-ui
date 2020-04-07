@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-
 import { View } from "react-native";
 
-import TabsStyles from "../styles/components/PackenUiTabs";
 import PackenUiTabItem from "./PackenUiTabItem";
 
 class PackenUiTabs extends Component {
@@ -22,7 +20,7 @@ class PackenUiTabs extends Component {
 
   render() {
     return (
-      <View style={TabsStyles.container}>
+      <View style={this.getStyles().container}>
         {
           this.props.items.map((item, i) => (
             <PackenUiTabItem
@@ -37,6 +35,16 @@ class PackenUiTabs extends Component {
         }
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      container: {
+        flexDirection: "row",
+        alignItems: "flex-end",
+        justifyContent: "space-around"
+      }
+    };
   }
 }
 

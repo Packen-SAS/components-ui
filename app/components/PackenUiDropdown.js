@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 
-import DropdownStyles from "../styles/components/PackenUiDropdown";
+import Colors from "../styles/abstracts/colors";
+import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiInput from "./PackenUiInput";
 import PackenUiList from "./PackenUiList";
@@ -93,10 +94,10 @@ class PackenUiDropdown extends Component {
   render() {
     return (
       <View
-        style={DropdownStyles.wrapper}
+        style={this.getStyles().wrapper}
         pointerEvents={this.props.isDisabled ? "none" : "auto"}
       >
-        <TouchableWithoutFeedback style={DropdownStyles.input} onPress={this.toggleMenu}>
+        <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
           <View pointerEvents="box-only">
             <PackenUiInput
               value={this.state.finalSelectionString}
@@ -117,7 +118,7 @@ class PackenUiDropdown extends Component {
         </TouchableWithoutFeedback>
         <View
           onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
-          style={{ ...DropdownStyles.menu, ...this.state.styles.menu }}
+          style={{ ...this.getStyles().menu, ...this.state.styles.menu }}
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         >
           <PackenUiList
@@ -131,6 +132,29 @@ class PackenUiDropdown extends Component {
         </View>
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      wrapper: {},
+      input: {},
+      menu: {
+        backgroundColor: Colors.basic.white.dft,
+        shadowColor: Colors.basic.black.dft,
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: Shadows.md.elevation,
+        position: "absolute",
+        zIndex: 10,
+        left: 0,
+        width: "100%",
+        opacity: 0
+      }
+    };
   }
 }
 

@@ -4,7 +4,7 @@ import { TouchableWithoutFeedback, View } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
-import ListStyles from "../styles/components/PackenUiList";
+import Typography from "../styles/abstracts/typography";
 import { arraysEqual } from "../utils";
 
 import PackenUiAvatar from "./PackenUiAvatar";
@@ -175,9 +175,9 @@ class PackenUiListItem extends Component {
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
       if (this.props.mainContent.isSelected) {
-        activeStyles = { ...ListStyles.box.state.active };
+        activeStyles = { ...this.getStyles().box.state.active };
       } else {
-        activeStyles = { ...ListStyles.box.state.default };
+        activeStyles = { ...this.getStyles().box.state.default };
       }
     }
 
@@ -189,9 +189,9 @@ class PackenUiListItem extends Component {
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
       if (this.props.mainContent.isSelected) {
-        focusStyles = { ...ListStyles.box.state.active }
+        focusStyles = { ...this.getStyles().box.state.active }
       } else {
-        focusStyles = this.state.state === "focus" ? { ...ListStyles.box.state.focus } : { ...ListStyles.box.state.default }
+        focusStyles = this.state.state === "focus" ? { ...this.getStyles().box.state.focus } : { ...this.getStyles().box.state.default }
       }
     }
 
@@ -210,8 +210,8 @@ class PackenUiListItem extends Component {
           leftContent = (
             <Icon
               name={this.props.mainContent.left.config.name}
-              color={ListStyles.icon.state[this.state.state].color}
-              size={ListStyles.icon.size[this.props.config.size].size * iconSizeMultiplier}
+              color={this.getStyles().icon.state[this.state.state].color}
+              size={this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
             />
           );
           break;
@@ -237,8 +237,8 @@ class PackenUiListItem extends Component {
           rightContent = (
             <Icon
               name={this.props.mainContent.right.config.name}
-              color={ListStyles.icon.state[this.state.state].color}
-              size={ListStyles.icon.size[this.props.config.size].size * iconSizeMultiplier}
+              color={this.getStyles().icon.state[this.state.state].color}
+              size={this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
             />
           );
           break;
@@ -258,7 +258,7 @@ class PackenUiListItem extends Component {
 
     if (leftContent !== null) {
       leftContent = (
-        <View style={{ ...ListStyles.content.left.base, ...ListStyles.content.left.state[this.state.state] }}>
+        <View style={{ ...this.getStyles().content.left.base, ...this.getStyles().content.left.state[this.state.state] }}>
           {leftContent}
         </View>
       );
@@ -266,7 +266,7 @@ class PackenUiListItem extends Component {
 
     if (rightContent !== null) {
       rightContent = (
-        <View style={{ ...ListStyles.content.right.base, ...ListStyles.content.right.state[this.state.state] }}>
+        <View style={{ ...this.getStyles().content.right.base, ...this.getStyles().content.right.state[this.state.state] }}>
           {rightContent}
         </View>
       );
@@ -326,7 +326,7 @@ class PackenUiListItem extends Component {
       }
     } else {
       mainContent = (
-        <View style={ListStyles.content.main}>
+        <View style={this.getStyles().content.main}>
           {this.props.mainContent.main}
         </View>
       );
@@ -350,11 +350,11 @@ class PackenUiListItem extends Component {
     if (this.props.mainContent.isDisabled) {
       disabledStyles = {
         box: {
-          ...ListStyles.box.state.disabled
+          ...this.getStyles().box.state.disabled
         },
         content: {
           wrapper: {
-            ...ListStyles.content.wrapper.state.disabled
+            ...this.getStyles().content.wrapper.state.disabled
           }
         }
       };
@@ -442,14 +442,14 @@ class PackenUiListItem extends Component {
         >
           <View
             style={{
-              ...ListStyles.box.base,
+              ...this.getStyles().box.base,
               ...this.getActiveStyles(),
               ...this.getFocusStyles(),
-              ...ListStyles.box.selection[this.props.config.selectionType],
+              ...this.getStyles().box.selection[this.props.config.selectionType],
               ...this.getDisabledStyles().box
             }}
           >
-            <View style={{ ...ListStyles.content.wrapper.base, ...this.getDisabledStyles().content.wrapper }}>
+            <View style={{ ...this.getStyles().content.wrapper.base, ...this.getDisabledStyles().content.wrapper }}>
               {this.getLeftContent()}
               {this.state.mainContent}
               {this.getRightContent()}
@@ -457,7 +457,7 @@ class PackenUiListItem extends Component {
                 this.props.mainContent.isSelected && this.props.config.checkedIcon ? (
                   <Icon
                     name={this.props.config.checkedIcon}
-                    size={ListStyles.icon.size[this.props.config.size].size * 1.2}
+                    size={this.getStyles().icon.size[this.props.config.size].size * 1.2}
                     color={Colors.basic.white.dft}
                   />
                 ) : null
@@ -467,6 +467,122 @@ class PackenUiListItem extends Component {
         </TouchableWithoutFeedback>
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      box: {
+        base: {
+          paddingVertical: 10,
+          paddingHorizontal: 16,
+          borderBottomWidth: 1,
+          borderBottomStyle: "solid",
+          borderBottomColor: Colors.basic.white.drk
+        },
+        state: {
+          default: {
+            backgroundColor: Colors.basic.white.dft
+          },
+          focus: {
+            backgroundColor: Colors.brand.primary.snw
+          },
+          active: {
+            backgroundColor: Colors.brand.primary.drk
+          },
+          disabled: {
+            backgroundColor: Colors.basic.white.dft
+          }
+        },
+        selection: {
+          single: {},
+          multiple: {},
+          radio: {
+            padding: 0
+          },
+          checkbox: {
+            padding: 0
+          }
+        }
+      },
+      content: {
+        wrapper: {
+          base: {
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between"
+          },
+          state: {
+            default: {},
+            focus: {},
+            active: {},
+            disabled: {}
+          }
+        },
+        left: {
+          base: {
+            marginRight: 12,
+          },
+          state: {
+            default: {},
+            focus: {},
+            active: {},
+            disabled: {
+              opacity: 0.2
+            }
+          }
+        },
+        main: {
+          flex: 1
+        },
+        right: {
+          base: {
+            marginLeft: 12
+          },
+          state: {
+            default: {},
+            focus: {},
+            active: {},
+            disabled: {
+              opacity: 0.2
+            }
+          }
+        }
+      },
+      icon: {
+        base: {
+          color: Colors.basic.independence.dft
+        },
+        size: {
+          tiny: {
+            size: Typography.size.small
+          },
+          small: {
+            size: Typography.size.medium
+          },
+          medium: {
+            size: Typography.size.medium
+          },
+          large: {
+            size: Typography.size.medium
+          },
+          giant: {
+            size: Typography.size.xhuge
+          }
+        },
+        state: {
+          default: {
+            color: Colors.basic.independence.dft
+          },
+          focus: {},
+          active: {
+            color: Colors.basic.white.dft
+          },
+          disabled: {
+            color: Colors.basic.gray.dft
+          }
+        }
+      }
+    };
   }
 }
 
