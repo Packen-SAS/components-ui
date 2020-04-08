@@ -140,20 +140,6 @@ class PackenUiButton extends Component {
     }
   }
 
-  getShapeDimensions = e => {
-    this.setState({
-      shapeHeight: Math.floor(e.height),
-      shapeWidth: Math.floor(e.width)
-    }, this.checkStyles);
-  }
-
-  getIconDimensions = e => {
-    this.setState({
-      iconHeight: Math.floor(e.height),
-      iconWidth: Math.floor(e.width)
-    }, this.checkStyles);
-  }
-
   executeCallback = () => {
     this.props.callback();
   }
@@ -195,7 +181,7 @@ class PackenUiButton extends Component {
 
     if (this.state.type === "icon") {
       content = this.getIcon();
-    } else {
+    } else if (this.state.type === "regular") {
       content = (
         <>
           {this.state.icon && this.state.icon.position === "left" ? this.getIcon() : null}
