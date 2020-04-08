@@ -56,3 +56,4 @@ __snapshots__
 # Bundle artifact
 *.jsbundle
 unit
+coverage

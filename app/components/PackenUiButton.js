@@ -21,7 +21,8 @@ class PackenUiButton extends Component {
       shapeWidth: 0,
       iconHeight: 0,
       iconWidth: 0,
-      styles: this.getStyles(0, 0, 0, 0)
+      styles: this.getStyles(0, 0, 0, 0),
+      children: props.children
     }
   }
 
@@ -30,23 +31,41 @@ class PackenUiButton extends Component {
   }
 
   getStyles = (shapeHeight, shapeWidth, iconHeight, iconWidth) => {
+    /* console.log("------------------");
+    console.log(shapeHeight, shapeWidth, iconHeight, iconWidth);
+    console.log("------------------"); */
+    let type, size, level, icon, isDisabled;
+    if (this.state) {
+      type = this.state.type;
+      size = this.state.size;
+      level = this.state.level;
+      icon = this.state.icon;
+      isDisabled = this.state.isDisabled;
+    } else {
+      type = this.props.type;
+      size = this.props.size;
+      level = this.props.level;
+      icon = this.props.icon;
+      isDisabled = this.props.isDisabled;
+    }
+
     let styles = {
       shape: {
         ...ButtonStyles.base.shape,
-        ...ButtonStyles[this.props.type][this.props.size].shape,
-        ...ButtonStyles[this.props.level].shape
+        ...ButtonStyles[type][size].shape,
+        ...ButtonStyles[level].shape
       },
       content: {
         position: "relative"
       },
       icon: {
         ...ButtonStyles.base.icon,
-        ...ButtonStyles[this.props.type][this.props.size].icon,
-        ...ButtonStyles[this.props.level].icon
+        ...ButtonStyles[type][size].icon,
+        ...ButtonStyles[level].icon
       }
     };
 
-    switch (this.props.type) {
+    switch (type) {
       case "icon":
         styles = {
           ...styles,
@@ -62,21 +81,21 @@ class PackenUiButton extends Component {
           ...styles,
           label: {
             ...ButtonStyles.base.label,
-            ...ButtonStyles[this.props.type][this.props.size].label,
-            ...ButtonStyles[this.props.level].label
+            ...ButtonStyles[type][size].label,
+            ...ButtonStyles[level].label
           },
           iconWrapper: {
             position: "absolute",
             top: (shapeHeight/2) - (iconHeight/2),
-            right: this.props.icon ? this.props.icon.position === "left" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0,
-            left: this.props.icon ? this.props.icon.position === "right" ? "auto" : -(ButtonStyles[this.props.type][this.props.size].label.marginHorizontal + (iconWidth/2)) : 0
+            right: icon ? icon.position === "left" ? "auto" : -(ButtonStyles[type][size].label.marginHorizontal + (iconWidth/2)) : 0,
+            left: icon ? icon.position === "right" ? "auto" : -(ButtonStyles[type][size].label.marginHorizontal + (iconWidth/2)) : 0
           }
         };
         break;
     }
 
     /* Custom styles depending on the level */
-    switch (this.props.level) {
+    switch (level) {
       case "secondary":
         styles.shape = {
           ...styles.shape,
@@ -88,7 +107,7 @@ class PackenUiButton extends Component {
     }
 
     /* Custom styles for isDisabled states */
-    if (this.props.isDisabled) {
+    if (isDisabled) {
       styles.shape.backgroundColor = Color.base.disabled;
       styles.icon.color = Color.base.white;
 
@@ -100,7 +119,7 @@ class PackenUiButton extends Component {
         styles.shape.borderWidth = 0;
       }
 
-      if (this.props.level === "ghost") {
+      if (level === "ghost") {
         styles.shape.backgroundColor = Color.base.transparent;
         styles.icon.color = Color.base.disabled_alt;
 
@@ -113,11 +132,26 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  checkStyles = () => {
+    this.setState({
+      styles: this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)
+    });
+  }
+
+  updateState = () => {
+    this.setState({
+      type: this.props.type,
+      level: this.props.level,
+      size: this.props.size,
+      icon: this.getInitialIcon(),
+      isDisabled: this.props.isDisabled,
+      children: this.props.children
+    }, this.checkStyles);
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.shapeHeight !== this.state.shapeHeight || prevState.iconHeight !== this.state.iconHeight || prevState.iconWidth !== this.state.iconWidth) {
-      this.setState({
-        styles: this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)
-      });
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -125,14 +159,14 @@ class PackenUiButton extends Component {
     this.setState({
       shapeHeight: Math.floor(e.height),
       shapeWidth: Math.floor(e.width)
-    });
+    }, this.checkStyles);
   }
 
   getIconDimensions = e => {
     this.setState({
       iconHeight: Math.floor(e.height),
       iconWidth: Math.floor(e.width)
-    });
+    }, this.checkStyles);
   }
 
   executeCallback = () => {
@@ -169,11 +203,11 @@ class PackenUiButton extends Component {
         <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
           <View style={{ ...this.state.styles.shape, ...this.props.style }}>
             <View style={this.state.styles.shape__content} onLayout={e => { this.getShapeDimensions(e.nativeEvent.layout); }}>
-              <PackenUiText style={this.state.styles.label}>{this.props.children}</PackenUiText>
+              <PackenUiText style={this.state.styles.label}>{this.state.children}</PackenUiText>
               {
-                this.props.icon ? (
+                this.state.icon ? (
                   <View style={this.state.styles.iconWrapper} onLayout={e => { this.getIconDimensions(e.nativeEvent.layout); }}>
-                    <Icon name={this.props.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
+                    <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
                   </View>
                 ) : null
               }
