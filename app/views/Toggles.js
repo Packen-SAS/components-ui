@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import Spacing from "../styles/abstracts/spacing";
 
@@ -22,7 +22,7 @@ class Toggles extends Component {
   render() {
     return (
       <Section title="Toggles">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <View style={{marginBottom: Spacing[2]}}>
             <PackenUiToggle onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggleHandler}/>
           </View>

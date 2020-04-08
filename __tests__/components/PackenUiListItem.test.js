@@ -6,7 +6,6 @@ import PackenUiListItem from "../../app/components/PackenUiListItem";
 import PackenUiText from "../../app/components/PackenUiText";
 
 import Colors from "../../app/styles/abstracts/colors";
-import ListStyles from "../../app/styles/components/PackenUiList";
 import { genKey, arraysEqual } from "../../app/utils/index";
 
 describe("<PackenUiListItem/>", () => {
@@ -771,7 +770,7 @@ describe("<PackenUiListItem/>", () => {
       };
       const returnedStyles = renderInstance.getActiveStyles();
       
-      expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
     });
 
     it("returns default active styles it selection type is 'single' or 'multiple' and is not selected", () => {
@@ -785,7 +784,7 @@ describe("<PackenUiListItem/>", () => {
       };
       const returnedStyles = renderInstance.getActiveStyles();
       
-      expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
     });
 
     it("returns an empty focus styles object if selection type is 'radio' or 'checkbox'", () => {
@@ -810,7 +809,7 @@ describe("<PackenUiListItem/>", () => {
       };
       const returnedStyles = renderInstance.getFocusStyles();
       
-      expect(returnedStyles).toEqual({ ...ListStyles.box.state.active });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
     });
 
     it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is focused", () => {
@@ -825,7 +824,7 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.state.state = "focus";
       const returnedStyles = renderInstance.getFocusStyles();
       
-      expect(returnedStyles).toEqual({ ...ListStyles.box.state.focus });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.focus });
     });
 
     it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is not focused", () => {
@@ -840,7 +839,7 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.state.state = "default";
       const returnedStyles = renderInstance.getFocusStyles();
       
-      expect(returnedStyles).toEqual({ ...ListStyles.box.state.default });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
     });
 
     it("returns an empty disabled styles object if its state is not defined like so", () => {
@@ -867,11 +866,11 @@ describe("<PackenUiListItem/>", () => {
       
       expect(returnedStyles).toEqual({
         box: {
-          ...ListStyles.box.state.disabled
+          ...renderInstance.getStyles().box.state.disabled
         },
         content: {
           wrapper: {
-            ...ListStyles.content.wrapper.state.disabled
+            ...renderInstance.getStyles().content.wrapper.state.disabled
           }
         }
       });

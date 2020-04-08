@@ -2,7 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import ModalStyles from "../../app/styles/components/PackenUiModal";
 import PackenUiModal from "../../app/components/PackenUiModal";
 import PackenUiButton from "../../app/components/PackenUiButton";
 
@@ -41,7 +40,7 @@ describe("<PackenUiModal/>", () => {
     renderInstance = render.instance();
 
     renderInstance.setState({
-      backdropStyles: { ...ModalStyles.backdrop.base },
+      backdropStyles: { ...renderInstance.getStyles().backdrop.base },
       dimensions: {
         gallery: {
           height: 0,
@@ -137,7 +136,7 @@ describe("<PackenUiModal/>", () => {
       });
       const returnedStyles = renderInstance.getContentStyles();
 
-      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.banner.small });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().content.base, ...renderInstance.getStyles().content.banner.small });
     });
 
     it("returns custom content styles if set so", () => {
@@ -147,7 +146,7 @@ describe("<PackenUiModal/>", () => {
       });
       const returnedStyles = renderInstance.getContentStyles();
 
-      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.custom });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().content.base, ...renderInstance.getStyles().content.custom });
     });
 
     it("returns correct content styles if there's no banner", () => {
@@ -158,7 +157,7 @@ describe("<PackenUiModal/>", () => {
       };
       const returnedStyles = renderInstance.getContentStyles();
 
-      expect(returnedStyles).toEqual({ ...ModalStyles.content.base, ...ModalStyles.content.default });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().content.base, ...renderInstance.getStyles().content.default });
     });
 
     it("returns correct text styles if there's a banner", () => {
@@ -169,14 +168,14 @@ describe("<PackenUiModal/>", () => {
       });
       const returnedStyles = renderInstance.getTextStyles();
 
-      expect(returnedStyles).toEqual({ ...ModalStyles.text.banner.default });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().text.banner.default });
     });
 
     it("returns correct text styles if there's no banner", () => {
       renderInstance.props = {};
       const returnedStyles = renderInstance.getTextStyles();
 
-      expect(returnedStyles).toEqual({ ...ModalStyles.text.default });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().text.default });
     });
 
     it("sets correct backdrop styles if it's open", () => {
@@ -188,7 +187,7 @@ describe("<PackenUiModal/>", () => {
 
       expect(renderInstance.state.backdropStyles).toEqual({
         ...renderInstance.state.backdropStyles,
-        ...ModalStyles.backdrop.open
+        ...renderInstance.getStyles().backdrop.open
       });
     });
 
@@ -201,7 +200,7 @@ describe("<PackenUiModal/>", () => {
 
       expect(renderInstance.state.backdropStyles).toEqual({
         ...renderInstance.state.backdropStyles,
-        ...ModalStyles.backdrop.closed
+        ...renderInstance.getStyles().backdrop.closed
       });
     });
   });

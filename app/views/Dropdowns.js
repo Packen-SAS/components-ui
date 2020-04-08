@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import Colors from "../styles/abstracts/colors";
 
@@ -1412,7 +1412,7 @@ class Dropdowns extends Component {
   render() {
     return (
       <Section title="Dropdowns">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <View style={{ marginBottom: 20 }}>
             <PackenUiDropdown
               size="medium"

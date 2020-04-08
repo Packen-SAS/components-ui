@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import PackenUiMapPin from "../components/PackenUiMapPin";
 
@@ -14,7 +14,7 @@ class Dividers extends Component {
   render() {
     return (
       <Section title="Map pins">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="icon"
             sub={{
@@ -23,7 +23,7 @@ class Dividers extends Component {
             dotPosition="top"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="icon"
             sub={{
@@ -32,7 +32,7 @@ class Dividers extends Component {
             dotPosition="right"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="icon"
             sub={{
@@ -41,7 +41,7 @@ class Dividers extends Component {
             dotPosition="bottom"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="icon"
             sub={{
@@ -50,7 +50,7 @@ class Dividers extends Component {
             dotPosition="left"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -65,7 +65,7 @@ class Dividers extends Component {
             dotPosition="bottom"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -80,7 +80,7 @@ class Dividers extends Component {
             dotPosition="left"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -95,7 +95,7 @@ class Dividers extends Component {
             dotPosition="top"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -110,7 +110,7 @@ class Dividers extends Component {
             dotPosition="bottom"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -125,7 +125,7 @@ class Dividers extends Component {
             dotPosition="right"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -140,7 +140,7 @@ class Dividers extends Component {
             dotPosition="top"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -155,7 +155,7 @@ class Dividers extends Component {
             dotPosition="top"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -170,7 +170,7 @@ class Dividers extends Component {
             dotPosition="left"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -185,7 +185,7 @@ class Dividers extends Component {
             dotPosition="bottom"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -200,7 +200,7 @@ class Dividers extends Component {
             dotPosition="top"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -215,7 +215,7 @@ class Dividers extends Component {
             dotPosition="right"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"
@@ -230,7 +230,7 @@ class Dividers extends Component {
             dotPosition="bottom"
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white_primary"
@@ -244,7 +244,7 @@ class Dividers extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white_primary"
@@ -258,7 +258,7 @@ class Dividers extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="primary"
@@ -268,7 +268,7 @@ class Dividers extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiMapPin
             type="info"
             theme="white"

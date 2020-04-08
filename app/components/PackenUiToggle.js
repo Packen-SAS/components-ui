@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 
-import ToggleStyles from "../styles/components/PackenUiToggle";
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+
 import PackenUiText from "../components/PackenUiText";
 
 class PackenUiToggle extends Component {
@@ -52,25 +54,25 @@ class PackenUiToggle extends Component {
       shape: {
         ...this.state.shape,
         disabled: {
-          ...ToggleStyles.shape.disabled
+          ...this.getStyles().shape.disabled
         }
       },
       dot: {
         ...this.state.dot,
         disabled: {
-          ...ToggleStyles.dot.disabled
+          ...this.getStyles().dot.disabled
         }
       },
       on: {
         ...this.state.on,
         disabled: {
-          ...ToggleStyles.label.on.disabled
+          ...this.getStyles().label.on.disabled
         }
       },
       off: {
         ...this.state.off,
         disabled: {
-          ...ToggleStyles.label.off.disabled
+          ...this.getStyles().label.off.disabled
         }
       }
     });
@@ -209,27 +211,27 @@ class PackenUiToggle extends Component {
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>
           <View style={{
-            ...ToggleStyles.shape.default,
-            ...ToggleStyles.shape[this.state.state],
+            ...this.getStyles().shape.default,
+            ...this.getStyles().shape[this.state.state],
             ...this.state.shape.disabled
           }} onLayout={e => { this.getShapeDimensions(e); }}>
             <View style={{
-              ...ToggleStyles.dot.default,
-              ...ToggleStyles.dot[this.state.state],
+              ...this.getStyles().dot.default,
+              ...this.getStyles().dot[this.state.state],
               ...this.state.dot.positioning,
               ...this.state.dot.disabled
             }} onLayout={e => { this.getDotDimensions(e); }}></View>
             <View onLayout={e => { this.getOnDimensions(e); }} style={this.state.on.positioning}>
               <PackenUiText style={{
-                ...ToggleStyles.label.default,
-                ...ToggleStyles.label.on[this.state.state],
+                ...this.getStyles().label.default,
+                ...this.getStyles().label.on[this.state.state],
                 ...this.state.on.disabled
               }}>{this.props.onLabel}</PackenUiText>
             </View>
             <View onLayout={e => { this.getOffDimensions(e); }} style={this.state.off.positioning}>
               <PackenUiText style={{
-                ...ToggleStyles.label.default,
-                ...ToggleStyles.label.off[this.state.state],
+                ...this.getStyles().label.default,
+                ...this.getStyles().label.off[this.state.state],
                 ...this.state.off.disabled
               }}>{this.props.offLabel}</PackenUiText>
             </View>
@@ -237,6 +239,76 @@ class PackenUiToggle extends Component {
         </TouchableWithoutFeedback>
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      shape: {
+        default: {
+          height: 24,
+          width: 56,
+          borderRadius: 100
+        },
+        active: {
+          backgroundColor: Colors.brand.primary.drk
+        },
+        inactive: {
+          backgroundColor: Colors.basic.independence.drk
+        },
+        disabled: {
+          backgroundColor: Colors.base.disabled_alt
+        }
+      },
+      dot: {
+        default: {
+          height: 20,
+          width: 20,
+          borderRadius: 50,
+          position: "absolute"
+        },
+        active: {
+          backgroundColor: Colors.brand.primary.snw
+        },
+        inactive: {
+          backgroundColor: Colors.basic.gray.lgt
+        },
+        disabled: {
+          backgroundColor: Colors.basic.white.dft
+        }
+      },
+      label: {
+        default: {
+          opacity: 0.6,
+          fontFamily: Typography.family.bold,
+          fontSize: Typography.size.tiny,
+          lineHeight: Typography.lineheight.tiny
+        },
+        on: {
+          active: {
+            color: Colors.brand.primary.ulgt
+          },
+          inactive: {
+            opacity: 0
+          },
+          disabled: {
+            opacity: 1,
+            color: Colors.basic.white.dft
+          }
+        },
+        off: {
+          active: {
+            opacity: 0
+          },
+          inactive: {
+            color: Colors.basic.gray.drk
+          },
+          disabled: {
+            opacity: 1,
+            color: Colors.basic.white.dft
+          }
+        }
+      }
+    };
   }
 }
 

@@ -4,7 +4,7 @@ import { View } from "react-native";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import PackenUiButton from "../components/PackenUiButton";
 import PackenUiText from "../components/PackenUiText";
@@ -44,7 +44,7 @@ class Progressbars extends Component {
   render() {
     return (
       <Section title="Progressbars">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
           >Determinate</PackenUiText>
@@ -82,7 +82,7 @@ class Progressbars extends Component {
             >Complete to 100%</PackenUiButton>
           </View>
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
           >Indeterminate</PackenUiText>

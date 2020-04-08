@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import PackenUiInfoAction from "../components/PackenUiInfoAction";
 
@@ -19,7 +19,7 @@ class Avatars extends Component {
   render() {
     return (
       <Section title="Info Actions">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiInfoAction
             theme="primary"
             title="Sólo un título"
@@ -35,7 +35,7 @@ class Avatars extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiInfoAction
             theme="primary"
             title="Subir documento"
@@ -52,7 +52,7 @@ class Avatars extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiInfoAction
             theme="success"
             title="Cara 1"
@@ -70,7 +70,7 @@ class Avatars extends Component {
             }}
           />
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiInfoAction
             theme="danger"
             title="Cara 2"

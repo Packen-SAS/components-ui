@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import ServiceStatusStyles from "../styles/components/PackenUiServiceStatus";
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+
 import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
 
 class PackenUiServiceStatus extends Component {
@@ -47,7 +49,7 @@ class PackenUiServiceStatus extends Component {
 
   render() {
     return (
-      <View style={ServiceStatusStyles.wrapper}>
+      <View style={this.getStyles().wrapper}>
         {
           this.state.steps.map((step, i) => (
             <PackenUiServiceStatusItem
@@ -62,6 +64,14 @@ class PackenUiServiceStatus extends Component {
         }
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      wrapper: {
+        flexDirection: "column"
+      }
+    };
   }
 }
 

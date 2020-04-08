@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Animated } from "react-native";
 
-import RadarStyles from "../styles/components/PackenUiRadar";
+import Colors from "../styles/abstracts/colors";
 
 class PackenUiRadar extends Component {
   constructor(props) {
@@ -87,18 +87,72 @@ class PackenUiRadar extends Component {
 
   render() {
     return (
-      <View style={RadarStyles.wrapper}>
+      <View style={this.getStyles().wrapper}>
         <Animated.View style={{
-          ...RadarStyles.shadow.base,
-          ...RadarStyles.shadow.theme[this.props.theme],
+          ...this.getStyles().shadow.base,
+          ...this.getStyles().shadow.theme[this.props.theme],
           ...this.state.transforms.shadow
         }}></Animated.View>
         <View style={{
-          ...RadarStyles.dot.base,
-          ...RadarStyles.dot.theme[this.props.theme]
+          ...this.getStyles().dot.base,
+          ...this.getStyles().dot.theme[this.props.theme]
         }}></View>
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      wrapper: {
+        height: 112,
+        width: 112,
+        borderRadius: 115,
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative"
+      },
+      shadow: {
+        base: {
+          height: 112,
+          width: 112,
+          borderRadius: 115,
+          position: "absolute",
+          top: 0,
+          left: 0
+        },
+        theme: {
+          search: {
+            backgroundColor: "rgba(32, 210, 146, 0.15)"
+          },
+          wait: {
+            backgroundColor: "rgba(185, 247, 255, 0.4)"
+          },
+          alert: {
+            backgroundColor: "rgba(254, 88, 96, 0.1)"
+          }
+        }
+      },
+      dot: {
+        base: {
+          height: 10,
+          width: 10,
+          borderRadius: 15,
+          borderWidth: 2,
+          borderColor: Colors.basic.white.dft
+        },
+        theme: {
+          search: {
+            backgroundColor: Colors.success.default
+          },
+          wait: {
+            backgroundColor: Colors.brand.secondary.dft
+          },
+          alert: {
+            backgroundColor: Colors.danger.default
+          }
+        }
+      }
+    };
   }
 }
 

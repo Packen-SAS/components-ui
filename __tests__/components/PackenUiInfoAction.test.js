@@ -86,7 +86,7 @@ describe("<PackenUiInfoAction/>", () => {
 
   describe("styling", () => {
     it("returns a styles object", () => {
-      const returnedStyles = renderInstance.createStyles();
+      const returnedStyles = renderInstance.getStyles();
 
       expect(returnedStyles).toBeDefined();
     });

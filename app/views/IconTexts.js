@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "../components/PackenUiText";
@@ -19,7 +19,7 @@ class IconTexts extends Component {
   render() {
     return (
       <Section title="Icon Texts">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             preset="p2"
             touchable={{
@@ -35,7 +35,7 @@ class IconTexts extends Component {
             }}
           >This triggers an internal callback</PackenUiText>
         </View>
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText
             preset="p2"
             icon={{

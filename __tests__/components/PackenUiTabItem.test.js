@@ -2,8 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import TabsStyles from "../../app/styles/components/PackenUiTabs";
-
 import PackenUiTabItem from "../../app/components/PackenUiTabItem";
 
 describe("<PackenUiTabItem/>", () => {
@@ -47,15 +45,15 @@ describe("<PackenUiTabItem/>", () => {
         ...renderInstance.state.itemStyles,
         shape: {
           ...renderInstance.state.itemStyles.shape,
-          ...TabsStyles.item.focus.shape
+          ...renderInstance.getStyles().item.focus.shape
         },
         label: {
           ...renderInstance.state.itemStyles.label,
-          ...TabsStyles.item.focus.label
+          ...renderInstance.getStyles().item.focus.label
         },
         icon: {
           ...renderInstance.state.itemStyles.icon,
-          ...TabsStyles.item.focus.icon
+          ...renderInstance.getStyles().item.focus.icon
         }
       });
     });
@@ -93,16 +91,16 @@ describe("<PackenUiTabItem/>", () => {
 
       expect(returnedStyles).toEqual({
         shape: {
-          ...TabsStyles.item.base.shape,
-          ...TabsStyles.item.default.shape
+          ...renderInstance.getStyles().item.base.shape,
+          ...renderInstance.getStyles().item.default.shape
         },
         label: {
-          ...TabsStyles.item.base.label,
-          ...TabsStyles.item.default.label
+          ...renderInstance.getStyles().item.base.label,
+          ...renderInstance.getStyles().item.default.label
         },
         icon: {
-          ...TabsStyles.item.base.icon,
-          ...TabsStyles.item.default.icon
+          ...renderInstance.getStyles().item.base.icon,
+          ...renderInstance.getStyles().item.default.icon
         }
       });
     });
@@ -128,9 +126,9 @@ describe("<PackenUiTabItem/>", () => {
     it("sets active styles", () => {
       const returnedStyles = renderInstance.setActiveStyles();
 
-      expect(returnedStyles.shape).toEqual(TabsStyles.item.active.shape);
-      expect(returnedStyles.label).toEqual(TabsStyles.item.active.label);
-      expect(returnedStyles.icon).toEqual(TabsStyles.item.active.icon);
+      expect(returnedStyles.shape).toEqual(renderInstance.getStyles().item.active.shape);
+      expect(returnedStyles.label).toEqual(renderInstance.getStyles().item.active.label);
+      expect(returnedStyles.icon).toEqual(renderInstance.getStyles().item.active.icon);
     });
 
     it("sets active styles if indexes match", () => {
@@ -148,16 +146,16 @@ describe("<PackenUiTabItem/>", () => {
 
       expect(renderInstance.state.itemStyles).toEqual({
         shape: {
-          ...TabsStyles.item.base.shape,
-          ...TabsStyles.item.default.shape
+          ...renderInstance.getStyles().item.base.shape,
+          ...renderInstance.getStyles().item.default.shape
         },
         label: {
-          ...TabsStyles.item.base.label,
-          ...TabsStyles.item.default.label
+          ...renderInstance.getStyles().item.base.label,
+          ...renderInstance.getStyles().item.default.label
         },
         icon: {
-          ...TabsStyles.item.base.icon,
-          ...TabsStyles.item.default.icon
+          ...renderInstance.getStyles().item.base.icon,
+          ...renderInstance.getStyles().item.default.icon
         }
       });
     });

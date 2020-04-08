@@ -2,7 +2,6 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import * as DividerStyles from "../../app/styles/components/PackenUiDivider";
 import PackenUiDivider from "../../app/components/PackenUiDivider";
 
 describe("<PackenUiDivider/>", () => {
@@ -27,9 +26,9 @@ describe("<PackenUiDivider/>", () => {
       expect(render.props().style.height).toBe(1);
       expect(render.props().style.marginTop).toBe(10);
       expect(render.props().style.marginBottom).toBe(10);
-      expect(render.props().style.width).toBe(DividerStyles.light.width);
-      expect(render.props().style.alignItems).toBe(DividerStyles.light.alignItems);
-      expect(render.props().style.backgroundColor).toBe(DividerStyles.light.backgroundColor);
+      expect(render.props().style.width).toBe(renderInstance.getStyles().base.width);
+      expect(render.props().style.alignItems).toBe(renderInstance.getStyles().base.alignItems);
+      expect(render.props().style.backgroundColor).toBe(renderInstance.getStyles().type.light.backgroundColor);
     });
 
     it("sets correct styles if no margins are provided via props", () => {

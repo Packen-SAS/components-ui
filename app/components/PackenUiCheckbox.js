@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 
-import CheckboxStyles from "../styles/components/PackenUiCheckbox";
+import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
 
 import PackenUiCheckboxControl from "./PackenUiCheckboxControl";
 
@@ -57,7 +58,7 @@ class PackenUiCheckbox extends Component {
   render() {
     return (
       <View
-        style={CheckboxStyles.wrapper.layout[this.props.layout]}
+        style={this.getStyles().wrapper.layout[this.props.layout]}
         pointerEvents={this.props.layout === "dropdown" ? "none" : "auto"}
       >
         {
@@ -65,7 +66,7 @@ class PackenUiCheckbox extends Component {
             <View
               key={i}
               pointerEvents={item.isDisabled ? "none" : "auto"}
-              style={CheckboxStyles.content.layout[this.props.layout]}
+              style={this.getStyles().content.layout[this.props.layout]}
             >
               <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
                 <View style={{ alignSelf: "flex-start" }}>
@@ -83,6 +84,42 @@ class PackenUiCheckbox extends Component {
         }
       </View>
     );
+  }
+
+  getStyles = () => {
+    return {
+      wrapper: {
+        layout: {
+          column: {
+            flexDirection: "column"
+          },
+          row: {
+            flexWrap: "wrap",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start"
+          },
+          dropdown: {
+            flexDirection: "column"
+          }
+        }
+      },
+      content: {
+        layout: {
+          column: {
+            marginBottom: 10
+          },
+          row: {
+            marginRight: 15,
+            marginBottom: 10
+          },
+          dropdown: {
+            marginRight: 0,
+            marginBottom: 0
+          }
+        }
+      }
+    };
   }
 }
 

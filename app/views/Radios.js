@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
-import SectionStyles from "../styles/components/Section";
+
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
@@ -31,7 +31,7 @@ class Radios extends Component {
   render() {
     return (
       <Section title="Radios">
-        <View style={SectionStyles.section__content}>
+        <View style={{ marginTop: 20 }}>
           <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
           <PackenUiRadio layout="column" items={[
             {
