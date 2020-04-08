@@ -4,6 +4,7 @@ import { shallow } from "enzyme";
 
 import Colors from "../../app/styles/abstracts/colors";
 import PackenUiButton from "../../app/components/PackenUiButton";
+import { render } from "react-dom";
 
 describe("<PackenUiButton/>", () => {
   let renderRegular, renderIcon, renderRegularInstance, renderIconInstance;
@@ -36,10 +37,6 @@ describe("<PackenUiButton/>", () => {
       size: "small",
       icon: undefined,
       isDisabled: false,
-      shapeHeight: 0,
-      shapeWidth: 0,
-      iconHeight: 0,
-      iconWidth: 0,
       styles: {
         shape: {},
         content: {},
@@ -50,27 +47,13 @@ describe("<PackenUiButton/>", () => {
       type: "icon",
       level: "primary",
       size: "small",
-      icon: { name: "arrow-right-circle" },
+      icon: { name: "arrow-right-circle", fontSize: 12, color: "#FFFFFF" },
       isDisabled: false,
-      shapeHeight: 0,
-      shapeWidth: 0,
-      iconHeight: 0,
-      iconWidth: 0,
       styles: {
         shape: {},
         content: {},
         icon: {}
       }
-    });
-  });
-
-  describe("rendering", () => {
-    it("renders a regular button correctly", () => {
-      expect(renderRegular).toBeDefined();
-    });
-
-    it("renders an icon button correctly", () => {
-      expect(renderIcon).toBeDefined();
     });
   });
 
@@ -91,23 +74,6 @@ describe("<PackenUiButton/>", () => {
       const returnedIcon = renderRegularInstance.getInitialIcon();
 
       expect(returnedIcon).toBe(undefined);
-    });
-  });
-
-  describe("getting dimensions", () => {
-    it("returns shape dimensions", () => {
-      renderRegularInstance.getShapeDimensions({height: 100, width: 100});
-      
-      expect(renderRegularInstance.state.shapeHeight).toBe(100);
-      expect(renderRegularInstance.state.shapeWidth).toBe(100);
-    });
-
-    it("returns icon dimensions", () => {
-      renderRegularInstance.setState({ icon: { name: "arrow-right", position: "right" } });
-      renderRegularInstance.getIconDimensions({height: 10, width: 10});
-      
-      expect(renderRegularInstance.state.iconHeight).toBe(10);
-      expect(renderRegularInstance.state.iconWidth).toBe(10);
     });
   });
 
@@ -141,80 +107,20 @@ describe("<PackenUiButton/>", () => {
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
     });
 
-    it("updates styles after onLayout changes", () => {
-      const prevStyles = renderRegularInstance.styles;
-      const prevState = {
-        shapeHeight: 0,
-        iconHeight: 0,
-        iconWidth: 0
-      };
-      renderRegularInstance.setState({
-        shapeHeight: 1,
-        iconHeight: 1,
-        iconWidth: 1
-      });
-
-      renderRegularInstance.componentDidUpdate(null, prevState, null);
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { test: "Test 1" };
+      renderRegular.setProps({ test: "Test 2" });
+      const spyUpdateState = jest.spyOn(renderRegularInstance, "updateState");
+      renderRegularInstance.componentDidUpdate(prevProps, null, null);
       
-      expect(renderRegularInstance.state.styles).not.toEqual(prevStyles);
-    });
-
-    /* it("executes press events callbacks", () => {
-      renderRegularInstance.executeCallback = jest.fn();
-      renderRegularInstance.pressInHandler = jest.fn();
-      renderRegularInstance.pressOutHandler = jest.fn();
-      
-      renderRegular.props().children.props.onPressIn();
-      expect(renderRegularInstance.pressInHandler).toHaveBeenCalled();
-
-      renderRegular.props().children.props.onPressOut();
-      expect(renderRegularInstance.pressOutHandler).toHaveBeenCalled();
-
-      renderRegular.props().children.props.onPress();
-      expect(renderRegularInstance.executeCallback).toHaveBeenCalled();
-    }); */
-
-    it("executes onLayout event callback for shape", () => {
-      renderRegularInstance.getShapeDimensions = jest.fn();
-      renderRegular.props().children.props.children.props.children.props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
-
-      expect(renderRegularInstance.getShapeDimensions).toHaveBeenCalledWith({
-        width: 10,
-        height: 10
-      });
-    });
-
-    it("executes onLayout event callback for icon", () => {
-      renderRegular.setProps({
-        icon: { name: "arrow-right", position: "right" }
-      });
-      renderRegularInstance.getIconDimensions = jest.fn();
-      renderRegular.props().children.props.children.props.children.props.children[1].props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
-
-      expect(renderRegularInstance.getIconDimensions).toHaveBeenCalledWith({
-        width: 10,
-        height: 10
-      });
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
     });
   });
 
   describe("styling", () => {
     it("returns current styles", () => {
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      const returnedStyles = renderRegularInstance.getStyles();
       
       expect(returnedStyles).toBeDefined();
     });
@@ -223,19 +129,24 @@ describe("<PackenUiButton/>", () => {
       renderRegular.setProps({
         isDisabled: true
       });
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      const returnedStyles = renderRegularInstance.getStyles();
 
       expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.disabled);
       expect(returnedStyles.icon.color).toBe(Colors.base.white);
     });
 
     it("sets correct styles if it's disabled, a ghost, and has no label", () => {
-      renderRegular.setProps({
+      renderRegularInstance.setState({
         isDisabled: true,
         level: "ghost",
-        type: "icon"
+        type: "icon",
+        icon: {
+          name: "check",
+          fontSize: 12,
+          color: "#FFFFFF"
+        }
       });
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      const returnedStyles = renderRegularInstance.getStyles();
 
       expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
       expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
@@ -247,7 +158,7 @@ describe("<PackenUiButton/>", () => {
         level: "ghost",
         type: "regular"
       });
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      const returnedStyles = renderRegularInstance.getStyles();
 
       expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
       expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
@@ -260,23 +171,9 @@ describe("<PackenUiButton/>", () => {
         level: "secondary",
         type: "regular"
       });
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
+      const returnedStyles = renderRegularInstance.getStyles();
 
       expect(returnedStyles.shape.borderWidth).toBe(0);
-    });
-
-    it("sets correct 'iconWrapper' styles if an icon with position 'left' is passed", () => {
-      renderRegular.setProps({
-        isDisabled: false,
-        level: "primary",
-        type: "regular",
-        size: "medium",
-        icon: { name: "arrow-right", position: "left" }
-      });
-      const returnedStyles = renderRegularInstance.getStyles(0, 0, 0, 0);
-
-      expect(returnedStyles.iconWrapper.right).toBe("auto");
-      expect(returnedStyles.iconWrapper.left).toBe(-12);
     });
 
     it("disables pointer events if set so via props", () => {
@@ -293,6 +190,68 @@ describe("<PackenUiButton/>", () => {
       });
 
       expect(renderRegular.props().pointerEvents).toBe("auto");
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders a regular button correctly", () => {
+      expect(renderRegular).toBeDefined();
+    });
+
+    it("renders a regular button with an icon to the left correctly", () => {
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          position: "left",
+          fontSize: 12,
+          color: "#FFFFFF"
+        }
+      });
+      expect(renderRegular).toBeDefined();
+    });
+
+    it("renders an icon button correctly", () => {
+      expect(renderIcon).toBeDefined();
+    });
+
+    it("returns the icon element if provided", () => {
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          fontSize: 12,
+          color: "#FFFFFF"
+        }
+      });
+      const returnedElement = renderRegularInstance.getIcon();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns the main content if type is 'icon'", () => {
+      renderRegularInstance.setState({
+        type: "icon"
+      });
+      const returnedElement = renderRegularInstance.getContent();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns the main content if type is 'regular'", () => {
+      renderRegularInstance.setState({
+        type: "regular"
+      });
+      const returnedElement = renderRegularInstance.getContent();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns null as the main content if type is not defined", () => {
+      renderRegularInstance.setState({
+        type: undefined
+      });
+      const returnedElement = renderRegularInstance.getContent();
+
+      expect(returnedElement).toBe(null);
     });
   });
 });

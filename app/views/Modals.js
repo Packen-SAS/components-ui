@@ -135,7 +135,7 @@ class Modals extends Component {
                     textAlign: "center"
                   }}
                 >3006789056</PackenUiText>
-                <View style={{ alignItems: "center" }}>
+                <View style={{ alignItems: "center", paddingHorizontal: 25 }}>
                   <PackenUiButton
                     type="regular"
                     level="ghost"
