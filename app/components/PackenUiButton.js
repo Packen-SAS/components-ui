@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableWithoutFeedback, View } from "react-native"
+import { TouchableWithoutFeedback, View, Animated } from "react-native"
 
 import Icon from "react-native-vector-icons/dist/Feather";
 
@@ -17,13 +17,14 @@ class PackenUiButton extends Component {
       size: props.size,
       icon: this.getInitialIcon(),
       isDisabled: props.isDisabled,
+      nonTouchable: props.nonTouchable,
       styles: this.getStyles(),
       children: props.children
     }
   }
 
   getInitialIcon = () => {
-    return this.props.icon ? this.props.icon : undefined
+    return this.props.icon ? this.props.icon : undefined;
   }
 
   getStyles = () => {
@@ -49,11 +50,7 @@ class PackenUiButton extends Component {
         ...this.createStyles().shape.level[level]
       },
       shapeContent: {
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        flex: 1,
-        width: "100%"
+        ...this.createStyles().shapeContent
       },
       icon: {
         ...this.createStyles().icon.level[level],
@@ -123,6 +120,17 @@ class PackenUiButton extends Component {
     });
   }
 
+  checkIconAnimState = () => {
+    if (this.state.icon && this.state.icon.anim) {
+      const { state, controller } = this.state.icon.anim;
+      if (state === "done") {
+        controller.stop();
+      } else {
+        controller.start();
+      }
+    }
+  }
+
   updateState = () => {
     this.setState({
       type: this.props.type,
@@ -130,8 +138,12 @@ class PackenUiButton extends Component {
       size: this.props.size,
       icon: this.getInitialIcon(),
       isDisabled: this.props.isDisabled,
+      nonTouchable: this.props.nonTouchable,
       children: this.props.children
-    }, this.checkStyles);
+    }, () => {
+      this.checkStyles();
+      this.checkIconAnimState();
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -169,11 +181,21 @@ class PackenUiButton extends Component {
   }
 
   getIcon = () => {
-    return (
-      <View style={this.state.styles.iconWrapper}>
+    let icon = (
+      <View style={this.state.icon.styles}>
         <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
       </View>
     );
+
+    if (this.state.icon.anim) {
+      icon = (
+        <Animated.View style={this.state.icon.styles[this.state.icon.anim.state]}>
+          <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
+        </Animated.View>
+      );
+    }
+
+    return icon;
   }
 
   getContent = () => {
@@ -196,7 +218,7 @@ class PackenUiButton extends Component {
 
   render() {
     return (
-      <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
+      <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
           <View style={{ ...this.state.styles.shape, ...this.props.style }}>
             <View style={this.state.styles.shapeContent}>
@@ -299,6 +321,13 @@ class PackenUiButton extends Component {
             }
           }
         }
+      },
+      shapeContent: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        width: "100%"
       },
       label: {
         base: {

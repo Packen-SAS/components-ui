@@ -4,7 +4,6 @@ import { shallow } from "enzyme";
 
 import Colors from "../../app/styles/abstracts/colors";
 import PackenUiButton from "../../app/components/PackenUiButton";
-import { render } from "react-dom";
 
 describe("<PackenUiButton/>", () => {
   let renderRegular, renderIcon, renderRegularInstance, renderIconInstance;
@@ -95,7 +94,7 @@ describe("<PackenUiButton/>", () => {
       const prevStyles = renderRegularInstance.state.styles;
       renderRegularInstance.setState({ level: "secondary" });
       renderRegularInstance.pressInHandler();
-      
+
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
       expect(renderRegularInstance.state.styles.shape.borderColor).toBe(Colors.secondary.focus);
     });
@@ -103,7 +102,7 @@ describe("<PackenUiButton/>", () => {
     it("changes styles while onPressOut", () => {
       const prevStyles = renderRegularInstance.state.styles;
       renderRegularInstance.pressOutHandler();
-      
+
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
     });
 
@@ -112,16 +111,50 @@ describe("<PackenUiButton/>", () => {
       renderRegular.setProps({ test: "Test 2" });
       const spyUpdateState = jest.spyOn(renderRegularInstance, "updateState");
       renderRegularInstance.componentDidUpdate(prevProps, null, null);
-      
+
       expect(spyUpdateState).toHaveBeenCalled();
       spyUpdateState.mockRestore();
+    });
+
+    it("starts the icon animation while checking its state", () => {
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          position: "left",
+          styles: { done: {}, loading: {} },
+          anim: {
+            state: "loading",
+            controller: { start: jest.fn() }
+          }
+        }
+      });
+      renderRegularInstance.checkIconAnimState();
+
+      expect(renderRegularInstance.state.icon.anim.controller.start).toHaveBeenCalled();
+    });
+
+    it("stops the icon animation while checking its state", () => {
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          position: "left",
+          styles: { done: {}, loading: {} },
+          anim: {
+            state: "done",
+            controller: { stop: jest.fn() }
+          }
+        }
+      });
+      renderRegularInstance.checkIconAnimState();
+
+      expect(renderRegularInstance.state.icon.anim.controller.stop).toHaveBeenCalled();
     });
   });
 
   describe("styling", () => {
     it("returns current styles", () => {
       const returnedStyles = renderRegularInstance.getStyles();
-      
+
       expect(returnedStyles).toBeDefined();
     });
 
