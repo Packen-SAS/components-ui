@@ -479,8 +479,7 @@ class PackenUiModal extends Component {
         }
       },
       btn: {
-        flexDirection: "row",
-        alignItems: "center",
+        alignItems: "stretch",
         justifyContent: "center"
       },
       gallery: {

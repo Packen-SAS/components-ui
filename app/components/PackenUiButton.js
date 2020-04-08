@@ -17,11 +17,7 @@ class PackenUiButton extends Component {
       size: props.size,
       icon: this.getInitialIcon(),
       isDisabled: props.isDisabled,
-      shapeHeight: 0,
-      shapeWidth: 0,
-      iconHeight: 0,
-      iconWidth: 0,
-      styles: this.getStyles(0, 0, 0, 0),
+      styles: this.getStyles(),
       children: props.children
     }
   }
@@ -30,11 +26,8 @@ class PackenUiButton extends Component {
     return this.props.icon ? this.props.icon : undefined
   }
 
-  getStyles = (shapeHeight, shapeWidth, iconHeight, iconWidth) => {
-    /* console.log("------------------");
-    console.log(shapeHeight, shapeWidth, iconHeight, iconWidth);
-    console.log("------------------"); */
-    let type, size, level, icon, isDisabled;
+  getStyles = () => {
+    let type, size, level, isDisabled;
     if (this.state) {
       type = this.state.type;
       size = this.state.size;
@@ -55,8 +48,12 @@ class PackenUiButton extends Component {
         ...this.createStyles().shape.type[type][size],
         ...this.createStyles().shape.level[level]
       },
-      content: {
-        position: "relative"
+      shapeContent: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        flex: 1,
+        width: "100%"
       },
       icon: {
         ...this.createStyles().icon.level[level],
@@ -67,12 +64,7 @@ class PackenUiButton extends Component {
     switch (type) {
       case "icon":
         styles = {
-          ...styles,
-          iconWrapper: {
-            position: "absolute",
-            top: (shapeHeight/2) - (iconHeight/2),
-            left: (shapeWidth/2) - (iconWidth/2)
-          }
+          ...styles
         };
         break;
       case "regular":
@@ -82,12 +74,6 @@ class PackenUiButton extends Component {
             ...this.createStyles().label.base,
             ...this.createStyles().label.level[level],
             ...this.createStyles().label.size[size]
-          },
-          iconWrapper: {
-            position: "absolute",
-            top: (shapeHeight/2) - (iconHeight/2),
-            right: icon ? icon.position === "left" ? "auto" : -(this.createStyles().label.size[size].marginHorizontal + (iconWidth/2)) : 0,
-            left: icon ? icon.position === "right" ? "auto" : -(this.createStyles().label.size[size].marginHorizontal + (iconWidth/2)) : 0
           }
         };
         break;
@@ -173,7 +159,7 @@ class PackenUiButton extends Component {
   }
 
   pressInHandler = () => {
-    let newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
+    let newStyles = { ...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth) }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
 
     /* Custom focus styles */
@@ -189,11 +175,37 @@ class PackenUiButton extends Component {
   }
 
   pressOutHandler = () => {
-    const newStyles = {...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)}
+    const newStyles = { ...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth) }
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     this.setState({
       styles: newStyles
     });
+  }
+
+  getIcon = () => {
+    return (
+      <View style={this.state.styles.iconWrapper}>
+        <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
+      </View>
+    );
+  }
+
+  getContent = () => {
+    let content = null;
+
+    if (this.state.type === "icon") {
+      content = this.getIcon();
+    } else {
+      content = (
+        <>
+          {this.state.icon && this.state.icon.position === "left" ? this.getIcon() : null}
+          <PackenUiText style={this.state.styles.label}>{this.state.children}</PackenUiText>
+          {this.state.icon && this.state.icon.position === "right" ? this.getIcon() : null}
+        </>
+      );
+    }
+
+    return content;
   }
 
   render() {
@@ -201,15 +213,8 @@ class PackenUiButton extends Component {
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
           <View style={{ ...this.state.styles.shape, ...this.props.style }}>
-            <View style={this.state.styles.shape__content} onLayout={e => { this.getShapeDimensions(e.nativeEvent.layout); }}>
-              <PackenUiText style={this.state.styles.label}>{this.state.children}</PackenUiText>
-              {
-                this.state.icon ? (
-                  <View style={this.state.styles.iconWrapper} onLayout={e => { this.getIconDimensions(e.nativeEvent.layout); }}>
-                    <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color}/>
-                  </View>
-                ) : null
-              }
+            <View style={this.state.styles.shapeContent}>
+              {this.getContent()}
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -224,9 +229,9 @@ class PackenUiButton extends Component {
         base: {
           position: "relative",
           flexDirection: "row",
-          alignSelf: "flex-start",
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          width: "100%"
         },
         size: {
           tiny: {
