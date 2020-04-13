@@ -11,11 +11,20 @@ import PackenUiText from "./PackenUiText";
 class PackenUiMapPin extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      main: { ...props.main },
+      theme: props.theme,
+      type: props.type,
+      dotPosition: props.dotPosition,
+      main: { ...props.main },
+      sub: { ...props.sub }
+    }
   }
 
   getLabel = () => {
-    if (this.props.main.label) {
-      return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.props.theme] }}>{this.props.main.label.toUpperCase() + " "}</PackenUiText>;
+    if (this.state.main.label) {
+      return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.state.theme] }}>{this.state.main.label.toUpperCase() + " "}</PackenUiText>;
     } else {
       return null;
     }
@@ -25,27 +34,27 @@ class PackenUiMapPin extends Component {
     return (
       <View style={this.getStyles().container}>
         {
-          this.props.type === "info" ? (
+          this.state.type === "info" ? (
             <View style={this.getStyles().inner}>
               {
-                this.props.sub && this.props.sub.position === "left" ? (
-                  <PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
+                this.state.sub && this.state.sub.position === "left" ? (
+                  <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
                 ) : null
               }
-              <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.props.theme] }}>
-                <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.props.theme] }}>
+              <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme] }}>
+                <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme] }}>
                   {this.getLabel()}
-                  {this.props.main.text}
+                  {this.state.main.text}
                 </PackenUiText>
               </View>
               {
-                this.props.sub && this.props.sub.position === "right" ? (
-                  <PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
+                this.state.sub && this.state.sub.position === "right" ? (
+                  <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
                 ) : null
               }
             </View>
           ) : (
-              <PackenUiMapPinSub type={this.props.type} theme={this.props.theme} label={this.props.sub.character} icon={this.props.sub.icon} dotPosition={this.props.dotPosition} />
+              <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
             )
         }
       </View>

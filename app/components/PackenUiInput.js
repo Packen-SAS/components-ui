@@ -18,6 +18,22 @@ class PackenUiInput extends Component {
     let initialState = {
       value: this.props.value ? this.props.value : "",
       state: this.props.disabled ? "disabled" : "default",
+      icon: { ...this.props.icon },
+      size: this.props.size,
+      theme: this.props.theme,
+      multiline: this.props.multiline,
+      name: this.props.name,
+      disabled: this.props.disabled,
+      nonEditable: this.props.nonEditable,
+      isDropdown: this.props.isDropdown,
+      isOpen: this.props.isOpen,
+      help: typeof this.props.help === "string" ? this.props.help : { ...this.props.help },
+      message: { ...this.props.message },
+      keyboardType: this.props.keyboardType,
+      isFocused: this.props.isFocused,
+      isPassword: this.props.isPassword,
+      label: this.props.label,
+      placeholder: this.props.placeholder,
       ref: null
     };
 
@@ -323,14 +339,34 @@ class PackenUiInput extends Component {
     return this.props.isPassword ? true : false;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.value !== this.props.value) {
-      this.setState({
-        value: this.props.value
-      });
-    }
-    if (prevProps.isFocused !== this.props.isFocused) {
+  updateState = () => {
+    this.setState({
+      value: this.props.value ? this.props.value : "",
+      state: this.props.disabled ? "disabled" : "default",
+      icon: { ...this.props.icon },
+      size: this.props.size,
+      theme: this.props.theme,
+      multiline: this.props.multiline,
+      name: this.props.name,
+      disabled: this.props.disabled,
+      nonEditable: this.props.nonEditable,
+      isDropdown: this.props.isDropdown,
+      isOpen: this.props.isOpen,
+      help: typeof this.props.help === "string" ? this.props.help : { ...this.props.help },
+      message: { ...this.props.message },
+      keyboardType: this.props.keyboardType,
+      isFocused: this.props.isFocused,
+      isPassword: this.props.isPassword,
+      label: this.props.label,
+      placeholder: this.props.placeholder
+    }, () => {
       this.checkFocus();
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -408,7 +444,7 @@ class PackenUiInput extends Component {
           },
           medium: {
             fontSize: Typography.size.small,
-            lineHeight:Typography.lineheight.medium
+            lineHeight: Typography.lineheight.medium
           },
           large: {
             fontSize: Typography.size.medium,

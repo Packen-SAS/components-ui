@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import Colors from "../styles/abstracts/colors";
-import Typography from "../styles/abstracts/typography";
-
 import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
 
 class PackenUiServiceStatus extends Component {
@@ -18,18 +15,18 @@ class PackenUiServiceStatus extends Component {
   }
 
   updateCurrentStep = () => {
-    for (let i = 0; i < this.props.currentStepIndex; i++) {
+    for (let i = 0; i < this.state.currentStepIndex; i++) {
       this.state.steps[i].isComplete = true;
       this.state.steps[i].isCurrent = false;
     }
-    for (let i = this.props.currentStepIndex; i < this.state.steps.length; i++) {
+    for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
       this.state.steps[i].isComplete = false;
       this.state.steps[i].isCurrent = false;
     }
     
     this.setState({
-      currentStepIndex: this.props.currentStepIndex
-    }, this.state.steps[this.props.currentStepIndex].callback);
+      currentStepIndex: this.state.currentStepIndex
+    }, this.state.steps[this.state.currentStepIndex].callback);
   }
 
   setItemsHeights = (i, height) => {
@@ -41,9 +38,18 @@ class PackenUiServiceStatus extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.currentStepIndex !== this.props.currentStepIndex) {
+  updateState = () => {
+    this.setState({
+      steps: [...this.props.steps],
+      currentStepIndex: this.props.currentStepIndex,
+    }, () => {
       this.updateCurrentStep();
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 

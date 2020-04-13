@@ -8,6 +8,7 @@ class PackenUiTabs extends Component {
     super(props);
 
     this.state = {
+      items: [...props.items],
       activeTabIndex: props.activeIndex
     }
   }
@@ -18,11 +19,24 @@ class PackenUiTabs extends Component {
     });
   }
 
+  updateState = () => {
+    this.setState({
+      items: [...this.props.items],
+      activeTabIndex: this.props.activeIndex
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
+  }
+
   render() {
     return (
       <View style={this.getStyles().container}>
         {
-          this.props.items.map((item, i) => (
+          this.state.items.map((item, i) => (
             <PackenUiTabItem
               key={`${item.label}-${i}`}
               activeTabIndex={this.state.activeTabIndex}

@@ -14,6 +14,7 @@ class PackenUiSelectionButtonsControl extends Component {
       data: { ...props.data },
       selected: props.selected,
       selection: props.selection,
+      onNewSelection: props.onNewSelection,
       state: this.getInitialState(),
       config: this.getConfig()
     }
@@ -54,7 +55,7 @@ class PackenUiSelectionButtonsControl extends Component {
   }
 
   newSelection = () => {
-    this.props.onNewSelection(this.state.data.value);
+    this.state.onNewSelection(this.state.data.value);
   }
 
   getImage = () => {
@@ -80,13 +81,13 @@ class PackenUiSelectionButtonsControl extends Component {
     let newState = { ...this.state };
 
     if (this.state.selection === "single") {
-      if (this.props.selected === this.state.data.value) {
+      if (this.state.selected === this.state.data.value) {
         newState.state = "active";
       } else {
         newState.state = "default";
       }
     } else {
-      if (this.props.selected.includes(this.state.data.value)) {
+      if (this.state.selected.includes(this.state.data.value)) {
         newState.state = "active";
       } else {
         newState.state = "default";
@@ -101,16 +102,24 @@ class PackenUiSelectionButtonsControl extends Component {
       }
     }
 
-    newState.selected = this.props.selected;
+    newState.selected = this.state.selected;
     this.setState(newState);
 
     return newState;
   }
 
   updateState = prevProps => {
-    if (prevProps.selected !== this.props.selected) {
-      this.checkIfActive();
-    }
+    this.setState({
+      type: this.props.type,
+      data: { ...this.props.data },
+      selected: this.props.selected,
+      selection: this.props.selection,
+      onNewSelection: this.props.onNewSelection
+    }, () => {
+      if (prevProps.selected !== this.props.selected) {
+        this.checkIfActive();
+      }
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

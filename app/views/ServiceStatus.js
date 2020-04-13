@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiButton from "../components/PackenUiButton";
 import PackenUiServiceStatus from "../components/PackenUiServiceStatus";
 

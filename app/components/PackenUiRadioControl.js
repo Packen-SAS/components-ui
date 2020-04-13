@@ -11,6 +11,11 @@ class PackenUiRadioControl extends Component {
     super(props);
 
     this.state = {
+      updateCheckedIndex: props.updateCheckedIndex,
+      selfIndex: props.selfIndex,
+      isDisabled: props.isDisabled,
+      checkedIndex: props.checkedIndex,
+      label: props.label,
       state: this.setInitialState()
     }
   }
@@ -29,12 +34,12 @@ class PackenUiRadioControl extends Component {
       state: "checked"
     });
 
-    this.props.updateCheckedIndex(this.props.selfIndex);
+    this.state.updateCheckedIndex(this.state.selfIndex);
   }
 
   checkIfDisabled = () => {
-    if (this.props.isDisabled) {
-      if (this.props.checkedIndex !== this.props.selfIndex) {
+    if (this.state.isDisabled) {
+      if (this.state.checkedIndex !== this.state.selfIndex) {
         this.setState({
           state: "default_disabled"
         });
@@ -49,7 +54,7 @@ class PackenUiRadioControl extends Component {
   }
 
   checkIfChecked = () => {
-    if (this.props.checkedIndex !== this.props.selfIndex) {
+    if (this.state.checkedIndex !== this.state.selfIndex) {
       this.setState({
         state: "default"
       });
@@ -60,19 +65,31 @@ class PackenUiRadioControl extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.checkedIndex !== this.props.checkedIndex) {
+  updateState = () => {
+    this.setState({
+      updateCheckedIndex: this.props.updateCheckedIndex,
+      selfIndex: this.props.selfIndex,
+      isDisabled: this.props.isDisabled,
+      checkedIndex: this.props.checkedIndex,
+      label: this.props.label
+    }, () => {
       this.checkIfChecked();
       this.checkIfDisabled();
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
   getLabel = () => {
     let label = null;
 
-    if (this.props.label) {
+    if (this.state.label) {
       label = (
-        <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label[this.state.state] }}>{this.props.label}</PackenUiText>
+        <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label[this.state.state] }}>{this.state.label}</PackenUiText>
       );
     }
 
@@ -81,7 +98,7 @@ class PackenUiRadioControl extends Component {
 
   render() {
     return (
-      <View pointerEvents={this.props.isDisabled ? "none" : "auto"}>
+      <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.onPressHandler}>
           <View style={this.getStyles().shape.base}>
             <View style={{ ...this.getStyles().control.base, ...this.getStyles().control[this.state.state] }}></View>

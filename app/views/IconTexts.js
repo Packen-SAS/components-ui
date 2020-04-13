@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import Section from "../components/Section";
-
 import Colors from "../styles/abstracts/colors";
+
+import Section from "../components/Section";
 
 import PackenUiText from "../components/PackenUiText";
 

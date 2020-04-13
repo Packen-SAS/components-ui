@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiTabs from "../components/PackenUiTabs";
 
 class Tabs extends Component {

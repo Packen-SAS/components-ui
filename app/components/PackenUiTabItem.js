@@ -13,6 +13,12 @@ class PackenUiTabItem extends Component {
     super(props);
 
     this.state = {
+      updateActiveTabIndex: props.updateActiveTabIndex,
+      selfIndex: props.selfIndex,
+      activeTabIndex: props.activeTabIndex,
+      callback: props.callback,
+      icon: props.icon,
+      label: props.label,
       itemStyles: this.getItemStyles()
     }
   }
@@ -41,8 +47,8 @@ class PackenUiTabItem extends Component {
 
   setActiveTab = () => {
     this.setActiveStyles();
-    this.props.updateActiveTabIndex(this.props.selfIndex);
-    this.props.callback();
+    this.state.updateActiveTabIndex(this.state.selfIndex);
+    this.state.callback();
   }
 
   setActiveStyles = () => {
@@ -68,7 +74,7 @@ class PackenUiTabItem extends Component {
   }
 
   checkIfActive = () => {
-    if (this.props.activeTabIndex === this.props.selfIndex) {
+    if (this.state.activeTabIndex === this.state.selfIndex) {
       this.setActiveStyles();
     } else {
       this.setState({
@@ -77,9 +83,24 @@ class PackenUiTabItem extends Component {
     }
   }
 
+  updateState = (prevProps) => {
+    this.setState({
+      updateActiveTabIndex: this.props.updateActiveTabIndex,
+      selfIndex: this.props.selfIndex,
+      activeTabIndex: this.props.activeTabIndex,
+      callback: this.props.callback,
+      icon: this.props.icon,
+      label: this.props.label
+    }, () => {
+      if (prevProps.activeTabIndex !== this.state.activeTabIndex) {
+        this.checkIfActive();
+      }
+    });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.activeTabIndex !== this.props.activeTabIndex) {
-      this.checkIfActive();
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState(prevProps);
     }
   }
 
@@ -111,14 +132,14 @@ class PackenUiTabItem extends Component {
   getIcon = () => {
     let icon = null;
 
-    if (this.props.icon) {
+    if (this.state.icon) {
       icon = (
         <View style={{ marginRight: 10 }}>
           {
-            this.props.icon === "»" ? (
+            this.state.icon === "»" ? (
               <PackenUiText style={this.state.itemStyles.icon}>»</PackenUiText>
             ) : (
-                <Icon name={this.props.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6} />
+                <Icon name={this.state.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6} />
               )
           }
         </View>
@@ -133,7 +154,7 @@ class PackenUiTabItem extends Component {
       <TouchableWithoutFeedback onPress={() => { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
         <View style={this.state.itemStyles.shape}>
           {this.getIcon()}
-          <PackenUiText style={this.state.itemStyles.label}>{this.props.label}</PackenUiText>
+          <PackenUiText style={this.state.itemStyles.label}>{this.state.label}</PackenUiText>
         </View>
       </TouchableWithoutFeedback>
     );

@@ -21,8 +21,8 @@ class PackenUiNotificationBanner extends Component {
   getIcon = () => {
     let icon = null;
 
-    if (this.props.icon) {
-      if (this.props.icon === "packen") {
+    if (this.state.icon) {
+      if (this.state.icon === "packen") {
         let src = null;
         switch (this.state.theme) {
           case "success":
@@ -50,7 +50,7 @@ class PackenUiNotificationBanner extends Component {
       } else {
         icon = (
           <Icon
-            name={this.props.icon}
+            name={this.state.icon}
             size={this.getStyles().icon.base.size}
             style={{ marginRight: this.getStyles().icon.base.marginRight }}
             color={this.getStyles().icon.theme[this.state.theme].type[this.state.type].color}
@@ -60,6 +60,19 @@ class PackenUiNotificationBanner extends Component {
     }
 
     return icon;
+  }
+
+  updateState = () => {
+    this.setState({
+      theme: this.props.theme,
+      type: this.props.type
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
   }
 
   render() {

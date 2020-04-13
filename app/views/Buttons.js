@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiButton from "../components/PackenUiButton";
 
 class Buttons extends Component {

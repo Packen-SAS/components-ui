@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiNotificationBanner from "../components/PackenUiNotificationBanner";
 
 class NotificationBanners extends Component {

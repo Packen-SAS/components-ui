@@ -8,8 +8,12 @@ class PackenUiList extends Component {
     super(props);
 
     this.state = {
+      items: [...props.items],
+      numShownRows: props.numShownRows,
+      config: { ...props.config },
+      toggleMenu: props.toggleMenu,
+      getFinalSelection: props.getFinalSelection,
       height: "100%",
-      items: [...this.props.items],
       selectedItems: [],
       currentRadiosState: {
         checkedValue: ""
@@ -23,10 +27,10 @@ class PackenUiList extends Component {
 
   getItemHeight = itemHeight => {
     let finalNumShownRows;
-    if (this.state.items.length < this.props.numShownRows) {
+    if (this.state.items.length < this.state.numShownRows) {
       finalNumShownRows = this.state.items.length;
     } else {
-      finalNumShownRows = this.props.numShownRows;
+      finalNumShownRows = this.state.numShownRows;
     }
 
     this.setState({
@@ -35,14 +39,14 @@ class PackenUiList extends Component {
   }
 
   updateSelectedItems = (itemValue, isSelected, payload) => {
-    switch (this.props.config.selectionType) {
+    switch (this.state.config.selectionType) {
       case "single":
       case "radio": {
         const newItems = [...this.state.items];
         newItems.forEach(item => {
           item.isSelected = false;
         });
-  
+
         const foundItem = newItems.find(item => item.value === itemValue);
         foundItem.isSelected = true;
 
@@ -60,9 +64,9 @@ class PackenUiList extends Component {
             });
           }
         }
-  
-        if (this.props.toggleMenu) {
-          this.props.toggleMenu();
+
+        if (this.state.toggleMenu) {
+          this.state.toggleMenu();
         } else {
           return false;
         }
@@ -73,10 +77,10 @@ class PackenUiList extends Component {
 
         const foundItem = newItems.find(item => item.value === itemValue);
         foundItem.isSelected = isSelected;
-  
+
         let newSelectedItems = newItems.filter(item => item.isSelected);
         newSelectedItems = newSelectedItems.map(item => item.value);
-  
+
         this.setState({
           items: newItems,
           selectedItems: newSelectedItems
@@ -105,7 +109,7 @@ class PackenUiList extends Component {
   renderItem = ({ item }) => {
     return (
       <PackenUiListItem
-        config={this.props.config}
+        config={this.state.config}
         mainContent={item}
         getItemHeight={this.getItemHeight}
         selectedItems={this.state.selectedItems}
@@ -116,11 +120,24 @@ class PackenUiList extends Component {
     );
   }
 
+  updateState = () => {
+    this.setState({
+      items: [...this.props.items],
+      numShownRows: this.props.numShownRows,
+      config: { ...this.props.config },
+      toggleMenu: this.props.toggleMenu,
+      getFinalSelection: this.props.getFinalSelection
+    });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
     if (prevState.selectedItems !== this.state.selectedItems) {
       /* Latest selected items can be used here */
-      if (this.props.getFinalSelection) {
-        this.props.getFinalSelection(this.state.selectedItems);
+      if (this.state.getFinalSelection) {
+        this.state.getFinalSelection(this.state.selectedItems);
         this.setState({
           currentCheckboxesState: {
             ...this.state.currentCheckboxesState,

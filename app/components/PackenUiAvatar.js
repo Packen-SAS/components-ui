@@ -72,7 +72,8 @@ class PackenUiAvatar extends Component {
   updateState = () => {
     this.setState({
       src: this.props.src,
-      size: this.props.size
+      size: this.props.size,
+      callback: this.props.callback
     });
   }
 

@@ -10,6 +10,7 @@ class PackenUiRadar extends Component {
     this.shadowAnim = null;
 
     this.state = {
+      theme: props.theme,
       animated: props.animated,
       isAnimating: this.getInitialAnimatingState(),
       transforms: {
@@ -62,7 +63,7 @@ class PackenUiRadar extends Component {
   }
 
   checkAnimationState = () => {
-    if (this.props.isAnimating) {
+    if (this.state.isAnimating) {
       this.startShadowAnimation();
     } else {
       this.stopShadowAnimation();
@@ -77,11 +78,19 @@ class PackenUiRadar extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.isAnimating !== this.props.isAnimating) {
+  updateState = () => {
+    this.setState({
+      theme: this.props.theme,
+      animated: this.props.animated,
+      isAnimating: this.getInitialAnimatingState()
+    }, () => {
       this.checkAnimationState();
-    } else {
-      return false;
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -90,12 +99,12 @@ class PackenUiRadar extends Component {
       <View style={this.getStyles().wrapper}>
         <Animated.View style={{
           ...this.getStyles().shadow.base,
-          ...this.getStyles().shadow.theme[this.props.theme],
+          ...this.getStyles().shadow.theme[this.state.theme],
           ...this.state.transforms.shadow
         }}></Animated.View>
         <View style={{
           ...this.getStyles().dot.base,
-          ...this.getStyles().dot.theme[this.props.theme]
+          ...this.getStyles().dot.theme[this.state.theme]
         }}></View>
       </View>
     );
