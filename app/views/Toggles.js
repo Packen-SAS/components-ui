@@ -16,7 +16,10 @@ class Toggles extends Component {
   toggleHandler = (name, newState) => {
     /* New state can be used here */
     /* console.log(name, newState); */
-    return newState;
+    return {
+      id: name,
+      value: newState
+    };
   }
   
   render() {

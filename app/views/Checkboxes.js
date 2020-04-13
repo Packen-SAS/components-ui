@@ -19,21 +19,25 @@ class Checkboxes extends Component {
       items: [
         {
           label: "This is checked",
+          value: "This is checked",
           isChecked: true,
           isDisabled: false
         },
         {
           label: "This is unchecked",
+          value: "This is unchecked",
           isChecked: false,
           isDisabled: false
         },
         {
           label: "This is both checked and disabled",
+          value: "This is both checked and disabled",
           isChecked: true,
           isDisabled: true
         },
         {
           label: "This is both unchecked and disabled",
+          value: "This is both unchecked and disabled",
           isChecked: false,
           isDisabled: true
         }
@@ -41,21 +45,25 @@ class Checkboxes extends Component {
       itemsRow: [
         {
           label: "This is checked",
+          value: "This is checked",
           isChecked: true,
           isDisabled: false
         },
         {
           label: "This is unchecked",
+          value: "This is unchecked",
           isChecked: false,
           isDisabled: false
         },
         {
           label: "This is both checked and disabled",
+          value: "This is both checked and disabled",
           isChecked: true,
           isDisabled: true
         },
         {
           label: "This is both unchecked and disabled",
+          value: "This is both unchecked and disabled",
           isChecked: false,
           isDisabled: true
         }
@@ -63,16 +71,13 @@ class Checkboxes extends Component {
     }
   }
 
-  handleNotify = newCheckedItems => {
+  handleNotify = (name, newCheckedItems) => {
     /* New checked items can be used here */
-    /* console.log(newCheckedItems); */
-    return newCheckedItems;
-  }
-
-  handleNotifyRow = newCheckedItems => {
-    /* New checked items can be used here */
-    /* console.log(newCheckedItems); */
-    return newCheckedItems;
+    /* console.log(name, newCheckedItems); */
+    return {
+      id: name,
+      value: newCheckedItems
+    };
   }
 
   render() {
@@ -85,6 +90,7 @@ class Checkboxes extends Component {
               layout="column"
               items={this.state.items}
               callback={this.handleNotify}
+              name="checkbox1"
             />
           </View>
           <PackenUiDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
@@ -93,7 +99,8 @@ class Checkboxes extends Component {
             <PackenUiCheckbox
               layout="row"
               items={this.state.itemsRow}
-              callback={this.handleNotifyRow}
+              callback={this.handleNotify}
+              name="checkbox2"
             />
           </View>
         </View>

@@ -14,12 +14,13 @@ describe("<Checkboxes/>", () => {
   });
 
   describe("triggering actions", () => {
-    it("executes handle functions", () => {
-      const res = render.instance().handleNotify("Test");
-      const res2 = render.instance().handleNotifyRow("Test 2");
+    it("executes handler function", () => {
+      const res = render.instance().handleNotify("checkbox1", "Test");
       
-      expect(res).toBe("Test");
-      expect(res2).toBe("Test 2");
+      expect(res).toEqual({
+        id: "checkbox1",
+        value: "Test"
+      });
     });
   });
 });

@@ -25,7 +25,7 @@ describe("<PackenUiRadio/>", () => {
           value: "This text is both checked and disabled",
           isDisabled: true
         }
-      ]} initialIndex={2}/>
+      ]} name="radios1" initialIndex={2}/>
     );
 
     renderRow = shallow(
@@ -45,7 +45,7 @@ describe("<PackenUiRadio/>", () => {
           value: "Some other text",
           isDisabled: false
         }
-      ]} initialIndex={1}/>
+      ]} name="radios2" initialIndex={1}/>
     );
     renderColumnInstance = renderColumn.instance();
 

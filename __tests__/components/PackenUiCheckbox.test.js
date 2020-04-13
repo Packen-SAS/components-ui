@@ -8,21 +8,25 @@ describe("<PackenUiCheckbox/>", () => {
   const items = [
     {
       label: "This is checked",
+      value: "This is checked",
       isChecked: true,
       isDisabled: false
     },
     {
       label: "This is unchecked",
+      value: "This is unchecked",
       isChecked: false,
       isDisabled: false
     },
     {
       label: "This is both checked and disabled",
+      value: "This is both checked and disabled",
       isChecked: true,
       isDisabled: true
     },
     {
       label: "This is both unchecked and disabled",
+      value: "This is both unchecked and disabled",
       isChecked: false,
       isDisabled: true
     }
@@ -38,6 +42,7 @@ describe("<PackenUiCheckbox/>", () => {
         layout="column"
         items={items}
         callback={mockCallback}
+        name="checkbox1"
       />
     );
     renderRow = shallow(
@@ -45,6 +50,7 @@ describe("<PackenUiCheckbox/>", () => {
         layout="row"
         items={items}
         callback={mockCallback}
+        name="checkbox2"
       />
     );
 
@@ -126,11 +132,12 @@ describe("<PackenUiCheckbox/>", () => {
 
   describe("triggering actions", () => {
     it("updates selected item index on press", () => {
-      renderColumnInstance.updateCheckedItems = jest.fn();
+      const spyUpdateCheckedItems = jest.spyOn(renderColumnInstance, "updateCheckedItems");
       renderColumnInstance.pressHandler(0);
       
       expect(renderColumnInstance.state.selectedIndex).toBe(0);
-      expect(renderColumnInstance.updateCheckedItems).toHaveBeenCalled();
+      expect(spyUpdateCheckedItems).toHaveBeenCalled();
+      spyUpdateCheckedItems.mockRestore();
     });
 
     it("executes onPress code", () => {

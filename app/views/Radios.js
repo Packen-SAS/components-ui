@@ -19,7 +19,10 @@ class Radios extends Component {
   handleNotify = (name, newSelectedItem) => {
     /* New checked item can be used here */
     /* console.log(name, newSelectedItem); */
-    return newSelectedItem;
+    return {
+      id: name,
+      value: newSelectedItem
+    };
   }
 
   render() {

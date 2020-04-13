@@ -15,6 +15,7 @@ describe("<PackenUiToggle/>", () => {
         offLabel="NO"
         isActive={true}
         toggleHandler={this.toggle_handler}
+        name="toggle1"
       />
     );
     renderInstance = render.instance();

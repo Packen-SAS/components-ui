@@ -17,7 +17,10 @@ describe("<Radios/>", () => {
     it("executes the handler function", () => {
       const res = render.instance().handleNotify("radios1", "Test");
       
-      expect(res).toBe("Test");
+      expect(res).toEqual({
+        id: "radios1",
+        value: "Test"
+      });
     });
   });
 });

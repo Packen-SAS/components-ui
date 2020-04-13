@@ -17,7 +17,10 @@ describe("<Toggles/>", () => {
     it("executes the toggle handler", () => {
       const res = render.instance().toggleHandler("toggle1", true);
 
-      expect(res).toBe(true);
+      expect(res).toEqual({
+        id: "toggle1",
+        value: true
+      });
     });
   });
 });
