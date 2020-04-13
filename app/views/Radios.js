@@ -16,15 +16,9 @@ class Radios extends Component {
     super(props);
   }
 
-  handleNotify = newSelectedItem => {
+  handleNotify = (name, newSelectedItem) => {
     /* New checked item can be used here */
-    /* console.log(newSelectedItem); */
-    return newSelectedItem;
-  }
-
-  handleNotifyRow = newSelectedItem => {
-    /* New checked item can be used here */
-    /* console.log(newSelectedItem); */
+    /* console.log(name, newSelectedItem); */
     return newSelectedItem;
   }
 
@@ -36,33 +30,39 @@ class Radios extends Component {
           <PackenUiRadio layout="column" items={[
             {
               label: "Place your text",
+              value: "Place your text",
               isDisabled: false
             },
             {
               label: "Different text",
+              value: "Different text",
               isDisabled: false
             },
             {
               label: "This text is both checked and disabled",
+              value: "This text is both checked and disabled",
               isDisabled: true
             }
-          ]} initialIndex={2} callback={this.handleNotify} />
+          ]} initialIndex={2} name="radios1" callback={this.handleNotify} />
           <PackenUiDivider size={1} type="light" margin={{ top: 15, bottom: 15 }} />
           <PackenUiText style={{ marginBottom: 5, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Row layout</PackenUiText>
           <PackenUiRadio layout="row" items={[
             {
               label: "Placeholder",
+              value: "Placeholder",
               isDisabled: false
             },
             {
               label: "This is checked",
+              value: "This is checked",
               isDisabled: false
             },
             {
               label: "Some other text",
+              value: "Some other text",
               isDisabled: false
             }
-          ]} initialIndex={1} callback={this.handleNotifyRow} />
+          ]} initialIndex={1} name="radios2" callback={this.handleNotify} />
         </View>
       </Section>
     );
