@@ -68,21 +68,21 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'active'", () => {
-      render.setProps({ toggleHandler: mockFunction });
+      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "active" });
       renderInstance.toggle();
 
       expect(renderInstance.state.state).toBe("inactive");
-      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("inactive");
+      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("toggle1", false);
     });
 
     it("toggles inner state if 'state' is 'inactive'", () => {
-      render.setProps({ toggleHandler: mockFunction });
+      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "inactive" });
       renderInstance.toggle();
 
       expect(renderInstance.state.state).toBe("active");
-      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("active");
+      expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("toggle1", true);
     });
 
     it("executes correct code on componentDidUpdate", () => {

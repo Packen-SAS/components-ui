@@ -195,7 +195,7 @@ class PackenUiToggle extends Component {
     this.setState({
       state: this.state.state === "active" ? "inactive" : "active"
     }, () => {
-      this.props.toggleHandler(this.state.state);
+      this.props.toggleHandler(this.props.name, this.state.state === "active" ? true : false);
     });
   }
 
