@@ -14,8 +14,19 @@ describe("<Dropdowns/>", () => {
   });
 
   describe("triggering actions", () => {
-    const res = render.instance().mockCallback();
+    it("executes the mock callback", () => {
+      const res = render.instance().mockCallback();
 
-    expect(res).toBe(true);
+      expect(res).toBe(true);
+    });
+
+    it("executes the change handler", () => {
+      const res = render.instance().changeHandler("dropdown1", ["Test"]);
+
+      expect(res).toEqual({
+        id: "dropdown1",
+        value: ["Test"]
+      });
+    });
   });
 });

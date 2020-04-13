@@ -10,6 +10,7 @@ import { genKey } from "../../app/utils";
 
 describe("<PackenUiDropdown/>", () => {
   let render, renderInstance;
+  const mockCallback = jest.fn();
   const list = {
     config: {
       size: "medium",
@@ -95,6 +96,8 @@ describe("<PackenUiDropdown/>", () => {
           nonEditable: true,
           help: "Help text"
         }}
+        name="dropdown1"
+        callback={mockCallback}
       />
     );
 
@@ -160,9 +163,12 @@ describe("<PackenUiDropdown/>", () => {
 
     it("sets selected items", () => {
       const items = ["Test", "Test 2"];
+      render.setProps({ name: "dropdown1" });
+      renderInstance.setState({ finalSelection: ["Test", "Test 2"] });
       renderInstance.getFinalSelection(items);
 
       expect(renderInstance.state.finalSelection).toEqual(items);
+      expect(renderInstance.props.callback).toHaveBeenCalledWith("dropdown1", items);
     });
 
     it("composes selected items as a single string", () => {

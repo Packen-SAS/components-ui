@@ -1409,6 +1409,15 @@ class Dropdowns extends Component {
 
   mockCallback = () => { return true; }
 
+  changeHandler = (name, newSelection) => {
+    /* New selection can be used here */
+    /* console.log(name, newSelection); */
+    return {
+      id: name,
+      value: newSelection
+    }
+  }
+
   render() {
     return (
       <Section title="Dropdowns">
@@ -1430,6 +1439,8 @@ class Dropdowns extends Component {
                 nonEditable: true,
                 help: "Help text"
               }}
+              name="dropdown1"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1448,6 +1459,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown2"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1469,6 +1482,8 @@ class Dropdowns extends Component {
                   icon: "info"
                 }
               }}
+              name="dropdown3"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1487,6 +1502,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown4"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1509,6 +1526,8 @@ class Dropdowns extends Component {
                   icon: "info"
                 }
               }}
+              name="dropdown5"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1527,6 +1546,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown6"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1545,6 +1566,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown7"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1567,6 +1590,8 @@ class Dropdowns extends Component {
                   icon: "info"
                 }
               }}
+              name="dropdown8"
+              callback={this.changeHandler}
             />
           </View>          
           <View style={{ marginBottom: 20 }}>
@@ -1584,6 +1609,8 @@ class Dropdowns extends Component {
                 theme: "primary",
                 nonEditable: true
               }}
+              name="dropdown9"
+              callback={this.changeHandler}
             />
           </View>          
           <View style={{ marginBottom: 20 }}>
@@ -1601,6 +1628,8 @@ class Dropdowns extends Component {
                 theme: "primary",
                 nonEditable: true
               }}
+              name="dropdown10"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1619,6 +1648,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown11"
+              callback={this.changeHandler}
             />
           </View>
           <View style={{ marginBottom: 20 }}>
@@ -1637,6 +1668,8 @@ class Dropdowns extends Component {
                 theme: "default",
                 nonEditable: true
               }}
+              name="dropdown12"
+              callback={this.changeHandler}
             />
           </View>
         </View>
