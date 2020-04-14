@@ -21,6 +21,21 @@ class Inputs extends Component {
     return true;
   };
 
+  mockFocus = name => {
+    /* console.log("Focus", name); */
+    return true;
+  }
+
+  mockBlur = name => {
+    /* console.log("Blur", name); */
+    return true;
+  }
+
+  mockSubmitEditing = name => {
+    /* console.log("submitEditing", name); */
+    return true;
+  }
+
   render() {
     return (
       <Section title="Inputs">
@@ -83,6 +98,11 @@ class Inputs extends Component {
                 callback: this.mockCallback
               }}
               theme="success"
+              eventHandlers={{
+                onFocus: this.mockFocus,
+                onBlur: this.mockBlur,
+                onSubmitEditing: this.mockSubmitEditing
+              }}
             />
           </View>
           <View style={{ marginBottom: 10 }}>

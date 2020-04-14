@@ -25,5 +25,23 @@ describe("<Inputs/>", () => {
 
       expect(res).toBe(true);
     });
+
+    it("executes the mock focus callback", () => {
+      const res = render.instance().mockFocus();
+
+      expect(res).toBe(true);
+    });
+
+    it("executes the mock blur callback", () => {
+      const res = render.instance().mockBlur();
+
+      expect(res).toBe(true);
+    });
+
+    it("executes the mock submitEditing callback", () => {
+      const res = render.instance().mockSubmitEditing();
+
+      expect(res).toBe(true);
+    });
   });
 });
