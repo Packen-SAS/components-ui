@@ -35,9 +35,6 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenUiText style={styles.container__title}>UI Components Library</PackenUiText>
-            
-            <Inputs/>
-
             <VehicleBoxes/>
             <LoaderButtons/>
             <Progressbars/>
@@ -50,9 +47,7 @@ class UILibrary extends Component {
             <MapPins/>
             <Dropdowns/>
             <Modals/>
-
-            
-            
+            <Inputs/>
             <Toggles/>
             <Checkboxes/>
             <Radios/>
