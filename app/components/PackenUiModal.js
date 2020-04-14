@@ -17,7 +17,6 @@ class PackenUiModal extends Component {
       type: props.type,
       banner: props.banner,
       size: props.size,
-      banner: props.banner,
       isOpen: props.isOpen,
       images: props.images,
       info: props.info,
@@ -135,7 +134,6 @@ class PackenUiModal extends Component {
       type: this.props.type,
       banner: this.props.banner,
       size: this.props.size,
-      banner: this.props.banner,
       isOpen: this.props.isOpen,
       images: this.props.images,
       info: this.props.info,
@@ -147,11 +145,11 @@ class PackenUiModal extends Component {
         this.setBackdropStyles();
       }
       if (this.props.type === "gallery") {
-        if (prevState.dimensions !== this.props.dimensions) {
-          this.setGalleryArrowsPosition();
-        }
         if (prevProps.isOpen !== this.props.isOpen) {
           this.reinitGallery();
+        }
+        if (prevState.dimensions !== this.props.dimensions) {
+          this.setGalleryArrowsPosition();
         }
       }
     });

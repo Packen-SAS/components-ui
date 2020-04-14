@@ -17,8 +17,15 @@ describe("<PackenUiMapPinSub/>", () => {
         dotPosition="bottom"
       />
     );
-
     renderInstance = render.instance();
+
+    renderInstance.setState({
+      theme: "primary",
+      icon: undefined,
+      label: "A",
+      dotPosition: "bottom",
+      type: "info"
+    });
   });
 
   describe("rendering", () => {
@@ -27,18 +34,14 @@ describe("<PackenUiMapPinSub/>", () => {
     });
 
     it("returns icon if set so", () => {
-      render.setProps({
-        icon: "check"
-      });
+      renderInstance.setState({ icon: "check" });
       const returnedElement = renderInstance.getIcon();
 
       expect(returnedElement).toBeDefined();
     });
 
     it("returns null if icon is not set", () => {
-      render.setProps({
-        icon: undefined
-      });
+      renderInstance.setState({ icon: undefined });
       const returnedElement = renderInstance.getIcon();
 
       expect(returnedElement).toBe(null);
@@ -55,9 +58,7 @@ describe("<PackenUiMapPinSub/>", () => {
     });
 
     it("returns null if label is not set", () => {
-      render.setProps({
-        label: undefined
-      });
+      renderInstance.setState({ label: undefined });
       const returnedElement = renderInstance.getLabel();
 
       expect(returnedElement).toBe(null);
@@ -74,9 +75,7 @@ describe("<PackenUiMapPinSub/>", () => {
     });
 
     it("returns null if dot is not set", () => {
-      render.setProps({
-        dotPosition: undefined
-      });
+      renderInstance.setState({ dotPosition: undefined });
       const returnedElement = renderInstance.getDot();
 
       expect(returnedElement).toBe(null);
@@ -85,14 +84,14 @@ describe("<PackenUiMapPinSub/>", () => {
 
   describe("styling", () => {
     it("returns the default color if no 'theme' prop is provided", () => {
-      renderInstance.props = { theme: undefined };
+      renderInstance.setState({ theme: undefined });
       const returnedColor = renderInstance.getIconColor();
       
       expect(returnedColor).toBe(renderInstance.getStyles().icon.type.icon.color);
     });
 
     it("returns the correct color if a 'theme' prop is provided", () => {
-      renderInstance.props = { theme: "primary" };
+      renderInstance.setState({ theme: "primary" });
       const returnedColor = renderInstance.getIconColor();
       
       expect(returnedColor).toBe(renderInstance.getStyles().icon.theme.primary.color);

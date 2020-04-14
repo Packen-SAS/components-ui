@@ -78,7 +78,7 @@ class PackenUiText extends Component {
       customStyle: { ...this.props.style },
       children: this.props.children,
       icon: { ...this.props.icon },
-      presetStyle: this.props.preset ? Typography[this.this.props.preset] : {},
+      presetStyle: this.props.preset ? Typography[this.props.preset] : {},
       touchableStyles: this.getTouchableStyles()
     });
   }

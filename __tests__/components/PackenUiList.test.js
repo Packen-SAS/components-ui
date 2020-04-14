@@ -89,12 +89,15 @@ describe("<PackenUiList/>", () => {
         toggleMenu={mockCallback}
       />
     );
-
     renderInstance = render.instance();
 
     renderInstance.setState({
+      items: [...list.items],
+      numShownRows: 4,
+      config: { ...list.config },
+      toggleMenu: mockCallback,
+      getFinalSelection: mockCallback,
       height: "100%",
-      items: list.items,
       selectedItems: [],
       currentRadiosState: {
         checkedValue: ""
@@ -163,8 +166,8 @@ describe("<PackenUiList/>", () => {
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and no payload is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      render.setProps({
+      renderInstance.setState({
+        items: [list.items[0], list.items[1]],
         config: {
           selectionType: "single"
         },
@@ -181,8 +184,8 @@ describe("<PackenUiList/>", () => {
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and a payload is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      render.setProps({
+      renderInstance.setState({
+        items: [list.items[0], list.items[1]],
         config: {
           selectionType: "radio"
         },
@@ -215,8 +218,8 @@ describe("<PackenUiList/>", () => {
     });
 
     it("updates selected items if selection type is 'single' or 'radio' and doesn't close the dropdown if no 'toggleMenu' is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      render.setProps({
+      renderInstance.setState({
+        items: [list.items[0], list.items[1]],
         config: {
           selectionType: "radio"
         },
@@ -231,8 +234,8 @@ describe("<PackenUiList/>", () => {
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      render.setProps({
+      renderInstance.setState({
+        items: [list.items[0], list.items[1]],
         config: {
           selectionType: "multiple"
         }
@@ -244,8 +247,9 @@ describe("<PackenUiList/>", () => {
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]], currentCheckboxesState: { checkedValues: [] } });
-      render.setProps({
+      renderInstance.setState({
+        items: [list.items[0], list.items[1]],
+        currentCheckboxesState: { checkedValues: [] },
         config: {
           selectionType: "checkbox"
         }

@@ -91,6 +91,8 @@ class PackenUiRadar extends Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
+    } else {
+      return false;
     }
   }
 

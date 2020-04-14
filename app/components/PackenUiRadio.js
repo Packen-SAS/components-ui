@@ -33,6 +33,16 @@ class PackenUiRadio extends Component {
     });
   }
 
+  updateState = () => {
+    this.setState({
+      items: [...this.props.items],
+      checkedIndex: this.props.initialIndex,
+      callback: this.props.callback,
+      name: this.props.name,
+      layout: this.props.layout
+    });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevState.checkedIndex !== this.state.checkedIndex) {
       this.updateCurrentSelection(this.findCurrentSelection());
@@ -45,28 +55,15 @@ class PackenUiRadio extends Component {
       }
       return this.state.currentSelection;
     }
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
   }
 
   setCheckedIndex = newCheckedIndex => {
     this.setState({
       checkedIndex: newCheckedIndex
     });
-  }
-
-  updateState = () => {
-    this.setState({
-      items: [...this.props.items],
-      checkedIndex: this.props.initialIndex,
-      callback: this.props.callback,
-      name: this.props.name,
-      layout: this.props.layout,
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
-      this.updateState();
-    }
   }
 
   render() {

@@ -25,14 +25,37 @@ describe("<PackenUiInput/>", () => {
         label="Label tiny"
         help="Help text tiny"
         theme="default"
+        name="input1"
       />
     );
-
     renderInstance = render.instance();
 
     renderInstance.setState({
       value: "",
       state: "default",
+      icon: {
+        name: "lock",
+        position: "left"
+      },
+      size: "tiny",
+      theme: "default",
+      multiline: false,
+      name: "input1",
+      disabled: false,
+      nonEditable: false,
+      isDropdown: false,
+      isOpen: false,
+      help: "Help text tiny",
+      message: {
+        text: "Caption text, description, error notification",
+        icon: "info"
+      },
+      keyboardType: "default",
+      isFocused: false,
+      isPassword: false,
+      label: "Label tiny",
+      placeholder: "Placeholder",
+      ref: null,
       dimensions: {
         box: {
           width: 0,
@@ -165,178 +188,6 @@ describe("<PackenUiInput/>", () => {
     });
   });
 
-  describe("styling", () => {
-    it("disables pointer events if its state is 'disabled'", () => {
-      renderInstance.setState({ state: "disabled" });
-      
-      expect(render.props().pointerEvents).toBe("none");
-    });
-
-    it("enables pointer events if its state is no 'disabled'", () => {
-      renderInstance.setState({ state: "default" });
-      
-      expect(render.props().pointerEvents).toBe("auto");
-    });
-
-    it("returns icon position styles if icon position is 'left'", () => {
-      render.setProps({
-        size: "small",
-        icon: {
-          position: "left"
-        }
-      });
-      renderInstance.setState({
-        dimensions: {
-          box: {
-            height: 10
-          },
-          iconWrapper: {
-            height: 6
-          }
-        }
-      });
-      const returnedStyles = renderInstance.setIconPositionStyles();
-      
-      expect(returnedStyles).toEqual({
-        top: 2,
-        left: renderInstance.getStyles().icon_wrapper.offset.small
-      });
-    });
-
-    it("returns icon position styles if icon position is 'right'", () => {
-      render.setProps({
-        size: "small",
-        icon: {
-          position: "right"
-        }
-      });
-      renderInstance.setState({
-        dimensions: {
-          box: {
-            height: 10
-          },
-          iconWrapper: {
-            height: 6
-          }
-        }
-      });
-      const returnedStyles = renderInstance.setIconPositionStyles();
-      
-      expect(returnedStyles).toEqual({
-        top: 2,
-        right: renderInstance.getStyles().icon_wrapper.offset.small
-      });
-    });
-
-    it("returns an empty object if there's no icon passed", () => {
-      render.setProps({ icon: undefined });
-      const returnedStyles = renderInstance.setIconPositionStyles();
-
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns current padding styles if has an icon", () => {
-      render.setProps({
-        icon: {
-          position: "left"
-        },
-        size: "tiny"
-      });
-      const returnedStyles = renderInstance.getPaddingStyles();
-      
-      expect(returnedStyles).toBeDefined();
-    });
-
-    it("returns empty padding styles if there's no icon", () => {
-      renderInstance.props = {};
-      const returnedStyles = renderInstance.getPaddingStyles();
-      
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns multiline styles if it's a textarea", () => {
-      render.setProps({
-        multiline: true,
-        size: "tiny"
-      });
-      const returnedStyles = renderInstance.getMultilineStyles();
-      
-      expect(returnedStyles).toBeDefined();
-    });
-
-    it("returns empty multiline styles if it's not a textarea", () => {
-      renderInstance.props = {};
-      const returnedStyles = renderInstance.getMultilineStyles();
-
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns the correct icon name if it's not part of a dropdown", () => {
-      render.setProps({
-        isDropdown: false,
-        icon: {
-          name: "check",
-          position: "left"
-        }
-      });
-      const returnedName = renderInstance.getIconName();
-
-      expect(returnedName).toBe("check");
-    });
-
-    it("returns the correct icon name if it's part of a dropdown and is open", () => {
-      render.setProps({
-        isDropdown: true,
-        isOpen: true
-      });
-      const returnedName = renderInstance.getIconName();
-
-      expect(returnedName).toBe("chevron-up");
-    });
-
-    it("returns the correct icon name if it's part of a dropdown and is not open", () => {
-      render.setProps({
-        isDropdown: true,
-        isOpen: false
-      });
-      const returnedName = renderInstance.getIconName();
-
-      expect(returnedName).toBe("chevron-down");
-    });
-  });
-
-  describe("getting dimensions", () => {
-    it("sets box dimensions", () => {
-      const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getBoxDimensions({width: 100, height: 100});
-      
-      expect(renderInstance.state.dimensions).toEqual({
-        ...renderInstance.state.dimensions,
-        box: {
-          width: 100,
-          height: 100
-        }
-      });
-      expect(spySetIconPositionStyles).toHaveBeenCalled();
-      spySetIconPositionStyles.mockRestore();
-    });
-
-    it("sets icon wrapper dimensions", () => {
-      const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getIconWrapperDimensions({width: 10, height: 10});
-      
-      expect(renderInstance.state.dimensions).toEqual({
-        ...renderInstance.state.dimensions,
-        iconWrapper: {
-          width: 10,
-          height: 10
-        }
-      });
-      expect(spySetIconPositionStyles).toHaveBeenCalled();
-      spySetIconPositionStyles.mockRestore();
-    });
-  });
-
   describe("state changing", () => {
     it("sets initial state if there's no initial value, it's not disabled, and has no icon", () => {
       render.setProps({
@@ -349,6 +200,25 @@ describe("<PackenUiInput/>", () => {
       expect(returnedState).toEqual({
         value: "",
         state: "default",
+        icon: {},
+        size: "tiny",
+        theme: "default",
+        multiline: undefined,
+        name: "input1",
+        disabled: false,
+        nonEditable: undefined,
+        isDropdown: undefined,
+        isOpen: undefined,
+        help: undefined,
+        message: {
+          text: "Test",
+          icon: undefined
+        },
+        keyboardType: undefined,
+        isFocused: undefined,
+        isPassword: undefined,
+        label: "Label tiny",
+        placeholder: "Placeholder",
         ref: null
       });
     });
@@ -365,6 +235,77 @@ describe("<PackenUiInput/>", () => {
       const returnedState = renderInstance.setInitialState();
 
       expect(returnedState).toEqual({
+        ...renderInstance.state,
+        value: "Test",
+        state: "disabled",
+        ref: null,
+        dimensions: {
+          box: {
+            width: 0,
+            height: 0
+          },
+          iconWrapper: {
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    });
+
+    it("sets initial state if there's an initial value, it's disabled, has an icon, and has no help", () => {
+      render.setProps({
+        help: undefined,
+        value: "Test",
+        disabled: true,
+        icon: {
+          name: "check",
+          position: "right"
+        }
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        ...renderInstance.state,
+        help: undefined,
+        value: "Test",
+        state: "disabled",
+        ref: null,
+        dimensions: {
+          box: {
+            width: 0,
+            height: 0
+          },
+          iconWrapper: {
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    });
+
+    it("sets initial state if there's an initial value, it's disabled, has an icon, and has a help object", () => {
+      render.setProps({
+        help: {
+          text: "This triggers an internal callback",
+          touchable: true,
+          callback: this.mockCallback
+        },
+        value: "Test",
+        disabled: true,
+        icon: {
+          name: "check",
+          position: "right"
+        }
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        ...renderInstance.state,
+        help: {
+          text: "This triggers an internal callback",
+          touchable: true,
+          callback: this.mockCallback
+        },
         value: "Test",
         state: "disabled",
         ref: null,
@@ -566,6 +507,178 @@ describe("<PackenUiInput/>", () => {
       renderInstance.triggerHelpCallback();
 
       expect(renderInstance.props.help.callback).toHaveBeenCalled();
+    });
+  });
+
+  describe("styling", () => {
+    it("disables pointer events if its state is 'disabled'", () => {
+      renderInstance.setState({ state: "disabled" });
+      
+      expect(render.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if its state is no 'disabled'", () => {
+      renderInstance.setState({ state: "default" });
+      
+      expect(render.props().pointerEvents).toBe("auto");
+    });
+
+    it("returns icon position styles if icon position is 'left'", () => {
+      render.setProps({
+        size: "small",
+        icon: {
+          position: "left"
+        }
+      });
+      renderInstance.setState({
+        dimensions: {
+          box: {
+            height: 10
+          },
+          iconWrapper: {
+            height: 6
+          }
+        }
+      });
+      const returnedStyles = renderInstance.setIconPositionStyles();
+      
+      expect(returnedStyles).toEqual({
+        top: 2,
+        left: renderInstance.getStyles().icon_wrapper.offset.small
+      });
+    });
+
+    it("returns icon position styles if icon position is 'right'", () => {
+      render.setProps({
+        size: "small",
+        icon: {
+          position: "right"
+        }
+      });
+      renderInstance.setState({
+        dimensions: {
+          box: {
+            height: 10
+          },
+          iconWrapper: {
+            height: 6
+          }
+        }
+      });
+      const returnedStyles = renderInstance.setIconPositionStyles();
+      
+      expect(returnedStyles).toEqual({
+        top: 2,
+        right: renderInstance.getStyles().icon_wrapper.offset.small
+      });
+    });
+
+    it("returns an empty object if there's no icon passed", () => {
+      render.setProps({ icon: undefined });
+      const returnedStyles = renderInstance.setIconPositionStyles();
+
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns current padding styles if has an icon", () => {
+      render.setProps({
+        icon: {
+          position: "left"
+        },
+        size: "tiny"
+      });
+      const returnedStyles = renderInstance.getPaddingStyles();
+      
+      expect(returnedStyles).toBeDefined();
+    });
+
+    it("returns empty padding styles if there's no icon", () => {
+      renderInstance.props = {};
+      const returnedStyles = renderInstance.getPaddingStyles();
+      
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns multiline styles if it's a textarea", () => {
+      render.setProps({
+        multiline: true,
+        size: "tiny"
+      });
+      const returnedStyles = renderInstance.getMultilineStyles();
+      
+      expect(returnedStyles).toBeDefined();
+    });
+
+    it("returns empty multiline styles if it's not a textarea", () => {
+      renderInstance.props = {};
+      const returnedStyles = renderInstance.getMultilineStyles();
+
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns the correct icon name if it's not part of a dropdown", () => {
+      render.setProps({
+        isDropdown: false,
+        icon: {
+          name: "check",
+          position: "left"
+        }
+      });
+      const returnedName = renderInstance.getIconName();
+
+      expect(returnedName).toBe("check");
+    });
+
+    it("returns the correct icon name if it's part of a dropdown and is open", () => {
+      render.setProps({
+        isDropdown: true,
+        isOpen: true
+      });
+      const returnedName = renderInstance.getIconName();
+
+      expect(returnedName).toBe("chevron-up");
+    });
+
+    it("returns the correct icon name if it's part of a dropdown and is not open", () => {
+      render.setProps({
+        isDropdown: true,
+        isOpen: false
+      });
+      const returnedName = renderInstance.getIconName();
+
+      expect(returnedName).toBe("chevron-down");
+    });
+  });
+
+  describe("getting dimensions", () => {
+    it("sets box dimensions", () => {
+      const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
+      renderInstance.getBoxDimensions({width: 100, height: 100});
+      
+      expect(renderInstance.state.dimensions).toEqual({
+        ...renderInstance.state.dimensions,
+        box: {
+          width: 100,
+          height: 100
+        }
+      });
+      expect(spySetIconPositionStyles).toHaveBeenCalled();
+      spySetIconPositionStyles.mockRestore();
+    });
+
+    it("sets icon wrapper dimensions", () => {
+      const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
+      renderInstance.getIconWrapperDimensions({width: 10, height: 10});
+      
+      expect(renderInstance.state.dimensions).toEqual({
+        ...renderInstance.state.dimensions,
+        iconWrapper: {
+          width: 10,
+          height: 10
+        }
+      });
+      expect(spySetIconPositionStyles).toHaveBeenCalled();
+      spySetIconPositionStyles.mockRestore();
     });
   });
 });

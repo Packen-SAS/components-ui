@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 import PackenUiToggle from "../../app/components/PackenUiToggle";
 
 describe("<PackenUiToggle/>", () => {
-  let render, renderInstance;
+  let render, renderInactive, renderInstance, renderInactiveInstance;
   const mockFunction = jest.fn();
 
   beforeAll(() => {
@@ -14,13 +14,29 @@ describe("<PackenUiToggle/>", () => {
         onLabel="SÍ"
         offLabel="NO"
         isActive={true}
-        toggleHandler={this.toggle_handler}
+        toggleHandler={mockFunction}
         name="toggle1"
       />
     );
+    renderInactive = shallow(
+      <PackenUiToggle
+        onLabel="SÍ"
+        offLabel="NO"
+        isActive={false}
+        toggleHandler={mockFunction}
+        name="toggle2"
+      />
+    );
     renderInstance = render.instance();
+    renderInactiveInstance = renderInactive.instance();
 
     renderInstance.setState({
+      isActive: true,
+      isDisabled: false,
+      toggleHandler: mockFunction,
+      name: "toggle1",
+      onLabel: "SÍ",
+      offLabel: "NO",
       initialState: "active",
       state: "active",
       isDisabled: false,
@@ -342,29 +358,32 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("returns correct position styles if 'state' is 'inactive' and is not disabled", () => {
-      renderInstance.setState({ state: "inactive", shape: { height: 10 }, off: { height: 10 } });
-      renderInstance.state.state = "inactive";
-      const returnedStyles = renderInstance.getPositionStyles();
+      renderInactiveInstance.setState({
+        isDisabled: false,
+        state: "inactive",
+        shape: { height: 10 }, off: { height: 10 }
+      });
+      const returnedStyles = renderInactiveInstance.getPositionStyles();
 
       expect(returnedStyles).toEqual({
         dot: {
           top: 2,
           left: 2
         },
+        on: {
+          opacity: 0
+        },
         off: {
           position: "absolute",
-          top: 10,
+          top: (renderInactiveInstance.state.shape.height / 2) + (renderInactiveInstance.state.off.height / 2),
           right: 8,
           bottom: "auto",
           left: "auto"
-        },
-        on: {
-          opacity: 0
         }
       });
     });
 
-    it("returns correct position styles if 'state' is 'active' and is disabled", () => {
+    it("returns correct position styles if 'initialState' is 'active' and is disabled", () => {
       renderInstance.setState({ isDisabled: true, initialState: "active", shape: { height: 10 }, on: { height: 10 } });
       const returnedStyles = renderInstance.getPositionStyles();
 
@@ -386,28 +405,41 @@ describe("<PackenUiToggle/>", () => {
       });
     });
     
-    it("returns correct position styles if 'state' is 'inactive' and is disabled", () => {
-      renderInstance.setState({ isDisabled: true, initialState: "inactive", shape: { height: 10 }, off: { height: 10 } });
-      renderInstance.state.isDisabled = true;
-      renderInstance.state.initialState = "inactive";
-      const returnedStyles = renderInstance.getPositionStyles();
+    it("returns correct position styles if 'initialState' is 'inactive' and is disabled", () => {
+      renderInactiveInstance.setState({
+        isDisabled: true,
+        initialState: "inactive",
+        shape: { height: 10 }, off: { height: 10 }
+      });
+      const returnedStyles = renderInactiveInstance.getPositionStyles();
 
       expect(returnedStyles).toEqual({
         dot: {
           top: 2,
           left: 2
         },
+        on: {
+          opacity: 0
+        },
         off: {
           position: "absolute",
-          top: 10,
+          top: (renderInactiveInstance.state.shape.height / 2) + (renderInactiveInstance.state.off.height / 2),
           right: 8,
           bottom: "auto",
           left: "auto"
-        },
-        on: {
-          opacity: 0
         }
       });
+    });
+
+    it("returns an empty object as the position styles if the current state is undefined", () => {
+      renderInactiveInstance.setState({
+        isDisabled: true,
+        initialState: undefined,
+        shape: { height: 10 }, off: { height: 10 }
+      });
+      const returnedStyles = renderInactiveInstance.getPositionStyles();
+
+      expect(returnedStyles).toEqual({});
     });
   });
 });

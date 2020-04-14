@@ -14,11 +14,10 @@ class PackenUiMapPin extends Component {
 
     this.state = {
       main: { ...props.main },
+      sub: { ...props.sub },
       theme: props.theme,
       type: props.type,
-      dotPosition: props.dotPosition,
-      main: { ...props.main },
-      sub: { ...props.sub }
+      dotPosition: props.dotPosition
     }
   }
 

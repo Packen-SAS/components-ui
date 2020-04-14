@@ -40,6 +40,19 @@ describe("<PackenUiModal/>", () => {
     renderInstance = render.instance();
 
     renderInstance.setState({
+      type: "info",
+      banner: { icon: "x-circle" },
+      size: "default",
+      isOpen: false,
+      images: undefined,
+      info: {
+        title: "Title",
+        text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
+        btn: <PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={mockCallback}>BUTTON</PackenUiButton>
+      },
+      toggle: mockCallback,
+      theme: "danger",
+      content: undefined,
       backdropStyles: { ...renderInstance.getStyles().backdrop.base },
       dimensions: {
         gallery: {
@@ -150,18 +163,17 @@ describe("<PackenUiModal/>", () => {
     });
 
     it("returns correct content styles if there's no banner", () => {
-      renderInstance.props = {
+      renderInstance.setState({
         banner: undefined,
         type: "info",
         size: "small"
-      };
+      });
       const returnedStyles = renderInstance.getContentStyles();
 
       expect(returnedStyles).toEqual({ ...renderInstance.getStyles().content.base, ...renderInstance.getStyles().content.default });
     });
 
     it("returns correct text styles if there's a banner", () => {
-      /* renderInstance.props = { banner: {}, size: "default" }; */
       render.setProps({
         banner: {},
         size: "default"
@@ -172,14 +184,13 @@ describe("<PackenUiModal/>", () => {
     });
 
     it("returns correct text styles if there's no banner", () => {
-      renderInstance.props = {};
+      renderInstance.setState({ banner: undefined });
       const returnedStyles = renderInstance.getTextStyles();
 
       expect(returnedStyles).toEqual({ ...renderInstance.getStyles().text.default });
     });
 
     it("sets correct backdrop styles if it's open", () => {
-      /* renderInstance.props = { isOpen: true }; */
       render.setProps({
         isOpen: true
       });
@@ -192,7 +203,6 @@ describe("<PackenUiModal/>", () => {
     });
 
     it("sets correct backdrop styles if it's closed", () => {
-      /* renderInstance.props = { isOpen: false }; */
       render.setProps({
         isOpen: false
       });
@@ -209,7 +219,6 @@ describe("<PackenUiModal/>", () => {
     it("sets correct backdrop styles if open prop changed", () => {
       const spySetBackdropStyles = jest.spyOn(renderInstance, "setBackdropStyles");
       const prevProps = { isOpen: false };
-      /* renderInstance.props = { isOpen: true }; */
       render.setProps({
         isOpen: true
       });
@@ -411,6 +420,48 @@ describe("<PackenUiModal/>", () => {
 
       expect(renderInstance.state.has.next).toBe(false);
       expect(renderInstance.state.has.prev).toBe(true);
+    });
+
+    it("updates the state with new, incoming props if type is regular and isOpen changed", () => {
+      const prevProps = { isOpen: false };
+      const prevState = { dimensions: "Test" };
+      render.setProps({ type: "regular", isOpen: true });
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      const spySetBackdropStyles = jest.spyOn(renderInstance, "setBackdropStyles");
+      renderInstance.updateState(prevProps, prevState);
+
+      expect(spySetState).toHaveBeenCalled();
+      expect(spySetBackdropStyles).toHaveBeenCalled();
+      spySetState.mockRestore();
+      spySetBackdropStyles.mockRestore();
+    });
+
+    it("updates the state with new, incoming props if type is gallery, and isOpen and dimensions changed", () => {
+      const prevProps = { isOpen: false };
+      const prevState = { dimensions: "Test" };
+      render.setProps({ type: "gallery", isOpen: true, dimensions: "Test 2" });
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      const spySetGalleryArrowsPosition = jest.spyOn(renderInstance, "setGalleryArrowsPosition");
+      const spyReinitGallery = jest.spyOn(renderInstance, "reinitGallery");
+      renderInstance.updateState(prevProps, prevState);
+
+      expect(spySetState).toHaveBeenCalled();
+      expect(spySetGalleryArrowsPosition).toHaveBeenCalled();
+      expect(spyReinitGallery).toHaveBeenCalled();
+      spySetState.mockRestore();
+      spySetGalleryArrowsPosition.mockRestore();
+      spyReinitGallery.mockRestore();
+    });
+
+    it("returns false after updating the state with new, incoming props if type is gallery, and isOpen and dimensions did not change", () => {
+      const prevProps = { isOpen: true };
+      const prevState = { dimensions: "Test" };
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      render.setProps({ type: "gallery", isOpen: true, dimensions: "Test" });
+      renderInstance.updateState(prevProps, prevState);
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
     });
   });
 });

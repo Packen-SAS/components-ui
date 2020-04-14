@@ -11,8 +11,13 @@ describe("<PackenUiDivider/>", () => {
     render = shallow(
       <PackenUiDivider size={1} margin={{top: 10, bottom: 10}} type="light"/>
     );
-    
     renderInstance = render.instance();
+
+    renderInstance.setState({
+      type: "light",
+      size: 1,
+      margin: { top: 10, bottom: 10 }
+    });
   });
 
   describe("rendering", () => {
@@ -35,6 +40,9 @@ describe("<PackenUiDivider/>", () => {
       render.setProps({
         size: 1,
         type: "light",
+        margin: undefined
+      });
+      renderInstance.setState({
         margin: undefined
       });
       

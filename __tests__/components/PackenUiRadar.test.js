@@ -6,7 +6,7 @@ import { shallow } from "enzyme";
 import PackenUiRadar from "../../app/components/PackenUiRadar";
 
 describe("<PackenUiRadar/>", () => {
-  let render, renderInstance;
+  let render, renderStatic, renderInstance, renderStaticInstance;
 
   beforeAll(() => {
     render = shallow(
@@ -17,7 +17,15 @@ describe("<PackenUiRadar/>", () => {
       />);
     renderInstance = render.instance();
 
+    renderStatic = shallow(
+      <PackenUiRadar
+        theme="search"
+        animated={false}
+      />);
+    renderStaticInstance = renderStatic.instance();
+
     renderInstance.setState({
+      theme: "search",
       animated: true,
       isAnimating: true,
       transforms: {
@@ -26,6 +34,21 @@ describe("<PackenUiRadar/>", () => {
         }
       }
     });
+
+    renderInstance.shadowAnim = Animated.loop(
+      Animated.sequence([
+        Animated.timing(renderInstance.state.transforms.shadow.transform, {
+          toValue: 1,
+          duration: 500,
+          useNativeDriver: true
+        }),
+        Animated.timing(renderInstance.state.transforms.shadow.transform, {
+          toValue: 0.2,
+          duration: 500,
+          useNativeDriver: true
+        })
+      ])
+    );
   });
 
   describe("rendering", () => {
@@ -36,8 +59,8 @@ describe("<PackenUiRadar/>", () => {
 
   describe("state changing", () => {
     it("returns false as initial 'isAnimating' state if it's not animated", () => {
-      render.setProps({ animated: false });
-      const res = renderInstance.getInitialAnimatingState();
+      renderStatic.setProps({ animated: false });
+      const res = renderStaticInstance.getInitialAnimatingState();
 
       expect(res).toBe(false);
     });
@@ -50,8 +73,8 @@ describe("<PackenUiRadar/>", () => {
     });
 
     it("returns a regular transform if it's not animated", () => {
-      render.setProps({ animated: false });
-      const res = renderInstance.getInitialShadowTransform();
+      renderStatic.setProps({ animated: false });
+      const res = renderStaticInstance.getInitialShadowTransform();
 
       expect(res).toEqual([{ scale: 1 }]);
     });
@@ -94,10 +117,12 @@ describe("<PackenUiRadar/>", () => {
     });
 
     it("stops the shadow animation", () => {
-      renderInstance.shadowAnim = { stop: jest.fn() };
+      /* renderInstance.shadowAnim = { stop: jest.fn() }; */
+      const spyStop = jest.spyOn(renderInstance.shadowAnim, "stop");
       renderInstance.stopShadowAnimation();
 
-      expect(renderInstance.shadowAnim.stop).toHaveBeenCalled();
+      expect(spyStop).toHaveBeenCalled();
+      spyStop.mockRestore();
     });
 
     it("starts the animation when checking its current state", () => {
@@ -174,11 +199,12 @@ describe("<PackenUiRadar/>", () => {
 
     it("returns false on componentDidUpdate", () => {
       const prevProps = {
-        isAnimating: true
+        theme: "search",
+        animated: true,
+        isAnimating: true,
+        test: "Test"
       };
-      render.setProps({
-        isAnimating: true
-      });
+      render.setProps({ test: "Test" });
       const res = renderInstance.componentDidUpdate(prevProps, null, null);
 
       expect(res).toBe(false);

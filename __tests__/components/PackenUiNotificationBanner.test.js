@@ -30,15 +30,13 @@ describe("<PackenUiNotificationBanner/>", () => {
     });
 
     it("returns an icon if provided via props", () => {
-      render.setProps({
-        icon: "check"
-      });
+      renderInstance.setState({ icon: "check" });
       const returnedElement = renderInstance.getIcon();
 
       expect(returnedElement.props.name).toBe("check");
     });
 
-    it("returns an Packen logo image if set so via props", () => {
+    it("returns a Packen logo image if set so via props", () => {
       const themes = ["success", "primary", "warning", "danger", "info"];
       const srcs = [
         require("../../assets/images/arrow_packen_success.png"),
@@ -47,9 +45,7 @@ describe("<PackenUiNotificationBanner/>", () => {
         require("../../assets/images/arrow_packen_danger.png"),
         require("../../assets/images/arrow_packen_info.png")
       ];
-      render.setProps({
-        icon: "packen"
-      });
+      renderInstance.setState({ icon: "packen" });
 
       themes.forEach((theme, i) => {
         renderInstance.setState({ theme: theme });
@@ -60,12 +56,31 @@ describe("<PackenUiNotificationBanner/>", () => {
     });
 
     it("returns null if no icon is provided via props", () => {
-      render.setProps({
-        icon: undefined
-      });
+      renderInstance.setState({ icon: undefined });
       const returnedElement = renderInstance.getIcon();
 
       expect(returnedElement).toBe(null);
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("executes componentDidUpdate handler", () => {
+      const prevProps = { test: "Test" };
+      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
+    });
+  });
+
+  describe("state changing", () => {
+    it("updates the state with new, incoming props", () => {
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      renderInstance.updateState();
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
     });
   });
 });
