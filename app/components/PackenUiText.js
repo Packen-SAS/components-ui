@@ -84,7 +84,7 @@ class PackenUiText extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (prevProps !== this.props) {
       this.updateState();
     }
   }
