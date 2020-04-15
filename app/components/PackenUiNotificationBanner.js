@@ -14,7 +14,8 @@ class PackenUiNotificationBanner extends Component {
 
     this.state = {
       theme: props.theme,
-      type: props.type
+      type: props.type,
+      icon: props.icon
     }
   }
 
@@ -65,7 +66,8 @@ class PackenUiNotificationBanner extends Component {
   updateState = () => {
     this.setState({
       theme: this.props.theme,
-      type: this.props.type
+      type: this.props.type,
+      icon: this.props.icon
     });
   }
 
