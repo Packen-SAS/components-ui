@@ -148,7 +148,7 @@ class PackenUiModal extends Component {
         if (prevProps.isOpen !== this.props.isOpen) {
           this.reinitGallery();
         }
-        if (prevState.dimensions !== this.props.dimensions) {
+        if (prevState.dimensions !== this.state.dimensions) {
           this.setGalleryArrowsPosition();
         }
       }
@@ -212,7 +212,7 @@ class PackenUiModal extends Component {
 
   setGalleryArrowsPosition = () => {
     const verticalOffset = this.state.dimensions.gallery.height / 2.25;
-    const horizontalOffset = this.state.dimensions.arrows.width + 20;
+    const horizontalOffset = 20;
 
     this.setState({
       arrowStyles: {
@@ -304,16 +304,16 @@ class PackenUiModal extends Component {
         );
         break;
       case "info":
-          content = (
-            <View style={this.getStyles().info}>
-              {this.getBanner()}
-              <View style={this.getContentStyles()}>
-                <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
-                <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
-                {this.getInfoButton()}
-              </View>
+        content = (
+          <View style={this.getStyles().info}>
+            {this.getBanner()}
+            <View style={this.getContentStyles()}>
+              <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
+              <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
+              {this.getInfoButton()}
             </View>
-          );
+          </View>
+        );
         break;
       case "gallery":
         content = (
