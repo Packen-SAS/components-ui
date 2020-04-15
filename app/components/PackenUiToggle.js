@@ -301,28 +301,41 @@ class PackenUiToggle extends Component {
           opacity: 0.6,
           fontFamily: Typography.family.bold,
           fontSize: Typography.size.tiny,
-          lineHeight: Typography.lineheight.tiny
+          lineHeight: Typography.lineheight.tiny,
+          position: "absolute"
         },
         on: {
           active: {
-            color: Colors.brand.primary.ulgt
+            color: Colors.brand.primary.ulgt,
+            top: -5,
+            left: 0
           },
           inactive: {
+            top: -5,
+            left: 0,
             opacity: 0
           },
           disabled: {
+            top: -5,
+            left: 0,
             opacity: 0.6,
             color: Colors.basic.white.dft
           }
         },
         off: {
           active: {
-            opacity: 0
+            opacity: 0,
+            top: -5,
+            right: 0
           },
           inactive: {
+            top: -5,
+            right: 0,
             color: Colors.basic.gray.drk
           },
           disabled: {
+            top: -5,
+            right: 0,
             opacity: 0.6,
             color: Colors.basic.white.dft
           }
