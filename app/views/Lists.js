@@ -2,13 +2,11 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
+import Icon from "react-native-vector-icons/dist/Feather";
 import Section from "../components/Section";
 
-import Icon from "react-native-vector-icons/dist/Feather";
 import PackenUiAvatar from "../components/PackenUiAvatar";
 import PackenUiList from "../components/PackenUiList";
-
-import PackenUiButton from "../components/PackenUiButton";
 
 class Lists extends Component {
   constructor(props) {

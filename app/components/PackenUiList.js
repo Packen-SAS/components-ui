@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, FlatList } from "react-native";
+import { View } from "react-native";
 
 import PackenUiListItem from "./PackenUiListItem";
 
@@ -15,7 +15,7 @@ class PackenUiList extends Component {
 
   updateState = () => {
     this.setState({
-      items: { ...this.props.items },
+      items: [ ...this.props.items ],
       customWrapperStyles: { ...this.props.style }
     });
   }
