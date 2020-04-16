@@ -23,6 +23,8 @@ class PackenUiModal extends Component {
       toggle: props.toggle,
       theme: props.theme,
       content: props.content,
+      onDismiss: props.onDismiss,
+      onRequestClose: props.onRequestClose,
       backdropStyles: { ...this.getStyles().backdrop.base }
     };
     if (props.type !== "gallery") {
@@ -129,6 +131,12 @@ class PackenUiModal extends Component {
     }
   }
 
+  checkHandlers = () => {
+    if (!this.state.isOpen) {
+      this.onDismissHandler();
+    }
+  }
+
   updateState = (prevProps, prevState) => {
     this.setState({
       type: this.props.type,
@@ -139,10 +147,13 @@ class PackenUiModal extends Component {
       info: this.props.info,
       toggle: this.props.toggle,
       theme: this.props.theme,
-      content: this.props.content
+      content: this.props.content,
+      onDismiss: this.props.onDismiss,
+      onRequestClose: this.props.onRequestClose
     }, () => {
       if (prevProps.isOpen !== this.props.isOpen) {
         this.setBackdropStyles();
+        this.checkHandlers();
       }
       if (this.props.type === "gallery") {
         if (prevProps.isOpen !== this.props.isOpen) {
@@ -360,9 +371,31 @@ class PackenUiModal extends Component {
     return content;
   }
 
+  onDismissHandler = () => {
+    if (this.state.onDismiss) {
+      this.state.onDismiss();
+    } else {
+      return false;
+    }
+  }
+
+  onRequestCloseHandler = () => {
+    if (this.state.onRequestClose) {
+      this.state.onRequestClose();   
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return (
-      <Modal visible={this.state.isOpen} animationType="fade" transparent={true}>
+      <Modal
+        visible={this.state.isOpen}
+        animationType="fade"
+        transparent={true}
+        onDismiss={this.onDismissHandler}
+        onRequestClose={this.onRequestCloseHandler}
+      >
         <View style={this.state.backdropStyles}>
           <View style={this.getStyles().wrapper[this.state.size]}>
             <View style={this.getStyles().box}>
