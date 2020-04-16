@@ -2,13 +2,13 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import PackenUiList from "../../app/components/PackenUiList";
+import PackenUiDropdownList from "../../app/components/PackenUiDropdownList";
 import PackenUiText from "../../app/components/PackenUiText";
 
 import Colors from "../../app/styles/abstracts/colors";
 import { genKey } from "../../app/utils";
 
-describe("<PackenUiList/>", () => {
+describe("<PackenUiDropdownList/>", () => {
   let render, renderInstance;
   const list = {
     config: {
@@ -80,7 +80,7 @@ describe("<PackenUiList/>", () => {
 
   beforeAll(() => {
     render = shallow(
-      <PackenUiList
+      <PackenUiDropdownList
         items={list.items}
         config={{ size: "medium", ...list.config }}
         numShownRows={4}

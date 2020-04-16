@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { View, FlatList } from "react-native";
 
-import PackenUiListItem from "./PackenUiListItem";
+import PackenUiDropdownListItem from "./PackenUiDropdownListItem";
 
-class PackenUiList extends Component {
+class PackenUiDropdownList extends Component {
   constructor(props) {
     super(props);
 
@@ -108,7 +108,7 @@ class PackenUiList extends Component {
 
   renderItem = ({ item }) => {
     return (
-      <PackenUiListItem
+      <PackenUiDropdownListItem
         config={this.state.config}
         mainContent={item}
         getItemHeight={this.getItemHeight}
@@ -164,4 +164,4 @@ class PackenUiList extends Component {
   }
 }
 
-export default PackenUiList;
+export default PackenUiDropdownList;

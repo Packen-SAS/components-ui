@@ -2,13 +2,13 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import PackenUiListItem from "../../app/components/PackenUiListItem";
+import PackenUiDropdownListItem from "../../app/components/PackenUiDropdownListItem";
 import PackenUiText from "../../app/components/PackenUiText";
 
 import Colors from "../../app/styles/abstracts/colors";
-import { genKey, arraysEqual } from "../../app/utils/index";
+import { genKey } from "../../app/utils/index";
 
-describe("<PackenUiListItem/>", () => {
+describe("<PackenUiDropdownListItem/>", () => {
   let render, renderInstance;
   const list = {
     config: {
@@ -80,7 +80,7 @@ describe("<PackenUiListItem/>", () => {
 
   beforeAll(() => {
     render = shallow(
-      <PackenUiListItem
+      <PackenUiDropdownListItem
         config={{ size: "medium", ...list.config }}
         mainContent={list.items[0]}
         getItemHeight={mockCallback}

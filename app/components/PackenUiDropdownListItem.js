@@ -11,7 +11,7 @@ import PackenUiAvatar from "./PackenUiAvatar";
 import PackenUiRadio from "./PackenUiRadio";
 import PackenUiCheckbox from "./PackenUiCheckbox";
 
-class PackenUiListItem extends Component {
+class PackenUiDropdownListItem extends Component {
   constructor(props) {
     super(props);
 
@@ -586,4 +586,4 @@ class PackenUiListItem extends Component {
   }
 }
 
-export default PackenUiListItem;
+export default PackenUiDropdownListItem;
