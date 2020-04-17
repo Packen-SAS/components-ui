@@ -14,8 +14,10 @@ class PackenUiCheckboxControl extends Component {
 
     this.state = {
       label: props.label,
+      layout: props.layout,
       isChecked: props.isChecked,
       isDisabled: props.isDisabled,
+      checkedItems: props.checkedItems,
       styles: {
         disabled: {}
       }
@@ -27,15 +29,15 @@ class PackenUiCheckboxControl extends Component {
   }
 
   setActiveStyles = () => {
-    if (this.props.layout === "dropdown") {
-      const newCheckedItems = [...this.props.checkedItems];
+    if (this.state.layout === "dropdown") {
+      const newCheckedItems = [...this.state.checkedItems];
       const foundItem = newCheckedItems.find(item => item.label === this.state.label);
       this.setState({
         isChecked: foundItem.isChecked
       });
       return foundItem.isChecked;
     } else {
-      if (this.props.checkedItems.includes(this.state.label)) {
+      if (this.state.checkedItems.includes(this.state.label)) {
         this.setState({
           isChecked: true
         });
@@ -66,12 +68,22 @@ class PackenUiCheckboxControl extends Component {
     return disabledStyles;
   }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
-    if (prevProps.checkedItems !== this.props.checkedItems) {
+  updateState = () => {
+    this.setState({
+      label: this.props.label,
+      layout: this.props.layout,
+      isChecked: this.props.isChecked,
+      isDisabled: this.props.isDisabled,
+      checkedItems: this.props.checkedItems
+    }, () => {
       this.setActiveStyles();
-    }
-    if (prevProps.isDisabled !== this.props.isDisabled) {
       this.setDisabledStyles();
+    });
+  }
+
+  componentDidUpdate = (prevProps, prevState, snapshot) => {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -98,7 +110,7 @@ class PackenUiCheckboxControl extends Component {
         <PackenUiText
           style={{
             ...this.getStyles().label.base,
-            ...this.getStyles().label.state[this.props.isDisabled ? "disabled" : "default"]
+            ...this.getStyles().label.state[this.state.isDisabled ? "disabled" : "default"]
           }}
         >{this.state.label}</PackenUiText>
       </View>

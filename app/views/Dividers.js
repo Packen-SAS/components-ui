@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiText from "../components/PackenUiText";
 import PackenUiDivider from "../components/PackenUiDivider";
 

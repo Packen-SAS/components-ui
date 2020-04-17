@@ -6,16 +6,36 @@ import Colors from "../styles/abstracts/colors";
 class PackenUiDivider extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      type: props.type,
+      size: props.size,
+      margin: {...props.margin}
+    }
+  }
+
+  updateState = () => {
+    this.setState({
+      type: this.props.type,
+      size: this.props.size,
+      margin: {...this.props.margin}
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
   }
 
   render() {
     return (
       <View style={{
-        height: this.props.size,
-        marginTop: this.props.margin ? this.props.margin.top : 0,
-        marginBottom: this.props.margin ? this.props.margin.bottom : 0,
+        height: this.state.size,
+        marginTop: this.state.margin ? this.state.margin.top : 0,
+        marginBottom: this.state.margin ? this.state.margin.bottom : 0,
         ...this.getStyles().base,
-        ...this.getStyles().type[this.props.type]
+        ...this.getStyles().type[this.state.type]
       }}></View>
     );
   }

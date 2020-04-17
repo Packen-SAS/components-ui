@@ -22,8 +22,12 @@ describe("<PackenUiText/>", () => {
     renderInstance = render.instance();
 
     renderInstance.setState({
-      preset: {},
-      touchable: {}
+      preset: "h1",
+      touchable: {},
+      children: "Test",
+      icon: {},
+      presetStyle: {},
+      touchableStyles: {}
     });
   });
 
@@ -80,6 +84,26 @@ describe("<PackenUiText/>", () => {
       const returnedElement = renderInstance.getContent();
       
       expect(returnedElement).toBeDefined();
+    });
+  });
+
+  describe("state changing", () => {
+    it("it updates the state with new, incoming props if there's a preset", () => {
+      render.setProps({ preset: "h1" });
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      renderInstance.updateState();
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
+    });
+
+    it("it updates the state with new, incoming props if there's no preset", () => {
+      render.setProps({ preset: undefined });
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      renderInstance.updateState();
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
     });
   });
 

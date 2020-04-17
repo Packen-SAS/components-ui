@@ -10,17 +10,27 @@ import Typography from "../styles/abstracts/typography";
 class PackenUiInfoAction extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      theme: props.theme,
+      title: props.title,
+      caption: props.caption,
+      subtitle: props.subtitle,
+      callback: props.callback,
+      img: { ...props.img },
+      icon: { ...props.icon }
+    }
   }
 
   getCaption = () => {
     let caption = null;
 
-    if (this.props.caption) {
+    if (this.state.caption) {
       caption = (
         <PackenUiText
           preset="c1"
           style={this.getStyles().caption}
-        >{this.props.caption}</PackenUiText>
+        >{this.state.caption}</PackenUiText>
       );
     }
 
@@ -30,20 +40,20 @@ class PackenUiInfoAction extends Component {
   getSubtitle = () => {
     let subtitle = null;
 
-    if (this.props.subtitle) {
+    if (this.state.subtitle) {
       let icon = undefined;
-      if (this.props.theme !== "primary") {
+      if (this.state.theme !== "primary") {
         let name = "";
-        if (this.props.theme === "success") {
+        if (this.state.theme === "success") {
           name = "check-circle";
         } else {
           name = "x-circle";
         }
-        
+
         icon = {
           name: name,
           position: "right",
-          color: Colors[this.props.theme].default,
+          color: Colors[this.state.theme].default,
           size: Typography.c1.fontSize
         }
       }
@@ -52,27 +62,45 @@ class PackenUiInfoAction extends Component {
         <PackenUiText
           preset="c1"
           icon={icon}
-          style={this.getStyles().subtitle.theme[this.props.theme]}
-        >{this.props.subtitle}</PackenUiText>
+          style={this.getStyles().subtitle.theme[this.state.theme]}
+        >{this.state.subtitle}</PackenUiText>
       );
     }
 
     return subtitle;
   }
 
+  updateState = () => {
+    this.setState({
+      theme: this.props.theme,
+      title: this.props.title,
+      caption: this.props.caption,
+      subtitle: this.props.subtitle,
+      callback: this.props.callback,
+      img: { ...this.props.img },
+      icon: { ...this.props.icon }
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
+  }
+
   render() {
     return (
-      <TouchableWithoutFeedback onPress={this.props.callback}>
-        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.props.theme]]}>
-          <Image source={this.props.img.src} style={this.getStyles().img} />
+      <TouchableWithoutFeedback onPress={this.state.callback}>
+        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.state.theme]]}>
+          <Image source={this.state.img.src} style={this.getStyles().img} />
           <View style={this.getStyles().main}>
             <View style={this.getStyles().mainTop}>
-              <PackenUiText preset="p1" style={this.getStyles().title}>{this.props.title}</PackenUiText>
+              <PackenUiText preset="p1" style={this.getStyles().title}>{this.state.title}</PackenUiText>
               {this.getCaption()}
             </View>
             {this.getSubtitle()}
           </View>
-          <Icon name={this.props.icon.name} size={this.props.icon.size} color={this.getStyles().icon.theme[this.props.theme].color} />
+          <Icon name={this.state.icon.name} size={this.state.icon.size} color={this.getStyles().icon.theme[this.state.theme].color} />
         </View>
       </TouchableWithoutFeedback>
     );
@@ -115,8 +143,8 @@ class PackenUiInfoAction extends Component {
         justifyContent: "flex-start"
       },
       img: {
-        width: this.props.img.width,
-        height: this.props.img.height
+        width: this.state.img.width,
+        height: this.state.img.height
       },
       title: {
         marginRight: 3,

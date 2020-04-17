@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 import PackenUiSelectionButtonsControl from "../../app/components/PackenUiSelectionButtonsControl";
 
 describe("<PackenUiSelectionButtonsControl/>", () => {
-  let render, renderInstance;
+  let render, renderImage, renderInstance, renderImageInstance;
   const items = [
     { label: "A1", value: "A1", isSelected: false },
     { label: "A2", value: "A2", isSelected: false },
@@ -16,11 +16,15 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
     { label: "C2", value: "C2", isSelected: false },
     { label: "C3", value: "C3", isSelected: false }
   ];
-  
+  const itemsImgs = [
+    { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "Sí", value: true, isSelected: true },
+    { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "No", value: false, isSelected: false }
+  ];
+
   beforeAll(() => {
     render = shallow(
       <PackenUiSelectionButtonsControl
-        data={{...items[0]}}
+        data={{ ...items[0] }}
         type="label"
         selected="C1"
         selection="single"
@@ -29,13 +33,27 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
     );
     renderInstance = render.instance();
 
+    renderImage = shallow(
+      <PackenUiSelectionButtonsControl
+        data={{ ...itemsImgs[0] }}
+        type="image"
+        selected={{ ...itemsImgs[0] }}
+        selection="single"
+        onNewSelection={jest.fn()}
+      />
+    );
+    renderImageInstance = renderImage.instance();
+
     renderInstance.setState({
-      name: "selectionButtons1",
+      data: { ...items[0] },
+      onNewSelection: jest.fn(),
       type: "label",
       items: [...items],
       selection: "single",
       itemsPerRow: 4,
-      selected: ""
+      selected: "C1",
+      state: "default",
+      config: { label: { preset: "s2" } }
     });
   });
 
@@ -47,27 +65,17 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
     });
 
     it("returns the correct initial config if the type is 'image'", () => {
-      const img = {
-        src: require("../../assets/images/i-propietario.png"),
-        width: 50,
-        height: 45
-      };
-      render.setProps({
-        type: "image",
-        data: {
-          image: {...img}
-        }
-      });
-      const returnedConfig = renderInstance.getConfig();
+      renderImageInstance.setState({ type: "image" });
+      const returnedConfig = renderImageInstance.getConfig();
 
-      expect(returnedConfig).toEqual({ image: {...img} });
+      expect(returnedConfig).toEqual({ image: { ...itemsImgs[0].image } });
     });
 
     it("triggers the new selection callback", () => {
-      render.setProps({ onNewSelection: jest.fn() });
+      renderInstance.setState({ onNewSelection: jest.fn() });
       renderInstance.newSelection();
 
-      expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
+      expect(renderInstance.state.onNewSelection).toHaveBeenCalled();
     });
 
     it("triggers the correct code on componentDidUpdate", () => {

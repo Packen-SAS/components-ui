@@ -15,6 +15,11 @@ class PackenUiServiceStatusItem extends Component {
     this.spaceBetweenItems = 25;
 
     this.state = {
+      data: { ...props.data },
+      index: props.index,
+      itemsHeights: [...props.itemsHeights],
+      setItemsHeights: props.setItemsHeights,
+      currentStepIndex: props.currentStepIndex,
       state: this.getInitialState(),
       time: this.getInitialTime(),
       dimensions: {
@@ -76,14 +81,14 @@ class PackenUiServiceStatusItem extends Component {
   getSubtitle = () => {
     let subtitle = null;
 
-    if (this.props.data.subtitle) {
+    if (this.state.data.subtitle) {
       subtitle = (
         <PackenUiText
           style={{
             ...this.getStyles().subtitle.base,
             ...this.getStyles().subtitle.state[this.state.state]
           }}
-        >{this.props.data.subtitle}</PackenUiText>
+        >{this.state.data.subtitle}</PackenUiText>
       );
     }
 
@@ -106,7 +111,7 @@ class PackenUiServiceStatusItem extends Component {
       }}></View>
     );
 
-    if (this.props.index === 0) {
+    if (this.state.index === 0) {
       line = null;
     }
 
@@ -115,8 +120,8 @@ class PackenUiServiceStatusItem extends Component {
 
   getBoxStyles = () => {
     return {
-      marginTop: this.props.index === 0 ? 0 : this.spaceBetweenItems,
-      zIndex: this.props.itemsHeights.length - this.props.index
+      marginTop: this.state.index === 0 ? 0 : this.spaceBetweenItems,
+      zIndex: this.state.itemsHeights.length - this.state.index
     };
   }
 
@@ -136,8 +141,8 @@ class PackenUiServiceStatusItem extends Component {
   }
 
   getPreviousBoxHeight = () => {
-    if (this.props.index > 0) {
-      return this.props.itemsHeights[this.props.index - 1];
+    if (this.state.index > 0) {
+      return this.state.itemsHeights[this.state.index - 1];
     } else {
       return 0;
     }
@@ -158,29 +163,37 @@ class PackenUiServiceStatusItem extends Component {
       }
     });
 
-    this.props.setItemsHeights(this.props.index, height);
+    this.state.setItemsHeights(this.state.index, height);
   }
 
   updateState = () => {
-    if (this.props.currentStepIndex === this.props.index) {
-      this.setState({
-        state: "active"
-      });
-      this.setCurrentTime(new Date());
-    } else if (this.props.index < this.props.currentStepIndex) {
-      this.setState({
-        state: "completed"
-      });
-    } else {
-      this.setState({
-        state: "default",
-        time: null
-      });
-    }
+    this.setState({
+      data: { ...this.props.data },
+      index: this.props.index,
+      itemsHeights: [...this.props.itemsHeights],
+      setItemsHeights: this.props.setItemsHeights,
+      currentStepIndex: this.props.currentStepIndex
+    }, () => {
+      if (this.props.currentStepIndex === this.props.index) {
+        this.setState({
+          state: "active"
+        });
+        this.setCurrentTime(new Date());
+      } else if (this.props.index < this.props.currentStepIndex) {
+        this.setState({
+          state: "completed"
+        });
+      } else {
+        this.setState({
+          state: "default",
+          time: null
+        });
+      }
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.currentStepIndex !== this.props.currentStepIndex) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
@@ -206,7 +219,7 @@ class PackenUiServiceStatusItem extends Component {
         <View style={this.getStyles().main}>
           <PackenUiText
             style={this.getStyles().title.state[this.state.state]}
-          >{this.props.data.title}</PackenUiText>
+          >{this.state.data.title}</PackenUiText>
           {this.getSubtitle()}
         </View>
       </View>

@@ -33,8 +33,21 @@ describe("<PackenUiMapPin/>", () => {
         dotPosition="bottom"
       />
     );
-
     renderInfoInstance = renderInfo.instance();
+    
+    renderInfoInstance.setState({
+      main: {
+        label: "DE",
+        text: "Calle 71 # 13 - 81"
+      },
+      sub: {
+        icon: "box",
+        position: "right"
+      },
+      theme: "primary",
+      type: "info",
+      dotPosition: "bottom"
+    });
   });
 
   describe("rendering", () => {
@@ -43,6 +56,14 @@ describe("<PackenUiMapPin/>", () => {
     });
 
     it("renders an information pin correctly", () => {
+      renderInfoInstance.setState({
+        sub: {
+          icon: "check",
+          character: undefined,
+          position: "left",
+          dotPosition: "bottom"
+        }
+      });
       expect(renderInfo).toBeDefined();
     });
 
@@ -67,20 +88,7 @@ describe("<PackenUiMapPin/>", () => {
     });
 
     it("doesn't render a label if none is passed via props", () => {
-      renderInfo.setProps({
-        type: "info",
-        theme: "primary",
-        main: {
-          label: undefined,
-          text: "Test"
-        },
-        sub: {
-          icon: "check",
-          character: undefined,
-          position: "left",
-          dotPosition: "bottom"
-        }
-      });
+      renderInfoInstance.setState({ main: { label: undefined } });
       const returnedElement = renderInfoInstance.getLabel();
 
       expect(returnedElement).toBe(null);

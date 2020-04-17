@@ -5,7 +5,6 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 import Section from "../components/Section";
 
-
 import PackenUiButton from "../components/PackenUiButton";
 import PackenUiText from "../components/PackenUiText";
 import PackenUiProgressbar from "../components/PackenUiProgressbar";

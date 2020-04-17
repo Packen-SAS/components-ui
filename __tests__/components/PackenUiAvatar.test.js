@@ -57,7 +57,7 @@ describe("<PackenUiAvatar/>", () => {
 
   describe("state changing", () => {
     it("updates the state on incoming new props", () => {
-      render.setProps({ src: undefined, size: "small" });
+      render.setProps({ callback: mockCallback, src: undefined, size: "small" });
       const prevState = { ...renderInstance.state };
       renderInstance.updateState();
 

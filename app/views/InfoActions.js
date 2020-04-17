@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiInfoAction from "../components/PackenUiInfoAction";
 
 class Avatars extends Component {

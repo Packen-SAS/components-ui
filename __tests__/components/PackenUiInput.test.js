@@ -25,14 +25,37 @@ describe("<PackenUiInput/>", () => {
         label="Label tiny"
         help="Help text tiny"
         theme="default"
+        name="input1"
       />
     );
-
     renderInstance = render.instance();
 
     renderInstance.setState({
       value: "",
       state: "default",
+      icon: {
+        name: "lock",
+        position: "left"
+      },
+      size: "tiny",
+      theme: "default",
+      multiline: false,
+      name: "input1",
+      disabled: false,
+      nonEditable: false,
+      isDropdown: false,
+      isOpen: false,
+      help: "Help text tiny",
+      message: {
+        text: "Caption text, description, error notification",
+        icon: "info"
+      },
+      keyboardType: "default",
+      isFocused: false,
+      isPassword: false,
+      label: "Label tiny",
+      placeholder: "Placeholder",
+      ref: null,
       dimensions: {
         box: {
           width: 0,
@@ -162,6 +185,362 @@ describe("<PackenUiInput/>", () => {
       const returnedElement = renderInstance.getMainIcon();
 
       expect(returnedElement).toBeDefined();
+    });
+  });
+
+  describe("state changing", () => {
+    it("sets initial state if there's no initial value, it's not disabled, and has no icon", () => {
+      render.setProps({
+        value: undefined,
+        disabled: false,
+        icon: undefined
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        value: "",
+        state: "default",
+        icon: {},
+        size: "tiny",
+        theme: "default",
+        multiline: undefined,
+        name: "input1",
+        disabled: false,
+        nonEditable: undefined,
+        isDropdown: undefined,
+        isOpen: undefined,
+        help: undefined,
+        message: {
+          text: "Test",
+          icon: undefined
+        },
+        keyboardType: undefined,
+        isFocused: undefined,
+        isPassword: undefined,
+        label: "Label tiny",
+        placeholder: "Placeholder",
+        ref: null
+      });
+    });
+
+    it("sets initial state if there's an initial value, it's disabled, and has an icon", () => {
+      render.setProps({
+        value: "Test",
+        disabled: true,
+        icon: {
+          name: "check",
+          position: "right"
+        }
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        ...renderInstance.state,
+        value: "Test",
+        state: "disabled",
+        ref: null,
+        dimensions: {
+          box: {
+            width: 0,
+            height: 0
+          },
+          iconWrapper: {
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    });
+
+    it("sets initial state if there's an initial value, it's disabled, has an icon, and has no help", () => {
+      render.setProps({
+        help: undefined,
+        value: "Test",
+        disabled: true,
+        icon: {
+          name: "check",
+          position: "right"
+        }
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        ...renderInstance.state,
+        help: undefined,
+        value: "Test",
+        state: "disabled",
+        ref: null,
+        dimensions: {
+          box: {
+            width: 0,
+            height: 0
+          },
+          iconWrapper: {
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    });
+
+    it("sets initial state if there's an initial value, it's disabled, has an icon, and has a help object", () => {
+      render.setProps({
+        help: {
+          text: "This triggers an internal callback",
+          touchable: true,
+          callback: this.mockCallback
+        },
+        value: "Test",
+        disabled: true,
+        icon: {
+          name: "check",
+          position: "right"
+        }
+      });
+      const returnedState = renderInstance.setInitialState();
+
+      expect(returnedState).toEqual({
+        ...renderInstance.state,
+        help: {
+          text: "This triggers an internal callback",
+          touchable: true,
+          callback: this.mockCallback
+        },
+        value: "Test",
+        state: "disabled",
+        ref: null,
+        dimensions: {
+          box: {
+            width: 0,
+            height: 0
+          },
+          iconWrapper: {
+            width: 0,
+            height: 0
+          }
+        }
+      });
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("disables being editable if set so", () => {
+      render.setProps({
+        nonEditable: true,
+        disabled: true
+      });
+      const res = renderInstance.setEditable();
+
+      expect(res).toBe(false);
+    });
+
+    it("enables being editable if not disabled or non-editable", () => {
+      render.setProps({
+        nonEditable: false,
+        disabled: false
+      });
+      const res = renderInstance.setEditable();
+
+      expect(res).toBe(true);
+    });
+
+    it("changes styles while onFocus", () => {
+      renderInstance.handleFocus();
+
+      expect(renderInstance.state.state).toBe("focus");
+    });
+
+    it("executes event handlers and changes styles while onFocus", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onFocus: jest.fn()
+        }
+      });
+      renderInstance.handleFocus();
+
+      expect(renderInstance.state.state).toBe("focus");
+      expect(renderInstance.state.eventHandlers.onFocus).toHaveBeenCalled();
+    });
+
+    it("changes styles while onBlur", () => {
+      renderInstance.handleBlur();
+
+      expect(renderInstance.state.state).toBe("default");
+    });
+
+    it("executes event handlers and changes styles while onBlur", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onBlur: jest.fn()
+        }
+      });
+      renderInstance.handleBlur();
+
+      expect(renderInstance.state.state).toBe("default");
+      expect(renderInstance.state.eventHandlers.onBlur).toHaveBeenCalled();
+    });
+
+    it("changes styles while onSubmitEditing", () => {
+      const spyBlur = jest.spyOn(renderInstance, "blur");
+      renderInstance.handleSubmitEditing();
+
+      expect(spyBlur).toHaveBeenCalled();
+      spyBlur.mockRestore();
+    });
+
+    it("executes event handlers and changes styles while onSubmitEditing", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onSubmitEditing: jest.fn()
+        }
+      });
+      const spyBlur = jest.spyOn(renderInstance, "blur");
+      renderInstance.handleSubmitEditing();
+
+      expect(spyBlur).toHaveBeenCalled();
+      expect(renderInstance.state.eventHandlers.onSubmitEditing).toHaveBeenCalled();
+      spyBlur.mockRestore();
+    });
+
+    it("handles onChangeText", () => {
+      render.setProps({
+        onChangeText: mockCallback
+      });
+      renderInstance.handleChangeText("Test");
+
+      expect(renderInstance.state.value).toBe("Test");
+      expect(mockCallback).toHaveBeenCalled();
+    });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { value: "Test", isFocused: false };
+      const spyCheckFocus = jest.spyOn(renderInstance, "checkFocus");
+      render.setProps({
+        value: "Test 2",
+        isFocused: true
+      });
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(renderInstance.state.value).toBe("Test 2");
+      expect(spyCheckFocus).toHaveBeenCalled();
+      spyCheckFocus.mockRestore();
+    });
+
+    it("executes onLayout event callback for the box", () => {
+      const spyGetBoxDimensions = jest.spyOn(renderInstance, "getBoxDimensions");
+      render.props().children[1].props.onLayout({
+        nativeEvent: {
+          layout: {}
+        }
+      });
+
+      expect(spyGetBoxDimensions).toHaveBeenCalled();
+      spyGetBoxDimensions.mockRestore();
+    });
+
+    it("executes onLayout event callback for the icon if provided", () => {
+      const spyGetIconWrapperDimensions = jest.spyOn(renderInstance, "getIconWrapperDimensions");
+      render.setProps({
+        icon: {
+          position: "right"
+        }
+      });
+      render.props().children[1].props.children[0].props.onLayout({
+        nativeEvent: {
+          layout: {}
+        }
+      });
+
+      expect(spyGetIconWrapperDimensions).toHaveBeenCalled();
+      spyGetIconWrapperDimensions.mockRestore();
+    });
+
+    it("returns the keyboard type as 'default' if not provided", () => {
+      render.setProps({ keyboardType: undefined });
+      const returnedType = renderInstance.getKeyboardType();
+
+      expect(returnedType).toBe("default");
+    });
+
+    it("returns the correct keyboard type if provided", () => {
+      render.setProps({ keyboardType: "number-pad" });
+      const returnedType = renderInstance.getKeyboardType();
+
+      expect(returnedType).toBe("number-pad");
+    });
+
+    it("returns the ref", () => {
+      const ref = { blur: mockCallback, focus: mockCallback };
+      renderInstance.getRef(ref);
+      
+      expect(renderInstance.state.ref).toEqual(ref);
+    });
+
+    it("focuses the input if ref is defined", () => {
+      renderInstance.setState({ ref: { focus: mockCallback } });
+      renderInstance.focus();
+
+      expect(renderInstance.state.ref.focus).toHaveBeenCalled();
+    });
+
+    it("returns false if trying to focus the input and ref is not defined", () => {
+      renderInstance.setState({ ref: null });
+      const res = renderInstance.focus();
+
+      expect(res).toBe(false);
+    });
+
+    it("blurs the input if ref is defined", () => {
+      renderInstance.setState({ ref: { blur: mockCallback } });
+      renderInstance.blur();
+
+      expect(renderInstance.state.ref.blur).toHaveBeenCalled();
+    });
+
+    it("returns false if trying to blur the input and ref is not defined", () => {
+      renderInstance.setState({ ref: null });
+      const res = renderInstance.blur();
+
+      expect(res).toBe(false);
+    });
+
+    it("focuses the input while checking its focus if it's set so", () => {
+      render.setProps({ isFocused: true });
+      const spyFocus = jest.spyOn(renderInstance, "focus");
+      renderInstance.checkFocus();
+
+      expect(spyFocus).toHaveBeenCalled();
+      spyFocus.mockRestore();
+    });
+
+    it("blurs the input while checking its focus if it's set so", () => {
+      render.setProps({ isFocused: false });
+      const spyBlur = jest.spyOn(renderInstance, "blur");
+      renderInstance.checkFocus();
+
+      expect(spyBlur).toHaveBeenCalled();
+      spyBlur.mockRestore();
+    });
+
+    it("returns the entry security type as true if set so", () => {
+      render.setProps({ isPassword: true });
+      const res = renderInstance.getSecureEntryType();
+      
+      expect(res).toBe(true);
+    });
+
+    it("returns the entry security type as false if set so", () => {
+      render.setProps({ isPassword: false });
+      const res = renderInstance.getSecureEntryType();
+      
+      expect(res).toBe(false);
+    });
+
+    it("triggers the help callback", () => {
+      render.setProps({ help: { callback: mockCallback } });
+      renderInstance.triggerHelpCallback();
+
+      expect(renderInstance.props.help.callback).toHaveBeenCalled();
     });
   });
 
@@ -334,238 +713,6 @@ describe("<PackenUiInput/>", () => {
       });
       expect(spySetIconPositionStyles).toHaveBeenCalled();
       spySetIconPositionStyles.mockRestore();
-    });
-  });
-
-  describe("state changing", () => {
-    it("sets initial state if there's no initial value, it's not disabled, and has no icon", () => {
-      render.setProps({
-        value: undefined,
-        disabled: false,
-        icon: undefined
-      });
-      const returnedState = renderInstance.setInitialState();
-
-      expect(returnedState).toEqual({
-        value: "",
-        state: "default",
-        ref: null
-      });
-    });
-
-    it("sets initial state if there's an initial value, it's disabled, and has an icon", () => {
-      render.setProps({
-        value: "Test",
-        disabled: true,
-        icon: {
-          name: "check",
-          position: "right"
-        }
-      });
-      const returnedState = renderInstance.setInitialState();
-
-      expect(returnedState).toEqual({
-        value: "Test",
-        state: "disabled",
-        ref: null,
-        dimensions: {
-          box: {
-            width: 0,
-            height: 0
-          },
-          iconWrapper: {
-            width: 0,
-            height: 0
-          }
-        }
-      });
-    });
-  });
-
-  describe("triggering actions", () => {
-    it("disables being editable if set so", () => {
-      render.setProps({
-        nonEditable: true,
-        disabled: true
-      });
-      const res = renderInstance.setEditable();
-
-      expect(res).toBe(false);
-    });
-
-    it("enables being editable if not disabled or non-editable", () => {
-      render.setProps({
-        nonEditable: false,
-        disabled: false
-      });
-      const res = renderInstance.setEditable();
-
-      expect(res).toBe(true);
-    });
-
-    it("changes styles while onPressIn", () => {
-      renderInstance.handlePressIn();
-
-      expect(renderInstance.state.state).toBe("hover");
-    });
-
-    it("changes styles while onPressOut", () => {
-      renderInstance.handlePressOut();
-
-      expect(renderInstance.state.state).toBe("default");
-    });
-
-    it("changes styles while onFocus", () => {
-      renderInstance.handleFocus();
-
-      expect(renderInstance.state.state).toBe("focus");
-    });
-
-    it("changes styles while onBlur", () => {
-      renderInstance.handleBlur();
-
-      expect(renderInstance.state.state).toBe("default");
-    });
-
-    it("handles onChangeText", () => {
-      render.setProps({
-        onChangeText: mockCallback
-      });
-      renderInstance.handleChangeText("Test");
-
-      expect(renderInstance.state.value).toBe("Test");
-      expect(mockCallback).toHaveBeenCalled();
-    });
-
-    it("executes correct code on componentDidUpdate", () => {
-      const prevProps = { value: "Test", isFocused: false };
-      const spyCheckFocus = jest.spyOn(renderInstance, "checkFocus");
-      render.setProps({
-        value: "Test 2",
-        isFocused: true
-      });
-      renderInstance.componentDidUpdate(prevProps, null, null);
-
-      expect(renderInstance.state.value).toBe("Test 2");
-      expect(spyCheckFocus).toHaveBeenCalled();
-      spyCheckFocus.mockRestore();
-    });
-
-    it("executes onLayout event callback for the box", () => {
-      const spyGetBoxDimensions = jest.spyOn(renderInstance, "getBoxDimensions");
-      render.props().children[1].props.onLayout({
-        nativeEvent: {
-          layout: {}
-        }
-      });
-
-      expect(spyGetBoxDimensions).toHaveBeenCalled();
-      spyGetBoxDimensions.mockRestore();
-    });
-
-    it("executes onLayout event callback for the icon if provided", () => {
-      const spyGetIconWrapperDimensions = jest.spyOn(renderInstance, "getIconWrapperDimensions");
-      render.setProps({
-        icon: {
-          position: "right"
-        }
-      });
-      render.props().children[1].props.children[0].props.onLayout({
-        nativeEvent: {
-          layout: {}
-        }
-      });
-
-      expect(spyGetIconWrapperDimensions).toHaveBeenCalled();
-      spyGetIconWrapperDimensions.mockRestore();
-    });
-
-    it("returns the keyboard type as 'default' if not provided", () => {
-      render.setProps({ keyboardType: undefined });
-      const returnedType = renderInstance.getKeyboardType();
-
-      expect(returnedType).toBe("default");
-    });
-
-    it("returns the correct keyboard type if provided", () => {
-      render.setProps({ keyboardType: "number-pad" });
-      const returnedType = renderInstance.getKeyboardType();
-
-      expect(returnedType).toBe("number-pad");
-    });
-
-    it("returns the ref", () => {
-      const ref = { blur: mockCallback, focus: mockCallback };
-      renderInstance.getRef(ref);
-      
-      expect(renderInstance.state.ref).toEqual(ref);
-    });
-
-    it("focuses the input if ref is defined", () => {
-      renderInstance.setState({ ref: { focus: mockCallback } });
-      renderInstance.focus();
-
-      expect(renderInstance.state.ref.focus).toHaveBeenCalled();
-    });
-
-    it("returns false if trying to focus the input and ref is not defined", () => {
-      renderInstance.setState({ ref: null });
-      const res = renderInstance.focus();
-
-      expect(res).toBe(false);
-    });
-
-    it("blurs the input if ref is defined", () => {
-      renderInstance.setState({ ref: { blur: mockCallback } });
-      renderInstance.blur();
-
-      expect(renderInstance.state.ref.blur).toHaveBeenCalled();
-    });
-
-    it("returns false if trying to blur the input and ref is not defined", () => {
-      renderInstance.setState({ ref: null });
-      const res = renderInstance.blur();
-
-      expect(res).toBe(false);
-    });
-
-    it("focuses the input while checking its focus if it's set so", () => {
-      render.setProps({ isFocused: true });
-      const spyFocus = jest.spyOn(renderInstance, "focus");
-      renderInstance.checkFocus();
-
-      expect(spyFocus).toHaveBeenCalled();
-      spyFocus.mockRestore();
-    });
-
-    it("blurs the input while checking its focus if it's set so", () => {
-      render.setProps({ isFocused: false });
-      const spyBlur = jest.spyOn(renderInstance, "blur");
-      renderInstance.checkFocus();
-
-      expect(spyBlur).toHaveBeenCalled();
-      spyBlur.mockRestore();
-    });
-
-    it("returns the entry security type as true if set so", () => {
-      render.setProps({ isPassword: true });
-      const res = renderInstance.getSecureEntryType();
-      
-      expect(res).toBe(true);
-    });
-
-    it("returns the entry security type as false if set so", () => {
-      render.setProps({ isPassword: false });
-      const res = renderInstance.getSecureEntryType();
-      
-      expect(res).toBe(false);
-    });
-
-    it("triggers the help callback", () => {
-      render.setProps({ help: { callback: mockCallback } });
-      renderInstance.triggerHelpCallback();
-
-      expect(renderInstance.props.help.callback).toHaveBeenCalled();
     });
   });
 });

@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 
-import Colors from "../styles/abstracts/colors";
-import Typography from "../styles/abstracts/typography";
-
 import PackenUiCheckboxControl from "./PackenUiCheckboxControl";
 
 class PackenUiCheckbox extends Component {
@@ -11,7 +8,10 @@ class PackenUiCheckbox extends Component {
     super(props);
 
     this.state = {
+      layout: props.layout,
       items: [...props.items],
+      callback: props.callback,
+      name: props.name,
       checkedItems: [],
       selectedIndex: null
     };
@@ -33,7 +33,7 @@ class PackenUiCheckbox extends Component {
       this.setState({
         checkedItems: newCheckedItems
       }, () => {
-        this.props.callback(this.props.name, newCheckedItems);
+        this.state.callback(this.state.name, newCheckedItems);
       });
     } else {
       return false;
@@ -55,24 +55,39 @@ class PackenUiCheckbox extends Component {
     }
   }
 
+  updateState = () => {
+    this.setState({
+      layout: this.props.layout,
+      items: [...this.props.items],
+      callback: this.props.callback,
+      name: this.props.name
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
+  }
+
   render() {
     return (
       <View
-        style={this.getStyles().wrapper.layout[this.props.layout]}
-        pointerEvents={this.props.layout === "dropdown" ? "none" : "auto"}
+        style={this.getStyles().wrapper.layout[this.state.layout]}
+        pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
       >
         {
           this.state.items.map((item, i) => (
             <View
               key={i}
               pointerEvents={item.isDisabled ? "none" : "auto"}
-              style={this.getStyles().content.layout[this.props.layout]}
+              style={this.getStyles().content.layout[this.state.layout]}
             >
               <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
                 <View style={{ alignSelf: "flex-start" }}>
                   <PackenUiCheckboxControl
                     label={item.label}
-                    layout={this.props.layout}
+                    layout={this.state.layout}
                     isChecked={item.isChecked}
                     isDisabled={item.isDisabled}
                     checkedItems={this.state.checkedItems}

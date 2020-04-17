@@ -6,6 +6,7 @@ import PackenUiRadio from "../../app/components/PackenUiRadio";
 
 describe("<PackenUiRadio/>", () => {
   let renderColumn, renderRow, renderColumnInstance;
+  const mockCallback = jest.fn();
 
   beforeAll(() => {
     renderColumn = shallow(
@@ -50,6 +51,26 @@ describe("<PackenUiRadio/>", () => {
     renderColumnInstance = renderColumn.instance();
 
     renderColumn.setState({
+      items: [
+        {
+          label: "Place your text",
+          value: "Place your text",
+          isDisabled: false
+        },
+        {
+          label: "Different text",
+          value: "Different text",
+          isDisabled: false
+        },
+        {
+          label: "This text is both checked and disabled",
+          value: "This text is both checked and disabled",
+          isDisabled: true
+        }
+      ],
+      callback: mockCallback,
+      name: "radios1",
+      layout: "column",
       checkedIndex: 2,
       currentSelection: {
         label: "Different text",
@@ -151,15 +172,12 @@ describe("<PackenUiRadio/>", () => {
     });
 
     it("executes callback if passed via props", () => {
-      renderColumn.setProps({
-        callback: jest.fn(),
-        name: "radios1"
-      });
+      renderColumnInstance.setState({ callback: jest.fn() });
       const prevState = { currentSelection: 1 };
       renderColumnInstance.setState({ currentSelection: 0 });
       renderColumnInstance.componentDidUpdate(null, prevState, null);
       
-      expect(renderColumnInstance.props.callback).toHaveBeenCalledWith("radios1", renderColumnInstance.state.currentSelection.value);
+      expect(renderColumnInstance.state.callback).toHaveBeenCalledWith("radios1", renderColumnInstance.state.currentSelection.value);
     });
   });
 

@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import PackenUiMapPin from "../components/PackenUiMapPin";
 
 class Dividers extends Component {

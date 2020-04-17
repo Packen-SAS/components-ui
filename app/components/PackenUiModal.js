@@ -13,7 +13,18 @@ class PackenUiModal extends Component {
   constructor(props) {
     super(props);
 
-    let initialState = { backdropStyles: { ...this.getStyles().backdrop.base } };
+    let initialState = {
+      type: props.type,
+      banner: props.banner,
+      size: props.size,
+      isOpen: props.isOpen,
+      images: props.images,
+      info: props.info,
+      toggle: props.toggle,
+      theme: props.theme,
+      content: props.content,
+      backdropStyles: { ...this.getStyles().backdrop.base }
+    };
     if (props.type !== "gallery") {
       initialState = {
         ...initialState
@@ -54,7 +65,7 @@ class PackenUiModal extends Component {
   }
 
   componentDidMount() {
-    if (this.props.type === "gallery") {
+    if (this.state.type === "gallery") {
       this.setGalleryArrowsPosition();
     }
   }
@@ -62,13 +73,13 @@ class PackenUiModal extends Component {
   getContentStyles = () => {
     let contentStyles = { ...this.getStyles().content.base };
 
-    if (this.props.banner) {
+    if (this.state.banner) {
       contentStyles = {
         ...contentStyles,
-        ...this.getStyles().content.banner[this.props.size]
+        ...this.getStyles().content.banner[this.state.size]
       }
     } else {
-      if (this.props.type === "custom") {
+      if (this.state.type === "custom") {
         contentStyles = {
           ...contentStyles,
           ...this.getStyles().content.custom
@@ -87,9 +98,9 @@ class PackenUiModal extends Component {
   getTextStyles = () => {
     let textStyles = {};
 
-    if (this.props.banner) {
+    if (this.state.banner) {
       textStyles = {
-        ...this.getStyles().text.banner[this.props.size]
+        ...this.getStyles().text.banner[this.state.size]
       }
     } else {
       textStyles = {
@@ -101,7 +112,7 @@ class PackenUiModal extends Component {
   }
 
   setBackdropStyles = () => {
-    if (this.props.isOpen) {
+    if (this.state.isOpen) {
       this.setState({
         backdropStyles: {
           ...this.state.backdropStyles,
@@ -118,17 +129,35 @@ class PackenUiModal extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.isOpen !== this.props.isOpen) {
-      this.setBackdropStyles();
-    }
-    if (this.props.type === "gallery") {
-      if (prevState.dimensions !== this.state.dimensions) {
-        this.setGalleryArrowsPosition();
-      }
+  updateState = (prevProps, prevState) => {
+    this.setState({
+      type: this.props.type,
+      banner: this.props.banner,
+      size: this.props.size,
+      isOpen: this.props.isOpen,
+      images: this.props.images,
+      info: this.props.info,
+      toggle: this.props.toggle,
+      theme: this.props.theme,
+      content: this.props.content
+    }, () => {
       if (prevProps.isOpen !== this.props.isOpen) {
-        this.reinitGallery();
+        this.setBackdropStyles();
       }
+      if (this.props.type === "gallery") {
+        if (prevProps.isOpen !== this.props.isOpen) {
+          this.reinitGallery();
+        }
+        if (prevState.dimensions !== this.props.dimensions) {
+          this.setGalleryArrowsPosition();
+        }
+      }
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps !== this.props) {
+      this.updateState(prevProps, prevState);
     }
   }
 
@@ -209,7 +238,7 @@ class PackenUiModal extends Component {
   handleBeforeSnap = slideIndex => {
     this.setState({
       has: {
-        next: slideIndex === this.props.images.length - 1 ? false : true,
+        next: slideIndex === this.state.images.length - 1 ? false : true,
         prev: slideIndex === 0 ? false : true
       }
     });
@@ -218,10 +247,10 @@ class PackenUiModal extends Component {
   getBanner = () => {
     let banner = null;
 
-    if (this.props.banner) {
+    if (this.state.banner) {
       banner = (
-        <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.props.theme] }}>
-          <Icon name={this.props.banner.icon} size={40} color={Colors[this.props.theme].default} />
+        <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.state.theme] }}>
+          <Icon name={this.state.banner.icon} size={40} color={Colors[this.state.theme].default} />
         </View>
       );
     }
@@ -232,10 +261,10 @@ class PackenUiModal extends Component {
   getInfoButton = () => {
     let btn = null;
 
-    if (this.props.info.btn) {
+    if (this.state.info.btn) {
       btn = (
         <View style={this.getStyles().btn}>
-          {this.props.info.btn}
+          {this.state.info.btn}
         </View>
       );
     }
@@ -246,12 +275,12 @@ class PackenUiModal extends Component {
   getHeader = () => {
     let header = null;
 
-    if (this.props.type !== "custom") {
+    if (this.state.type !== "custom") {
       header = (
         <View style={this.getStyles().header}>
           <View style={this.getStyles().header__inner}>
-            <TouchableWithoutFeedback onPress={this.props.toggle}>
-              <Icon name="x" size={20} color={Colors[this.props.theme].default} style={this.props.type === "gallery" ? this.getStyles().header__close_icon : null} />
+            <TouchableWithoutFeedback onPress={this.state.toggle}>
+              <Icon name="x" size={20} color={Colors[this.state.theme].default} style={this.state.type === "gallery" ? this.getStyles().header__close_icon : null} />
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -264,12 +293,12 @@ class PackenUiModal extends Component {
   getContent = () => {
     let content = null;
     
-    switch (this.props.type) {
+    switch (this.state.type) {
       case "custom":
         content = (
           <View style={this.getStyles().info}>
             <View style={this.getContentStyles()}>
-              {this.props.content}
+              {this.state.content}
             </View>
           </View>
         );
@@ -279,8 +308,8 @@ class PackenUiModal extends Component {
             <View style={this.getStyles().info}>
               {this.getBanner()}
               <View style={this.getContentStyles()}>
-                <PackenUiText preset="h3" style={this.getStyles().title}>{this.props.info.title}</PackenUiText>
-                <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.props.info.text}</PackenUiText>
+                <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
+                <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
                 {this.getInfoButton()}
               </View>
             </View>
@@ -290,7 +319,7 @@ class PackenUiModal extends Component {
         content = (
           <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
             {
-              this.props.images.length > 1 ? (
+              this.state.images.length > 1 ? (
                 <>
                   {
                     this.state.has.prev ? (
@@ -316,7 +345,7 @@ class PackenUiModal extends Component {
             <Carousel
               ref={c => { this.carouselRef = c; }}
               onBeforeSnapToItem={this.handleBeforeSnap}
-              data={this.props.images}
+              data={this.state.images}
               renderItem={this.renderGallerySlide}
               itemWidth={this.getGalleryBoxDimensions().width}
               sliderWidth={this.getGalleryBoxDimensions().width}
@@ -333,9 +362,9 @@ class PackenUiModal extends Component {
 
   render() {
     return (
-      <Modal visible={this.props.isOpen} animationType="fade" transparent={true}>
+      <Modal visible={this.state.isOpen} animationType="fade" transparent={true}>
         <View style={this.state.backdropStyles}>
-          <View style={this.getStyles().wrapper[this.props.size]}>
+          <View style={this.getStyles().wrapper[this.state.size]}>
             <View style={this.getStyles().box}>
               {this.getHeader()}
               {this.getContent()}

@@ -42,5 +42,24 @@ describe("<PackenUiTabs/>", () => {
       
       expect(renderInstance.state.activeTabIndex).toBe(1);
     });
+
+    it("updates the state with new, incoming props", () => {
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      renderInstance.updateState();
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("executes componentDidUpdate handler", () => {
+      const prevProps = { test: "Test" };
+      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
+    });
   });
 });

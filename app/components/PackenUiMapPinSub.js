@@ -11,13 +11,21 @@ import PackenUiText from "./PackenUiText";
 class PackenUiMapPinSub extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      theme: props.theme,
+      icon: props.icon,
+      label: props.label,
+      dotPosition: props.dotPosition,
+      type: props.type
+    }
   }
 
   getIconColor = () => {
     let color = this.getStyles().icon.type.icon.color;
 
-    if (this.props.theme) {
-      color = this.getStyles().icon.theme[this.props.theme].color;
+    if (this.state.theme) {
+      color = this.getStyles().icon.theme[this.state.theme].color;
     }
 
     return color;
@@ -26,10 +34,10 @@ class PackenUiMapPinSub extends Component {
   getIcon = () => {
     let icon = null;
 
-    if (this.props.icon) {
+    if (this.state.icon) {
       icon = (
         <Icon
-          name={this.props.icon}
+          name={this.state.icon}
           color={this.getIconColor()}
           size={this.getStyles().icon.type.icon.fontSize}
         />
@@ -42,15 +50,15 @@ class PackenUiMapPinSub extends Component {
   getLabel = () => {
     let label = null;
 
-    if (this.props.label) {
+    if (this.state.label) {
       label = (
         <PackenUiText
           style={{
             ...this.getStyles().character.base,
-            ...this.getStyles().character.theme[this.props.theme]
+            ...this.getStyles().character.theme[this.state.theme]
           }}
         >
-          {this.props.label.toUpperCase()}
+          {this.state.label.toUpperCase()}
         </PackenUiText>
       );
     }
@@ -61,12 +69,12 @@ class PackenUiMapPinSub extends Component {
   getDot = () => {
     let dot = null;
 
-    if (this.props.dotPosition) {
+    if (this.state.dotPosition) {
       dot = (
         <View
           style={{
             ...this.getStyles().dot.base,
-            ...this.getStyles().dot.positioning.type[this.props.type][this.props.dotPosition]
+            ...this.getStyles().dot.positioning.type[this.state.type][this.state.dotPosition]
           }}
         ></View>
       );
@@ -80,8 +88,8 @@ class PackenUiMapPinSub extends Component {
       <View
         style={{
           ...this.getStyles().sub.base,
-          ...this.getStyles().sub.type[this.props.type],
-          ...this.getStyles().sub.theme[this.props.theme]
+          ...this.getStyles().sub.type[this.state.type],
+          ...this.getStyles().sub.theme[this.state.theme]
         }}
       >
         {this.getIcon()}

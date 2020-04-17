@@ -3,7 +3,6 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 
-
 import Spacing from "../styles/abstracts/spacing";
 
 import PackenUiToggle from "../components/PackenUiToggle";

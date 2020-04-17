@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, TextInput, TouchableWithoutFeedback } from "react-native";
+import { View, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
@@ -18,6 +18,23 @@ class PackenUiInput extends Component {
     let initialState = {
       value: this.props.value ? this.props.value : "",
       state: this.props.disabled ? "disabled" : "default",
+      icon: { ...this.props.icon },
+      size: this.props.size,
+      theme: this.props.theme,
+      multiline: this.props.multiline,
+      name: this.props.name,
+      disabled: this.props.disabled,
+      nonEditable: this.props.nonEditable,
+      isDropdown: this.props.isDropdown,
+      isOpen: this.props.isOpen,
+      help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
+      message: { ...this.props.message },
+      keyboardType: this.props.keyboardType,
+      isFocused: this.props.isFocused,
+      isPassword: this.props.isPassword,
+      label: this.props.label,
+      placeholder: this.props.placeholder,
+      eventHandlers: this.props.eventHandlers,
       ref: null
     };
 
@@ -110,28 +127,29 @@ class PackenUiInput extends Component {
     return multilineStyles;
   }
 
-  handlePressIn = () => {
-    this.setState({
-      state: "hover"
-    });
-  }
-
-  handlePressOut = () => {
-    this.setState({
-      state: "default"
-    });
-  }
-
   handleFocus = () => {
     this.setState({
       state: "focus"
-    });
+    }, this.addKeyboardEvents);
+    if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
+      this.state.eventHandlers.onFocus(this.state.name);
+    }
   }
 
   handleBlur = () => {
     this.setState({
       state: "default"
-    });
+    }, this.removeKeyboardEvents);
+    if (this.state.eventHandlers && this.state.eventHandlers.onBlur) {
+      this.state.eventHandlers.onBlur(this.state.name);
+    }
+  }
+
+  handleSubmitEditing = () => {
+    this.blur();
+    if (this.state.eventHandlers && this.state.eventHandlers.onSubmitEditing) {
+      this.state.eventHandlers.onSubmitEditing(this.state.name);
+    }
   }
 
   handleChangeText = text => {
@@ -139,6 +157,16 @@ class PackenUiInput extends Component {
       value: text
     });
     this.props.onChangeText(this.props.name, text);
+  }
+
+  addKeyboardEvents = () => {
+    Keyboard.addListener("keyboardDidShow", this.focus);
+    Keyboard.addListener("keyboardDidHide", this.blur);
+  }
+
+  removeKeyboardEvents = () => {
+    Keyboard.removeAllListeners("keyboardDidShow");
+    Keyboard.removeAllListeners("keyboardDidHide");
   }
 
   setEditable = () => {
@@ -323,14 +351,35 @@ class PackenUiInput extends Component {
     return this.props.isPassword ? true : false;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps.value !== this.props.value) {
-      this.setState({
-        value: this.props.value
-      });
-    }
-    if (prevProps.isFocused !== this.props.isFocused) {
+  updateState = () => {
+    this.setState({
+      value: this.props.value ? this.props.value : "",
+      state: this.props.disabled ? "disabled" : "default",
+      icon: { ...this.props.icon },
+      size: this.props.size,
+      theme: this.props.theme,
+      multiline: this.props.multiline,
+      name: this.props.name,
+      disabled: this.props.disabled,
+      nonEditable: this.props.nonEditable,
+      isDropdown: this.props.isDropdown,
+      isOpen: this.props.isOpen,
+      help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
+      message: { ...this.props.message },
+      keyboardType: this.props.keyboardType,
+      isFocused: this.props.isFocused,
+      isPassword: this.props.isPassword,
+      label: this.props.label,
+      placeholder: this.props.placeholder,
+      eventHandlers: this.props.eventHandlers
+    }, () => {
       this.checkFocus();
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -347,29 +396,28 @@ class PackenUiInput extends Component {
         </View>
         <View style={this.getStyles().box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
           {this.getMainIcon()}
-          <TouchableWithoutFeedback onPressIn={this.handlePressIn} onPressOut={this.handlePressOut}>
-            <TextInput
-              style={{
-                ...this.getStyles().input.base,
-                ...this.getStyles().input.size[this.props.size],
-                ...this.getStyles().input.theme[this.props.theme],
-                ...this.getStyles().input.state[this.state.state],
-                ...this.getPaddingStyles(),
-                ...this.getMultilineStyles()
-              }}
-              ref={this.getRef}
-              secureTextEntry={this.getSecureEntryType()}
-              keyboardType={this.getKeyboardType()}
-              value={this.state.value}
-              onFocus={this.handleFocus}
-              onBlur={this.handleBlur}
-              onChangeText={this.handleChangeText}
-              placeholder={this.props.placeholder}
-              placeholderTextColor={this.getStyles().placeholder.color}
-              multiline={this.props.multiline ? true : false}
-              editable={this.setEditable()}
-            />
-          </TouchableWithoutFeedback>
+          <TextInput
+            style={{
+              ...this.getStyles().input.base,
+              ...this.getStyles().input.size[this.props.size],
+              ...this.getStyles().input.theme[this.props.theme],
+              ...this.getStyles().input.state[this.state.state],
+              ...this.getPaddingStyles(),
+              ...this.getMultilineStyles()
+            }}
+            ref={this.getRef}
+            secureTextEntry={this.getSecureEntryType()}
+            keyboardType={this.getKeyboardType()}
+            value={this.state.value}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+            onChangeText={this.handleChangeText}
+            onSubmitEditing={this.handleSubmitEditing}
+            placeholder={this.props.placeholder}
+            placeholderTextColor={this.getStyles().placeholder.color}
+            multiline={this.props.multiline ? true : false}
+            editable={this.setEditable()}
+          />
         </View>
         {this.getMessage()}
       </View>
@@ -408,7 +456,7 @@ class PackenUiInput extends Component {
           },
           medium: {
             fontSize: Typography.size.small,
-            lineHeight:Typography.lineheight.medium
+            lineHeight: Typography.lineheight.medium
           },
           large: {
             fontSize: Typography.size.medium,
@@ -421,7 +469,6 @@ class PackenUiInput extends Component {
         },
         state: {
           default: {},
-          hover: {},
           focus: {},
           disabled: {
             color: Colors.basic.gray.dft
@@ -495,7 +542,6 @@ class PackenUiInput extends Component {
         },
         state: {
           default: {},
-          hover: {},
           focus: {},
           disabled: {
             color: Colors.basic.gray.dft
@@ -580,9 +626,6 @@ class PackenUiInput extends Component {
         },
         state: {
           default: {},
-          hover: {
-            backgroundColor: Colors.basic.white.drk
-          },
           focus: {
             borderWidth: 2
           },
@@ -697,7 +740,6 @@ class PackenUiInput extends Component {
           },
           state: {
             default: {},
-            hover: {},
             focus: {},
             disabled: {
               color: Colors.basic.gray.dft
@@ -738,7 +780,6 @@ class PackenUiInput extends Component {
           },
           state: {
             default: {},
-            hover: {},
             focus: {},
             disabled: {
               color: Colors.basic.gray.dft

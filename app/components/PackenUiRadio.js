@@ -8,7 +8,11 @@ class PackenUiRadio extends Component {
     super(props);
 
     this.state = {
+      items: [...props.items],
       checkedIndex: props.initialIndex,
+      callback: props.callback,
+      name: props.name,
+      layout: props.layout,
       currentSelection: ""
     }
   }
@@ -20,12 +24,22 @@ class PackenUiRadio extends Component {
   }
 
   findCurrentSelection = () => {
-    return this.props.items[this.state.checkedIndex];
+    return this.state.items[this.state.checkedIndex];
   }
 
   updateCurrentSelection = newSelection => {
     this.setState({
       currentSelection: newSelection
+    });
+  }
+
+  updateState = () => {
+    this.setState({
+      items: [...this.props.items],
+      checkedIndex: this.props.initialIndex,
+      callback: this.props.callback,
+      name: this.props.name,
+      layout: this.props.layout
     });
   }
 
@@ -36,10 +50,13 @@ class PackenUiRadio extends Component {
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
-      if (this.props.callback) {
-        this.props.callback(this.props.name, this.state.currentSelection.value);
+      if (this.state.callback) {
+        this.state.callback(this.state.name, this.state.currentSelection.value);
       }
       return this.state.currentSelection;
+    }
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -51,13 +68,13 @@ class PackenUiRadio extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().container[this.props.layout]}>
+      <View style={this.getStyles().container[this.state.layout]}>
         {
-          this.props.items.map((item, i) => (
+          this.state.items.map((item, i) => (
             <View
               key={i}
-              style={this.getStyles().item[this.props.layout]}
-              pointerEvents={this.props.layout === "dropdown" ?  "none" : "auto"}
+              style={this.getStyles().item[this.state.layout]}
+              pointerEvents={this.state.layout === "dropdown" ?  "none" : "auto"}
             >
               <PackenUiRadioControl
                 checkedIndex={this.state.checkedIndex}

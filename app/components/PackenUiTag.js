@@ -9,12 +9,30 @@ import PackenUiText from "./PackenUiText";
 class PackenUiTag extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      style: props.style,
+      children: props.children
+    }
+  }
+
+  updateState = () => {
+    this.setState({
+      style: this.props.style,
+      children: this.props.children
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
   }
 
   render() {
     return (
       <View style={this.getStyles().box.base}>
-        <PackenUiText style={{ ...this.getStyles().label.base, ...this.props.style }}>{this.props.children}</PackenUiText>
+        <PackenUiText style={{ ...this.getStyles().label.base, ...this.state.style }}>{this.state.children}</PackenUiText>
       </View>
     );
   }

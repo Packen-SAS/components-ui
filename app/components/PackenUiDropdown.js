@@ -12,6 +12,12 @@ class PackenUiDropdown extends Component {
     super(props);
 
     this.state = {
+      callback: props.callback,
+      name: props.name,
+      isDisabled: props.isDisabled,
+      input: {...props.input},
+      list: {...props.list},
+      size: props.size,
       isOpen: false,
       dimensions: {
         menu: {
@@ -61,7 +67,7 @@ class PackenUiDropdown extends Component {
       finalSelection: selectedItems
     }, this.composeFinalSelectionString);
 
-    this.props.callback(this.props.name, selectedItems);
+    this.state.callback(this.state.name, selectedItems);
   }
 
   composeFinalSelectionString = () => {
@@ -79,7 +85,21 @@ class PackenUiDropdown extends Component {
     return finalSelectionString;
   }
 
+  updateState = () => {
+    this.setState({
+      callback: this.props.callback,
+      name: this.props.name,
+      isDisabled: this.props.isDisabled,
+      input: {...this.props.input},
+      list: {...this.props.list},
+      size: this.props.size
+    });
+  }
+
   componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
     if (prevState.isOpen !== this.state.isOpen) {
       this.setState({
         styles: {
@@ -97,23 +117,23 @@ class PackenUiDropdown extends Component {
     return (
       <View
         style={this.getStyles().wrapper}
-        pointerEvents={this.props.isDisabled ? "none" : "auto"}
+        pointerEvents={this.state.isDisabled ? "none" : "auto"}
       >
         <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
           <View pointerEvents="box-only">
             <PackenUiInput
               value={this.state.finalSelectionString}
-              size={this.props.size}
-              placeholder={this.props.input.placeholder}
-              onChangeText={this.props.input.onChangeText}
-              icon={this.props.input.icon}
-              message={this.props.input.message}
-              label={this.props.input.label}
-              help={this.props.input.help}
-              theme={this.props.input.theme}
+              size={this.state.size}
+              placeholder={this.state.input.placeholder}
+              onChangeText={this.state.input.onChangeText}
+              icon={this.state.input.icon}
+              message={this.state.input.message}
+              label={this.state.input.label}
+              help={this.state.input.help}
+              theme={this.state.input.theme}
               isDropdown={true}
-              nonEditable={this.props.input.nonEditable}
-              disabled={this.props.isDisabled}
+              nonEditable={this.state.input.nonEditable}
+              disabled={this.state.isDisabled}
               isOpen={this.state.isOpen}
             />
           </View>
@@ -124,8 +144,8 @@ class PackenUiDropdown extends Component {
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         >
           <PackenUiList
-            items={this.props.list.items}
-            config={{ size: this.props.size, ...this.props.list.config }}
+            items={this.state.list.items}
+            config={{ size: this.state.size, ...this.state.list.config }}
             numShownRows={4}
             getFinalSelection={this.getFinalSelection}
             finalSelectionArray={this.state.finalSelection}

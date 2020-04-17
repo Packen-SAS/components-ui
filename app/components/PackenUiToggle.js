@@ -11,9 +11,14 @@ class PackenUiToggle extends Component {
     super(props);
 
     this.state = {
+      isActive: props.isActive,
+      isDisabled: props.isDisabled,
+      toggleHandler: props.toggleHandler,
+      name: props.name,
+      onLabel: props.onLabel,
+      offLabel: props.offLabel,
       initialState: this.setInitialState(),
       state: this.setInitialState(),
-      isDisabled: props.isDisabled,
       shape: {
         height: 0,
         width: 0,
@@ -79,7 +84,7 @@ class PackenUiToggle extends Component {
   }
 
   checkIfDisabled = () => {
-    if (this.props.isDisabled) {
+    if (this.state.isDisabled) {
       this.setState({
         state: "disabled"
       }, this.setDisabledStyles);
@@ -195,7 +200,19 @@ class PackenUiToggle extends Component {
     this.setState({
       state: this.state.state === "active" ? "inactive" : "active"
     }, () => {
-      this.props.toggleHandler(this.props.name, this.state.state === "active" ? true : false);
+      this.state.toggleHandler(this.state.name, this.state.state === "active" ? true : false);
+    });
+  }
+
+  updateState = () => {
+    this.setState({
+      isActive: this.props.isActive,
+      isDisabled: this.props.isDisabled,
+      toggleHandler: this.props.toggleHandler,
+      name: this.props.name,
+      onLabel: this.props.onLabel,
+      offLabel: this.props.offLabel,
+      state: this.setInitialState()
     });
   }
 
@@ -203,6 +220,9 @@ class PackenUiToggle extends Component {
     if (prevState.state !== this.state.state) {
       this.positionElement();
       this.checkIfDisabled();
+    }
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -226,14 +246,14 @@ class PackenUiToggle extends Component {
                 ...this.getStyles().label.default,
                 ...this.getStyles().label.on[this.state.state],
                 ...this.state.on.disabled
-              }}>{this.props.onLabel}</PackenUiText>
+              }}>{this.state.onLabel}</PackenUiText>
             </View>
             <View onLayout={e => { this.getOffDimensions(e); }} style={this.state.off.positioning}>
               <PackenUiText style={{
                 ...this.getStyles().label.default,
                 ...this.getStyles().label.off[this.state.state],
                 ...this.state.off.disabled
-              }}>{this.props.offLabel}</PackenUiText>
+              }}>{this.state.offLabel}</PackenUiText>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -291,7 +311,7 @@ class PackenUiToggle extends Component {
             opacity: 0
           },
           disabled: {
-            opacity: 1,
+            opacity: 0.6,
             color: Colors.basic.white.dft
           }
         },
@@ -303,7 +323,7 @@ class PackenUiToggle extends Component {
             color: Colors.basic.gray.drk
           },
           disabled: {
-            opacity: 1,
+            opacity: 0.6,
             color: Colors.basic.white.dft
           }
         }

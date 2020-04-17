@@ -13,6 +13,7 @@ class PackenUiSelectionButtons extends Component {
       items: [...props.items],
       selection: props.selection,
       itemsPerRow: props.itemsPerRow,
+      onNewSelection: props.onNewSelection,
       selected: this.getInitialSelected()
     }
   }
@@ -65,9 +66,26 @@ class PackenUiSelectionButtons extends Component {
       selected: newSelected
     });
 
-    this.props.onNewSelection(this.state.name, newSelected);
+    this.state.onNewSelection(this.state.name, newSelected);
 
     return newSelected;
+  }
+
+  updateState = () => {
+    this.setState({
+      name: this.props.name,
+      type: this.props.type,
+      items: [...this.props.items],
+      selection: this.props.selection,
+      itemsPerRow: this.props.itemsPerRow,
+      onNewSelection: this.props.onNewSelection
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
   }
 
   render() {
