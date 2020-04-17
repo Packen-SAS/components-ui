@@ -14,12 +14,13 @@ describe("<Radios/>", () => {
   });
 
   describe("triggering actions", () => {
-    it("executes handle functions", () => {
-      const res = render.instance().handleNotify("Test");
-      const res2 = render.instance().handleNotifyRow("Test 2");
+    it("executes the handler function", () => {
+      const res = render.instance().handleNotify("radios1", "Test");
       
-      expect(res).toBe("Test");
-      expect(res2).toBe("Test 2");
+      expect(res).toEqual({
+        id: "radios1",
+        value: "Test"
+      });
     });
   });
 });

@@ -13,10 +13,13 @@ class Toggles extends Component {
     super(props);
   }
 
-  toggleHandler = newState => {
+  toggleHandler = (name, newState) => {
     /* New state can be used here */
-    /* console.log(newState); */
-    return newState;
+    /* console.log(name, newState); */
+    return {
+      id: name,
+      value: newState
+    };
   }
   
   render() {
@@ -24,16 +27,16 @@ class Toggles extends Component {
       <Section title="Toggles">
         <View style={{ marginTop: 20 }}>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenUiToggle onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggleHandler}/>
+            <PackenUiToggle name="toggle1" onLabel="ON" offLabel="OFF" isActive={true} toggleHandler={this.toggleHandler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenUiToggle onLabel="SÍ" offLabel="NO" isActive={false} toggleHandler={this.toggleHandler}/>
+            <PackenUiToggle name="toggle2" onLabel="SÍ" offLabel="NO" isActive={false} toggleHandler={this.toggleHandler}/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenUiToggle onLabel="SÍ" offLabel="NO" isActive={true} toggleHandler={this.toggleHandler} isDisabled/>
+            <PackenUiToggle name="toggle3" onLabel="SÍ" offLabel="NO" isActive={true} toggleHandler={this.toggleHandler} isDisabled/>
           </View>
           <View style={{marginBottom: Spacing[2]}}>
-            <PackenUiToggle onLabel="ON" offLabel="OFF" isActive={false} toggleHandler={this.toggleHandler} isDisabled/>
+            <PackenUiToggle name="toggle4" onLabel="ON" offLabel="OFF" isActive={false} toggleHandler={this.toggleHandler} isDisabled/>
           </View>
         </View>
       </Section>

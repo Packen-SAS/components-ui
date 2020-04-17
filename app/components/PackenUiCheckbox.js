@@ -28,12 +28,12 @@ class PackenUiCheckbox extends Component {
       const updatedItems = [...this.state.items];
       updatedItems[this.state.selectedIndex].isChecked = !updatedItems[this.state.selectedIndex].isChecked;
       newCheckedItems = updatedItems.filter(item => item.isChecked);
-      newCheckedItems = newCheckedItems.map(item => item.label);
+      newCheckedItems = newCheckedItems.map(item => item.value);
 
       this.setState({
         checkedItems: newCheckedItems
       }, () => {
-        this.props.callback(newCheckedItems);
+        this.props.callback(this.props.name, newCheckedItems);
       });
     } else {
       return false;

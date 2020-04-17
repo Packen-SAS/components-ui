@@ -14,10 +14,13 @@ describe("<Toggles/>", () => {
   });
 
   describe("triggering actions", () => {
-    it("executes toggleHandler", () => {
-      const res = render.instance().toggleHandler(true);
+    it("executes the toggle handler", () => {
+      const res = render.instance().toggleHandler("toggle1", true);
 
-      expect(res).toBe(true);
+      expect(res).toEqual({
+        id: "toggle1",
+        value: true
+      });
     });
   });
 });

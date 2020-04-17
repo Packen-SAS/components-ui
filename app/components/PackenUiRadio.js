@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import { View } from "react-native";
 
-import Colors from "../styles/abstracts/colors";
-import Typography from "../styles/abstracts/typography";
-
 import PackenUiRadioControl from "./PackenUiRadioControl";
 
 class PackenUiRadio extends Component {
@@ -40,7 +37,7 @@ class PackenUiRadio extends Component {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
       if (this.props.callback) {
-        this.props.callback(this.state.currentSelection);
+        this.props.callback(this.props.name, this.state.currentSelection.value);
       }
       return this.state.currentSelection;
     }

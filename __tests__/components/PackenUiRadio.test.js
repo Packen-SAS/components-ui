@@ -12,34 +12,40 @@ describe("<PackenUiRadio/>", () => {
       <PackenUiRadio layout="column" items={[
         {
           label: "Place your text",
+          value: "Place your text",
           isDisabled: false
         },
         {
           label: "Different text",
+          value: "Different text",
           isDisabled: false
         },
         {
           label: "This text is both checked and disabled",
+          value: "This text is both checked and disabled",
           isDisabled: true
         }
-      ]} initialIndex={2}/>
+      ]} name="radios1" initialIndex={2}/>
     );
 
     renderRow = shallow(
       <PackenUiRadio layout="row" items={[
         {
           label: "Placeholder",
+          value: "Placeholder",
           isDisabled: false
         },
         {
           label: "This is checked",
+          vallue: "This is checked",
           isDisabled: false
         },
         {
           label: "Some other text",
+          value: "Some other text",
           isDisabled: false
         }
-      ]} initialIndex={1}/>
+      ]} name="radios2" initialIndex={1}/>
     );
     renderColumnInstance = renderColumn.instance();
 
@@ -47,6 +53,7 @@ describe("<PackenUiRadio/>", () => {
       checkedIndex: 2,
       currentSelection: {
         label: "Different text",
+        value: "Different text",
         isDisabled: false
       }
     });
@@ -88,14 +95,17 @@ describe("<PackenUiRadio/>", () => {
         items: [
           {
             label: "Place your text",
+            value: "Place your text",
             isDisabled: false
           },
           {
             label: "Different text",
+            value: "Different text",
             isDisabled: false
           },
           {
             label: "This text is both checked and disabled",
+            value: "This text is both checked and disabled",
             isDisabled: true
           }
         ]
@@ -112,6 +122,7 @@ describe("<PackenUiRadio/>", () => {
         checkedIndex: 0,
         currentSelection: {
           label: "Test",
+          value: "Test",
           isDisabled: false
         }
       };
@@ -126,6 +137,7 @@ describe("<PackenUiRadio/>", () => {
       const prevState = {
         currentSelection: {
           label: "Test",
+          value: "Test",
           isDisabled: false
         }
       };
@@ -133,19 +145,21 @@ describe("<PackenUiRadio/>", () => {
       
       expect(response).toEqual({
         label: "Different text",
+        value: "Different text",
         isDisabled: false
       });
     });
 
     it("executes callback if passed via props", () => {
       renderColumn.setProps({
-        callback: jest.fn()
+        callback: jest.fn(),
+        name: "radios1"
       });
       const prevState = { currentSelection: 1 };
       renderColumnInstance.setState({ currentSelection: 0 });
       renderColumnInstance.componentDidUpdate(null, prevState, null);
       
-      expect(renderColumnInstance.props.callback).toHaveBeenCalledWith(renderColumnInstance.state.currentSelection);
+      expect(renderColumnInstance.props.callback).toHaveBeenCalledWith("radios1", renderColumnInstance.state.currentSelection.value);
     });
   });
 

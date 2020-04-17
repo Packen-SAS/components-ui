@@ -60,6 +60,8 @@ class PackenUiDropdown extends Component {
     this.setState({
       finalSelection: selectedItems
     }, this.composeFinalSelectionString);
+
+    this.props.callback(this.props.name, selectedItems);
   }
 
   composeFinalSelectionString = () => {
