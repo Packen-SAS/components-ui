@@ -12,4 +12,12 @@ describe("<Avatars/>", () => {
       expect(render).toBeDefined();
     });
   });
+
+  describe("triggering actions", () => {
+    it("executes the mock callback", () => {
+      const res = render.instance().mockCallback();
+
+      expect(res).toBe(true);
+    });
+  });
 });
