@@ -24,19 +24,19 @@ class PackenUiTag extends Component {
       box: {
         base: {
           borderRadius: 3,
-          paddingVertical: 2,
-          paddingHorizontal: 8,
+          paddingVertical: 0,
+          paddingHorizontal: 7,
           textAlign: "center",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: Colors.basic.white.drk,
+          backgroundColor: Colors.brand.primary.snw,
           alignSelf: "flex-start"
         }
       },
       label: {
         base: {
-          fontFamily: Typography.family.bold,
+          fontFamily: Typography.family.regular,
           fontSize: Typography.size.tiny_alt,
           lineHeight: Typography.lineheight.medium_alt
         }
