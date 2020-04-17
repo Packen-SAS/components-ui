@@ -357,6 +357,34 @@ describe("<PackenUiModal/>", () => {
 
       expect(renderInstance.carouselRef.snapToNext).toHaveBeenCalled();
     });
+
+    it("triggers the onDismissHandler", () => {
+      renderInstance.setState({ onDismiss: jest.fn() });
+      renderInstance.onDismissHandler();
+      
+      expect(renderInstance.state.onDismiss).toHaveBeenCalled();
+    });
+
+    it("returns false while triggering the onDismissHandler if none is passed", () => {
+      renderInstance.setState({ onDismiss: undefined });
+      const res = renderInstance.onDismissHandler();
+      
+      expect(res).toBe(false);
+    });
+
+    it("triggers the onRequestCloseHandler", () => {
+      renderInstance.setState({ onRequestClose: jest.fn() });
+      renderInstance.onRequestCloseHandler();
+      
+      expect(renderInstance.state.onRequestClose).toHaveBeenCalled();
+    });
+
+    it("returns false while triggering the onDismissHandler if none is passed", () => {
+      renderInstance.setState({ onRequestClose: undefined });
+      const res = renderInstance.onRequestCloseHandler();
+      
+      expect(res).toBe(false);
+    });
   });
 
   describe("getting dimensions", () => {

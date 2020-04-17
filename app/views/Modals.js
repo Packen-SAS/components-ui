@@ -58,6 +58,10 @@ class Modals extends Component {
     this.setState(newState);
   }
 
+  onDismissCallback = () => "dismiss";
+
+  onRequestCloseCallback = () => "requestclose";
+
   render() {
     return (
       <Section title="Modals">
@@ -119,6 +123,8 @@ class Modals extends Component {
             type="custom"
             theme="primary"
             toggle={() => { this.toggleModal("custom.small"); }}
+            onDismiss={this.onDismissCallback}
+            onRequestClose={this.onRequestCloseCallback}
             content={(
               <View>
                 <PackenUiText
