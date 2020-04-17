@@ -80,7 +80,7 @@ describe("<PackenUiLoaderButton/>", () => {
       const prevProps = { test: "Test" };
       render.setProps({ test: "Test 2" });
       const spyUpdateState = jest.spyOn(renderInstance, "updateState");
-      renderInstance.componentDidUpdate();
+      renderInstance.componentDidUpdate(prevProps, null, null);
 
       expect(spyUpdateState).toHaveBeenCalled();
       spyUpdateState.mockRestore();

@@ -27,6 +27,7 @@ import SelectionButtons from "./views/SelectionButtons";
 import Progressbars from "./views/Progressbars";
 import LoaderButtons from "./views/LoaderButtons";
 import VehicleBoxes from "./views/VehicleBoxes";
+import Lists from "./views/Lists";
 
 class UILibrary extends Component {
   render() {
@@ -35,6 +36,7 @@ class UILibrary extends Component {
         <ScrollView>
           <View style={styles.container}>
             <PackenUiText style={styles.container__title}>UI Components Library</PackenUiText>
+            <Lists/>
             <VehicleBoxes/>
             <LoaderButtons/>
             <Progressbars/>

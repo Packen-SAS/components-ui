@@ -5,7 +5,7 @@ import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiInput from "./PackenUiInput";
-import PackenUiList from "./PackenUiList";
+import PackenUiDropdownList from "./PackenUiDropdownList";
 
 class PackenUiDropdown extends Component {
   constructor(props) {
@@ -143,7 +143,7 @@ class PackenUiDropdown extends Component {
           style={{ ...this.getStyles().menu, ...this.state.styles.menu }}
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         >
-          <PackenUiList
+          <PackenUiDropdownList
             items={this.state.list.items}
             config={{ size: this.state.size, ...this.state.list.config }}
             numShownRows={4}

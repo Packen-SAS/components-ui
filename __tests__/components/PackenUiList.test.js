@@ -2,290 +2,104 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import PackenUiList from "../../app/components/PackenUiList";
-import PackenUiText from "../../app/components/PackenUiText";
-
 import Colors from "../../app/styles/abstracts/colors";
-import { genKey } from "../../app/utils";
+import PackenUiAvatar from "../../app/components/PackenUiAvatar";
+import Icon from "react-native-vector-icons/dist/Feather";
+
+import PackenUiList from "../../app/components/PackenUiList";
 
 describe("<PackenUiList/>", () => {
   let render, renderInstance;
-  const list = {
-    config: {
-      size: "medium",
-      checkedIcon: "check",
-      selectionType: "single"
+  const mockCallback = () => true;
+  const items = [
+    {
+      size: "default",
+      title: "List item one",
+      icon: { name: "chevron-right", color: Colors.brand.primary.drk },
+      callback: mockCallback,
+      customWrapperStyle: { marginBottom: 8 }
     },
-    items: [
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Bogotá, D.C.",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Medellín",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Bucaramanga",
-        isSelected: false,
-        isDisabled: true,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Santa Marta",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Cali",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cali</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Cartagena",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenUiText>)
-      },
-      {
-        key: genKey(),
-        left: false,
-        right: false,
-        value: "Leticia",
-        isSelected: false,
-        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenUiText>)
-      }
-    ]
-  };
-  const mockCallback = jest.fn();
+    {
+      size: "default",
+      title: "List item two",
+      icon: { name: "chevron-right", color: Colors.brand.primary.drk },
+      media: (<PackenUiAvatar size="xtiny" src={require("../../assets/images/avatar.jpg")} />),
+      callback: mockCallback,
+      customWrapperStyle: { marginBottom: 8 }
+    },
+    {
+      size: "large",
+      title: "List item three",
+      subtitle: "Secondary text",
+      label: { text: "Verificado", color: Colors.success.default },
+      icon: { name: "chevron-right", color: Colors.brand.primary.drk },
+      callback: mockCallback,
+      customWrapperStyle: { marginBottom: 16 }
+    },
+    {
+      size: "large",
+      title: "List item four",
+      label: { text: "Verificado", color: Colors.success.default },
+      icon: { name: "chevron-right", color: Colors.brand.primary.drk },
+      media: (<PackenUiAvatar size="tiny" src={require("../../assets/images/avatar.jpg")} />),
+      callback: mockCallback,
+      customWrapperStyle: { marginBottom: 16 }
+    },
+    {
+      size: "large",
+      title: "List item five",
+      subtitle: "Secondary text",
+      label: { text: "Verificado", color: Colors.success.default },
+      icon: { name: "chevron-right", color: Colors.brand.primary.drk },
+      media: (<Icon name="user" color={Colors.basic.independence.dft} size={20} />),
+      callback: mockCallback,
+      customWrapperStyle: {}
+    }
+  ];
 
   beforeAll(() => {
     render = shallow(
       <PackenUiList
-        items={list.items}
-        config={{ size: "medium", ...list.config }}
-        numShownRows={4}
-        getFinalSelection={mockCallback}
-        finalSelectionArray={mockCallback}
-        toggleMenu={mockCallback}
+        style={{ marginTop: 15 }}
+        items={items}
       />
     );
     renderInstance = render.instance();
-
-    renderInstance.setState({
-      items: [...list.items],
-      numShownRows: 4,
-      config: { ...list.config },
-      toggleMenu: mockCallback,
-      getFinalSelection: mockCallback,
-      height: "100%",
-      selectedItems: [],
-      currentRadiosState: {
-        checkedValue: ""
-      },
-      currentCheckboxesState: {
-        finalSelectionArray: [],
-        checkedValues: []
-      }
-    });
   });
 
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
     });
+  });
 
-    it("renders an item correctly", () => {
-      const rendered = renderInstance.renderItem({ item: { ...list.items[0] } });
-      expect(rendered).toBeDefined();
+  describe("state changing", () => {
+    it("updates the state with incoming new props", () => {
+      const spySetState = jest.spyOn(renderInstance, "setState");
+      renderInstance.updateState();
+
+      expect(spySetState).toHaveBeenCalled();
+      spySetState.mockRestore();
+    });
+  });
+
+  describe("styling", () => {  
+    it("returns the styles object", () => {
+      const returnedStyles = renderInstance.getStyles();
+
+      expect(returnedStyles).toBeDefined();
     });
   });
 
   describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate", () => {
-      const prevState = { selectedItems: [list.items[0]] };
-      render.setProps({
-        getFinalSelection: mockCallback
-      });
-      renderInstance.setState({ selectedItems: [list.items[0], list.items[1]] });
-      renderInstance.componentDidUpdate(null, prevState, null);
+    it("executes the correct code on componentDidUpdate", () => {
+      const prevProps = { test: "Test" };
+      render.setProps({ test: "Test 2" });
+      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
+      renderInstance.componentDidUpdate(prevProps, null, null);
 
-      expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
-      expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
-    });
-
-    it("returns false on componentDidUpdate if no 'getFinalSelection' is passed", () => {
-      const prevState = { selectedItems: [list.items[0]] };
-      render.setProps({
-        getFinalSelection: undefined
-      });
-      const res = renderInstance.componentDidUpdate(null, prevState, null);
-
-      expect(res).toBe(false);
-    });
-  });
-
-  describe("state changing", () => {
-    it("sets correct item height if items length is less than declared number of rows via props", () => {
-      render.setProps({
-        numShownRows: 4
-      });
-      renderInstance.setState({ items: ["Test", "Test 2", "Test 3"] });
-      renderInstance.getItemHeight(10);
-
-      expect(renderInstance.state.height).toBe(30);
-    });
-
-    it("sets correct item height if items length is not less than declared number of rows via props", () => {
-      render.setProps({
-        numShownRows: 1
-      });
-      renderInstance.setState({ items: ["Test", "Test 2"] });
-      renderInstance.getItemHeight(10);
-
-      expect(renderInstance.state.height).toBe(10);
-    });
-
-    it("updates selected items if selection type is 'single' or 'radio' and no payload is passed", () => {
-      renderInstance.setState({
-        items: [list.items[0], list.items[1]],
-        config: {
-          selectionType: "single"
-        },
-        toggleMenu: mockCallback
-      });
-      renderInstance.updateSelectedItems("Medellín", true);
-
-      const newItems = [...list.items];
-      newItems.forEach(item => item.isSelected = false);
-
-      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
-      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-      expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
-    });
-
-    it("updates selected items if selection type is 'single' or 'radio' and a payload is passed", () => {
-      renderInstance.setState({
-        items: [list.items[0], list.items[1]],
-        config: {
-          selectionType: "radio"
-        },
-        toggleMenu: mockCallback
-      });
-      renderInstance.updateSelectedItems("Medellín", true, { checkedType: "radio", checkedValue: "Medellín" });
-
-      const newItems = [...list.items];
-      newItems.forEach(item => item.isSelected = false);
-      
-      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
-      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-      expect(renderInstance.state.currentRadiosState.checkedValue).toEqual("Medellín");
-      expect(renderInstance.props.toggleMenu).toHaveBeenCalled();
-    });
-
-    it("updates selected items if selection type is 'single' or 'radio' and a payload with 'checkedType' different to 'radio' is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]] });
-      render.setProps({
-        config: {
-          selectionType: "radio"
-        },
-        toggleMenu: mockCallback
-      });
-      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
-
-      expect(renderInstance.state.currentRadiosState).toEqual({
-        checkedValue: "Medellín"
-      });
-    });
-
-    it("updates selected items if selection type is 'single' or 'radio' and doesn't close the dropdown if no 'toggleMenu' is passed", () => {
-      renderInstance.setState({
-        items: [list.items[0], list.items[1]],
-        config: {
-          selectionType: "radio"
-        },
-        toggleMenu: undefined
-      });
-      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
-
-      expect(renderInstance.state.currentRadiosState).toEqual({
-        checkedValue: "Medellín"
-      });
-      expect(res).toBe(false);
-    });
-
-    it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {
-      renderInstance.setState({
-        items: [list.items[0], list.items[1]],
-        config: {
-          selectionType: "multiple"
-        }
-      });
-      renderInstance.updateSelectedItems("Medellín", true);
-
-      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
-      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-    });
-
-    it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload is passed", () => {
-      renderInstance.setState({
-        items: [list.items[0], list.items[1]],
-        currentCheckboxesState: { checkedValues: [] },
-        config: {
-          selectionType: "checkbox"
-        }
-      });
-      renderInstance.updateSelectedItems("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
-
-      expect(renderInstance.state.items).toEqual([list.items[0], list.items[1]]);
-      expect(renderInstance.state.selectedItems).toEqual(["Medellín"]);
-      expect(renderInstance.state.currentCheckboxesState.checkedValues).toEqual(["Medellín"]);
-    });
-
-    it("updates selected items if selection type is 'multiple' or 'checkbox' and a payload with 'checkedType' different to 'checkbox' is passed", () => {
-      renderInstance.setState({ items: [list.items[0], list.items[1]], currentCheckboxesState: { checkedValues: [] } });
-      renderInstance.state.checkedValues = ["Test"];
-      render.setProps({
-        config: {
-          selectionType: "checkbox"
-        }
-      });
-      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
-
-      expect(renderInstance.state.currentCheckboxesState).toEqual({
-        ...renderInstance.state.currentCheckboxesState,
-        checkedValues: []
-      });
-    });
-
-    it("returns false if selection type is not defined", () => {
-      render.setProps({
-        config: {
-          selectionType: undefined
-        }
-      });
-      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: "checkbox", checkedValue: "Medellín" });
-
-      expect(res).toBe(false);
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
     });
   });
 });

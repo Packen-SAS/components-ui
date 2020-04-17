@@ -103,6 +103,10 @@ class PackenUiAvatar extends Component {
           backgroundColor: Colors.basic.gray.lgt
         },
         size: {
+          xtiny: {
+            height: 24,
+            width: 24
+          },
           tiny: {
             height: 32,
             width: 32
