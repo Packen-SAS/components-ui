@@ -116,7 +116,7 @@ class PackenUiButton extends Component {
 
   checkStyles = () => {
     this.setState({
-      styles: this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth)
+      styles: this.getStyles()
     });
   }
 
@@ -157,7 +157,7 @@ class PackenUiButton extends Component {
   }
 
   pressInHandler = () => {
-    let newStyles = { ...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth) }
+    let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
 
     /* Custom focus styles */
@@ -173,7 +173,7 @@ class PackenUiButton extends Component {
   }
 
   pressOutHandler = () => {
-    const newStyles = { ...this.getStyles(this.state.shapeHeight, this.state.shapeWidth, this.state.iconHeight, this.state.iconWidth) }
+    const newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     this.setState({
       styles: newStyles

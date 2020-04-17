@@ -80,9 +80,7 @@ class PackenUiLoaderButton extends Component {
 
   getStyles = () => {
     return {
-      done: {
-        transform: [{ rotate: "0deg" }]
-      },
+      done: {},
       loading: {
         transform: [{
           rotate: this.state.rotate.interpolate({
