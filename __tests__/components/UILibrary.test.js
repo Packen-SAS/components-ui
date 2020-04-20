@@ -1,25 +1,26 @@
 import "react-native";
-import "react-native-gesture-handler";
 import React from "react";
 import { shallow } from "enzyme";
 
 import UILibrary from "../../app/UILibrary";
 
+jest.mock("react-native-reanimated", () => {
+  const View = require('react-native').View;
+  return {
+    Value: jest.fn(),
+    event: jest.fn(),
+    add: jest.fn(),
+    eq: jest.fn(),
+    set: jest.fn(),
+    cond: jest.fn(),
+    interpolate: jest.fn(),
+    View: View,
+    Extrapolate: { CLAMP: jest.fn() }
+  };
+});
+
 describe("<UILibrary/>", () => {
   it("renders correctly", () => {
-    jest.mock('NativeModules', () => ({
-      UIManager: {
-        RCTView: () => {},
-      },
-      RNGestureHandlerModule: {
-        attachGestureHandler: jest.fn(),
-        createGestureHandler: jest.fn(),
-        dropGestureHandler: jest.fn(),
-        updateGestureHandler: jest.fn(),
-        State: {},
-        Directions: {},
-      },
-    }));
     const render = shallow(<UILibrary/>);
     
     expect(render).toBeDefined();
