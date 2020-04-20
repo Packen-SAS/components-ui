@@ -26,8 +26,7 @@ class Section extends Component {
   getStyles = () => {
     return {
       section: {
-        padding: Spacing.padding.all.base,
-        paddingHorizontal: 0
+        paddingVertical: Spacing.padding.horizontal.base
       },
       section__title: {
         color: Colors.base.default_alt,
