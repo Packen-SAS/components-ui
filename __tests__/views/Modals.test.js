@@ -95,7 +95,6 @@ describe("<Modals/>", () => {
         modalInstance.props.toggle();
 
         if (modalInstance.props.type === "custom") {
-          /* console.log(modalInstance.props.content.props.children[2].props.children); */
           modalInstance.props.content.props.children[2].props.children.forEach(element => {
             element.props.callback();
 
@@ -114,6 +113,14 @@ describe("<Modals/>", () => {
 
         spyToggleModal.mockRestore();
       });
+    });
+
+    it("executes all custom event handlers", () => {
+      const res = renderInstance.onDismissCallback();
+      const res2 = renderInstance.onRequestCloseCallback();
+
+      expect(res).toBe("dismiss");
+      expect(res2).toBe("requestclose");
     });
   });
 });
