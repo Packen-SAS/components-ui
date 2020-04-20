@@ -4,6 +4,7 @@ import { View } from "react-native";
 import Colors from "../styles/abstracts/colors";
 
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiDropdown from "../components/PackenUiDropdown";
 import PackenUiText from "../components/PackenUiText";
@@ -1419,260 +1420,262 @@ class Dropdowns extends Component {
 
   render() {
     return (
-      <Section title="Dropdowns">
-        <View style={{ marginTop: 20 }}>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.simple}
-              input={{
-                label: "Single selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true,
-                help: "Help text"
-              }}
-              name="dropdown1"
-              callback={this.changeHandler}
-            />
+      <PageView>  
+        <Section title="Dropdowns">
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.simple}
+                input={{
+                  label: "Single selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true,
+                  help: "Help text"
+                }}
+                name="dropdown1"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.mulitple}
+                input={{
+                  label: "Multiple selections",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown2"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.info}
+                input={{
+                  label: "Single information selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right"
+                  },
+                  theme: "success",
+                  nonEditable: true,
+                  message: {
+                    text: "Caption text, description, error notification",
+                    icon: "info"
+                  }
+                }}
+                name="dropdown3"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.avatarsAlt}
+                input={{
+                  label: "Multiple avatars selection",
+                  placeholder: "Selecciona el usuario",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown4"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.avatarsInfo}
+                input={{
+                  label: "Single avatar + info selection",
+                  placeholder: "Selecciona el usuario",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true,
+                  message: {
+                    text: "Caption text, description, error notification",
+                    icon: "info"
+                  }
+                }}
+                name="dropdown5"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                isDisabled
+                size="medium"
+                list={this.state.menus.avatars}
+                input={{
+                  label: "Disabled selection",
+                  placeholder: "Selecciona el usuario",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right"
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown6"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.icons}
+                input={{
+                  label: "Multiple icon selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown7"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.iconsAlt}
+                input={{
+                  label: "Single icon selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right"
+                  },
+                  theme: "danger",
+                  nonEditable: true,
+                  help: "Error help text",
+                  message: {
+                    text: "Caption text, description, error notification",
+                    icon: "info"
+                  }
+                }}
+                name="dropdown8"
+                callback={this.changeHandler}
+              />
+            </View>          
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.iconsLeft}
+                input={{
+                  label: "Single icon + check selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right"
+                  },
+                  theme: "primary",
+                  nonEditable: true
+                }}
+                name="dropdown9"
+                callback={this.changeHandler}
+              />
+            </View>          
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.iconsBoth}
+                input={{
+                  label: "Double icon selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right"
+                  },
+                  theme: "primary",
+                  nonEditable: true
+                }}
+                name="dropdown10"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.radio}
+                input={{
+                  label: "Radio selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown11"
+                callback={this.changeHandler}
+              />
+            </View>
+            <View style={{ marginBottom: 20 }}>
+              <PackenUiDropdown
+                size="medium"
+                list={this.state.menus.checkboxes}
+                input={{
+                  label: "Checkbox selection",
+                  placeholder: "Selecciona tu ciudad",
+                  onChangeText: this.mockCallback,
+                  icon: {
+                    name: "chevron-down",
+                    position: "right",
+                    style: { color: Colors.brand.primary.drk }
+                  },
+                  theme: "default",
+                  nonEditable: true
+                }}
+                name="dropdown12"
+                callback={this.changeHandler}
+              />
+            </View>
           </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.mulitple}
-              input={{
-                label: "Multiple selections",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown2"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.info}
-              input={{
-                label: "Single information selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right"
-                },
-                theme: "success",
-                nonEditable: true,
-                message: {
-                  text: "Caption text, description, error notification",
-                  icon: "info"
-                }
-              }}
-              name="dropdown3"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.avatarsAlt}
-              input={{
-                label: "Multiple avatars selection",
-                placeholder: "Selecciona el usuario",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown4"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.avatarsInfo}
-              input={{
-                label: "Single avatar + info selection",
-                placeholder: "Selecciona el usuario",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true,
-                message: {
-                  text: "Caption text, description, error notification",
-                  icon: "info"
-                }
-              }}
-              name="dropdown5"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              isDisabled
-              size="medium"
-              list={this.state.menus.avatars}
-              input={{
-                label: "Disabled selection",
-                placeholder: "Selecciona el usuario",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right"
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown6"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.icons}
-              input={{
-                label: "Multiple icon selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown7"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.iconsAlt}
-              input={{
-                label: "Single icon selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right"
-                },
-                theme: "danger",
-                nonEditable: true,
-                help: "Error help text",
-                message: {
-                  text: "Caption text, description, error notification",
-                  icon: "info"
-                }
-              }}
-              name="dropdown8"
-              callback={this.changeHandler}
-            />
-          </View>          
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.iconsLeft}
-              input={{
-                label: "Single icon + check selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right"
-                },
-                theme: "primary",
-                nonEditable: true
-              }}
-              name="dropdown9"
-              callback={this.changeHandler}
-            />
-          </View>          
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.iconsBoth}
-              input={{
-                label: "Double icon selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right"
-                },
-                theme: "primary",
-                nonEditable: true
-              }}
-              name="dropdown10"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.radio}
-              input={{
-                label: "Radio selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown11"
-              callback={this.changeHandler}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <PackenUiDropdown
-              size="medium"
-              list={this.state.menus.checkboxes}
-              input={{
-                label: "Checkbox selection",
-                placeholder: "Selecciona tu ciudad",
-                onChangeText: this.mockCallback,
-                icon: {
-                  name: "chevron-down",
-                  position: "right",
-                  style: { color: Colors.brand.primary.drk }
-                },
-                theme: "default",
-                nonEditable: true
-              }}
-              name="dropdown12"
-              callback={this.changeHandler}
-            />
-          </View>
-        </View>
-      </Section>
+        </Section>
+      </PageView>
     );
   }
 }

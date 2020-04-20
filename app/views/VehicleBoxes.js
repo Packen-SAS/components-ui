@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiVehicleBox from "../components/PackenUiVehicleBox";
 
@@ -14,22 +15,24 @@ class VehicleBoxes extends Component {
 
   render() {
     return (
-      <Section title="Vehicle Boxes">
-        <View style={{ marginTop: 20 }}>
-          <PackenUiVehicleBox
-            type="Carry"
-            make="Chevrolet"
-            year="2017"
-            plate="USC-914"
-            img={{
-              src: require("../../assets/images/carry.png"),
-              width: 130,
-              height: 61
-            }}
-            callback={this.mockCallback}
-          />
-        </View>
-      </Section>
+      <PageView>
+        <Section title="Vehicle Boxes">
+          <View style={{ marginTop: 20 }}>
+            <PackenUiVehicleBox
+              type="Carry"
+              make="Chevrolet"
+              year="2017"
+              plate="USC-914"
+              img={{
+                src: require("../../assets/images/carry.png"),
+                width: 130,
+                height: 61
+              }}
+              callback={this.mockCallback}
+            />
+          </View>
+        </Section>
+      </PageView>
     );
   }
 }

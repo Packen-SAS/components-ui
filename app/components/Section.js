@@ -6,6 +6,7 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
+import PackenUiDivider from "./PackenUiDivider";
 
 class Section extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Section extends Component {
     return (
       <View style={this.getStyles().section}>
         <PackenUiText style={this.getStyles().section__title}>{this.props.title}</PackenUiText>
+        <PackenUiDivider size={1} type="light" />
         {this.props.children}
       </View>
     );

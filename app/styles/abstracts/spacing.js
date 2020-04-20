@@ -1,6 +1,6 @@
 export default {
   padding: {
-    all: {
+    horizontal: {
       base: 25
     }
   },

@@ -573,7 +573,9 @@ class PackenUiDropdownListItem extends Component {
           default: {
             color: Colors.basic.independence.dft
           },
-          focus: {},
+          focus: {
+            color: Colors.basic.independence.dft
+          },
           active: {
             color: Colors.basic.white.dft
           },

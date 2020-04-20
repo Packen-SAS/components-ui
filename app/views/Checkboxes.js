@@ -5,6 +5,7 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiText from "../components/PackenUiText";
 import PackenUiDivider from "../components/PackenUiDivider";
@@ -81,29 +82,31 @@ class Checkboxes extends Component {
 
   render() {
     return (
-      <Section title="Checkboxes">
-        <View style={{ marginTop: 10 }}>
-          <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
-          <View style={{ marginBottom: 10 }}>
-            <PackenUiCheckbox
-              layout="column"
-              items={this.state.items}
-              callback={this.handleNotify}
-              name="checkbox1"
-            />
+      <PageView>
+        <Section title="Checkboxes">
+          <View style={{ marginTop: 10 }}>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiCheckbox
+                layout="column"
+                items={this.state.items}
+                callback={this.handleNotify}
+                name="checkbox1"
+              />
+            </View>
+            <PackenUiDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
+            <PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenUiText>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiCheckbox
+                layout="row"
+                items={this.state.itemsRow}
+                callback={this.handleNotify}
+                name="checkbox2"
+              />
+            </View>
           </View>
-          <PackenUiDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
-          <PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenUiText>
-          <View style={{ marginBottom: 10 }}>
-            <PackenUiCheckbox
-              layout="row"
-              items={this.state.itemsRow}
-              callback={this.handleNotify}
-              name="checkbox2"
-            />
-          </View>
-        </View>
-      </Section>
+        </Section>
+      </PageView>
     )
   }
 }

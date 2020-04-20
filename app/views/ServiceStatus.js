@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiButton from "../components/PackenUiButton";
 import PackenUiServiceStatus from "../components/PackenUiServiceStatus";
@@ -86,29 +87,31 @@ class ServiceStatus extends Component {
 
   render() {
     return (
-      <Section title="Service Status">
-        <View style={{ marginTop: 20 }}>
-          <PackenUiServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex} />
+      <PageView>
+        <Section title="Service Status">
           <View style={{ marginTop: 20 }}>
-            <View style={{ marginBottom: 5 }}>
-              <PackenUiButton
-                type="regular"
-                level="primary"
-                size="tiny"
-                icon={{ name: "arrow-left", position: "left" }}
-                callback={this.back}>Previous</PackenUiButton>
-            </View>
-            <View style={{ marginBottom: 5 }}>
-              <PackenUiButton
-                type="regular"
-                level="primary"
-                size="tiny"
-                icon={{ name: "arrow-right", position: "right" }}
-                callback={this.next}>Next</PackenUiButton>
+            <PackenUiServiceStatus steps={this.state.steps} currentStepIndex={this.state.currentStepIndex} />
+            <View style={{ marginTop: 20 }}>
+              <View style={{ marginBottom: 5 }}>
+                <PackenUiButton
+                  type="regular"
+                  level="primary"
+                  size="tiny"
+                  icon={{ name: "arrow-left", position: "left" }}
+                  callback={this.back}>Previous</PackenUiButton>
+              </View>
+              <View style={{ marginBottom: 5 }}>
+                <PackenUiButton
+                  type="regular"
+                  level="primary"
+                  size="tiny"
+                  icon={{ name: "arrow-right", position: "right" }}
+                  callback={this.next}>Next</PackenUiButton>
+              </View>
             </View>
           </View>
-        </View>
-      </Section>
+        </Section>
+      </PageView>
     );
   }
 }
