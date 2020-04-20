@@ -80,7 +80,7 @@ describe("<Modals/>", () => {
     });
 
     it("executes all callbacks", () => {
-      render.props().children[0].props.children.forEach(child => {
+      render.props().children.props.children[0].props.children.forEach(child => {
         if (child.type.displayName === "View") {
           const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
           child.props.children.props.callback();
@@ -89,8 +89,8 @@ describe("<Modals/>", () => {
           spyToggleModal.mockRestore();
         }
       });
-
-      render.props().children[1].props.children.forEach(modalInstance => {
+      
+      render.props().children.props.children[1].props.children.forEach(modalInstance => {
         const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
         modalInstance.props.toggle();
 
