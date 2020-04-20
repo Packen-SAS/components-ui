@@ -344,28 +344,62 @@ describe("<PackenUiInput/>", () => {
       expect(res).toBe(true);
     });
 
-    it("changes styles while onPressIn", () => {
-      renderInstance.handlePressIn();
-
-      expect(renderInstance.state.state).toBe("hover");
-    });
-
-    it("changes styles while onPressOut", () => {
-      renderInstance.handlePressOut();
-
-      expect(renderInstance.state.state).toBe("default");
-    });
-
     it("changes styles while onFocus", () => {
       renderInstance.handleFocus();
 
       expect(renderInstance.state.state).toBe("focus");
     });
 
+    it("executes event handlers and changes styles while onFocus", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onFocus: jest.fn()
+        }
+      });
+      renderInstance.handleFocus();
+
+      expect(renderInstance.state.state).toBe("focus");
+      expect(renderInstance.state.eventHandlers.onFocus).toHaveBeenCalled();
+    });
+
     it("changes styles while onBlur", () => {
       renderInstance.handleBlur();
 
       expect(renderInstance.state.state).toBe("default");
+    });
+
+    it("executes event handlers and changes styles while onBlur", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onBlur: jest.fn()
+        }
+      });
+      renderInstance.handleBlur();
+
+      expect(renderInstance.state.state).toBe("default");
+      expect(renderInstance.state.eventHandlers.onBlur).toHaveBeenCalled();
+    });
+
+    it("changes styles while onSubmitEditing", () => {
+      const spyBlur = jest.spyOn(renderInstance, "blur");
+      renderInstance.handleSubmitEditing();
+
+      expect(spyBlur).toHaveBeenCalled();
+      spyBlur.mockRestore();
+    });
+
+    it("executes event handlers and changes styles while onSubmitEditing", () => {
+      renderInstance.setState({
+        eventHandlers: {
+          onSubmitEditing: jest.fn()
+        }
+      });
+      const spyBlur = jest.spyOn(renderInstance, "blur");
+      renderInstance.handleSubmitEditing();
+
+      expect(spyBlur).toHaveBeenCalled();
+      expect(renderInstance.state.eventHandlers.onSubmitEditing).toHaveBeenCalled();
+      spyBlur.mockRestore();
     });
 
     it("handles onChangeText", () => {

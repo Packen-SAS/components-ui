@@ -22,6 +22,21 @@ class Inputs extends Component {
     return true;
   };
 
+  mockFocus = name => {
+    /* console.log("Focus", name); */
+    return true;
+  }
+
+  mockBlur = name => {
+    /* console.log("Blur", name); */
+    return true;
+  }
+
+  mockSubmitEditing = name => {
+    /* console.log("submitEditing", name); */
+    return true;
+  }
+
   render() {
     return (
       <PageView>
