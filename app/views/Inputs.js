@@ -48,6 +48,7 @@ class Inputs extends Component {
                 size="tiny"
                 placeholder="Placeholder"
                 onChangeText={this.handleChangeText}
+                maxLength={10}
                 icon={{
                   name: "lock",
                   position: "left"

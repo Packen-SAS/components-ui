@@ -34,6 +34,7 @@ class PackenUiInput extends Component {
       isPassword: this.props.isPassword,
       label: this.props.label,
       placeholder: this.props.placeholder,
+      maxLength: this.props.maxLength,
       onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
       eventHandlers: this.props.eventHandlers,
       ref: null
@@ -371,6 +372,7 @@ class PackenUiInput extends Component {
       isPassword: this.props.isPassword,
       label: this.props.label,
       placeholder: this.props.placeholder,
+      maxLength: this.props.maxLength,
       onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
       eventHandlers: this.props.eventHandlers
     }, () => {
@@ -417,6 +419,7 @@ class PackenUiInput extends Component {
             placeholderTextColor={this.getStyles().placeholder.color}
             multiline={this.state.multiline ? true : false}
             editable={this.setEditable()}
+            maxLength={this.state.maxLength}
           />
         </View>
         {this.getMessage()}
@@ -808,6 +811,7 @@ PackenUiInput.propTypes = {
   isPassword: PropTypes.bool,
   label: PropTypes.string,
   placeholder: PropTypes.string,
+  maxLength: PropTypes.number,
   onChangeText: PropTypes.func.isRequired,
   eventHandlers: PropTypes.object
 };
