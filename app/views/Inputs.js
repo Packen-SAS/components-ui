@@ -61,6 +61,11 @@ class Inputs extends Component {
                 help="Number-pad keyboard"
                 keyboardType="number-pad"
                 theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
               />
             </View>
             <View style={{ marginBottom: 10 }}>

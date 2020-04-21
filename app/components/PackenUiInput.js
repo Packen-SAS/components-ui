@@ -15,29 +15,36 @@ class PackenUiInput extends Component {
     this.state = { ...this.setInitialState() }
   }
 
-  setInitialState = () => {
-    let initialState = {
+  setPropsToState = () => {
+    return {
       state: this.props.disabled ? "disabled" : "default",
       icon: this.props.icon ? { ...this.props.icon } : false,
       size: this.props.size ? this.props.size : "medium",
       theme: this.props.theme ? this.props.theme : "default",
-      multiline: this.props.multiline,
-      name: this.props.name,
-      disabled: this.props.disabled,
-      nonEditable: this.props.nonEditable,
-      isDropdown: this.props.isDropdown,
-      isOpen: this.props.isOpen,
+      multiline: this.props.multiline ? this.props.multiline : false,
+      name: this.props.name ? this.props.name : "",
+      disabled: this.props.disabled ? this.props.disabled : false,
+      nonEditable: this.props.nonEditable ? this.props.nonEditable : false,
+      isDropdown: this.props.isDropdown ? this.props.isDropdown : false,
+      isOpen: this.props.isOpen ? this.props.isOpen : false,
       help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
-      message: { ...this.props.message },
+      message: this.props.message ? { ...this.props.message } : false,
       keyboardType: this.props.keyboardType ? this.props.keyboardType : "default",
-      isFocused: this.props.isFocused,
-      isPassword: this.props.isPassword,
-      label: this.props.label,
+      isFocused: this.props.isFocused ? this.props.isFocused : false,
+      isPassword: this.props.isPassword ? this.props.isPassword : false,
+      label: this.props.label ? this.props.label : false,
       placeholder: this.props.placeholder,
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
       maxLength: this.props.maxLength,
+      style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
-      eventHandlers: this.props.eventHandlers,
+      eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false
+    };
+  }
+
+  setInitialState = () => {
+    let initialState = {
+      ...this.setPropsToState(),
       ref: null
     };
 
@@ -123,7 +130,8 @@ class PackenUiInput extends Component {
     if (this.state.multiline) {
       multilineStyles = {
         ...this.getStyles().textarea.base,
-        ...this.getStyles().textarea.size[this.state.size]
+        ...this.getStyles().textarea.isDropdown[this.state.isDropdown].base,
+        ...this.getStyles().textarea.isDropdown[this.state.isDropdown].size[this.state.size]
       }
     }
 
@@ -356,27 +364,7 @@ class PackenUiInput extends Component {
 
   updateState = () => {
     this.setState({
-      state: this.props.disabled ? "disabled" : "default",
-      icon: this.props.icon ? { ...this.props.icon } : false,
-      size: this.props.size ? this.props.size : "medium",
-      theme: this.props.theme ? this.props.theme : "default",
-      multiline: this.props.multiline,
-      name: this.props.name,
-      disabled: this.props.disabled,
-      nonEditable: this.props.nonEditable,
-      isDropdown: this.props.isDropdown,
-      isOpen: this.props.isOpen,
-      help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
-      message: { ...this.props.message },
-      keyboardType: this.props.keyboardType ? this.props.keyboardType : "default",
-      isFocused: this.props.isFocused,
-      isPassword: this.props.isPassword,
-      label: this.props.label,
-      placeholder: this.props.placeholder,
-      placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
-      maxLength: this.props.maxLength,
-      onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
-      eventHandlers: this.props.eventHandlers
+      ...this.setPropsToState()
     }, () => {
       this.checkFocus();
     });
@@ -408,7 +396,8 @@ class PackenUiInput extends Component {
               ...this.getStyles().input.theme[this.state.theme],
               ...this.getStyles().input.state[this.state.state],
               ...this.getPaddingStyles(),
-              ...this.getMultilineStyles()
+              ...this.getMultilineStyles(),
+              ...this.state.style
             }}
             ref={this.getRef}
             secureTextEntry={this.getSecureEntryType()}
@@ -679,24 +668,52 @@ class PackenUiInput extends Component {
       textarea: {
         base: {
           paddingVertical: 8,
-          paddingHorizontal: 16,
-          textAlignVertical: "top"
+          paddingHorizontal: 16
         },
-        size: {
-          tiny: {
-            height: 96
+        isDropdown: {
+          true: {
+            base: {
+              textAlignVertical: "center"
+            },
+            size: {
+              tiny: {
+                height: heights.tiny
+              },
+              small: {
+                height: heights.small
+              },
+              medium: {
+                height: heights.medium
+              },
+              large: {
+                height: heights.large
+              },
+              giant: {
+                height: heights.giant
+              }
+            }
           },
-          small: {
-            height: 104
-          },
-          medium: {
-            height: 104
-          },
-          large: {
-            height: 104
-          },
-          giant: {
-            height: 104
+          false: {
+            base: {
+              textAlignVertical: "top"
+            },
+            size: {
+              tiny: {
+                height: 96
+              },
+              small: {
+                height: 104
+              },
+              medium: {
+                height: 104
+              },
+              large: {
+                height: 104
+              },
+              giant: {
+                height: 104
+              }
+            }
           }
         }
       },
