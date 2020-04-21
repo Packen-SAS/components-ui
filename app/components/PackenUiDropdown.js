@@ -103,18 +103,6 @@ class PackenUiDropdown extends Component {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
-    /* if (prevState.isOpen !== this.state.isOpen) {
-      console.log(this.state.isOpen);
-      this.setState({
-        styles: {
-          ...this.state.styles,
-          menu: {
-            ...this.state.styles.menu,
-            opacity: this.state.isOpen ? 1 : 0
-          }
-        }
-      });
-    } */
   }
 
   getPlaceholderConfig = () => {
