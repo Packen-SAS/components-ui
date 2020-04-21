@@ -349,6 +349,12 @@ describe("<PackenUiInput/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("triggers the mock callback", () => {
+      const res = renderInstance.mockCallback();
+      
+      expect(res).toBe(false);
+    });
+
     it("disables being editable if set so", () => {
       render.setProps({
         nonEditable: true,
