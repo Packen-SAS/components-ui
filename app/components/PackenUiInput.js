@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 
@@ -16,11 +17,10 @@ class PackenUiInput extends Component {
 
   setInitialState = () => {
     let initialState = {
-      value: this.props.value ? this.props.value : "",
       state: this.props.disabled ? "disabled" : "default",
-      icon: { ...this.props.icon },
-      size: this.props.size,
-      theme: this.props.theme,
+      icon: this.props.icon ? { ...this.props.icon } : false,
+      size: this.props.size ? this.props.size : "medium",
+      theme: this.props.theme ? this.props.theme : "default",
       multiline: this.props.multiline,
       name: this.props.name,
       disabled: this.props.disabled,
@@ -29,11 +29,12 @@ class PackenUiInput extends Component {
       isOpen: this.props.isOpen,
       help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
       message: { ...this.props.message },
-      keyboardType: this.props.keyboardType,
+      keyboardType: this.props.keyboardType ? this.props.keyboardType : "default",
       isFocused: this.props.isFocused,
       isPassword: this.props.isPassword,
       label: this.props.label,
       placeholder: this.props.placeholder,
+      onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
       eventHandlers: this.props.eventHandlers,
       ref: null
     };
@@ -60,11 +61,11 @@ class PackenUiInput extends Component {
   setIconPositionStyles = () => {
     let positionStyles = {};
 
-    if (this.props.icon) {
+    if (this.state.icon) {
       const verticalOffset = (this.state.dimensions.box.height / 2) - (this.state.dimensions.iconWrapper.height / 2);
-      const horizontalOffset = this.getStyles().icon_wrapper.offset[this.props.size];
+      const horizontalOffset = this.getStyles().icon_wrapper.offset[this.state.size];
 
-      if (this.props.icon.position === "left") {
+      if (this.state.icon.position === "left") {
         positionStyles = {
           top: verticalOffset,
           left: horizontalOffset
@@ -107,8 +108,8 @@ class PackenUiInput extends Component {
   getPaddingStyles = () => {
     let paddingStyles = {};
 
-    if (this.props.icon) {
-      paddingStyles = { ...this.getStyles().input.padding[this.props.icon.position][this.props.size] };
+    if (this.state.icon) {
+      paddingStyles = { ...this.getStyles().input.padding[this.state.icon.position][this.state.size] };
     }
 
     return paddingStyles;
@@ -117,10 +118,10 @@ class PackenUiInput extends Component {
   getMultilineStyles = () => {
     let multilineStyles = {};
 
-    if (this.props.multiline) {
+    if (this.state.multiline) {
       multilineStyles = {
         ...this.getStyles().textarea.base,
-        ...this.getStyles().textarea.size[this.props.size]
+        ...this.getStyles().textarea.size[this.state.size]
       }
     }
 
@@ -156,7 +157,7 @@ class PackenUiInput extends Component {
     this.setState({
       value: text
     });
-    this.props.onChangeText(this.props.name, text);
+    this.state.onChangeText(this.state.name, text);
   }
 
   addKeyboardEvents = () => {
@@ -172,7 +173,7 @@ class PackenUiInput extends Component {
   setEditable = () => {
     let isEditable = true;
 
-    if (this.props.disabled || this.props.nonEditable) {
+    if (this.state.disabled || this.state.nonEditable) {
       isEditable = false;
     }
 
@@ -182,37 +183,37 @@ class PackenUiInput extends Component {
   getIconName = () => {
     let name = "";
 
-    if (this.props.isDropdown) {
-      if (this.props.isOpen) {
+    if (this.state.isDropdown) {
+      if (this.state.isOpen) {
         name = "chevron-up";
       } else {
         name = "chevron-down";
       }
     } else {
-      name = this.props.icon.name;
+      name = this.state.icon.name;
     }
 
     return name;
   }
 
   triggerHelpCallback = () => {
-    this.props.help.callback();
+    this.state.help.callback();
   }
 
   getHelp = () => {
     let help = null;
 
-    if (this.props.help) {
-      if (typeof this.props.help === "string") {
+    if (this.state.help) {
+      if (typeof this.state.help === "string") {
         help = (
           <PackenUiText
             style={{
               ...this.getStyles().help.base,
-              ...this.getStyles().help.size[this.props.size]
+              ...this.getStyles().help.size[this.state.size]
             }}
-          >{this.props.help}</PackenUiText>
+          >{this.state.help}</PackenUiText>
         );
-      } else if (this.props.help.touchable) {
+      } else if (this.state.help.touchable) {
         help = (
           <PackenUiText
             touchable={{
@@ -222,9 +223,9 @@ class PackenUiInput extends Component {
             }}
             style={{
               ...this.getStyles().help.base,
-              ...this.getStyles().help.size[this.props.size]
+              ...this.getStyles().help.size[this.state.size]
             }}
-          >{this.props.help.text}</PackenUiText>
+          >{this.state.help.text}</PackenUiText>
         );
       }
     }
@@ -235,12 +236,12 @@ class PackenUiInput extends Component {
   getMessageIcon = () => {
     let icon = null;
 
-    if (this.props.message.icon) {
+    if (this.state.message.icon) {
       icon = (
         <Icon
-          name={this.props.message.icon}
-          size={this.getStyles().message.icon.size[this.props.size].size}
-          color={this.getStyles().message.icon.theme[this.props.theme].color}
+          name={this.state.message.icon}
+          size={this.getStyles().message.icon.size[this.state.size].size}
+          color={this.getStyles().message.icon.theme[this.state.theme].color}
           style={{
             ...this.getStyles().message.icon.base,
             ...this.getStyles().message.icon.state[this.state.state]
@@ -255,15 +256,15 @@ class PackenUiInput extends Component {
   getMessage = () => {
     let message = null;
 
-    if (this.props.message) {
+    if (this.state.message) {
       message = (
         <View style={this.getStyles().message.box}>
           {this.getMessageIcon()}
           <PackenUiText style={{
-            ...this.getStyles().message.text.size[this.props.size],
-            ...this.getStyles().message.text.theme[this.props.theme],
+            ...this.getStyles().message.text.size[this.state.size],
+            ...this.getStyles().message.text.theme[this.state.theme],
             ...this.getStyles().message.text.state[this.state.state]
-          }}>{this.props.message.text}</PackenUiText>
+          }}>{this.state.message.text}</PackenUiText>
         </View>
       );
     }
@@ -272,7 +273,7 @@ class PackenUiInput extends Component {
   }
 
   getKeyboardType = () => {
-    return this.props.keyboardType ? this.props.keyboardType : "default";
+    return this.state.keyboardType ? this.state.keyboardType : "default";
   }
 
   getRef = input => {
@@ -298,7 +299,7 @@ class PackenUiInput extends Component {
   }
 
   checkFocus = () => {
-    if (this.props.isFocused) {
+    if (this.state.isFocused) {
       this.focus();
     } else {
       this.blur();
@@ -319,23 +320,23 @@ class PackenUiInput extends Component {
   getMainIcon = () => {
     let icon = null;
 
-    if (this.props.icon) {
+    if (this.state.icon) {
       const inner = (
         <Icon
           name={this.getIconName()}
-          size={this.getStyles().icon.size[this.props.size].size}
+          size={this.getStyles().icon.size[this.state.size].size}
           color={this.getStyles().icon.base.color}
           style={{
-            ...this.getStyles().icon.theme[this.props.theme],
+            ...this.getStyles().icon.theme[this.state.theme],
             ...this.getStyles().icon.state[this.state.state],
-            ...this.props.icon.style
+            ...this.state.icon.style
           }}
         />
       );
 
-      if (this.props.icon.callback) {
+      if (this.state.icon.callback) {
         icon = this.getIconWrapper((
-          <TouchableWithoutFeedback onPress={this.props.icon.callback}>
+          <TouchableWithoutFeedback onPress={this.state.icon.callback}>
             {inner}
           </TouchableWithoutFeedback>
         ));
@@ -348,16 +349,15 @@ class PackenUiInput extends Component {
   }
 
   getSecureEntryType = () => {
-    return this.props.isPassword ? true : false;
+    return this.state.isPassword ? true : false;
   }
 
   updateState = () => {
     this.setState({
-      value: this.props.value ? this.props.value : "",
       state: this.props.disabled ? "disabled" : "default",
-      icon: { ...this.props.icon },
-      size: this.props.size,
-      theme: this.props.theme,
+      icon: this.props.icon ? { ...this.props.icon } : false,
+      size: this.props.size ? this.props.size : "medium",
+      theme: this.props.theme ? this.props.theme : "default",
       multiline: this.props.multiline,
       name: this.props.name,
       disabled: this.props.disabled,
@@ -366,11 +366,12 @@ class PackenUiInput extends Component {
       isOpen: this.props.isOpen,
       help: this.props.help ? typeof this.props.help === "string" ? this.props.help : { ...this.props.help } : undefined,
       message: { ...this.props.message },
-      keyboardType: this.props.keyboardType,
+      keyboardType: this.props.keyboardType ? this.props.keyboardType : "default",
       isFocused: this.props.isFocused,
       isPassword: this.props.isPassword,
       label: this.props.label,
       placeholder: this.props.placeholder,
+      onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
       eventHandlers: this.props.eventHandlers
     }, () => {
       this.checkFocus();
@@ -389,9 +390,9 @@ class PackenUiInput extends Component {
         <View style={this.getStyles().header}>
           <PackenUiText style={{
             ...this.getStyles().label.base,
-            ...this.getStyles().label.size[this.props.size],
+            ...this.getStyles().label.size[this.state.size],
             ...this.getStyles().label.state[this.state.state]
-          }}>{this.props.label.toUpperCase()}</PackenUiText>
+          }}>{this.state.label.toUpperCase()}</PackenUiText>
           {this.getHelp()}
         </View>
         <View style={this.getStyles().box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
@@ -399,8 +400,8 @@ class PackenUiInput extends Component {
           <TextInput
             style={{
               ...this.getStyles().input.base,
-              ...this.getStyles().input.size[this.props.size],
-              ...this.getStyles().input.theme[this.props.theme],
+              ...this.getStyles().input.size[this.state.size],
+              ...this.getStyles().input.theme[this.state.theme],
               ...this.getStyles().input.state[this.state.state],
               ...this.getPaddingStyles(),
               ...this.getMultilineStyles()
@@ -408,14 +409,13 @@ class PackenUiInput extends Component {
             ref={this.getRef}
             secureTextEntry={this.getSecureEntryType()}
             keyboardType={this.getKeyboardType()}
-            value={this.state.value}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
             onChangeText={this.handleChangeText}
             onSubmitEditing={this.handleSubmitEditing}
-            placeholder={this.props.placeholder}
+            placeholder={this.state.placeholder}
             placeholderTextColor={this.getStyles().placeholder.color}
-            multiline={this.props.multiline ? true : false}
+            multiline={this.state.multiline ? true : false}
             editable={this.setEditable()}
           />
         </View>
@@ -790,5 +790,26 @@ class PackenUiInput extends Component {
     };
   }
 }
+
+PackenUiInput.propTypes = {
+  disabled: PropTypes.bool,
+  icon: PropTypes.object,
+  size: PropTypes.string.isRequired,
+  theme: PropTypes.string.isRequired,
+  multiline: PropTypes.bool,
+  name: PropTypes.string.isRequired,
+  nonEditable: PropTypes.bool,
+  isDropdown: PropTypes.bool,
+  isOpen: PropTypes.bool,
+  help: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  message: PropTypes.object,
+  keyboardType: PropTypes.string,
+  isFocused: PropTypes.bool,
+  isPassword: PropTypes.bool,
+  label: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChangeText: PropTypes.func.isRequired,
+  eventHandlers: PropTypes.object
+};
 
 export default PackenUiInput;
