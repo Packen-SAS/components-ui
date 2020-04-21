@@ -3,9 +3,10 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import PackenUiInput from "../../app/components/PackenUiInput";
+import Colors from "../../app/styles/abstracts/colors";
 
 describe("<PackenUiInput/>", () => {
-  let render, renderInstance;
+  let render, renderInstance, renderAlt;
   const mockCallback = jest.fn();
 
   beforeAll(() => {
@@ -30,8 +31,30 @@ describe("<PackenUiInput/>", () => {
     );
     renderInstance = render.instance();
 
+    renderAlt = shallow(
+      <PackenUiInput
+        placeholder="Placeholder"
+        placeholderTextColor="#000000"
+        icon={{
+          name: "lock",
+          position: "left"
+        }}
+        message={{
+          text: "Caption text, description, error notification",
+          icon: "info"
+        }}
+        help="Help text tiny"
+        keyboardType="number-pad"
+        style={{ color: "#FFFFFF" }}
+        eventHandlers={{
+          onFocus: mockCallback,
+          onBlur: mockCallback,
+          onSubmitEditing: mockCallback
+        }}
+      />
+    );
+
     renderInstance.setState({
-      value: "",
       state: "default",
       icon: {
         name: "lock",
@@ -74,6 +97,10 @@ describe("<PackenUiInput/>", () => {
       expect(render).toBeDefined();
     });
 
+    it("renders the alternative version correctly", () => {
+      expect(renderAlt).toBeDefined();
+    });
+
     it("renders help content if provided", () => {
       render.setProps({
         help: "Test"
@@ -109,7 +136,7 @@ describe("<PackenUiInput/>", () => {
       render.setProps({
         message: {
           text: "Test",
-          icon: undefined
+          icon: false
         }
       });
       const spyGetMessageIcon = jest.spyOn(renderInstance, "getMessageIcon");
@@ -137,7 +164,7 @@ describe("<PackenUiInput/>", () => {
 
     it("renders null if a message is not defined", () => {
       render.setProps({
-        message: undefined
+        message: false
       });
       const returnedElement = renderInstance.getMessage();
 
@@ -160,7 +187,7 @@ describe("<PackenUiInput/>", () => {
       render.setProps({
         message: {
           text: "Test",
-          icon: undefined
+          icon: false
         }
       });
       const returnedElement = renderInstance.getMessageIcon();
@@ -174,7 +201,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns null as the main icon if not provided", () => {
-      render.setProps({ icon: undefined });
+      render.setProps({ icon: false });
       const returnedElement = renderInstance.getMainIcon();
 
       expect(returnedElement).toBe(null);
@@ -189,43 +216,45 @@ describe("<PackenUiInput/>", () => {
   });
 
   describe("state changing", () => {
-    it("sets initial state if there's no initial value, it's not disabled, and has no icon", () => {
+    it("sets initial state if it's not disabled, and has no icon", () => {
       render.setProps({
-        value: undefined,
         disabled: false,
-        icon: undefined
+        icon: false
       });
       const returnedState = renderInstance.setInitialState();
 
       expect(returnedState).toEqual({
-        value: "",
         state: "default",
-        icon: {},
+        icon: false,
         size: "tiny",
         theme: "default",
-        multiline: undefined,
+        multiline: false,
         name: "input1",
         disabled: false,
-        nonEditable: undefined,
-        isDropdown: undefined,
-        isOpen: undefined,
+        nonEditable: false,
+        isDropdown: false,
+        isOpen: false,
         help: undefined,
         message: {
           text: "Test",
-          icon: undefined
+          icon: false
         },
-        keyboardType: undefined,
-        isFocused: undefined,
-        isPassword: undefined,
+        keyboardType: "default",
+        isFocused: false,
+        isPassword: false,
         label: "Label tiny",
         placeholder: "Placeholder",
+        placeholderTextColor: Colors.basic.gray.dft,
+        maxLength: undefined,
+        style: {},
+        onChangeText: mockCallback,
+        eventHandlers: false,
         ref: null
       });
     });
 
-    it("sets initial state if there's an initial value, it's disabled, and has an icon", () => {
+    it("sets initial state if it's disabled, and has an icon", () => {
       render.setProps({
-        value: "Test",
         disabled: true,
         icon: {
           name: "check",
@@ -236,7 +265,6 @@ describe("<PackenUiInput/>", () => {
 
       expect(returnedState).toEqual({
         ...renderInstance.state,
-        value: "Test",
         state: "disabled",
         ref: null,
         dimensions: {
@@ -252,10 +280,9 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("sets initial state if there's an initial value, it's disabled, has an icon, and has no help", () => {
+    it("sets initial state if it's disabled, has an icon, and has no help", () => {
       render.setProps({
         help: undefined,
-        value: "Test",
         disabled: true,
         icon: {
           name: "check",
@@ -267,7 +294,6 @@ describe("<PackenUiInput/>", () => {
       expect(returnedState).toEqual({
         ...renderInstance.state,
         help: undefined,
-        value: "Test",
         state: "disabled",
         ref: null,
         dimensions: {
@@ -283,14 +309,13 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("sets initial state if there's an initial value, it's disabled, has an icon, and has a help object", () => {
+    it("sets initial state if it's disabled, has an icon, and has a help object", () => {
       render.setProps({
         help: {
           text: "This triggers an internal callback",
           touchable: true,
           callback: this.mockCallback
         },
-        value: "Test",
         disabled: true,
         icon: {
           name: "check",
@@ -306,7 +331,7 @@ describe("<PackenUiInput/>", () => {
           touchable: true,
           callback: this.mockCallback
         },
-        value: "Test",
+        
         state: "disabled",
         ref: null,
         dimensions: {
@@ -413,15 +438,13 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("executes correct code on componentDidUpdate", () => {
-      const prevProps = { value: "Test", isFocused: false };
+      const prevProps = { isFocused: false };
       const spyCheckFocus = jest.spyOn(renderInstance, "checkFocus");
       render.setProps({
-        value: "Test 2",
         isFocused: true
       });
       renderInstance.componentDidUpdate(prevProps, null, null);
 
-      expect(renderInstance.state.value).toBe("Test 2");
       expect(spyCheckFocus).toHaveBeenCalled();
       spyCheckFocus.mockRestore();
     });
@@ -456,14 +479,14 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns the keyboard type as 'default' if not provided", () => {
-      render.setProps({ keyboardType: undefined });
+      renderInstance.setState({ keyboardType: false });
       const returnedType = renderInstance.getKeyboardType();
 
       expect(returnedType).toBe("default");
     });
 
     it("returns the correct keyboard type if provided", () => {
-      render.setProps({ keyboardType: "number-pad" });
+      renderInstance.setState({ keyboardType: "number-pad" });
       const returnedType = renderInstance.getKeyboardType();
 
       expect(returnedType).toBe("number-pad");
@@ -608,7 +631,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns an empty object if there's no icon passed", () => {
-      render.setProps({ icon: undefined });
+      render.setProps({ icon: false });
       const returnedStyles = renderInstance.setIconPositionStyles();
 
       expect(returnedStyles).toEqual({});
@@ -627,7 +650,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns empty padding styles if there's no icon", () => {
-      renderInstance.props = {};
+      render.setProps({ icon: false });
       const returnedStyles = renderInstance.getPaddingStyles();
       
       expect(returnedStyles).toEqual({});
@@ -644,7 +667,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns empty multiline styles if it's not a textarea", () => {
-      renderInstance.props = {};
+      render.setProps({ multiline: false });
       const returnedStyles = renderInstance.getMultilineStyles();
 
       expect(returnedStyles).toEqual({});

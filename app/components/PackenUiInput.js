@@ -32,12 +32,12 @@ class PackenUiInput extends Component {
       keyboardType: this.props.keyboardType ? this.props.keyboardType : "default",
       isFocused: this.props.isFocused ? this.props.isFocused : false,
       isPassword: this.props.isPassword ? this.props.isPassword : false,
-      label: this.props.label ? this.props.label : false,
+      label: this.props.label ? this.props.label : "",
       placeholder: this.props.placeholder,
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
       maxLength: this.props.maxLength,
       style: this.props.style ? { ...this.props.style } : {},
-      onChangeText: this.props.onChangeText ? this.props.onChangeText : () => {},
+      onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false
     };
   }
@@ -66,6 +66,8 @@ class PackenUiInput extends Component {
 
     return initialState;
   }
+
+  mockCallback = () => false;
 
   setIconPositionStyles = () => {
     let positionStyles = {};
