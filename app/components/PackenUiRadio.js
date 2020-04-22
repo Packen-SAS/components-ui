@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiRadioControl from "./PackenUiRadioControl";
@@ -8,13 +9,19 @@ class PackenUiRadio extends Component {
     super(props);
 
     this.state = {
-      items: [...props.items],
-      checkedIndex: props.initialIndex,
-      callback: props.callback,
-      name: props.name,
-      layout: props.layout,
+      ...this.setPropsToState(),
       currentSelection: ""
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      items: this.props.items ? [...this.props.items] : [],
+      checkedIndex: this.props.initialIndex ? this.props.initialIndex : -1,
+      callback: this.props.callback ? this.props.callback : false,
+      name: this.props.name ? this.props.name : "",
+      layout: this.props.layout ? this.props.layout : "column"
+    };
   }
 
   updateCheckedIndex = newCheckedIndex => {
@@ -34,13 +41,7 @@ class PackenUiRadio extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      items: [...this.props.items],
-      checkedIndex: this.props.initialIndex,
-      callback: this.props.callback,
-      name: this.props.name,
-      layout: this.props.layout
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -123,6 +124,14 @@ class PackenUiRadio extends Component {
       }
     };
   }
+}
+
+PackenUiRadio.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  initialIndex: PropTypes.number.isRequired,
+  callback: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  layout: PropTypes.string.isRequired
 }
 
 export default PackenUiRadio;

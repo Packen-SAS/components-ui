@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -7,19 +8,19 @@ class PackenUiDivider extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      type: props.type,
-      size: props.size,
-      margin: {...props.margin}
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      type: this.props.type ? this.props.type : "light",
+      size: this.props.size ? this.props.size : 1,
+      margin: this.props.margin ? { ...this.props.margin } : false
+    };
   }
 
   updateState = () => {
-    this.setState({
-      type: this.props.type,
-      size: this.props.size,
-      margin: {...this.props.margin}
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -57,5 +58,11 @@ class PackenUiDivider extends Component {
     };
   }
 }
+
+PackenUiDivider.propTypes = {
+  type: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  margin: PropTypes.object
+};
 
 export default PackenUiDivider;

@@ -1,4 +1,5 @@
 import React, { Component, createRef } from "react";
+import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, View } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -308,6 +309,7 @@ class PackenUiDropdownListItem extends Component {
                 isDisabled: this.props.mainContent.main.control.isDisabled
               }]}
               ref={this.setRadioRef}
+              name="dropdownItemRadio"
             />
           );
         } break;
@@ -318,6 +320,7 @@ class PackenUiDropdownListItem extends Component {
               items={this.props.mainContent.main.control.items}
               callback={this.props.mainContent.main.control.notifyParent}
               ref={this.setCheckboxRef}
+              name="dropdownItemCheckbox"
             />
           );
         } break;
@@ -587,5 +590,15 @@ class PackenUiDropdownListItem extends Component {
     };
   }
 }
+
+PackenUiDropdownListItem.propTypes = {
+  config: PropTypes.object.isRequired,
+  mainContent: PropTypes.object.isRequired,
+  getItemHeight: PropTypes.func.isRequired,
+  selectedItems: PropTypes.array.isRequired,
+  updateSelectedItems: PropTypes.func.isRequired,
+  currentRadiosState: PropTypes.object,
+  currentCheckboxesState: PropTypes.object
+};
 
 export default PackenUiDropdownListItem;

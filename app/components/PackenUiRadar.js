@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Animated } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -10,15 +11,21 @@ class PackenUiRadar extends Component {
     this.shadowAnim = null;
 
     this.state = {
-      theme: props.theme,
-      animated: props.animated,
-      isAnimating: this.getInitialAnimatingState(),
+      ...this.setPropsToState(),
       transforms: {
         shadow: {
           transform: this.getInitialShadowTransform()
         }
       }
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      theme: this.props.theme ? this.props.theme : "wait",
+      animated: this.props.animated ? this.props.animated : false,
+      isAnimating: this.getInitialAnimatingState()
+    };
   }
 
   getInitialAnimatingState = () => {
@@ -80,9 +87,7 @@ class PackenUiRadar extends Component {
 
   updateState = () => {
     this.setState({
-      theme: this.props.theme,
-      animated: this.props.animated,
-      isAnimating: this.getInitialAnimatingState()
+      ...this.setPropsToState()
     }, () => {
       this.checkAnimationState();
     });
@@ -166,5 +171,11 @@ class PackenUiRadar extends Component {
     };
   }
 }
+
+PackenUiRadar.propTypes = {
+  theme: PropTypes.string.isRequired,
+  animated: PropTypes.bool.isRequired,
+  isAnimating: PropTypes.bool
+};
 
 export default PackenUiRadar;

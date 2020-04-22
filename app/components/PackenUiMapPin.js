@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Typography from "../styles/abstracts/typography";
@@ -12,13 +13,20 @@ class PackenUiMapPin extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      main: { ...props.main },
-      sub: { ...props.sub },
-      theme: props.theme,
-      type: props.type,
-      dotPosition: props.dotPosition
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      main: this.props.main ? { ...this.props.main } : {
+        label: "",
+        text: ""
+      },
+      sub: this.props.sub ? { ...this.props.sub } : false,
+      theme: this.props.theme ? this.props.theme : "primary",
+      type: this.props.type ? this.props.type : "info",
+      dotPosition: this.props.dotPosition ? this.props.dotPosition : false
+    };
   }
 
   getLabel = () => {
@@ -26,6 +34,16 @@ class PackenUiMapPin extends Component {
       return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.state.theme] }}>{this.state.main.label.toUpperCase() + " "}</PackenUiText>;
     } else {
       return null;
+    }
+  }
+
+  updateState = () => {
+    this.setState({ ...this.setPropsToState() });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
     }
   }
 
@@ -151,5 +169,13 @@ class PackenUiMapPin extends Component {
     };
   }
 }
+
+PackenUiMapPin.propTypes = {
+  main: PropTypes.object,
+  sub: PropTypes.object,
+  theme: PropTypes.string,
+  type: PropTypes.string.isRequired,
+  dotPosition: PropTypes.string
+};
 
 export default PackenUiMapPin;

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -13,15 +14,21 @@ class PackenUiCheckboxControl extends Component {
     super(props);
 
     this.state = {
-      label: props.label,
-      layout: props.layout,
-      isChecked: props.isChecked,
-      isDisabled: props.isDisabled,
-      checkedItems: props.checkedItems,
+      ...this.setPropsToState(),
       styles: {
         disabled: {}
       }
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      label: this.props.label ? this.props.label : "",
+      layout: this.props.layout ? this.props.layout : "column",
+      isChecked: this.props.isChecked ? this.props.isChecked : false,
+      isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
+      checkedItems: this.props.checkedItems ? this.props.checkedItems : []
+    };
   }
 
   componentDidMount = () => {
@@ -70,11 +77,7 @@ class PackenUiCheckboxControl extends Component {
 
   updateState = () => {
     this.setState({
-      label: this.props.label,
-      layout: this.props.layout,
-      isChecked: this.props.isChecked,
-      isDisabled: this.props.isDisabled,
-      checkedItems: this.props.checkedItems
+      ...this.setPropsToState()
     }, () => {
       this.setActiveStyles();
       this.setDisabledStyles();
@@ -181,5 +184,13 @@ class PackenUiCheckboxControl extends Component {
     };
   }
 }
+
+PackenUiCheckboxControl.propTypes = {
+  label: PropTypes.string.isRequired,
+  layout: PropTypes.string.isRequired,
+  isChecked: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool.isRequired,
+  checkedItems: PropTypes.array.isRequired
+};
 
 export default PackenUiCheckboxControl;

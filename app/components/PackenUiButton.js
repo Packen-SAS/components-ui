@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, View, Animated } from "react-native"
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -12,15 +13,22 @@ class PackenUiButton extends Component {
     super(props);
 
     this.state = {
-      type: props.type,
-      level: props.level,
-      size: props.size,
-      icon: this.getInitialIcon(),
-      isDisabled: props.isDisabled,
-      nonTouchable: props.nonTouchable,
-      styles: this.getStyles(),
-      children: props.children
+      ...this.setPropsToState(),
+      styles: this.getStyles()
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      type: this.props.type ? this.props.type : "regular",
+      level: this.props.level ? this.props.level : "primary",
+      size: this.props.size ? this.props.size : "medium",
+      icon: this.getInitialIcon(),
+      callback: this.props.callback ? this.props.callback : false,
+      isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
+      nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
+      children: this.props.children ? this.props.children : undefined
+    };
   }
 
   getInitialIcon = () => {
@@ -36,11 +44,11 @@ class PackenUiButton extends Component {
       icon = this.state.icon;
       isDisabled = this.state.isDisabled;
     } else {
-      type = this.props.type;
-      size = this.props.size;
-      level = this.props.level;
-      icon = this.props.icon;
-      isDisabled = this.props.isDisabled;
+      type = this.props.type ? this.props.type : "regular",
+      level = this.props.level ? this.props.level : "primary",
+      size = this.props.size ? this.props.size : "medium",
+      icon = this.getInitialIcon(),
+      isDisabled = this.props.isDisabled ? this.props.isDisabled : false;
     }
 
     let styles = {
@@ -133,13 +141,7 @@ class PackenUiButton extends Component {
 
   updateState = () => {
     this.setState({
-      type: this.props.type,
-      level: this.props.level,
-      size: this.props.size,
-      icon: this.getInitialIcon(),
-      isDisabled: this.props.isDisabled,
-      nonTouchable: this.props.nonTouchable,
-      children: this.props.children
+      ...this.setPropsToState()
     }, () => {
       this.checkStyles();
       this.checkIconAnimState();
@@ -153,7 +155,9 @@ class PackenUiButton extends Component {
   }
 
   executeCallback = () => {
-    this.props.callback();
+    if (this.state.callback) {
+      this.state.callback();
+    }
   }
 
   pressInHandler = () => {
@@ -420,5 +424,16 @@ class PackenUiButton extends Component {
     };
   }
 }
+
+PackenUiButton.propTypes = {
+  type: PropTypes.string.isRequired,
+  level: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
+  icon: PropTypes.object,
+  callback: PropTypes.func,
+  isDisabled: PropTypes.bool,
+  nonTouchable: PropTypes.bool,
+  children: PropTypes.node
+};
 
 export default PackenUiButton;

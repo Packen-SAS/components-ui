@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, FlatList } from "react-native";
 
 import PackenUiDropdownListItem from "./PackenUiDropdownListItem";
@@ -8,11 +9,7 @@ class PackenUiDropdownList extends Component {
     super(props);
 
     this.state = {
-      items: [...props.items],
-      numShownRows: props.numShownRows,
-      config: { ...props.config },
-      toggleMenu: props.toggleMenu,
-      getFinalSelection: props.getFinalSelection,
+      ...this.setPropsToState(),
       height: "100%",
       selectedItems: [],
       currentRadiosState: {
@@ -23,6 +20,16 @@ class PackenUiDropdownList extends Component {
         checkedValues: []
       }
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      items: this.props.items ? [...this.props.items] : [],
+      numShownRows: this.props.numShownRows ? this.props.numShownRows : 4,
+      config: this.props.config ? { ...this.props.config } : {},
+      toggleMenu: this.props.toggleMenu ? this.props.toggleMenu : false,
+      getFinalSelection: this.props.getFinalSelection ? this.props.getFinalSelection : false
+    };
   }
 
   getItemHeight = itemHeight => {
@@ -121,13 +128,7 @@ class PackenUiDropdownList extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      items: [...this.props.items],
-      numShownRows: this.props.numShownRows,
-      config: { ...this.props.config },
-      toggleMenu: this.props.toggleMenu,
-      getFinalSelection: this.props.getFinalSelection
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -163,5 +164,14 @@ class PackenUiDropdownList extends Component {
     );
   }
 }
+
+PackenUiDropdownList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  numShownRows: PropTypes.number.isRequired,
+  config: PropTypes.object.isRequired,
+  toggleMenu: PropTypes.func.isRequired,
+  getFinalSelection: PropTypes.func.isRequired,
+  finalSelectionArray: PropTypes.array
+};
 
 export default PackenUiDropdownList;

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Modal, View, TouchableWithoutFeedback, Image, Dimensions } from "react-native";
 
 import Carousel from 'react-native-snap-carousel';
@@ -14,17 +15,7 @@ class PackenUiModal extends Component {
     super(props);
 
     let initialState = {
-      type: props.type,
-      banner: props.banner,
-      size: props.size,
-      isOpen: props.isOpen,
-      images: props.images,
-      info: props.info,
-      toggle: props.toggle,
-      theme: props.theme,
-      content: props.content,
-      onDismiss: props.onDismiss,
-      onRequestClose: props.onRequestClose,
+      ...this.setPropsToState(),
       backdropStyles: { ...this.getStyles().backdrop.base }
     };
     if (props.type !== "gallery") {
@@ -64,6 +55,27 @@ class PackenUiModal extends Component {
     this.state = { ...initialState };
 
     this.carouselRef;
+  }
+
+  mockCallback = () => false;
+
+  setPropsToState = () => {
+    return {
+      type: this.props.type ? this.props.type : "info",
+      banner: this.props.banner ? this.props.banner : false,
+      size: this.props.size ? this.props.size : "default",
+      isOpen: this.props.isOpen ? this.props.isOpen : false,
+      images: this.props.images ? this.props.images : [],
+      info: this.props.info ? this.props.info : {
+        title: "",
+        text: ""
+      },
+      toggle: this.props.toggle ? this.props.toggle : this.mockCallback,
+      theme: this.props.theme ? this.props.theme : "primary",
+      content: this.props.content ? this.props.content : null,
+      onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
+      onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false
+    };
   }
 
   componentDidMount() {
@@ -139,17 +151,7 @@ class PackenUiModal extends Component {
 
   updateState = (prevProps, prevState) => {
     this.setState({
-      type: this.props.type,
-      banner: this.props.banner,
-      size: this.props.size,
-      isOpen: this.props.isOpen,
-      images: this.props.images,
-      info: this.props.info,
-      toggle: this.props.toggle,
-      theme: this.props.theme,
-      content: this.props.content,
-      onDismiss: this.props.onDismiss,
-      onRequestClose: this.props.onRequestClose
+      ...this.setPropsToState()
     }, () => {
       if (prevProps.isOpen !== this.props.isOpen) {
         this.setBackdropStyles();
@@ -567,5 +569,19 @@ class PackenUiModal extends Component {
     };
   }
 }
+
+PackenUiModal.propTypes = {
+  type: PropTypes.string.isRequired,
+  banner: PropTypes.object,
+  size: PropTypes.string.isRequired,
+  isOpen: PropTypes.bool,
+  images: PropTypes.array,
+  info: PropTypes.object,
+  toggle: PropTypes.func.isRequired,
+  theme: PropTypes.string.isRequired,
+  content: PropTypes.node,
+  onDismiss: PropTypes.func,
+  onRequestClose: PropTypes.func
+};
 
 export default PackenUiModal;

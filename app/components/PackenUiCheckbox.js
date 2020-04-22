@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import PackenUiCheckboxControl from "./PackenUiCheckboxControl";
@@ -8,12 +9,18 @@ class PackenUiCheckbox extends Component {
     super(props);
 
     this.state = {
-      layout: props.layout,
-      items: [...props.items],
-      callback: props.callback,
-      name: props.name,
+      ...this.setPropsToState(),
       checkedItems: [],
       selectedIndex: null
+    };
+  }
+
+  setPropsToState = () => {
+    return {
+      layout: this.props.layout ? this.props.layout : "column",
+      items: this.props.items ? [...this.props.items] : [] ,
+      callback: this.props.callback ? this.props.callback : false,
+      name: this.props.name ? this.props.name : ""
     };
   }
 
@@ -33,7 +40,9 @@ class PackenUiCheckbox extends Component {
       this.setState({
         checkedItems: newCheckedItems
       }, () => {
-        this.state.callback(this.state.name, newCheckedItems);
+        if (this.state.callback) {
+          this.state.callback(this.state.name, newCheckedItems);
+        }
       });
     } else {
       return false;
@@ -56,12 +65,7 @@ class PackenUiCheckbox extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      layout: this.props.layout,
-      items: [...this.props.items],
-      callback: this.props.callback,
-      name: this.props.name
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -137,5 +141,12 @@ class PackenUiCheckbox extends Component {
     };
   }
 }
+
+PackenUiCheckbox.propTypes = {
+  layout: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  callback: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired
+};
 
 export default PackenUiCheckbox;

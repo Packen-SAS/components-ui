@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -10,13 +11,31 @@ class PackenUiListItem extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      data: { ...props.data }
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      data: {
+        size: this.props.data.size ? this.props.data.size : "default",
+        title: this.props.data.title ? this.props.data.title : "",
+        subtitle: this.props.data.subtitle ? this.props.data.subtitle : false,
+        label: this.props.data.label ? this.props.data.label : false,
+        icon: this.props.data.icon ? { ...this.props.data.icon } : {
+          name: "chevron-right",
+          color: Colors.brand.primary.drk
+        },
+        media: this.props.data.media ? this.props.data.media : false,
+        callback: this.props.data.callback ? this.props.data.callback : false,
+        customWrapperStyle: this.props.data.customWrapperStyle ? this.props.data.customWrapperStyle : {}
+      }
+    };
   }
 
   onPressHandler = () => {
-    this.state.data.callback();
+    if (this.state.data.callback) {
+      this.state.data.callback();
+    }
   }
 
   getMedia = () => {
@@ -60,9 +79,7 @@ class PackenUiListItem extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      data: { ...this.props.data }
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -123,5 +140,24 @@ class PackenUiListItem extends Component {
     };
   }
 }
+
+PackenUiListItem.propTypes = {
+  data: PropTypes.shape({
+    size: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    subtitle: PropTypes.string,
+    label: PropTypes.shape({
+      text: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired
+    }),
+    icon: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired
+    }),
+    media: PropTypes.node,
+    callback: PropTypes.func,
+    customWrapperStyle: PropTypes.object
+  }).isRequired
+};
 
 export default PackenUiListItem;

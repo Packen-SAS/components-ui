@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
@@ -8,10 +9,16 @@ class PackenUiServiceStatus extends Component {
     super(props);
 
     this.state = {
-      steps: [...props.steps],
-      currentStepIndex: props.currentStepIndex,
+      ...this.setPropsToState(),
       itemsHeights: []
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      steps: this.props.steps ? [...this.props.steps] : [],
+      currentStepIndex: this.props.currentStepIndex ? this.props.currentStepIndex : -1
+    };
   }
 
   updateCurrentStep = () => {
@@ -40,8 +47,7 @@ class PackenUiServiceStatus extends Component {
 
   updateState = () => {
     this.setState({
-      steps: [...this.props.steps],
-      currentStepIndex: this.props.currentStepIndex,
+      ...this.setPropsToState()
     }, () => {
       this.updateCurrentStep();
     });
@@ -80,5 +86,10 @@ class PackenUiServiceStatus extends Component {
     };
   }
 }
+
+PackenUiServiceStatus.propTypes = {
+  steps: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentStepIndex: PropTypes.number.isRequired
+};
 
 export default PackenUiServiceStatus;

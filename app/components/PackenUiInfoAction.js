@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -11,15 +12,28 @@ class PackenUiInfoAction extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      theme: props.theme,
-      title: props.title,
-      caption: props.caption,
-      subtitle: props.subtitle,
-      callback: props.callback,
-      img: { ...props.img },
-      icon: { ...props.icon }
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  mockCallback = () => false;
+
+  setPropsToState = () => {
+    return {
+      theme: this.props.theme ? this.props.theme : "primary",
+      title: this.props.title ? this.props.title : "",
+      caption: this.props.caption ? this.props.caption : false,
+      subtitle: this.props.subtitle ? this.props.subtitle : false,
+      callback: this.props.callback ? this.props.callback : this.mockCallback,
+      img: this.props.img ? { ...this.props.img } : {
+        src: undefined,
+        width: 0,
+        height: 0
+      },
+      icon: this.props.icon ? { ...this.props.icon } : {
+        name: "play",
+        size: 14
+      }
+    };
   }
 
   getCaption = () => {
@@ -71,15 +85,7 @@ class PackenUiInfoAction extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      theme: this.props.theme,
-      title: this.props.title,
-      caption: this.props.caption,
-      subtitle: this.props.subtitle,
-      callback: this.props.callback,
-      img: { ...this.props.img },
-      icon: { ...this.props.icon }
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -182,5 +188,15 @@ class PackenUiInfoAction extends Component {
     };
   }
 }
+
+PackenUiInfoAction.propTypes = {
+  theme: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  caption: PropTypes.string,
+  subtitle: PropTypes.string,
+  callback: PropTypes.func.isRequired,
+  img: PropTypes.object,
+  icon: PropTypes.object
+};
 
 export default PackenUiInfoAction;
