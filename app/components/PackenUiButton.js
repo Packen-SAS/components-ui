@@ -44,9 +44,9 @@ class PackenUiButton extends Component {
       icon = this.state.icon;
       isDisabled = this.state.isDisabled;
     } else {
-      type = this.props.type ? this.props.type : "regular",
-      level = this.props.level ? this.props.level : "primary",
-      size = this.props.size ? this.props.size : "medium",
+      type = this.setPropsToState().type,
+      level = this.setPropsToState().level,
+      size = this.setPropsToState().size,
       icon = this.getInitialIcon(),
       isDisabled = this.props.isDisabled ? this.props.isDisabled : false;
     }
