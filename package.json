@@ -1,7 +1,7 @@
 {
   "name": "@packen/react-native-ui",
   "version": "1.0.0",
-  "private": false,
+  "private": true,
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
