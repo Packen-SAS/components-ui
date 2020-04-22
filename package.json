@@ -1,6 +1,8 @@
 {
   "name": "@packen/react-native-ui",
   "version": "1.0.0",
+  "description": "UI components for ReactNative apps developed by Packen",
+  "main": "index.js",
   "private": true,
   "scripts": {
     "start": "react-native start",
@@ -10,6 +12,17 @@
     "test": "jest --coverage",
     "storybook": "start-storybook -p 7007"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://bitbucket.org/packen_ror_team/ui_components/src/master/"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "react-native"
+  ],
+  "author": "andres.liu@packen.co",
+  "license": "UNLICENSED",
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.9",
     "@react-navigation/drawer": "^5.5.0",
