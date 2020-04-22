@@ -61,3 +61,21 @@ __snapshots__
 
 unit
 coverage
+__tests__
+jest
+storybook
+android
+ios
+.gradle
+.flowconfig
+.buckconfig
+.eslintrc.js
+.gitattributes
+.prettierrc.js
+.watchmanconfig
+app.json
+babel.config.js
+metro.config.js
+README.md
+yarn.lock
+package-lock.json
