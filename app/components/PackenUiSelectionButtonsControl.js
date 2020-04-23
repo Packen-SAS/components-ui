@@ -143,7 +143,7 @@ class PackenUiSelectionButtonsControl extends Component {
       selection: this.props.selection,
       onNewSelection: this.props.onNewSelection
     }, () => {
-      if (prevProps.selected !== this.props.selected && this.state.selected) {
+      if (prevProps.selected !== this.props.selected && this.state.selected !== undefined) {
         this.checkIfActive();
       }
     });
