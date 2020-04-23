@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -11,25 +12,26 @@ class PackenUiVehicleBox extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      type: props.type,
-      make: props.make,
-      year: props.year,
-      plate: props.plate,
-      img: { ...props.img },
-      callback: props.callback
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      type: this.props.type ? this.props.type : "",
+      make: this.props.make ? this.props.make : "",
+      year: this.props.year ? this.props.year : "",
+      plate: this.props.plate ? this.props.plate : "",
+      img: this.props.img ? { ...this.props.img } : {
+        src: "",
+        width: 0,
+        height: 0
+      },
+      callback: this.props.callback ? this.props.callback : false
+    };
   }
 
   updateState = () => {
-    this.setState({
-      type: this.props.type,
-      make: this.props.make,
-      year: this.props.year,
-      plate: this.props.plate,
-      img: { ...this.props.img },
-      callback: this.props.callback
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   getContent = () => {
@@ -102,5 +104,14 @@ class PackenUiVehicleBox extends Component {
     };
   }
 }
+
+PackenUiVehicleBox.propTypes = {
+  type: PropTypes.string.isRequired,
+  make: PropTypes.string.isRequired,
+  year: PropTypes.string.isRequired,
+  plate: PropTypes.string.isRequired,
+  img: PropTypes.object.isRequired,
+  callback: PropTypes.func
+};
 
 export default PackenUiVehicleBox;

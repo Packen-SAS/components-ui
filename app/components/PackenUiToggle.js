@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -11,14 +12,8 @@ class PackenUiToggle extends Component {
     super(props);
 
     this.state = {
-      isActive: props.isActive,
-      isDisabled: props.isDisabled,
-      toggleHandler: props.toggleHandler,
-      name: props.name,
-      onLabel: props.onLabel,
-      offLabel: props.offLabel,
+      ...this.setPropsToState(),
       initialState: this.setInitialState(),
-      state: this.setInitialState(),
       shape: {
         height: 0,
         width: 0,
@@ -43,6 +38,18 @@ class PackenUiToggle extends Component {
         disabled: {}
       }
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      isActive: this.props.isActive ? this.props.isActive : false,
+      isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
+      toggleHandler: this.props.toggleHandler ? this.props.toggleHandler : false,
+      name: this.props.name ? this.props.name : "",
+      onLabel: this.props.onLabel ? this.props.onLabel : "",
+      offLabel: this.props.offLabel ? this.props.offLabel : "",
+      state: this.setInitialState()
+    };
   }
 
   setInitialState = () => {
@@ -200,20 +207,14 @@ class PackenUiToggle extends Component {
     this.setState({
       state: this.state.state === "active" ? "inactive" : "active"
     }, () => {
-      this.state.toggleHandler(this.state.name, this.state.state === "active" ? true : false);
+      if (this.state.toggleHandler) {
+        this.state.toggleHandler(this.state.name, this.state.state === "active" ? true : false);
+      }
     });
   }
 
   updateState = () => {
-    this.setState({
-      isActive: this.props.isActive,
-      isDisabled: this.props.isDisabled,
-      toggleHandler: this.props.toggleHandler,
-      name: this.props.name,
-      onLabel: this.props.onLabel,
-      offLabel: this.props.offLabel,
-      state: this.setInitialState()
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -307,16 +308,16 @@ class PackenUiToggle extends Component {
         on: {
           active: {
             color: Colors.brand.primary.ulgt,
-            top: -5,
+            top: -6,
             left: 0
           },
           inactive: {
-            top: -5,
+            top: -6,
             left: 0,
             opacity: 0
           },
           disabled: {
-            top: -5,
+            top: -6,
             left: 0,
             opacity: 0.6,
             color: Colors.basic.white.dft
@@ -325,16 +326,16 @@ class PackenUiToggle extends Component {
         off: {
           active: {
             opacity: 0,
-            top: -5,
+            top: -6,
             right: 0
           },
           inactive: {
-            top: -5,
+            top: -6,
             right: 0,
             color: Colors.basic.gray.drk
           },
           disabled: {
-            top: -5,
+            top: -6,
             right: 0,
             opacity: 0.6,
             color: Colors.basic.white.dft
@@ -344,5 +345,14 @@ class PackenUiToggle extends Component {
     };
   }
 }
+
+PackenUiToggle.propTypes = {
+  isActive: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
+  toggleHandler: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  onLabel: PropTypes.string.isRequired,
+  offLabel: PropTypes.string.isRequired
+};
 
 export default PackenUiToggle;

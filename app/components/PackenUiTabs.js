@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiTabItem from "./PackenUiTabItem";
@@ -7,23 +8,30 @@ class PackenUiTabs extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      items: [...props.items],
-      activeTabIndex: props.activeIndex
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      items: this.props.items ? [...this.props.items] : [],
+      name: this.props.name ? this.props.name : "",
+      activeTabIndex: this.props.activeIndex ? this.props.activeIndex : 0,
+      onTabChange: this.props.onTabChange ? this.props.onTabChange : false
+    };
   }
 
   updateActiveIndex = newActiveIndex => {
     this.setState({
       activeTabIndex: newActiveIndex
+    }, () => {
+      if (this.state.onTabChange) {
+        this.state.onTabChange(this.state.name, this.state.activeTabIndex);
+      }
     });
   }
 
   updateState = () => {
-    this.setState({
-      items: [...this.props.items],
-      activeTabIndex: this.props.activeIndex
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -61,5 +69,12 @@ class PackenUiTabs extends Component {
     };
   }
 }
+
+PackenUiTabs.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  name: PropTypes.string.isRequired,
+  activeIndex: PropTypes.number.isRequired,
+  onTabChange: PropTypes.func.isRequired
+};
 
 export default PackenUiTabs;

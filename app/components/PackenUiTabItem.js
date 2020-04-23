@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -13,14 +14,20 @@ class PackenUiTabItem extends Component {
     super(props);
 
     this.state = {
-      updateActiveTabIndex: props.updateActiveTabIndex,
-      selfIndex: props.selfIndex,
-      activeTabIndex: props.activeTabIndex,
-      callback: props.callback,
-      icon: props.icon,
-      label: props.label,
+      ...this.setPropsToState(),
       itemStyles: this.getItemStyles()
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      updateActiveTabIndex: this.props.updateActiveTabIndex ? this.props.updateActiveTabIndex : false,
+      selfIndex: this.props.selfIndex ? this.props.selfIndex : 0,
+      activeTabIndex: this.props.activeTabIndex ? this.props.activeTabIndex : 0,
+      callback: this.props.callback ? this.props.callback : false,
+      icon: this.props.icon ? this.props.icon : false,
+      label: this.props.label ? this.props.label : ""
+    };
   }
 
   componentDidMount() {
@@ -47,8 +54,12 @@ class PackenUiTabItem extends Component {
 
   setActiveTab = () => {
     this.setActiveStyles();
-    this.state.updateActiveTabIndex(this.state.selfIndex);
-    this.state.callback();
+    if (this.state.updateActiveTabIndex) {
+      this.state.updateActiveTabIndex(this.state.selfIndex);
+    }
+    if (this.state.callback) {
+      this.state.callback();
+    }
   }
 
   setActiveStyles = () => {
@@ -85,12 +96,7 @@ class PackenUiTabItem extends Component {
 
   updateState = (prevProps) => {
     this.setState({
-      updateActiveTabIndex: this.props.updateActiveTabIndex,
-      selfIndex: this.props.selfIndex,
-      activeTabIndex: this.props.activeTabIndex,
-      callback: this.props.callback,
-      icon: this.props.icon,
-      label: this.props.label
+      ...this.setPropsToState()
     }, () => {
       if (prevProps.activeTabIndex !== this.state.activeTabIndex) {
         this.checkIfActive();
@@ -227,5 +233,14 @@ class PackenUiTabItem extends Component {
     };
   }
 }
+
+PackenUiTabItem.propTypes = {
+  updateActiveTabIndex: PropTypes.func.isRequired,
+  activeTabIndex: PropTypes.number.isRequired,
+  selfIndex: PropTypes.number.isRequired,
+  callback: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+};
 
 export default PackenUiTabItem;

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Typography from "../styles/abstracts/typography";
@@ -14,6 +15,13 @@ class PackenUiTag extends Component {
       style: props.style,
       children: props.children
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      style: this.props.style ? { ...this.props.style } : {},
+      children: this.props.children ? this.props.children : null
+    };
   }
 
   updateState = () => {
@@ -62,5 +70,10 @@ class PackenUiTag extends Component {
     };
   }
 }
+
+PackenUiTag.propTypes = {
+  style: PropTypes.object,
+  children: PropTypes.node.isRequired
+};
 
 export default PackenUiTag;
