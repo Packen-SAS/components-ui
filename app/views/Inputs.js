@@ -48,6 +48,7 @@ class Inputs extends Component {
                 size="tiny"
                 placeholder="Placeholder"
                 onChangeText={this.handleChangeText}
+                maxLength={10}
                 icon={{
                   name: "lock",
                   position: "left"
@@ -60,6 +61,11 @@ class Inputs extends Component {
                 help="Number-pad keyboard"
                 keyboardType="number-pad"
                 theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
               />
             </View>
             <View style={{ marginBottom: 10 }}>

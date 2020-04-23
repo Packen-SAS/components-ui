@@ -3,7 +3,9 @@ import { View, TouchableWithoutFeedback } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
+import Typography from "../styles/abstracts/typography";
 
+import PackenUiText from "./PackenUiText";
 import PackenUiInput from "./PackenUiInput";
 import PackenUiDropdownList from "./PackenUiDropdownList";
 
@@ -18,6 +20,7 @@ class PackenUiDropdown extends Component {
       input: {...props.input},
       list: {...props.list},
       size: props.size,
+      contentSizerHeight: 0,
       isOpen: false,
       dimensions: {
         menu: {
@@ -100,17 +103,47 @@ class PackenUiDropdown extends Component {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
-    if (prevState.isOpen !== this.state.isOpen) {
-      this.setState({
-        styles: {
-          ...this.state.styles,
-          menu: {
-            ...this.state.styles.menu,
-            opacity: this.state.isOpen ? 1 : 0
-          }
-        }
-      });
+  }
+
+  getPlaceholderConfig = () => {
+    let config = {
+      text: this.state.input.placeholder,
+      color: Colors.basic.gray.dft
+    };
+
+    if (this.state.finalSelectionString !== "" && this.state.finalSelectionString !== undefined && this.state.finalSelectionString !== null) {
+      config = {
+        text: this.state.finalSelectionString,
+        color: Colors.basic.independence.drk
+      }
     }
+
+    return config;
+  }
+
+  getContentSizerDimensions = ({ nativeEvent }) => {
+    let { height } = nativeEvent.layout;
+    const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
+    
+    if (height < minHeight) {
+      height = minHeight;
+    }
+
+    this.setState({
+      contentSizerHeight: height
+    });
+  }
+
+  getCustomStyle = () => {
+    let styles = {};
+
+    if (this.state.contentSizerHeight !== 0) {
+      styles = {
+        height: this.state.contentSizerHeight
+      }
+    }
+
+    return styles;
   }
 
   render() {
@@ -122,9 +155,9 @@ class PackenUiDropdown extends Component {
         <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
           <View pointerEvents="box-only">
             <PackenUiInput
-              value={this.state.finalSelectionString}
               size={this.state.size}
-              placeholder={this.state.input.placeholder}
+              placeholder={this.getPlaceholderConfig().text}
+              placeholderTextColor={this.getPlaceholderConfig().color}
               onChangeText={this.state.input.onChangeText}
               icon={this.state.input.icon}
               message={this.state.input.message}
@@ -135,12 +168,43 @@ class PackenUiDropdown extends Component {
               nonEditable={this.state.input.nonEditable}
               disabled={this.state.isDisabled}
               isOpen={this.state.isOpen}
+              multiline
+              style={this.getCustomStyle()}
             />
+            <View
+              pointerEvents="none"
+              style={{
+                ...this.getStyles().contentSizer.wrapper.base,
+                ...this.getStyles().contentSizer.wrapper.size[this.state.size],
+                ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size]
+              }}
+            >
+              <View
+                onLayout={this.getContentSizerDimensions}
+                style={{
+                  ...this.getStyles().contentSizer.inner.base,
+                  ...this.getStyles().contentSizer.inner.size[this.state.size]
+                }}
+              >
+                <PackenUiText
+                  style={{
+                    ...this.getStyles().contentSizer.text.base,
+                    ...this.getStyles().contentSizer.text.size[this.state.size]
+                  }}
+                >{this.state.finalSelectionString}</PackenUiText>
+              </View>
+            </View>
           </View>
         </TouchableWithoutFeedback>
         <View
           onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
-          style={{ ...this.getStyles().menu, ...this.state.styles.menu }}
+          style={[
+            this.getStyles().menu,
+            this.state.styles.menu,
+            {
+              opacity: this.state.isOpen ? 1 : 0
+            }
+          ]}
           pointerEvents={this.state.isOpen ? "auto" : "none"}
         >
           <PackenUiDropdownList
@@ -160,6 +224,115 @@ class PackenUiDropdown extends Component {
     return {
       wrapper: {},
       input: {},
+      contentSizer: {
+        wrapper: {
+          base: {
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            opacity: 0
+          },
+          size: {
+            tiny: {
+              minHeight: 32,
+              paddingHorizontal: 8,
+              backgroundColor: "red"
+            },
+            small: {
+              minHeight: 40,
+              paddingHorizontal: 16
+            },
+            medium: {
+              minHeight: 48,
+              paddingHorizontal: 16
+            },
+            large: {
+              minHeight: 56,
+              paddingHorizontal: 16
+            },
+            giant: {
+              minHeight: 72,
+              paddingHorizontal: 16
+            }
+          },
+          padding: {
+            left: {
+              tiny: {
+                paddingLeft: 32
+              },
+              small: {
+                paddingLeft: 40
+              },
+              medium: {
+                paddingLeft: 48
+              },
+              large: {
+                paddingLeft: 48
+              },
+              giant: {
+                paddingLeft: 62
+              }
+            },
+            right: {
+              tiny: {
+                paddingRight: 32
+              },
+              small: {
+                paddingRight: 40
+              },
+              medium: {
+                paddingRight: 48
+              },
+              large: {
+                paddingRight: 48
+              },
+              giant: {
+                paddingRight: 62
+              }
+            }
+          }
+        },
+        inner: {
+          base: {
+            width: "100%",
+            backgroundColor: "red"
+          },
+          size: {
+            tiny: { paddingVertical: 7 },
+            small: { paddingVertical: 10 },
+            medium: { paddingVertical: 13 },
+            large: { paddingVertical: 17 },
+            giant: { paddingVertical: 23 }
+          }
+        },
+        text: {
+          base: {
+            fontFamily: Typography.family.regular
+          },
+          size: {
+            tiny: {
+              fontSize: Typography.size.small,
+              lineHeight: Typography.lineheight.small
+            },
+            small: {
+              fontSize: Typography.size.medium,
+              lineHeight: Typography.lineheight.medium_alt
+            },
+            medium: {
+              fontSize: Typography.size.large,
+              lineHeight: Typography.lineheight.large
+            },
+            large: {
+              fontSize: Typography.size.large,
+              lineHeight: Typography.lineheight.large
+            },
+            giant: {
+              fontSize: Typography.size.giant_alt,
+              lineHeight: Typography.lineheight.huge
+            }
+          }
+        }
+      },
       menu: {
         backgroundColor: Colors.basic.white.dft,
         shadowColor: Colors.basic.black.dft,

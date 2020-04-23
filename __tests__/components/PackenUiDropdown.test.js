@@ -104,6 +104,25 @@ describe("<PackenUiDropdown/>", () => {
     renderInstance = render.instance();
 
     renderInstance.setState({
+      callback: mockCallback,
+      name: "dropdown1",
+      isDisabled: false,
+      input: {
+        label: "Single selection",
+        placeholder: "Selecciona tu ciudad",
+        onChangeText: () => { return; },
+        icon: {
+          name: "chevron-down",
+          position: "right",
+          style: { color: Colors.brand.primary.drk }
+        },
+        theme: "default",
+        nonEditable: true,
+        help: "Help text"
+      },
+      list: {...list},
+      size: "medium",
+      contentSizerHeight: 0,
       isOpen: false,
       dimensions: {
         menu: {
@@ -137,6 +156,22 @@ describe("<PackenUiDropdown/>", () => {
       });
       
       expect(render.props().pointerEvents).toBe("auto");
+    });
+  });
+
+  describe("styling", () => {
+    it("returns the custom styles if the content sizer's height is not zero", () => {
+      renderInstance.setState({ contentSizerHeight: 10 });
+      const returnedStyles = renderInstance.getCustomStyle();
+
+      expect(returnedStyles).toEqual({ height: 10 });
+    });
+
+    it("returns an empty object as the custom styles if the content sizer's height is zero", () => {
+      renderInstance.setState({ contentSizerHeight: 0 });
+      const returnedStyles = renderInstance.getCustomStyle();
+
+      expect(returnedStyles).toEqual({});
     });
   });
 
@@ -177,25 +212,23 @@ describe("<PackenUiDropdown/>", () => {
 
       expect(renderInstance.state.finalSelectionString).toBe("Test, Test 2");
     });
+
+    it("correctly sets the content sizer's height when it's less than the component's size", () => {
+      renderInstance.setState({ size: "medium" });
+      renderInstance.getContentSizerDimensions({ nativeEvent: { layout: { height: 10 } } });
+
+      expect(renderInstance.state.contentSizerHeight).toBe(48);
+    });
+
+    it("correctly sets the content sizer's height when it's greater than the component's size", () => {
+      renderInstance.setState({ size: "medium" });
+      renderInstance.getContentSizerDimensions({ nativeEvent: { layout: { height: 60 } } });
+
+      expect(renderInstance.state.contentSizerHeight).toBe(60);
+    });
   });
 
   describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate if is open", () => {
-      const prevState = { isOpen: false };
-      renderInstance.setState({ isOpen: true });
-      renderInstance.componentDidUpdate(null, prevState, null);
-
-      expect(renderInstance.state.styles.menu.opacity).toBe(1);
-    });
-
-    it("executes correct code on componentDidUpdate if is not open", () => {
-      const prevState = { isOpen: true };
-      renderInstance.setState({ isOpen: false });
-      renderInstance.componentDidUpdate(null, prevState, null);
-
-      expect(renderInstance.state.styles.menu.opacity).toBe(0);
-    });
-
     it("executes onLayout code for menu", () => {
       renderInstance.getMenuDimensions = jest.fn();
       render.props().children[1].props.onLayout({
