@@ -18,8 +18,8 @@ describe("<Section/>", () => {
       expect(render.props().children[0].props.children).toBe("Test title");
     });
 
-    it("render contetn correctly", () => {
-      expect(render.props().children[1]).toBe("Test content");
+    it("renders content correctly", () => {
+      expect(render.props().children[2]).toBe("Test content");
     });
   });
 });

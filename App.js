@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import 'react-native-gesture-handler';
+import React, { Component } from 'react';
 
 import UILibrary from "./app/UILibrary"
 /* import StorybookUIRoot from "./storybook"; */
@@ -6,7 +7,7 @@ import UILibrary from "./app/UILibrary"
 export default class App extends Component {
   render() {
     return (
-      <UILibrary/>
+      <UILibrary />
     );
   }
 }

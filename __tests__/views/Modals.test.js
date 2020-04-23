@@ -80,7 +80,7 @@ describe("<Modals/>", () => {
     });
 
     it("executes all callbacks", () => {
-      render.props().children[0].props.children.forEach(child => {
+      render.props().children.props.children[0].props.children.forEach(child => {
         if (child.type.displayName === "View") {
           const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
           child.props.children.props.callback();
@@ -89,13 +89,12 @@ describe("<Modals/>", () => {
           spyToggleModal.mockRestore();
         }
       });
-
-      render.props().children[1].props.children.forEach(modalInstance => {
+      
+      render.props().children.props.children[1].props.children.forEach(modalInstance => {
         const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
         modalInstance.props.toggle();
 
         if (modalInstance.props.type === "custom") {
-          /* console.log(modalInstance.props.content.props.children[2].props.children); */
           modalInstance.props.content.props.children[2].props.children.forEach(element => {
             element.props.callback();
 
@@ -114,6 +113,14 @@ describe("<Modals/>", () => {
 
         spyToggleModal.mockRestore();
       });
+    });
+
+    it("executes all custom event handlers", () => {
+      const res = renderInstance.onDismissCallback();
+      const res2 = renderInstance.onRequestCloseCallback();
+
+      expect(res).toBe("dismiss");
+      expect(res2).toBe("requestclose");
     });
   });
 });

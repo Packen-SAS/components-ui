@@ -4,6 +4,7 @@ import { View } from "react-native";
 import Colors from "../styles/abstracts/colors";
 import Icon from "react-native-vector-icons/dist/Feather";
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiAvatar from "../components/PackenUiAvatar";
 import PackenUiList from "../components/PackenUiList";
@@ -65,11 +66,13 @@ class Lists extends Component {
 
   render() {
     return (
-      <Section title="Lists">
-        <View style={{ marginTop: 5 }}>
-          <PackenUiList style={{ marginTop: 15 }} items={this.state.items} />
-        </View>
-      </Section>
+      <PageView>
+        <Section title="Lists">
+          <View style={{ marginTop: 5 }}>
+            <PackenUiList style={{ marginTop: 15 }} items={this.state.items} />
+          </View>
+        </Section>
+      </PageView>
     );
   }
 }

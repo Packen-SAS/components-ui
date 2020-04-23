@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View } from "react-native";
 
 import Section from "../components/Section";
+import PageView from "./PageView";
 
 import PackenUiButton from "../components/PackenUiButton";
 
@@ -14,7 +15,7 @@ class Buttons extends Component {
 
   render() {
     return (
-      <>
+      <PageView>
         <Section title="Buttons Primary">
           <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
@@ -445,7 +446,7 @@ class Buttons extends Component {
             </View>
           </View>
         </Section>
-      </>
+      </PageView>
     );
   }
 }
