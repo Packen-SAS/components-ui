@@ -322,7 +322,7 @@ class PackenUiDropdownListItem extends Component {
             <PackenUiCheckbox
               layout="dropdown"
               items={this.props.mainContent.main.control.items}
-              callback={this.props.mainContent.main.control.notifyParent}
+              callback={this.props.mainContent.main.control.handleNotify}
               ref={this.setCheckboxRef}
               name="dropdownItemCheckbox"
             />
