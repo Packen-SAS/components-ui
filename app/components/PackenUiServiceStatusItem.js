@@ -178,6 +178,8 @@ class PackenUiServiceStatusItem extends Component {
 
     if (this.state.setItemsHeights) {
       this.state.setItemsHeights(this.state.index, height);
+    } else {
+      return false;
     }
   }
 

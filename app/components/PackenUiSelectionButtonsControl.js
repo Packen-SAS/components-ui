@@ -31,7 +31,8 @@ class PackenUiSelectionButtonsControl extends Component {
           src: "",
           width: 0,
           height: 0
-        }},
+        }
+      },
       selected: this.props.selected ? this.props.selected : [],
       selection: this.props.selection ? this.props.selection : "single",
       onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
@@ -79,6 +80,8 @@ class PackenUiSelectionButtonsControl extends Component {
   newSelection = () => {
     if (this.state.onNewSelection) {
       this.state.onNewSelection(this.state.data.value);
+    } else {
+      return false;
     }
   }
 
@@ -140,7 +143,7 @@ class PackenUiSelectionButtonsControl extends Component {
       selection: this.props.selection,
       onNewSelection: this.props.onNewSelection
     }, () => {
-      if (prevProps.selected !== this.props.selected) {
+      if (prevProps.selected !== this.props.selected && this.state.selected) {
         this.checkIfActive();
       }
     });

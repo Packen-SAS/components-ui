@@ -91,4 +91,52 @@ describe("<PackenUiInfoAction/>", () => {
       expect(returnedStyles).toBeDefined();
     });
   });
+
+  describe("triggering actions", () => {
+    it("executes the mockCallback", () => {
+      const res = renderInstance.mockCallback();
+
+      expect(res).toBe(false);
+    });
+  });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        theme: undefined,
+        title: undefined,
+        caption: undefined,
+        subtitle: undefined,
+        callback: undefined,
+        img: undefined,
+        icon: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        theme: "primary",
+        title: "",
+        caption: false,
+        subtitle: false,
+        callback: renderInstance.mockCallback,
+        img: {
+          src: undefined,
+          width: 0,
+          height: 0
+        },
+        icon: {
+          name: "play",
+          size: 14
+        }
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if a callback is provided", () => {
+      const mockCallback = jest.fn();
+      render.setProps({ callback: mockCallback });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res.callback).toBe(mockCallback);
+    });
+  });
 });

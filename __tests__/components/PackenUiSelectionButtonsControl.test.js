@@ -78,6 +78,13 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       expect(renderInstance.state.onNewSelection).toHaveBeenCalled();
     });
 
+    it("returns false while triggering the new selection callback if it's not provided", () => {
+      renderInstance.setState({ onNewSelection: false });
+      const res = renderInstance.newSelection();
+
+      expect(res).toBe(false);
+    });
+
     it("triggers the correct code on componentDidUpdate", () => {
       const prevProps = { selected: false };
       render.setProps({ selected: true });
@@ -217,6 +224,35 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       const returnedElement = renderInstance.getImage();
 
       expect(returnedElement).toBeDefined();
+    });
+  });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        type: undefined,
+        data: undefined,
+        selected: undefined,
+        selection: undefined,
+        onNewSelection: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        type: "label",
+        data: {
+          value: "",
+          label: "",
+          image: {
+            src: "",
+            width: 0,
+            height: 0
+          }
+        },
+        selected: [],
+        selection: "single",
+        onNewSelection: false
+      });
     });
   });
 });

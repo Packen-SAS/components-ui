@@ -85,6 +85,18 @@ describe("<PackenUiServiceStatus/>", () => {
     });
   });
 
+  describe("triggering action", () => {
+    it("executes correct code on componentDidUpdate", () => {
+      const spyUpdateCurrentStep = jest.spyOn(renderInstance, "updateCurrentStep");
+      const prevProps = { currentStepIndex: 0 };
+      render.setProps({ currentStepIndex: 1 });
+      renderInstance.componentDidUpdate(prevProps, null, null);
+      
+      expect(spyUpdateCurrentStep).toHaveBeenCalled();
+      spyUpdateCurrentStep.mockRestore();
+    });
+  });
+
   describe("state changing", () => {
     it("updates current step", () => {
       render.setProps({
@@ -102,17 +114,18 @@ describe("<PackenUiServiceStatus/>", () => {
 
       expect(renderInstance.state.itemsHeights[0]).toBe(10);
     });
-  });
 
-  describe("triggering action", () => {
-    it("executes correct code on componentDidUpdate", () => {
-      const spyUpdateCurrentStep = jest.spyOn(renderInstance, "updateCurrentStep");
-      const prevProps = { currentStepIndex: 0 };
-      render.setProps({ currentStepIndex: 1 });
-      renderInstance.componentDidUpdate(prevProps, null, null);
-      
-      expect(spyUpdateCurrentStep).toHaveBeenCalled();
-      spyUpdateCurrentStep.mockRestore();
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        steps: undefined,
+        currentStepIndex: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        steps: [],
+        currentStepIndex: -1
+      });
     });
   });
 });

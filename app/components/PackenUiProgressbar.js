@@ -41,13 +41,15 @@ class PackenUiProgressbar extends Component {
   }
 
   setCompleteAnim = () => {
-    Animated.timing(this.state.height, {
-      toValue: 0,
-      duration: 250
-    }).start();
-    this.setState({
-      isComplete: true
-    });
+    if (typeof this.state.height !== "number") {
+      Animated.timing(this.state.height, {
+        toValue: 0,
+        duration: 250
+      }).start();
+      this.setState({
+        isComplete: true
+      });
+    }
   }
 
   setProgressAnim = () => {

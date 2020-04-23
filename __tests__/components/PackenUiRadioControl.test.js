@@ -113,6 +113,25 @@ describe("<PackenUiRadioControl/>", () => {
       
       expect(renderInstance.state.state).toBe("checked");
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        updateCheckedIndex: undefined,
+        selfIndex: undefined,
+        isDisabled: undefined,
+        checkedIndex: undefined,
+        label: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        updateCheckedIndex: false,
+        selfIndex: 0,
+        isDisabled: false,
+        checkedIndex: -1,
+        label: ""
+      });
+    });
   });
 
   describe("triggering actions", () => {
@@ -135,6 +154,14 @@ describe("<PackenUiRadioControl/>", () => {
       renderInstance.onPressHandler();
       
       expect(renderInstance.state.state).toBe("checked");
+      expect(renderInstance.state.updateCheckedIndex).toHaveBeenCalled();
+    });
+
+    it("returns false after setting the checked state onPress if no update callback is provided", () => {
+      renderInstance.setState({ updateCheckedIndex: false });
+      const res = renderInstance.onPressHandler();
+      
+      expect(res).toBe(false);
     });
 
     it("triggers actions on componentDidUpdate if checkedIndex changed", () => {

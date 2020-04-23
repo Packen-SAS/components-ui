@@ -22,18 +22,20 @@ class PackenUiServiceStatus extends Component {
   }
 
   updateCurrentStep = () => {
-    for (let i = 0; i < this.state.currentStepIndex; i++) {
-      this.state.steps[i].isComplete = true;
-      this.state.steps[i].isCurrent = false;
+    if (this.state.steps && this.state.steps.length > 0) {
+      for (let i = 0; i < this.state.currentStepIndex; i++) {
+        this.state.steps[i].isComplete = true;
+        this.state.steps[i].isCurrent = false;
+      }
+      for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
+        this.state.steps[i].isComplete = false;
+        this.state.steps[i].isCurrent = false;
+      }
+      
+      this.setState({
+        currentStepIndex: this.state.currentStepIndex
+      }, this.state.steps[this.state.currentStepIndex].callback);
     }
-    for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
-      this.state.steps[i].isComplete = false;
-      this.state.steps[i].isCurrent = false;
-    }
-    
-    this.setState({
-      currentStepIndex: this.state.currentStepIndex
-    }, this.state.steps[this.state.currentStepIndex].callback);
   }
 
   setItemsHeights = (i, height) => {

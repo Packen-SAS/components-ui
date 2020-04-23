@@ -82,5 +82,22 @@ describe("<PackenUiNotificationBanner/>", () => {
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        title: undefined,
+        theme: undefined,
+        type: undefined,
+        icon: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        title: "",
+        theme: "primary",
+        type: "accent",
+        icon: "packen"
+      });
+    });
   });
 });

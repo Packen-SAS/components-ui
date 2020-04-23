@@ -40,6 +40,8 @@ class PackenUiText extends Component {
   triggerCallback = () => {
     if (this.state.touchable) {
       this.state.touchable.callback();
+    } else {
+      return false;
     }
   }
 

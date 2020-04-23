@@ -75,6 +75,31 @@ describe("<PackenUiVehicleBox/>", () => {
       expect(renderInstance.state.type).toBe("Test");
       spySetState.mockRestore();
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        type: undefined,
+        make: undefined,
+        year: undefined,
+        plate: undefined,
+        img: undefined,
+        callback: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        type: "",
+        make: "",
+        year: "",
+        plate: "",
+        img: {
+          src: "",
+          width: 0,
+          height: 0
+        },
+        callback: false
+      });
+    });
   });
 
   describe("styling", () => {

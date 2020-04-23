@@ -123,6 +123,23 @@ describe("<PackenUiTabItem/>", () => {
       expect(renderInstance.props.callback).toHaveBeenCalled();
     });
 
+    it("sets active tab without calling callbacks if not provided", () => {
+      const spySetActiveStyles = jest.spyOn(renderInstance, "setActiveStyles");
+      render.setProps({
+        updateActiveTabIndex: undefined,
+        callback: undefined,
+        selfIndex: 0
+      });
+      renderInstance.setState({
+        updateActiveTabIndex: false,
+        callback: false
+      });
+      renderInstance.setActiveTab();
+
+      expect(spySetActiveStyles).toHaveBeenCalled();
+      spySetActiveStyles.mockRestore();
+    });
+
     it("sets active styles", () => {
       const returnedStyles = renderInstance.setActiveStyles();
 
@@ -158,6 +175,34 @@ describe("<PackenUiTabItem/>", () => {
           ...renderInstance.getStyles().item.default.icon
         }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        updateActiveTabIndex: undefined,
+        selfIndex: undefined,
+        activeTabIndex: undefined,
+        callback: undefined,
+        icon: undefined,
+        label: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        updateActiveTabIndex: false,
+        selfIndex: 0,
+        activeTabIndex: 0,
+        callback: false,
+        icon: false,
+        label: ""
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if activeTabIndex is provided", () => {
+      render.setProps({ activeTabIndex: 1 });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.activeTabIndex).toBe(1);
     });
   });
 

@@ -26,7 +26,7 @@ class PackenUiSelectionButtons extends Component {
   }
 
   getInitialSelected = () => {
-    const items = this.props.items ? [...this.props.items] : [];
+    const items = this.setPropsToState().items;
     let selected;
 
     if (this.props.selection === "single") {

@@ -48,7 +48,7 @@ class PackenUiButton extends Component {
       level = this.setPropsToState().level,
       size = this.setPropsToState().size,
       icon = this.getInitialIcon(),
-      isDisabled = this.props.isDisabled ? this.props.isDisabled : false;
+      isDisabled = this.setPropsToState().isDisabled;
     }
 
     let styles = {
@@ -157,6 +157,8 @@ class PackenUiButton extends Component {
   executeCallback = () => {
     if (this.state.callback) {
       this.state.callback();
+    } else {
+      return false;
     }
   }
 

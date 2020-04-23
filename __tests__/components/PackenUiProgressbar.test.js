@@ -170,4 +170,39 @@ describe("<PackenUiProgressbar/>", () => {
       expect(returnedStyles).toBeDefined();
     });
   });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        wrapperStyle: undefined,
+        type: undefined,
+        height: undefined,
+        radius: undefined,
+        isComplete: undefined,
+        trackColor: undefined,
+        indicatorColor: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        wrapperStyle: {},
+        type: "indeterminate",
+        heightVal: 12,
+        height: 12,
+        radius: 0,
+        isComplete: false,
+        colors: {
+          track: "#E6E6E6",
+          indicator: "#20D292"
+        }
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if isComplete is provided", () => {
+      render.setProps({ isComplete: true });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.isComplete).toBe(true);
+    });
+  });
 });

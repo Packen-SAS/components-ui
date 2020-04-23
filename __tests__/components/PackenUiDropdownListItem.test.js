@@ -242,6 +242,12 @@ describe("<PackenUiDropdownListItem/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("executes the mockCallback", () => {
+      const res = renderInstance.mockCallback();
+
+      expect(res).toBe(true);
+    });
+
     it("executes onLayout event callback for the touchable", () => {
       const spyGetItemHeight = jest.spyOn(renderInstance, "getItemHeight");
       render.setProps({

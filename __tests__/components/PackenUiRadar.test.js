@@ -57,39 +57,6 @@ describe("<PackenUiRadar/>", () => {
     });
   });
 
-  describe("state changing", () => {
-    it("returns false as initial 'isAnimating' state if it's not animated", () => {
-      renderStatic.setProps({ animated: false });
-      const res = renderStaticInstance.getInitialAnimatingState();
-
-      expect(res).toBe(false);
-    });
-
-    it("returns correct prop as initial 'isAnimating' state if it's animated", () => {
-      render.setProps({ animated: true, isAnimating: true });
-      const res = renderInstance.getInitialAnimatingState();
-
-      expect(res).toBe(true);
-    });
-
-    it("returns a regular transform if it's not animated", () => {
-      renderStatic.setProps({ animated: false });
-      const res = renderStaticInstance.getInitialShadowTransform();
-
-      expect(res).toEqual([{ scale: 1 }]);
-    });
-
-    it("returns an animated transform if it's animated", () => {
-      render.setProps({ animated: true });
-      const spySetShadowAnimation = jest.spyOn(renderInstance, "setShadowAnimation");
-      const res = renderInstance.getInitialShadowTransform();
-
-      expect(res).toEqual([{ scale: new Animated.Value(0.2) }]);
-      expect(spySetShadowAnimation).toHaveBeenCalled();
-      spySetShadowAnimation.mockRestore();
-    });
-  });
-
   describe("styling", () => {
     it("sets the shadow animation", () => {
       const spyAnimatedLoop = jest.spyOn(Animated, "loop");
@@ -208,6 +175,54 @@ describe("<PackenUiRadar/>", () => {
       const res = renderInstance.componentDidUpdate(prevProps, null, null);
 
       expect(res).toBe(false);
+    });
+  });
+
+  describe("state changing", () => {
+    it("returns false as initial 'isAnimating' state if it's not animated", () => {
+      renderStatic.setProps({ animated: false });
+      const res = renderStaticInstance.getInitialAnimatingState();
+
+      expect(res).toBe(false);
+    });
+
+    it("returns correct prop as initial 'isAnimating' state if it's animated", () => {
+      render.setProps({ animated: true, isAnimating: true });
+      const res = renderInstance.getInitialAnimatingState();
+
+      expect(res).toBe(true);
+    });
+
+    it("returns a regular transform if it's not animated", () => {
+      renderStatic.setProps({ animated: false });
+      const res = renderStaticInstance.getInitialShadowTransform();
+
+      expect(res).toEqual([{ scale: 1 }]);
+    });
+
+    it("returns an animated transform if it's animated", () => {
+      render.setProps({ animated: true });
+      const spySetShadowAnimation = jest.spyOn(renderInstance, "setShadowAnimation");
+      const res = renderInstance.getInitialShadowTransform();
+
+      expect(res).toEqual([{ scale: new Animated.Value(0.2) }]);
+      expect(spySetShadowAnimation).toHaveBeenCalled();
+      spySetShadowAnimation.mockRestore();
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        theme: undefined,
+        animated: undefined,
+        isAnimating: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        theme: "wait",
+        animated: false,
+        isAnimating: false
+      });
     });
   });
 });

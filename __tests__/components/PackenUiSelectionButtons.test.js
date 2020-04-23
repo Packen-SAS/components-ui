@@ -122,6 +122,17 @@ describe("<PackenUiSelectionButtons/>", () => {
       expect(returnedElement).toEqual([items[0].value]);
       expect(renderInstance.props.onNewSelection).toHaveBeenCalled();
     });
+
+    it("Returns the same newly-set selected item(s) if any, selection is 'multiple', selected items are not more than 1, and no callback is provided", () => {
+      renderInstance.setState({
+        selection: "multiple",
+        selected: [items[0].value],
+        onNewSelection: false
+      });
+      const returnedElement = renderInstance.newSelectionHandler(items[0].value);
+
+      expect(returnedElement).toEqual([items[0].value]);
+    });
   });
 
   describe("styling", () => {
@@ -129,6 +140,29 @@ describe("<PackenUiSelectionButtons/>", () => {
       const returnedStyles = renderInstance.getStyles();
 
       expect(returnedStyles).toBeDefined();
+    });
+  });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        name: undefined,
+        type: undefined,
+        items: undefined,
+        selection: undefined,
+        itemsPerRow: undefined,
+        onNewSelection: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        name: "",
+        type: "label",
+        items: [],
+        selection: "single",
+        itemsPerRow: 2,
+        onNewSelection: false
+      });
     });
   });
 });

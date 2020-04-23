@@ -35,6 +35,8 @@ class PackenUiListItem extends Component {
   onPressHandler = () => {
     if (this.state.data.callback) {
       this.state.data.callback();
+    } else {
+      return false;
     }
   }
 

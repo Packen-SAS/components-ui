@@ -38,6 +38,17 @@ describe("<PackenUiTabs/>", () => {
 
   describe("state changing", () => {
     it("updates the active tab index", () => {
+      renderInstance.setState({
+        onTabChange: jest.fn()
+      });
+      renderInstance.updateActiveIndex(1);
+      
+      expect(renderInstance.state.activeTabIndex).toBe(1);
+      expect(renderInstance.state.onTabChange).toHaveBeenCalled();
+    });
+
+    it("updates the active tab index if no callback is provided", () => {
+      renderInstance.setState({ onTabChange: false });
       renderInstance.updateActiveIndex(1);
       
       expect(renderInstance.state.activeTabIndex).toBe(1);
@@ -49,6 +60,37 @@ describe("<PackenUiTabs/>", () => {
 
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        items: undefined,
+        name: undefined,
+        activeTabIndex: undefined,
+        onTabChange: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        items: [],
+        name: "",
+        activeTabIndex: 0,
+        onTabChange: false
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      const mockCallback = jest.fn();
+      render.setProps({
+        name: "Test",
+        activeIndex: 1,
+        onTabChange: mockCallback
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.name).toBe("Test");
+      expect(res.activeTabIndex).toBe(1);
+      expect(res.onTabChange).toBe(mockCallback);
     });
   });
 

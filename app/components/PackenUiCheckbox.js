@@ -42,6 +42,8 @@ class PackenUiCheckbox extends Component {
       }, () => {
         if (this.state.callback) {
           this.state.callback(this.state.name, newCheckedItems);
+        } else {
+          return false;
         }
       });
     } else {

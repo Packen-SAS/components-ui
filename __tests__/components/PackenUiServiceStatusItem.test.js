@@ -177,6 +177,93 @@ describe("<PackenUiServiceStatusItem/>", () => {
     });
   });
 
+  describe("styling", () => {
+    it("returns the step's line positioning styles", () => {
+      renderInstance.setState({
+        dimensions: {
+          line: {
+            height: 10,
+            bottom: 10
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getLinePositioning();
+
+      expect(returnedStyles.height).toBe(10);
+      expect(returnedStyles.bottom).toBe(10);
+    });
+
+    it("returns the correct step's box styles if it's the first one", () => {
+      render.setProps({
+        index: 0
+      });
+      const returnedStyles = renderInstance.getBoxStyles();
+
+      expect(returnedStyles.marginTop).toBe(0);
+      expect(returnedStyles.zIndex).toBe(8);
+    });
+
+    it("returns the correct step's box styles if it's not the first one", () => {
+      render.setProps({
+        index: 2
+      });
+      const returnedStyles = renderInstance.getBoxStyles();
+
+      expect(returnedStyles.marginTop).toBe(25);
+      expect(returnedStyles.zIndex).toBe(6);
+    });
+
+    it("returns the previous' step box height if it's not the first one", () => {
+      render.setProps({
+        index: 2,
+        itemsHeights: [0, 10, 0]
+      });
+      const returnedHeight = renderInstance.getPreviousBoxHeight();
+
+      expect(returnedHeight).toBe(10);
+    });
+
+    it("returns 0 as the previous's step box height if it's the first one", () => {
+      render.setProps({
+        index: 0,
+        itemsHeights: [10, 0, 0]
+      });
+      const returnedHeight = renderInstance.getPreviousBoxHeight();
+
+      expect(returnedHeight).toBe(0);
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = {
+        currentStepIndex: 0
+      };
+      render.setProps({
+        currentStepIndex: 1
+      });
+      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
+      renderInstance.componentDidUpdate(prevProps, null, null);
+
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
+    });
+
+    it("executes the onLayout callback for the main box", () => {
+      const spySetBoxDimensions = jest.spyOn(renderInstance, "setBoxDimensions");
+      render.props().onLayout({
+        nativeEvent: {
+          layout: {
+            height: 10
+          }
+        }
+      });
+
+      expect(spySetBoxDimensions).toHaveBeenCalled();
+      spySetBoxDimensions.mockRestore();
+    });
+  });
+
   describe("state changing", () => {
     it("returns 'active' as initial state if it's the current step", () => {
       render.setProps({
@@ -288,6 +375,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
         index: 2,
         itemsHeights: [0, 10, 0, 0, 0, 0, 0, 0]
       });
+      renderInstance.setState({ setItemsHeights: mockCallback });
       renderInstance.setBoxDimensions({
         nativeEvent: {
           layout: {
@@ -296,6 +384,27 @@ describe("<PackenUiServiceStatusItem/>", () => {
         }
       });
 
+      expect(renderInstance.state.dimensions.box.height).toBe(10);
+      expect(renderInstance.state.dimensions.line.height).toBe(35);
+      expect(renderInstance.state.dimensions.line.bottom).toBe(5);
+      expect(mockCallback).toHaveBeenCalled();
+    });
+
+    it("returns false after setting the box dimensions if no callback is provided", () => {
+      render.setProps({
+        index: 2,
+        itemsHeights: [0, 10, 0, 0, 0, 0, 0, 0]
+      });
+      renderInstance.setState({ setItemsHeights: undefined });
+      const res = renderInstance.setBoxDimensions({
+        nativeEvent: {
+          layout: {
+            height: 10
+          }
+        }
+      });
+
+      expect(res).toBe(false);
       expect(renderInstance.state.dimensions.box.height).toBe(10);
       expect(renderInstance.state.dimensions.line.height).toBe(35);
       expect(renderInstance.state.dimensions.line.bottom).toBe(5);
@@ -333,92 +442,28 @@ describe("<PackenUiServiceStatusItem/>", () => {
 
       expect(renderInstance.state.state).toBe("default");
     });
-  });
 
-  describe("styling", () => {
-    it("returns the step's line positioning styles", () => {
-      renderInstance.setState({
-        dimensions: {
-          line: {
-            height: 10,
-            bottom: 10
-          }
-        }
-      });
-      const returnedStyles = renderInstance.getLinePositioning();
-
-      expect(returnedStyles.height).toBe(10);
-      expect(returnedStyles.bottom).toBe(10);
-    });
-
-    it("returns the correct step's box styles if it's the first one", () => {
+    it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
-        index: 0
+        data: undefined,
+        index: undefined,
+        itemsHeights: undefined,
+        setItemsHeights: undefined,
+        currentStepIndex: undefined
       });
-      const returnedStyles = renderInstance.getBoxStyles();
+      const res = renderInstance.setPropsToState();
 
-      expect(returnedStyles.marginTop).toBe(0);
-      expect(returnedStyles.zIndex).toBe(8);
-    });
-
-    it("returns the correct step's box styles if it's not the first one", () => {
-      render.setProps({
-        index: 2
-      });
-      const returnedStyles = renderInstance.getBoxStyles();
-
-      expect(returnedStyles.marginTop).toBe(25);
-      expect(returnedStyles.zIndex).toBe(6);
-    });
-
-    it("returns the previous' step box height if it's not the first one", () => {
-      render.setProps({
-        index: 2,
-        itemsHeights: [0, 10, 0]
-      });
-      const returnedHeight = renderInstance.getPreviousBoxHeight();
-
-      expect(returnedHeight).toBe(10);
-    });
-
-    it("returns 0 as the previous's step box height if it's the first one", () => {
-      render.setProps({
+      expect(res).toEqual({
+        data: {
+          isComplete: false,
+          isCurrent: false,
+          time: "00:00"
+        },
         index: 0,
-        itemsHeights: [10, 0, 0]
+        itemsHeights: [],
+        setItemsHeights: false,
+        currentStepIndex: -1
       });
-      const returnedHeight = renderInstance.getPreviousBoxHeight();
-
-      expect(returnedHeight).toBe(0);
-    });
-  });
-
-  describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate", () => {
-      const prevProps = {
-        currentStepIndex: 0
-      };
-      render.setProps({
-        currentStepIndex: 1
-      });
-      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
-      renderInstance.componentDidUpdate(prevProps, null, null);
-
-      expect(spyUpdateState).toHaveBeenCalled();
-      spyUpdateState.mockRestore();
-    });
-
-    it("executes the onLayout callback for the main box", () => {
-      const spySetBoxDimensions = jest.spyOn(renderInstance, "setBoxDimensions");
-      render.props().onLayout({
-        nativeEvent: {
-          layout: {
-            height: 10
-          }
-        }
-      });
-
-      expect(spySetBoxDimensions).toHaveBeenCalled();
-      spySetBoxDimensions.mockRestore();
     });
   });
 });

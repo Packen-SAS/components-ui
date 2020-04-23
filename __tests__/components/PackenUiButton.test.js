@@ -56,31 +56,19 @@ describe("<PackenUiButton/>", () => {
     });
   });
 
-  describe("state changing", () => {
-    it("sets initial icon if defined", () => {
-      renderRegular.setProps({
-        icon: "Test"
-      });
-      const returnedIcon = renderRegularInstance.getInitialIcon();
-
-      expect(returnedIcon).toBe("Test");
-    });
-
-    it("sets initial icon as undefined if not provided via props", () => {
-      renderRegular.setProps({
-        icon: undefined
-      });
-      const returnedIcon = renderRegularInstance.getInitialIcon();
-
-      expect(returnedIcon).toBe(undefined);
-    });
-  });
-
   describe("triggering actions", () => {
     it("executes callback", () => {
+      renderRegularInstance.setState({ callback: mockCallback });
       renderRegularInstance.executeCallback();
 
       expect(mockCallback).toHaveBeenCalled();
+    });
+
+    it("returns false while trying to execute the callback if not provided", () => {
+      renderRegularInstance.setState({ callback: false });
+      const res = renderRegularInstance.executeCallback();
+
+      expect(res).toBe(false);
     });
 
     it("changes styles while onPressIn", () => {
@@ -285,6 +273,58 @@ describe("<PackenUiButton/>", () => {
       const returnedElement = renderRegularInstance.getContent();
 
       expect(returnedElement).toBe(null);
+    });
+  });
+
+  describe("state changing", () => {
+    it("sets initial icon if defined", () => {
+      renderRegular.setProps({
+        icon: "Test"
+      });
+      const returnedIcon = renderRegularInstance.getInitialIcon();
+
+      expect(returnedIcon).toBe("Test");
+    });
+
+    it("sets initial icon as undefined if not provided via props", () => {
+      renderRegular.setProps({
+        icon: undefined
+      });
+      const returnedIcon = renderRegularInstance.getInitialIcon();
+
+      expect(returnedIcon).toBe(undefined);
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      renderRegular.setProps({
+        type: undefined,
+        level: undefined,
+        size: undefined,
+        icon: undefined,
+        callback: undefined,
+        isDisabled: undefined,
+        nonTouchable: undefined,
+        children: undefined
+      });
+      const res = renderRegularInstance.setPropsToState();
+
+      expect(res).toEqual({
+        type: "regular",
+        level: "primary",
+        size: "medium",
+        icon: undefined,
+        callback: false,
+        isDisabled: false,
+        nonTouchable: false,
+        children: undefined
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if nonTouchable is provided", () => {
+      renderRegular.setProps({ nonTouchable: true });
+      const res = renderRegularInstance.setPropsToState();
+
+      expect(res.nonTouchable).toBe(true);
     });
   });
 });

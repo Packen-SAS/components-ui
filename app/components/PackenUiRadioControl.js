@@ -43,6 +43,8 @@ class PackenUiRadioControl extends Component {
 
     if (this.state.updateCheckedIndex) {
       this.state.updateCheckedIndex(this.state.selfIndex);
+    } else {
+      return false;
     }
   }
 

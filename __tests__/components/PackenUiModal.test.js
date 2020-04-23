@@ -1,5 +1,6 @@
 import "react-native";
 import React from "react";
+import { View } from "react-native";
 import { shallow } from "enzyme";
 
 import PackenUiModal from "../../app/components/PackenUiModal";
@@ -216,6 +217,12 @@ describe("<PackenUiModal/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("executes the mockCallback", () => {
+      const res = renderInstance.mockCallback();
+      
+      expect(res).toBe(false);
+    });
+
     it("sets correct backdrop styles if open prop changed", () => {
       const spySetBackdropStyles = jest.spyOn(renderInstance, "setBackdropStyles");
       const prevProps = { isOpen: false };
@@ -490,6 +497,53 @@ describe("<PackenUiModal/>", () => {
 
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        type: undefined,
+        banner: undefined,
+        size: undefined,
+        isOpen: undefined,
+        images: undefined,
+        info: undefined,
+        toggle: undefined,
+        theme: undefined,
+        content: undefined,
+        onDismiss: undefined,
+        onRequestClose: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        type: "info",
+        banner: false,
+        size: "default",
+        isOpen: false,
+        images: [],
+        info: {
+          title: "",
+          text: ""
+        },
+        toggle: renderInstance.mockCallback,
+        theme: "primary",
+        content: null,
+        onDismiss: false,
+        onRequestClose: false
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({
+        content: <View></View>,
+        onDismiss: mockCallback,
+        onRequestClose: mockCallback
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.content).toEqual(<View></View>);
+      expect(res.onDismiss).toBe(mockCallback);
+      expect(res.onRequestClose).toBe(mockCallback);
     });
   });
 });
