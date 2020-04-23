@@ -66,6 +66,8 @@ class PackenUiDropdownListItem extends Component {
     this.setMainContent();
   }
 
+  mockCallback = () => true;
+
   checkSelectedItems = prevProps => {
     if (!arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
       if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
@@ -310,6 +312,8 @@ class PackenUiDropdownListItem extends Component {
               }]}
               ref={this.setRadioRef}
               name="dropdownItemRadio"
+              initialIndex={-1}
+              callback={this.mockCallback}
             />
           );
         } break;

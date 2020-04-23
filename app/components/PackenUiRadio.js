@@ -24,12 +24,6 @@ class PackenUiRadio extends Component {
     };
   }
 
-  updateCheckedIndex = newCheckedIndex => {
-    this.setState({
-      checkedIndex: newCheckedIndex
-    });
-  }
-
   findCurrentSelection = () => {
     return this.state.items[this.state.checkedIndex];
   }
@@ -51,7 +45,7 @@ class PackenUiRadio extends Component {
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
-      if (this.state.callback) {
+      if (this.state.callback && this.state.currentSelection) {
         this.state.callback(this.state.name, this.state.currentSelection.value);
       }
       return this.state.currentSelection;
@@ -82,7 +76,7 @@ class PackenUiRadio extends Component {
                 selfIndex={i}
                 label={item.label}
                 isDisabled={item.isDisabled}
-                updateCheckedIndex={this.updateCheckedIndex}/>
+                updateCheckedIndex={this.setCheckedIndex}/>
             </View>
           ))
         }
