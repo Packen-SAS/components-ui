@@ -127,5 +127,12 @@ describe("<PackenUiServiceStatus/>", () => {
         currentStepIndex: -1
       });
     });
+
+    it("returns incoming props as the state key-value pairs if currentStepIndex is provided", () => {
+      render.setProps({ currentStepIndex: 0 });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.currentStepIndex).toBe(0);
+    });
   });
 });

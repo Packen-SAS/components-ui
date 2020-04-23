@@ -17,7 +17,7 @@ class PackenUiServiceStatus extends Component {
   setPropsToState = () => {
     return {
       steps: this.props.steps ? [...this.props.steps] : [],
-      currentStepIndex: this.props.currentStepIndex ? this.props.currentStepIndex : -1
+      currentStepIndex: this.props.currentStepIndex === 0 ? 0 : this.props.currentStepIndex ? this.props.currentStepIndex : -1
     };
   }
 
