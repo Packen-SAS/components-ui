@@ -24,6 +24,7 @@ import Progressbars from "./views/Progressbars";
 import LoaderButtons from "./views/LoaderButtons";
 import VehicleBoxes from "./views/VehicleBoxes";
 import Lists from "./views/Lists";
+import Alerts from "./views/Alerts";
 
 const Drawer = createDrawerNavigator();
 
@@ -31,7 +32,8 @@ class UILibrary extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Lists">
+        <Drawer.Navigator initialRouteName="Alerts">
+          <Drawer.Screen name="Alerts" component={Alerts} />
           <Drawer.Screen name="Lists" component={Lists} />
           <Drawer.Screen name="VehicleBoxes" component={VehicleBoxes} />
           <Drawer.Screen name="LoaderButtons" component={LoaderButtons} />
