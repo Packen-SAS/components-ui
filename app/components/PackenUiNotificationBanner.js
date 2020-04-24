@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Image } from "react-native"
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -12,11 +13,16 @@ class PackenUiNotificationBanner extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      theme: props.theme,
-      type: props.type,
-      icon: props.icon
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      title: this.props.title ? this.props.title : "",
+      theme: this.props.title ? this.props.theme : "primary",
+      type: this.props.title ? this.props.type : "accent",
+      icon: this.props.title ? this.props.icon : "packen"
+    };
   }
 
   getIcon = () => {
@@ -64,11 +70,7 @@ class PackenUiNotificationBanner extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      theme: this.props.theme,
-      type: this.props.type,
-      icon: this.props.icon
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -88,7 +90,7 @@ class PackenUiNotificationBanner extends Component {
           style={{
             ...this.getStyles().title.base,
             ...this.getStyles().title.theme[this.state.theme].type[this.state.type]
-          }}>{this.props.title}</PackenUiText>
+          }}>{this.state.title}</PackenUiText>
       </View>
     );
   }
@@ -284,5 +286,12 @@ class PackenUiNotificationBanner extends Component {
     };
   }
 }
+
+PackenUiNotificationBanner.propTypes = {
+  title: PropTypes.string.isRequired,
+  theme: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired
+};
 
 export default PackenUiNotificationBanner;

@@ -46,6 +46,34 @@ describe("<PackenUiLoaderButton/>", () => {
 
       expect(prevState).not.toEqual(renderInstance.state);
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        children: undefined,
+        type: undefined,
+        level: undefined,
+        size: undefined,
+        callback: undefined,
+        isDone: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        children: null,
+        type: "regular",
+        level: "primary",
+        size: "medium",
+        callback: renderInstance.mockCallback,
+        isDone: false
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if isDone is provided", () => {
+      render.setProps({ isDone: true });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.isDone).toBe(true);
+    });
   });
 
   describe("styling", () => {
@@ -68,6 +96,12 @@ describe("<PackenUiLoaderButton/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("executes the mockCallback", () => {
+      const res = renderInstance.mockCallback();
+
+      expect(res).toBe(false);
+    });
+
     it("executes the correct code on componentDidMount", () => {
       const spySetAnim = jest.spyOn(renderInstance, "setAnim");
       renderInstance.componentDidMount();

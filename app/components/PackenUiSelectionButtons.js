@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiSelectionButtonsControl from "./PackenUiSelectionButtonsControl";
@@ -8,18 +9,24 @@ class PackenUiSelectionButtons extends Component {
     super(props);
 
     this.state = {
-      name: props.name,
-      type: props.type,
-      items: [...props.items],
-      selection: props.selection,
-      itemsPerRow: props.itemsPerRow,
-      onNewSelection: props.onNewSelection,
+      ...this.setPropsToState(),
       selected: this.getInitialSelected()
     }
   }
 
+  setPropsToState = () => {
+    return {
+      name: this.props.name ? this.props.name : "",
+      type: this.props.type ? this.props.type : "label",
+      items: this.props.items ? [...this.props.items] : [],
+      selection: this.props.selection ? this.props.selection : "single",
+      itemsPerRow: this.props.itemsPerRow ? this.props.itemsPerRow : 2,
+      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
+    };
+  }
+
   getInitialSelected = () => {
-    const items = [...this.props.items];
+    const items = this.setPropsToState().items;
     let selected;
 
     if (this.props.selection === "single") {
@@ -66,20 +73,15 @@ class PackenUiSelectionButtons extends Component {
       selected: newSelected
     });
 
-    this.state.onNewSelection(this.state.name, newSelected);
+    if (this.state.onNewSelection) {
+      this.state.onNewSelection(this.state.name, newSelected);
+    }
 
     return newSelected;
   }
 
   updateState = () => {
-    this.setState({
-      name: this.props.name,
-      type: this.props.type,
-      items: [...this.props.items],
-      selection: this.props.selection,
-      itemsPerRow: this.props.itemsPerRow,
-      onNewSelection: this.props.onNewSelection
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -142,5 +144,14 @@ class PackenUiSelectionButtons extends Component {
     };
   }
 }
+
+PackenUiSelectionButtons.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  selection: PropTypes.string.isRequired,
+  itemsPerRow: PropTypes.number.isRequired,
+  onNewSelection: PropTypes.func.isRequired
+};
 
 export default PackenUiSelectionButtons;

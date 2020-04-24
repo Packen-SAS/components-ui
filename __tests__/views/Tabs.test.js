@@ -19,5 +19,11 @@ describe("<Tabs/>", () => {
 
       expect(res).toBe(true);
     });
+
+    it("executes onTabChange", () => {
+      const res = render.instance().onTabChange();
+
+      expect(res).toBe(true);
+    });
   });
 });

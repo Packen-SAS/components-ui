@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Animated } from "react-native";
 
 class PackenUiProgressbar extends Component {
@@ -6,20 +7,26 @@ class PackenUiProgressbar extends Component {
     super(props);
 
     this.state = {
-      wrapperStyle: props.wrapperStyle,
-      radius: props.radius,
-      type: this.getDeterminate(),
-      heightVal: props.height,
-      height: new Animated.Value(props.height),
+      ...this.setPropsToState(),
       progress: this.getProgress(),
-      progressLeft: new Animated.Value(0),
-      isComplete: false,
-      colors: {
-        track: props.trackColor,
-        indicator: props.indicatorColor
-      }
+      progressLeft: new Animated.Value(0)
     }
   }
+
+  setPropsToState = () => {
+    return {
+      wrapperStyle: this.props.wrapperStyle ? this.props.wrapperStyle : {},
+      type: this.props.type ? this.getDeterminate() : "indeterminate",
+      heightVal: this.props.height ? this.props.height : 12,
+      height: this.props.height ? new Animated.Value(this.props.height) : 12,
+      radius: this.props.radius ? this.props.radius : 0,
+      isComplete: this.props.isComplete ? this.props.isComplete : false,
+      colors: {
+        track: this.props.trackColor ? this.props.trackColor : "#E6E6E6",
+        indicator: this.props.indicatorColor ? this.props.indicatorColor : "#20D292"
+      }
+    };
+  };
 
   getProgress = () => {
     return this.props.type === "determinate" ? new Animated.Value(this.props.progress) : new Animated.Value(1);
@@ -34,13 +41,15 @@ class PackenUiProgressbar extends Component {
   }
 
   setCompleteAnim = () => {
-    Animated.timing(this.state.height, {
-      toValue: 0,
-      duration: 250
-    }).start();
-    this.setState({
-      isComplete: true
-    });
+    if (typeof this.state.height !== "number") {
+      Animated.timing(this.state.height, {
+        toValue: 0,
+        duration: 250
+      }).start();
+      this.setState({
+        isComplete: true
+      });
+    }
   }
 
   setProgressAnim = () => {
@@ -99,15 +108,7 @@ class PackenUiProgressbar extends Component {
 
   updateState = () => {
     this.setState({
-      wrapperStyle: this.props.wrapperStyle,
-      type: this.getDeterminate(),
-      heightVal: this.props.height,
-      radius: this.props.radius,
-      isComplete: this.props.isComplete,
-      colors: {
-        track: this.props.trackColor,
-        indicator: this.props.indicatorColor
-      }
+      ...this.setPropsToState()
     }, this.checkAnimToStart);
   }
 
@@ -174,5 +175,15 @@ class PackenUiProgressbar extends Component {
     };
   }
 }
+
+PackenUiProgressbar.propTypes = {
+  wrapperStyle: PropTypes.object,
+  type: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
+  radius: PropTypes.number,
+  isComplete: PropTypes.bool,
+  trackColor: PropTypes.string.isRequired,
+  indicatorColor: PropTypes.string.isRequired
+};
 
 export default PackenUiProgressbar;

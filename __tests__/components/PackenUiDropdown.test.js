@@ -226,6 +226,42 @@ describe("<PackenUiDropdown/>", () => {
 
       expect(renderInstance.state.contentSizerHeight).toBe(60);
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        callback: undefined,
+        name: undefined,
+        isDisabled: false,
+        input: undefined,
+        list: undefined,
+        size: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        callback: renderInstance.mockCallback,
+        name: "",
+        isDisabled: false,
+        input: {
+          placeholder: "",
+          onChangeText: renderInstance.mockCallback,
+          icon: { name: "chevron-down", position: "right" },
+          message: false,
+          label: "",
+          help: undefined,
+          theme: "default",
+          isDropdown: true,
+          nonEditable: true,
+          disabled: false,
+          isOpen: false,
+          multiline: true,
+          name: "",
+          style: {}
+        },
+        list: { items: [], config: {} },
+        size: "medium"
+      });
+    });
   });
 
   describe("triggering actions", () => {
@@ -241,6 +277,12 @@ describe("<PackenUiDropdown/>", () => {
       });
 
       expect(renderInstance.getMenuDimensions).toHaveBeenCalledWith({ width: 10, height: 10 });
+    });
+
+    it("executes the mockCallback", () => {
+      const res = renderInstance.mockCallback();
+
+      expect(res).toBe(false);
     });
   });
 });

@@ -105,6 +105,25 @@ describe("<PackenUiText/>", () => {
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        preset: undefined,
+        touchable: undefined,
+        children: undefined,
+        icon: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        preset: false,
+        touchable: false,
+        children: null,
+        icon: false,
+        presetStyle: {},
+        touchableStyles: {}
+      });
+    });
   });
 
   describe("triggering actions", () => {
@@ -113,6 +132,13 @@ describe("<PackenUiText/>", () => {
       renderInstance.triggerCallback();
 
       expect(renderInstance.props.touchable.callback).toHaveBeenCalled();
+    });
+
+    it("returns false while triggering a callback if not provided", () => {
+      render.setProps({ touchable: undefined });
+      const res = renderInstance.triggerCallback();
+
+      expect(res).toBe(false);
     });
   });
 

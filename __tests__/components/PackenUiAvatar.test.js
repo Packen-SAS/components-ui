@@ -57,11 +57,26 @@ describe("<PackenUiAvatar/>", () => {
 
   describe("state changing", () => {
     it("updates the state on incoming new props", () => {
-      render.setProps({ callback: mockCallback, src: undefined, size: "small" });
+      render.setProps({ callback: mockCallback, src: false, size: "small" });
       const prevState = { ...renderInstance.state };
       renderInstance.updateState();
 
-      expect(prevState).toEqual({ src: undefined, size: "small", callback: mockCallback });
+      expect(prevState).toEqual({ src: false, size: "small", callback: mockCallback });
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        src: "",
+        size: "",
+        callback: mockCallback
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        src: false,
+        size: "medium",
+        callback: mockCallback
+      });
     });
   });
 

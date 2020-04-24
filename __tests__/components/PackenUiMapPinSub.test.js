@@ -97,4 +97,44 @@ describe("<PackenUiMapPinSub/>", () => {
       expect(returnedColor).toBe(renderInstance.getStyles().icon.theme.primary.color);
     });
   });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        theme: undefined,
+        icon: undefined,
+        label: undefined,
+        dotPosition: undefined,
+        type: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        theme: "primary",
+        icon: false,
+        label: false,
+        dotPosition: false,
+        type: "info"
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if provided", () => {
+      render.setProps({
+        theme: "primary",
+        icon: "box",
+        label: "A",
+        dotPosition: "bottom",
+        type: "info"
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        theme: "primary",
+        icon: "box",
+        label: "A",
+        dotPosition: "bottom",
+        type: "info"
+      });
+    });
+  });
 });

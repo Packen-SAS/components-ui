@@ -18,7 +18,7 @@ class Avatars extends Component {
     }
   }
 
-  mockCallback = () => { return true; }
+  mockCallback = () => true;
 
   finish = () => {
     this.setState({

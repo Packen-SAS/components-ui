@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -14,12 +15,7 @@ class PackenUiDropdown extends Component {
     super(props);
 
     this.state = {
-      callback: props.callback,
-      name: props.name,
-      isDisabled: props.isDisabled,
-      input: {...props.input},
-      list: {...props.list},
-      size: props.size,
+      ...this.setPropsToState(),
       contentSizerHeight: 0,
       isOpen: false,
       dimensions: {
@@ -33,6 +29,34 @@ class PackenUiDropdown extends Component {
       finalSelection: [],
       finalSelectionString: ""
     }
+  }
+
+  mockCallback = () => false;
+
+  setPropsToState = () => {
+    return {
+      callback: this.props.callback ? this.props.callback : this.mockCallback,
+      name: this.props.name ? this.props.name : "",
+      isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
+      input: this.props.input ? {...this.props.input} : {
+        placeholder: "",
+        onChangeText: this.mockCallback,
+        icon: { name: "chevron-down", position: "right" },
+        message: false,
+        label: "",
+        help: undefined,
+        theme: "default",
+        isDropdown: true,
+        nonEditable: true,
+        disabled: false,
+        isOpen: false,
+        multiline: true,
+        name: "",
+        style: {}
+      },
+      list: this.props.list ? {...this.props.list} : { items: [], config: {} },
+      size: this.props.size ? this.props.size : "medium"
+    };
   }
 
   getMenuDimensions = ({ height }) => {
@@ -89,14 +113,7 @@ class PackenUiDropdown extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      callback: this.props.callback,
-      name: this.props.name,
-      isDisabled: this.props.isDisabled,
-      input: {...this.props.input},
-      list: {...this.props.list},
-      size: this.props.size
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -170,6 +187,7 @@ class PackenUiDropdown extends Component {
               isOpen={this.state.isOpen}
               multiline
               style={this.getCustomStyle()}
+              name="dropdownInput"
             />
             <View
               pointerEvents="none"
@@ -352,5 +370,14 @@ class PackenUiDropdown extends Component {
     };
   }
 }
+
+PackenUiDropdown.propTypes = {
+  callback: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+  isDisabled: PropTypes.bool,
+  input: PropTypes.object.isRequired,
+  list: PropTypes.object.isRequired,
+  size: PropTypes.string.isRequired
+};
 
 export default PackenUiDropdown;

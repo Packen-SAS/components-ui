@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -9,11 +10,15 @@ class PackenUiAvatar extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      src: props.src,
-      size: props.size,
-      callback: props.callback
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      src: this.props.src ? this.props.src : false,
+      size: this.props.size ? this.props.size : "medium",
+      callback: this.props.callback ? this.props.callback : false
+    };
   }
 
   getInner = () => {
@@ -70,11 +75,7 @@ class PackenUiAvatar extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      src: this.props.src,
-      size: this.props.size,
-      callback: this.props.callback
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -138,5 +139,11 @@ class PackenUiAvatar extends Component {
     };
   }
 }
+
+PackenUiAvatar.propTypes = {
+  src: Image.propTypes.source,
+  size: PropTypes.string.isRequired,
+  callback: PropTypes.func
+};
 
 export default PackenUiAvatar;

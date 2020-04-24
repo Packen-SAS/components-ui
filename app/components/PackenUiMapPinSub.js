@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -19,6 +20,16 @@ class PackenUiMapPinSub extends Component {
       dotPosition: props.dotPosition,
       type: props.type
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      theme: this.props.theme ? this.props.theme : "primary",
+      icon: this.props.icon ? this.props.icon : false,
+      label: this.props.label ? this.props.label : false,
+      dotPosition: this.props.dotPosition ? this.props.dotPosition : false,
+      type: this.props.type ? this.props.type : "info"
+    };
   }
 
   getIconColor = () => {
@@ -235,5 +246,13 @@ class PackenUiMapPinSub extends Component {
     };
   }
 }
+
+PackenUiMapPinSub.propTypes = {
+  theme: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+  label: PropTypes.string,
+  dotPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  type: PropTypes.string.isRequired
+};
 
 export default PackenUiMapPinSub;

@@ -93,9 +93,17 @@ describe("<PackenUiToggle/>", () => {
       expect(renderInstance.props.toggleHandler).toHaveBeenCalledWith("toggle1", false);
     });
 
+    it("toggles inner state if 'state' is 'active' and no callback is provided", () => {
+      render.setProps({ name:"toggle1", toggleHandler: undefined });
+      renderInstance.setState({ state: "active", toggleHandler: false });
+      renderInstance.toggle();
+
+      expect(renderInstance.state.state).toBe("inactive");
+    });
+
     it("toggles inner state if 'state' is 'inactive'", () => {
       render.setProps({ name:"toggle1", toggleHandler: mockFunction });
-      renderInstance.setState({ state: "inactive" });
+      renderInstance.setState({ state: "inactive", toggleHandler: mockFunction });
       renderInstance.toggle();
 
       expect(renderInstance.state.state).toBe("active");
@@ -330,6 +338,28 @@ describe("<PackenUiToggle/>", () => {
         positioning: {
           opacity: 0
         }
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        isActive: undefined,
+        isDisabled: undefined,
+        toggleHandler: undefined,
+        name: undefined,
+        onLabel: undefined,
+        offLabel: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        isActive: false,
+        isDisabled: false,
+        toggleHandler: false,
+        name: "",
+        onLabel: "",
+        offLabel: "",
+        state: "inactive"
       });
     });
   });

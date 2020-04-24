@@ -90,26 +90,6 @@ describe("<PackenUiRadio/>", () => {
     });
   });
 
-  describe("state changing", () => {
-    it("updates checked index", () => {
-      renderColumnInstance.updateCheckedIndex(0);
-
-      expect(renderColumnInstance.state.checkedIndex).toBe(0);
-    });
-
-    it("updates current selection", () => {
-      renderColumnInstance.updateCurrentSelection("Test");
-      
-      expect(renderColumnInstance.state.currentSelection).toBe("Test");
-    });
-
-    it("sets new checked index programmatically", () => {
-      renderColumnInstance.setCheckedIndex(0);
-
-      expect(renderColumnInstance.state.checkedIndex).toBe(0);
-    });
-  });
-
   describe("triggering actions", () => {
     it("find current selection", () => {
       renderColumn.setProps({
@@ -198,6 +178,52 @@ describe("<PackenUiRadio/>", () => {
       renderColumn.props().children.forEach(child => {
         expect(child.props.pointerEvents).toBe("auto");
       });
+    });
+  });
+
+  describe("state changing", () => {
+    it("updates checked index", () => {
+      renderColumnInstance.setCheckedIndex(0);
+
+      expect(renderColumnInstance.state.checkedIndex).toBe(0);
+    });
+
+    it("updates current selection", () => {
+      renderColumnInstance.updateCurrentSelection("Test");
+      
+      expect(renderColumnInstance.state.currentSelection).toBe("Test");
+    });
+
+    it("sets new checked index programmatically", () => {
+      renderColumnInstance.setCheckedIndex(0);
+
+      expect(renderColumnInstance.state.checkedIndex).toBe(0);
+    });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      renderColumn.setProps({
+        items: undefined,
+        initialIndex: undefined,
+        callback: undefined,
+        name: undefined,
+        layout: undefined
+      });
+      const res = renderColumnInstance.setPropsToState();
+
+      expect(res).toEqual({
+        items: [],
+        checkedIndex: -1,
+        callback: false,
+        name: "",
+        layout: "column"
+      });
+    });
+
+    it("returns incoming props as the state key-value pairs if a callback is provided", () => {
+      renderColumn.setProps({ callback: mockCallback });
+      const res = renderColumnInstance.setPropsToState();
+
+      expect(res.callback).toBe(mockCallback);
     });
   });
 });

@@ -81,6 +81,19 @@ describe("<PackenUiList/>", () => {
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        items: undefined,
+        style: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        items: [],
+        customWrapperStyles: {}
+      });
+    });
   });
 
   describe("styling", () => {  

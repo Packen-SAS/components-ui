@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiListItem from "./PackenUiListItem";
@@ -7,17 +8,18 @@ class PackenUiList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      items: [...props.items],
-      customWrapperStyles: { ...props.style }
-    }
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      items: this.props.items ? [...this.props.items] : [],
+      customWrapperStyles: this.props.style ? { ...this.props.style } : {}
+    };
   }
 
   updateState = () => {
-    this.setState({
-      items: [ ...this.props.items ],
-      customWrapperStyles: { ...this.props.style }
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -47,5 +49,10 @@ class PackenUiList extends Component {
     };
   }
 }
+
+PackenUiList.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  customWrapperStyles: PropTypes.object
+};
 
 export default PackenUiList;

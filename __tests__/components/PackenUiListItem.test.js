@@ -41,6 +41,38 @@ describe("<PackenUiListItem/>", () => {
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        data: {
+          size: undefined,
+          title: undefined,
+          subtitle: undefined,
+          label: undefined,
+          icon: undefined,
+          media: undefined,
+          callback: undefined,
+          customWrapperStyle: undefined
+        }
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        data: {
+          size: "default",
+          title: "",
+          subtitle: false,
+          label: false,
+          icon: {
+            name: "chevron-right",
+            color: Colors.brand.primary.drk
+          },
+          media: false,
+          callback: false,
+          customWrapperStyle: {}
+        }
+      });
+    });
   });
 
   describe("styling", () => {
@@ -107,6 +139,13 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.onPressHandler();
 
       expect(renderInstance.state.data.callback).toHaveBeenCalled();
+    });
+
+    it("returns false while executing the onPress handler if no callback is provided", () => {
+      renderInstance.state.data.callback = false;
+      const res = renderInstance.onPressHandler();
+
+      expect(res).toBe(false);
     });
   });
 });

@@ -94,4 +94,28 @@ describe("<PackenUiMapPin/>", () => {
       expect(returnedElement).toBe(null);
     });
   });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-valur pairs", () => {
+      renderInfo.setProps({
+        main: undefined,
+        sub: undefined,
+        theme: undefined,
+        type: undefined,
+        dotPosition: undefined
+      });
+      const res = renderInfoInstance.setPropsToState();
+
+      expect(res).toEqual({
+        main: {
+          label: "",
+          text: ""
+        },
+        sub: false,
+        theme: "primary",
+        type: "info",
+        dotPosition: false
+      });
+    });
+  });
 });

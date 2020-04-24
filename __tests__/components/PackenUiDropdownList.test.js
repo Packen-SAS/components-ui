@@ -287,5 +287,24 @@ describe("<PackenUiDropdownList/>", () => {
 
       expect(res).toBe(false);
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        items: undefined,
+        numShownRows: undefined,
+        config: undefined,
+        toggleMenu: undefined,
+        getFinalSelection: undefined
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        items: [],
+        numShownRows: 4,
+        config: {},
+        toggleMenu: false,
+        getFinalSelection: false
+      });
+    });
   });
 });

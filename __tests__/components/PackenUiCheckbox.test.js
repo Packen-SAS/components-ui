@@ -128,10 +128,35 @@ describe("<PackenUiCheckbox/>", () => {
       
       expect(res).toBe(false);
     });
+
+    it("returns incoming props as the state key-value pairs", () => {
+      renderColumn.setProps({
+        layout: undefined,
+        items: undefined,
+        callback: undefined,
+        name: undefined
+      });
+      const res = renderColumnInstance.setPropsToState();
+
+      expect(res).toEqual({
+        layout: "column",
+        items: [],
+        callback: false,
+        name: ""
+      });
+    });
+
+    it("returns false after updating checked items if selectedIndex is defined but no callback is provided", () => {
+      renderColumnInstance.setState({ callback: false });
+      const res = renderColumnInstance.updateCheckedItems();
+
+      expect(res).toBe(false);
+    });
   });
 
   describe("triggering actions", () => {
     it("updates selected item index on press", () => {
+      renderColumnInstance.setState({ items: [...items] });
       const spyUpdateCheckedItems = jest.spyOn(renderColumnInstance, "updateCheckedItems");
       renderColumnInstance.pressHandler(0);
       

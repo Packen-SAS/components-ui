@@ -11,7 +11,9 @@ class Tabs extends Component {
     super(props);
   }
 
-  mockCallback = () => { return true; }
+  mockCallback = () => true;
+
+  onTabChange = (name, newIndex) => true;
 
   render() {
     return (
@@ -19,58 +21,73 @@ class Tabs extends Component {
         <Section title="Tabs">
           <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
-              <PackenUiTabs items={[
-                {
-                  label: "Button",
-                  icon: "»",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  icon: "»",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  icon: "»",
-                  callback: this.mockCallback
-                }
-              ]} activeIndex={0} />
+              <PackenUiTabs
+                items={[
+                  {
+                    label: "Button",
+                    icon: "»",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    icon: "»",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    icon: "»",
+                    callback: this.mockCallback
+                  }
+                ]}
+                name="tabs1"
+                activeIndex={0}
+                onTabChange={this.onTabChange}
+              />
             </View>
             <View style={{ marginBottom: 10 }}>
-              <PackenUiTabs items={[
-                {
-                  label: "Button",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  callback: this.mockCallback
-                }
-              ]} activeIndex={1} />
+              <PackenUiTabs
+                items={[
+                  {
+                    label: "Button",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    callback: this.mockCallback
+                  }
+                ]}
+                name="tabs2"
+                activeIndex={1}
+                onTabChange={this.onTabChange}
+              />
             </View>
             <View style={{ marginBottom: 10 }}>
-              <PackenUiTabs items={[
-                {
-                  label: "Button",
-                  icon: "clock",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  icon: "rotate-cw",
-                  callback: this.mockCallback
-                },
-                {
-                  label: "Button",
-                  icon: "check-circle",
-                  callback: this.mockCallback
-                }
-              ]} activeIndex={2} />
+              <PackenUiTabs
+                items={[
+                  {
+                    label: "Button",
+                    icon: "clock",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    icon: "rotate-cw",
+                    callback: this.mockCallback
+                  },
+                  {
+                    label: "Button",
+                    icon: "check-circle",
+                    callback: this.mockCallback
+                  }
+                ]}
+                name="tabs3"
+                activeIndex={2}
+                onTabChange={this.onTabChange}
+              />
             </View>
           </View>
         </Section>

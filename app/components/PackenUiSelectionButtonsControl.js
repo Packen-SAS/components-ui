@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback, Image } from "react-native";
 
 import PackenUiText from "./PackenUiText";
@@ -20,8 +21,27 @@ class PackenUiSelectionButtonsControl extends Component {
     }
   }
 
+  setPropsToState = () => {
+    return {
+      type: this.props.type ? this.props.type : "label",
+      data: this.props.data ? { ...this.props.data } : {
+        value: "",
+        label: "",
+        image: {
+          src: "",
+          width: 0,
+          height: 0
+        }
+      },
+      selected: this.props.selected ? this.props.selected : [],
+      selection: this.props.selection ? this.props.selection : "single",
+      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
+    };
+  }
+
   getConfig = () => {
     let config = {};
+    const data = this.setPropsToState().data;
 
     if (this.props.type === "label") {
       config = {
@@ -32,9 +52,9 @@ class PackenUiSelectionButtonsControl extends Component {
     } else {
       config = {
         image: {
-          src: this.props.data.image.src,
-          width: this.props.data.image.width,
-          height: this.props.data.image.height
+          src: data.image.src,
+          width: data.image.width,
+          height: data.image.height
         }
       }
     }
@@ -44,18 +64,25 @@ class PackenUiSelectionButtonsControl extends Component {
 
   getInitialState = () => {
     let state;
+    const data = this.setPropsToState().data;
+    const selection = this.setPropsToState().selection;
+    const selected = this.setPropsToState().selected;
 
-    if (this.props.selection === "single") {
-      state = this.props.selected === this.props.data.value ? "active" : "default";
+    if (selection === "single") {
+      state = selected === data.value ? "active" : "default";
     } else {
-      state = this.props.selected.includes(this.props.data.value) ? "active" : "default";
+      state = selected.includes(data.value) ? "active" : "default";
     }
 
     return state;
   }
 
   newSelection = () => {
-    this.state.onNewSelection(this.state.data.value);
+    if (this.state.onNewSelection) {
+      this.state.onNewSelection(this.state.data.value);
+    } else {
+      return false;
+    }
   }
 
   getImage = () => {
@@ -116,7 +143,7 @@ class PackenUiSelectionButtonsControl extends Component {
       selection: this.props.selection,
       onNewSelection: this.props.onNewSelection
     }, () => {
-      if (prevProps.selected !== this.props.selected) {
+      if (prevProps.selected !== this.props.selected && this.state.selected !== undefined) {
         this.checkIfActive();
       }
     });
@@ -230,5 +257,13 @@ class PackenUiSelectionButtonsControl extends Component {
     };
   }
 }
+
+PackenUiSelectionButtonsControl.propTypes = {
+  type: PropTypes.string.isRequired,
+  data: PropTypes.object.isRequired,
+  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.bool]).isRequired,
+  selection: PropTypes.string.isRequired,
+  onNewSelection: PropTypes.func.isRequired
+};
 
 export default PackenUiSelectionButtonsControl;

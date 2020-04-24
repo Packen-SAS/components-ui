@@ -50,4 +50,21 @@ describe("<PackenUiDivider/>", () => {
       expect(render.props().style.marginBottom).toBe(0);
     });
   });
+
+  describe("state changing", () => {
+    it("returns incoming props as the state key-value pairs", () => {
+      render.setProps({
+        type: "",
+        size: 0,
+        margin: undefined
+      });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res).toEqual({
+        type: "light",
+        size: 1,
+        margin: false
+      });
+    });
+  });
 });

@@ -1231,7 +1231,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Bogotá, D.C.", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1246,7 +1246,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Medellín", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1262,7 +1262,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Bucaramanga", isDisabled: true }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1277,7 +1277,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Santa Marta", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1292,7 +1292,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Cali", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1307,7 +1307,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Cartagena", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             },
@@ -1322,7 +1322,7 @@ class Dropdowns extends Component {
                   type: "checkbox",
                   layout: "dropdown",
                   items: [{ isChecked: false, label: "Leticia", isDisabled: false }],
-                  notifyParent: this.mockCallback
+                  handleNotify: this.mockCallback
                 }
               }
             }
@@ -1439,7 +1439,7 @@ class Dropdowns extends Component {
     }
   }
 
-  mockCallback = () => { return true; }
+  mockCallback = () => true;
 
   changeHandler = (name, newSelection) => {
     /* New selection can be used here */

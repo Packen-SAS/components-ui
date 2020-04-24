@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
@@ -8,25 +9,33 @@ class PackenUiServiceStatus extends Component {
     super(props);
 
     this.state = {
-      steps: [...props.steps],
-      currentStepIndex: props.currentStepIndex,
+      ...this.setPropsToState(),
       itemsHeights: []
     }
   }
 
+  setPropsToState = () => {
+    return {
+      steps: this.props.steps ? [...this.props.steps] : [],
+      currentStepIndex: this.props.currentStepIndex === 0 ? 0 : this.props.currentStepIndex ? this.props.currentStepIndex : -1
+    };
+  }
+
   updateCurrentStep = () => {
-    for (let i = 0; i < this.state.currentStepIndex; i++) {
-      this.state.steps[i].isComplete = true;
-      this.state.steps[i].isCurrent = false;
+    if (this.state.steps && this.state.steps.length > 0) {
+      for (let i = 0; i < this.state.currentStepIndex; i++) {
+        this.state.steps[i].isComplete = true;
+        this.state.steps[i].isCurrent = false;
+      }
+      for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
+        this.state.steps[i].isComplete = false;
+        this.state.steps[i].isCurrent = false;
+      }
+      
+      this.setState({
+        currentStepIndex: this.state.currentStepIndex
+      }, this.state.steps[this.state.currentStepIndex].callback);
     }
-    for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
-      this.state.steps[i].isComplete = false;
-      this.state.steps[i].isCurrent = false;
-    }
-    
-    this.setState({
-      currentStepIndex: this.state.currentStepIndex
-    }, this.state.steps[this.state.currentStepIndex].callback);
   }
 
   setItemsHeights = (i, height) => {
@@ -40,8 +49,7 @@ class PackenUiServiceStatus extends Component {
 
   updateState = () => {
     this.setState({
-      steps: [...this.props.steps],
-      currentStepIndex: this.props.currentStepIndex,
+      ...this.setPropsToState()
     }, () => {
       this.updateCurrentStep();
     });
@@ -80,5 +88,10 @@ class PackenUiServiceStatus extends Component {
     };
   }
 }
+
+PackenUiServiceStatus.propTypes = {
+  steps: PropTypes.arrayOf(PropTypes.object).isRequired,
+  currentStepIndex: PropTypes.number.isRequired
+};
 
 export default PackenUiServiceStatus;

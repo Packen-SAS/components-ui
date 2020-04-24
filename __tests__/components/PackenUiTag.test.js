@@ -1,5 +1,6 @@
 import "react-native";
 import React from "react";
+import { View } from "react-native";
 import { shallow } from "enzyme";
 
 import PackenUiTag from "../../app/components/PackenUiTag";
@@ -38,6 +39,32 @@ describe("<PackenUiTag/>", () => {
 
       expect(spySetState).toHaveBeenCalled();
       spySetState.mockRestore();
+    });
+
+    it("returns the incoming props as the state key-value pairs", () => {
+      render.setProps({
+        style: { color: "#FFFFFF" },
+        children: <View></View>
+      });
+      const res =renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        style: { color: "#FFFFFF" },
+        children: <View></View>
+      });
+    });
+
+    it("returns the incoming props as the state key-value pairs if no props are provided", () => {
+      render.setProps({
+        style: undefined,
+        children: undefined
+      });
+      const res =renderInstance.setPropsToState();
+
+      expect(res).toEqual({
+        style: {},
+        children: null
+      });
     });
   });
 });

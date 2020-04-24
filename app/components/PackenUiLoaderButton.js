@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { Animated } from "react-native";
 
 import PackenUiButton from "./PackenUiButton";
@@ -8,15 +9,23 @@ class PackenUiLoaderButton extends Component {
     super(props);
 
     this.state = {
-      children: props.children,
-      type: props.type,
-      level: props.level,
-      size: props.size,
-      callback: props.callback,
-      isDone: props.isDone,
+      ...this.setPropsToState(),
       anim: null,
       rotate: new Animated.Value(0)
     }
+  }
+
+  mockCallback = () => false;
+
+  setPropsToState = () => {
+    return {
+      children: this.props.children ? this.props.children : null,
+      type: this.props.type ? this.props.type : "regular",
+      level: this.props.level ? this.props.level : "primary",
+      size: this.props.size ? this.props.size : "medium",
+      callback: this.props.callback ? this.props.callback : this.mockCallback,
+      isDone: this.props.isDone ? this.props.isDone : false
+    };
   }
 
   componentDidMount() {
@@ -42,13 +51,7 @@ class PackenUiLoaderButton extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      children: this.props.children,
-      level: this.props.level,
-      size: this.props.size,
-      callback: this.props.callback,
-      isDone: this.props.isDone
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -92,5 +95,14 @@ class PackenUiLoaderButton extends Component {
     };
   }
 }
+
+PackenUiLoaderButton.propTypes = {
+  children: PropTypes.node,
+  type: PropTypes.string.isRequired,
+  level: PropTypes.string.isRequired,
+  size: PropTypes.string.isRequired,
+  callback: PropTypes.func.isRequired,
+  isDone: PropTypes.bool
+};
 
 export default PackenUiLoaderButton;

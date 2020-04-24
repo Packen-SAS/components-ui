@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, View } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
@@ -11,13 +12,19 @@ class PackenUiRadioControl extends Component {
     super(props);
 
     this.state = {
-      updateCheckedIndex: props.updateCheckedIndex,
-      selfIndex: props.selfIndex,
-      isDisabled: props.isDisabled,
-      checkedIndex: props.checkedIndex,
-      label: props.label,
+      ...this.setPropsToState(),
       state: this.setInitialState()
     }
+  }
+
+  setPropsToState = () => {
+    return {
+      updateCheckedIndex: this.props.updateCheckedIndex ? this.props.updateCheckedIndex : false,
+      selfIndex: this.props.selfIndex ? this.props.selfIndex : 0,
+      isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
+      checkedIndex: this.props.checkedIndex === 0 ? 0 : this.props.checkedIndex ? this.props.checkedIndex : -1,
+      label: this.props.label ? this.props.label : ""
+    };
   }
 
   setInitialState = () => {
@@ -34,7 +41,11 @@ class PackenUiRadioControl extends Component {
       state: "checked"
     });
 
-    this.state.updateCheckedIndex(this.state.selfIndex);
+    if (this.state.updateCheckedIndex) {
+      this.state.updateCheckedIndex(this.state.selfIndex);
+    } else {
+      return false;
+    }
   }
 
   checkIfDisabled = () => {
@@ -67,11 +78,7 @@ class PackenUiRadioControl extends Component {
 
   updateState = () => {
     this.setState({
-      updateCheckedIndex: this.props.updateCheckedIndex,
-      selfIndex: this.props.selfIndex,
-      isDisabled: this.props.isDisabled,
-      checkedIndex: this.props.checkedIndex,
-      label: this.props.label
+      ...this.setPropsToState()
     }, () => {
       this.checkIfChecked();
       this.checkIfDisabled();
@@ -158,5 +165,13 @@ class PackenUiRadioControl extends Component {
     };
   }
 }
+
+PackenUiRadioControl.propTypes = {
+  updateCheckedIndex: PropTypes.func.isRequired,
+  selfIndex: PropTypes.number.isRequired,
+  isDisabled: PropTypes.bool,
+  checkedIndex: PropTypes.number,
+  label: PropTypes.string.isRequired
+};
 
 export default PackenUiRadioControl;

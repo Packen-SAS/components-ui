@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -15,11 +16,7 @@ class PackenUiServiceStatusItem extends Component {
     this.spaceBetweenItems = 25;
 
     this.state = {
-      data: { ...props.data },
-      index: props.index,
-      itemsHeights: [...props.itemsHeights],
-      setItemsHeights: props.setItemsHeights,
-      currentStepIndex: props.currentStepIndex,
+      ...this.setPropsToState(),
       state: this.getInitialState(),
       time: this.getInitialTime(),
       dimensions: {
@@ -34,12 +31,27 @@ class PackenUiServiceStatusItem extends Component {
     }
   }
 
+  setPropsToState = () => {
+    return {
+      data: this.props.data ? { ...this.props.data } : {
+        isComplete: false,
+        isCurrent: false,
+        time: "00:00"
+      },
+      index: this.props.index ? this.props.index : 0,
+      itemsHeights: this.props.itemsHeights ? [...this.props.itemsHeights] : [],
+      setItemsHeights: this.props.setItemsHeights ? this.props.setItemsHeights : false,
+      currentStepIndex: this.props.currentStepIndex ? this.props.currentStepIndex : -1
+    };
+  }
+
   getInitialState = () => {
     let initialState = "default";
+    const data = this.setPropsToState().data;
 
-    if (this.props.data.isComplete) {
+    if (data.isComplete) {
       initialState = "completed";
-    } else if (this.props.data.isCurrent) {
+    } else if (data.isCurrent) {
       initialState = "active";
     }
 
@@ -48,12 +60,13 @@ class PackenUiServiceStatusItem extends Component {
 
   getInitialTime = () => {
     let time = null;
+    const data = this.setPropsToState().data;
 
-    if (this.props.data.time) {
+    if (data.time) {
       time = (
         <PackenUiText
           style={this.getStyles().time}
-        >{this.props.data.time}</PackenUiText>
+        >{data.time}</PackenUiText>
       );
     }
 
@@ -163,16 +176,16 @@ class PackenUiServiceStatusItem extends Component {
       }
     });
 
-    this.state.setItemsHeights(this.state.index, height);
+    if (this.state.setItemsHeights) {
+      this.state.setItemsHeights(this.state.index, height);
+    } else {
+      return false;
+    }
   }
 
   updateState = () => {
     this.setState({
-      data: { ...this.props.data },
-      index: this.props.index,
-      itemsHeights: [...this.props.itemsHeights],
-      setItemsHeights: this.props.setItemsHeights,
-      currentStepIndex: this.props.currentStepIndex
+      ...this.setPropsToState()
     }, () => {
       if (this.props.currentStepIndex === this.props.index) {
         this.setState({
@@ -354,5 +367,13 @@ class PackenUiServiceStatusItem extends Component {
     };
   }
 }
+
+PackenUiServiceStatusItem.propTypes = {
+  data: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  itemsHeights: PropTypes.arrayOf(PropTypes.number).isRequired,
+  setItemsHeights: PropTypes.func.isRequired,
+  currentStepIndex: PropTypes.number.isRequired
+};
 
 export default PackenUiServiceStatusItem;

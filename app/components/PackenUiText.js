@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -9,14 +10,18 @@ class PackenUiText extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      preset: props.preset,
-      touchable: props.touchable,
-      children: props.children,
-      icon: { ...props.icon },
-      presetStyle: props.preset ? Typography[this.props.preset] : {},
+    this.state = { ...this.setPropsToState() }
+  }
+
+  setPropsToState = () => {
+    return {
+      preset: this.props.preset ? this.props.preset : false,
+      touchable: this.props.touchable ? { ...this.props.touchable } : false,
+      children: this.props.children ? this.props.children : null,
+      icon: this.props.icon ? { ...this.props.icon } : false,
+      presetStyle: this.props.preset ? Typography[this.props.preset] : {},
       touchableStyles: this.getTouchableStyles()
-    }
+    };
   }
 
   getTouchableStyles = () => {
@@ -33,7 +38,11 @@ class PackenUiText extends Component {
   }
 
   triggerCallback = () => {
-    this.state.touchable.callback();
+    if (this.state.touchable) {
+      this.state.touchable.callback();
+    } else {
+      return false;
+    }
   }
 
   getContent = () => {
@@ -72,15 +81,7 @@ class PackenUiText extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      preset: this.props.preset,
-      touchable: this.props.touchable,
-      customStyle: { ...this.props.style },
-      children: this.props.children,
-      icon: { ...this.props.icon },
-      presetStyle: this.props.preset ? Typography[this.props.preset] : {},
-      touchableStyles: this.getTouchableStyles()
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -112,5 +113,12 @@ const styles = StyleSheet.create({
     marginRight: 5
   }
 });
+
+PackenUiText.propTypes = {
+  preset: PropTypes.string,
+  touchable: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  icon: PropTypes.object
+};
 
 export default PackenUiText;
