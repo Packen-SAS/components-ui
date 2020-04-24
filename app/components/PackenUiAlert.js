@@ -22,8 +22,24 @@ class PackenUiAlert extends Component {
         main: "",
         preset: undefined
       },
-      onClose: this.props.onClose ? this.props.onClose : false
+      onClose: this.props.onClose ? this.props.onClose : false,
+      countdown: this.props.countdown ? this.props.countdown : false
     };
+  }
+
+  componentDidMount() {
+    this.checkIfTimed();
+  }
+
+  checkIfTimed = () => {
+    if(this.state.type === "timed" && this.state.countdown) {
+      const timeout = setTimeout(() => {
+        this.close();
+        clearTimeout(timeout);
+      }, this.state.countdown);
+    } else {
+      return false;
+    }
   }
 
   close = () => {
@@ -61,7 +77,9 @@ class PackenUiAlert extends Component {
   }
 
   updateState = () => {
-    this.setState({ ...this.setPropsToState() });
+    this.setState({
+      ...this.setPropsToState()
+    }, this.checkIfTimed);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {

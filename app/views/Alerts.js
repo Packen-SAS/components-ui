@@ -19,7 +19,8 @@ class ServiceStatus extends Component {
         <Section title="Alerts">
           <View style={{ marginTop: 20 }}>
             <PackenUiAlert
-              type="static"
+              type="timed"
+              countdown={5000}
               theme="default"
               text={{
                 main: "Alerta gris para información default",

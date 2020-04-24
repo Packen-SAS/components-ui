@@ -67,6 +67,37 @@ describe("<PackenUiAlert/>", () => {
       expect(spyUpdateState).toHaveBeenCalled();
       spyUpdateState.mockRestore();
     });
+
+    it("executes the correct code on componentDidUpdate", () => {
+      const spyCheckIfTimed = jest.spyOn(renderInstance, "checkIfTimed");
+      renderInstance.componentDidMount();
+
+      expect(spyCheckIfTimed).toHaveBeenCalled();
+      spyCheckIfTimed.mockRestore();
+    });
+
+    it("starts a timeout to close the alert if set so", () => {
+      renderInstance.setState({
+        type: "timed",
+        countdown: 5000
+      });
+
+      setTimeout(() => {
+        expect(spyClose).toHaveBeenCalled();
+        spyClose.mockRestore();
+        done();
+      }, 6000);
+    });
+
+    it("returns false while starting a timeout to close the alert if not set so", () => {
+      renderInstance.setState({
+        type: "static",
+        countdown: false
+      });
+      const res = renderInstance.checkIfTimed();
+      
+      expect(res).toBe(false);
+    });
   });
 
   describe("state changing", () => {
@@ -83,7 +114,8 @@ describe("<PackenUiAlert/>", () => {
         type: undefined,
         theme: undefined,
         text: undefined,
-        onClose: undefined
+        onClose: undefined,
+        countdown: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -95,8 +127,19 @@ describe("<PackenUiAlert/>", () => {
           main: "",
           preset: undefined
         },
-        onClose: false
+        onClose: false,
+        countdown: false
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if a countdown is provided", () => {
+      render.setProps({
+        type: "timed",
+        countdown: 5000
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.countdown).toBe(5000);
     });
   });
 
