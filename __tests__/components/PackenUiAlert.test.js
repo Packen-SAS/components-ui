@@ -77,16 +77,18 @@ describe("<PackenUiAlert/>", () => {
     });
 
     it("starts a timeout to close the alert if set so", () => {
-      renderInstance.setState({
+      const spyClose = jest.spyOn(renderInstance, "close");
+      render.setProps({
         type: "timed",
         countdown: 5000
       });
+      jest.useFakeTimers();
+      renderInstance.checkIfTimed();
+      jest.advanceTimersByTime(6000);
 
-      setTimeout(() => {
-        expect(spyClose).toHaveBeenCalled();
-        spyClose.mockRestore();
-        done();
-      }, 6000);
+      expect(spyClose).toHaveBeenCalled();
+      spyClose.mockRestore();
+      jest.useRealTimers();
     });
 
     it("returns false while starting a timeout to close the alert if not set so", () => {
