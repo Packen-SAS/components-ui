@@ -123,13 +123,21 @@ class PackenUiSelectionButtonsControl extends Component {
       }
     }
 
-    /* if (this.state.type === "label") {
+    if (this.state.type === "label") {
       if (newState.state === "active") {
-        newState.config.label.preset = "h6";
+        newState.config = {
+          label: {
+            preset: "s1"
+          }
+        };
       } else {
-        newState.config.label.preset = "h6";
+        newState.config = {
+          label: {
+            preset: "s2"
+          }
+        };
       }
-    } */
+    }
 
     newState.selected = this.state.selected;
     this.setState(newState);
