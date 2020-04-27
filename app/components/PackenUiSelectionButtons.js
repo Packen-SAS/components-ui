@@ -16,6 +16,7 @@ class PackenUiSelectionButtons extends Component {
 
   setPropsToState = () => {
     return {
+      altStyle: this.props.altStyle ? this.props.altStyle : false,
       name: this.props.name ? this.props.name : "",
       type: this.props.type ? this.props.type : "label",
       items: this.props.items ? [...this.props.items] : [],
@@ -92,12 +93,21 @@ class PackenUiSelectionButtons extends Component {
 
   render() {
     return (
-      <View style={[this.getStyles().wrapper.base, this.getStyles().wrapper.type[this.state.type]]}>
+      <View style={[
+        this.getStyles().wrapper.base,
+        this.getStyles().wrapper.type[this.state.type],
+        this.getStyles().wrapper.altStyle[this.state.altStyle]
+      ]}>
         {
           this.state.items.map((item, i) => (
-            <View key={i} style={[this.getStyles().item.type[this.state.type], { width: `${100/this.state.itemsPerRow}%` }]}>
+            <View key={i} style={[
+              this.getStyles().item.type[this.state.type],
+              this.getStyles().item.altStyle[this.state.altStyle],
+              { width: `${100/this.state.itemsPerRow}%` }
+            ]}>
               <PackenUiSelectionButtonsControl
                 data={item}
+                altStyle={this.state.altStyle}
                 type={this.state.type}
                 selected={this.state.selected}
                 selection={this.state.selection}
@@ -128,6 +138,13 @@ class PackenUiSelectionButtons extends Component {
           image: {
             margin: -12
           }
+        },
+        altStyle: {
+          false: {},
+          true: {
+            marginVertical: -16,
+            marginHorizontal: -16
+          }
         }
       },
       item: {
@@ -138,6 +155,13 @@ class PackenUiSelectionButtons extends Component {
           },
           image: {
             padding: 12
+          }
+        },
+        altStyle: {
+          false: {},
+          true: {
+            paddingVertical: 16,
+            paddingHorizontal: 16
           }
         }
       }

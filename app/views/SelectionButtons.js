@@ -24,12 +24,13 @@ class SelectionButtons extends Component {
       <PageView>
         <Section title="Selection Buttons">
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, single selection</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, single selection, alternative style</PackenUiText>
             <PackenUiSelectionButtons
               type="label"
               selection="single"
               itemsPerRow={4}
               name="selectionButtons1"
+              altStyle
               onNewSelection={this.newSelectionHandler}
               items={[
                 { label: "A1", value: "A1", isSelected: false },
@@ -52,8 +53,40 @@ class SelectionButtons extends Component {
               name="selectionButtons2"
               onNewSelection={this.newSelectionHandler}
               items={[
-                { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "Sí", value: true, isSelected: true },
-                { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "No", value: false, isSelected: false }
+                {
+                  image: {
+                    default: {
+                      src: require("../../assets/images/i-propietario-default.png"),
+                      width: 26,
+                      height: 45
+                    },
+                    active: {
+                      src: require("../../assets/images/i-propietario.png"),
+                      width: 51,
+                      height: 45
+                    }
+                  },
+                  label: "SÍ",
+                  value: true,
+                  isSelected: true
+                },
+                {
+                  image: {
+                    default: {
+                      src: require("../../assets/images/i-propietario-default.png"),
+                      width: 26,
+                      height: 45
+                    },
+                    active: {
+                      src: require("../../assets/images/i-propietario.png"),
+                      width: 51,
+                      height: 45
+                    }
+                  },
+                  label: "NO",
+                  value: false,
+                  isSelected: false
+                }
               ]}
             />
           </View>
@@ -86,8 +119,40 @@ class SelectionButtons extends Component {
               name="selectionButtons4"
               onNewSelection={this.newSelectionHandler}
               items={[
-                { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "Sí", value: true, isSelected: false },
-                { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "No", value: false, isSelected: true }
+                {
+                  image: {
+                    default: {
+                      src: require("../../assets/images/i-propietario-default.png"),
+                      width: 26,
+                      height: 45
+                    },
+                    active: {
+                      src: require("../../assets/images/i-propietario.png"),
+                      width: 51,
+                      height: 45
+                    }
+                  },
+                  label: "SÍ",
+                  value: true,
+                  isSelected: true
+                },
+                {
+                  image: {
+                    default: {
+                      src: require("../../assets/images/i-propietario-default.png"),
+                      width: 26,
+                      height: 45
+                    },
+                    active: {
+                      src: require("../../assets/images/i-propietario.png"),
+                      width: 51,
+                      height: 45
+                    }
+                  },
+                  label: "NO",
+                  value: false,
+                  isSelected: false
+                }
               ]}
             />
           </View>

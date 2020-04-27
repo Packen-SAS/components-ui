@@ -32,7 +32,7 @@ class UILibrary extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Alerts">
+        <Drawer.Navigator initialRouteName="SelectionButtons">
           <Drawer.Screen name="Alerts" component={Alerts} />
           <Drawer.Screen name="Lists" component={Lists} />
           <Drawer.Screen name="VehicleBoxes" component={VehicleBoxes} />
