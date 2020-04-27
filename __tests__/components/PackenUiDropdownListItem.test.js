@@ -426,6 +426,26 @@ describe("<PackenUiDropdownListItem/>", () => {
       expect(renderInstance.radioRef.setCheckedIndex).toHaveBeenCalled();
     });
 
+    it("returns false while checking if unselected, if selection type is 'radio' and values match", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        },
+        mainContent: {
+          main: {
+            control: true
+          },
+          value: "Test"
+        },
+        currentRadiosState: {
+          checkedValue: "Test"
+        }
+      };
+      const res = renderInstance.checkIfUnselected();
+
+      expect(res).toBe(false);
+    });
+
     it("checks if unselected if selection type is 'checkbox'", () => {
       renderInstance.checkboxRef = { setCheckedState: mockCallback };
       renderInstance.props = {
@@ -448,6 +468,26 @@ describe("<PackenUiDropdownListItem/>", () => {
 
       expect(renderInstance.checkboxRef.setCheckedState)
         .toHaveBeenCalledWith(renderInstance.props.mainContent.value, false, renderInstance.props.currentCheckboxesState.finalSelectionArray);
+    });
+
+    it("returns false while checking if unselected, if selection type is 'checkbox' and values match", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "checkbox"
+        },
+        mainContent: {
+          main: {
+            control: true
+          },
+          value: "Test"
+        },
+        currentCheckboxesState: {
+          checkedValues: ["Test"]
+        }
+      };
+      const res = renderInstance.checkIfUnselected();
+
+      expect(res).toBe(false);
     });
 
     it("executes correct code on pressIn", () => {
@@ -905,7 +945,7 @@ describe("<PackenUiDropdownListItem/>", () => {
       expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
     });
 
-    /* it("returns false if it's disabled, a 'PackenUiRadio' or 'PackenUiCheckbox' and an array", () => {
+    it("returns false if it's disabled, a 'PackenUiRadio' or 'PackenUiCheckbox' and an array", () => {
       renderInstance.props = {
         mainContent: {
           isDisabled: true,
@@ -922,7 +962,27 @@ describe("<PackenUiDropdownListItem/>", () => {
       const res = renderInstance.checkMainContentStyles();
       
       expect(res).toBe(false);
-    }); */
+    });
+
+    it("returns false if it's disabled, a 'PackenUiRadio' or 'PackenUiCheckbox' and not an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: true,
+          main: {
+            type: {
+              displayName: "PackenUiRadio"
+            },
+            props: {
+              children: {},
+              style: { color: "" }
+            }
+          }
+        }
+      };
+      const res = renderInstance.checkMainContentStyles();
+      
+      expect(res).toBe(false);
+    });
 
     it("checks main content styles before rendering if it's disabled, not a 'PackenUiRadio' or 'PackenUiCheckbox' and not an array", () => {
       renderInstance.props = {
@@ -965,6 +1025,57 @@ describe("<PackenUiDropdownListItem/>", () => {
       renderInstance.checkMainContentStyles();
       
       expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.white.dft);
+    });
+
+    it("returns false while checking main content styles before rendering, if it's not disabled, is selected, a 'PackenUiRadio' or 'PackenUiCheckbox', and an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            type: {
+              displayName: "Test"
+            },
+            props: {
+              children: [
+                {
+                  type: {
+                    displayName: "PackenUiRadio"
+                  },
+                  props: {
+                    style: {
+                      color: ""
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+      const res = renderInstance.checkMainContentStyles();
+      
+      expect(res).toBe(false);
+    });
+
+    it("returns false while checking main content styles before rendering, if it's not disabled, is selected, a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            type: {
+              displayName: "PackenUiRadio"
+            },
+            props: {
+              children: {}
+            }
+          }
+        }
+      };
+      const res = renderInstance.checkMainContentStyles();
+      
+      expect(res).toBe(false);
     });
 
     it("checks main content styles before rendering if it's not disabled, is selected, is a 'PackenUiText', not a 'PackenUiRadio' or 'PackenUiCheckbox', and an array", () => {
@@ -1127,6 +1238,45 @@ describe("<PackenUiDropdownListItem/>", () => {
         { color: "#FFFFFF" },
         { color: "#FFFFFF" }
       ]);
+    });
+
+    it("returns an empty array if it's a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: false,
+            props: {
+              children: [
+                {
+                  type: { displayName: "PackenUiRadio" }
+                }
+              ]
+            }
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual([]);
+    });
+
+    it("returns an empty object if it's not a control, but the inner content is", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: false,
+            props: {
+              children: {}
+            },
+            type: {
+              displayName: "PackenUiRadio"
+            }
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual({});
     });
   });
 });

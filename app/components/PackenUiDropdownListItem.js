@@ -46,13 +46,17 @@ class PackenUiDropdownListItem extends Component {
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
         this.props.mainContent.main.props.children.forEach(child => {
-          if (this.props.mainContent.main.type.displayName !== "PackenUiRadio" && this.props.mainContent.main.type.displayName !== "PackenUiCheckbox") {
+          if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
             originalStyles.push({ color: child.props.style.color });
+          } else {
+            originalStyles = [];
           }
         });
       } else {
         if (this.props.mainContent.main.type.displayName !== "PackenUiRadio" && this.props.mainContent.main.type.displayName !== "PackenUiCheckbox") {
           originalStyles = { ...this.props.mainContent.main.props.style };
+        } else {
+          originalStyles = {};
         }
       }
     } else {
@@ -103,20 +107,28 @@ class PackenUiDropdownListItem extends Component {
   }
 
   checkIfUnselected = () => {
+    let flag = true;
+
     if (this.props.mainContent.main.control) {
       if (this.props.config.selectionType === "radio") {
         if (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value) {
           this.radioRef.setCheckedIndex(undefined);
+        } else {
+          flag = false;
         }
       }
       if (this.props.config.selectionType === "checkbox") {
         this.props.currentCheckboxesState.checkedValues.forEach(checkedValue => {
           if (checkedValue !== this.props.mainContent.value) {
             this.checkboxRef.setCheckedState(this.props.mainContent.value, false, this.props.currentCheckboxesState.finalSelectionArray);
+          } else {
+            flag = false;
           }
         });
       }
     }
+
+    return flag;
   }
 
   pressInHandler = () => {
@@ -371,6 +383,7 @@ class PackenUiDropdownListItem extends Component {
   }
 
   checkMainContentStyles = () => {
+    let flag = true;
     const mainContent = this.props.mainContent;
 
     if (mainContent.isDisabled) {
@@ -378,17 +391,15 @@ class PackenUiDropdownListItem extends Component {
         mainContent.main.props.children.forEach(child => {
           if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
             child.props.style.color = Colors.basic.gray.lgt;
-            return 1;
           } else {
-            return false;
+            flag = false;
           }
         });
       } else {
         if (mainContent.main.type.displayName !== "PackenUiRadio" && mainContent.main.type.displayName !== "PackenUiCheckbox") {
           mainContent.main.props.style.color = Colors.basic.gray.lgt;
-          return 2;
         } else {
-          return false;
+          flag = false;
         }
       }
     } else {
@@ -397,17 +408,15 @@ class PackenUiDropdownListItem extends Component {
           mainContent.main.props.children.forEach(child => {
             if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
               child.props.style.color = Colors.basic.white.dft;
-              return 3;
             } else {
-              return false;
+              flag = false;
             }
           });
         } else {
           if (mainContent.main.type.displayName !== "PackenUiRadio" && mainContent.main.type.displayName !== "PackenUiCheckbox") {
             mainContent.main.props.style.color = Colors.basic.white.dft;
-            return 4;
           } else {
-            return false;
+            flag = false;
           }
         }
       } else {
@@ -415,23 +424,21 @@ class PackenUiDropdownListItem extends Component {
           mainContent.main.props.children.forEach((child, i) => {
             if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
               child.props.style.color = this.state.originalStyles[i].color;
-              return 5;
             } else {
-              return false;
+              flag = false;
             }
           });
         } else {
           if (mainContent.main.type.displayName !== "PackenUiRadio" && mainContent.main.type.displayName !== "PackenUiCheckbox") {
             mainContent.main.props.style.color = this.state.originalStyles.color;
-            return 6;
           } else {
-            return false;
+            flag = false;
           }
         }
       }
     }
 
-    return 7;
+    return flag;
   }
 
   render() {
