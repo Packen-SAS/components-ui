@@ -38,9 +38,9 @@ class PackenUiAvatar extends Component {
     } else {
       inner = (
         <Icon
-          name="camera"
-          size={this.getStyles().container.size[this.state.size].width / 3}
-          color={Colors.basic.independence.lgt}
+          name="user"
+          size={this.getStyles().container.size[this.state.size].width / 1.5}
+          color={Colors.basic.white.dft}
         />
       );
     }
@@ -101,7 +101,7 @@ class PackenUiAvatar extends Component {
         base: {
           borderRadius: 100,
           overflow: "hidden",
-          backgroundColor: Colors.basic.gray.lgt
+          backgroundColor: Colors.brand.primary.ulgt
         },
         size: {
           xtiny: {
@@ -119,6 +119,10 @@ class PackenUiAvatar extends Component {
           medium: {
             height: 64,
             width: 64
+          },
+          medium_alt: {
+            height: 72,
+            width: 72
           },
           large: {
             height: 80,

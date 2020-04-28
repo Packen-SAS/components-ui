@@ -43,6 +43,14 @@ class Avatars extends Component {
           </View>
           <View style={{ flexDirection: "row", marginTop: 20 }}>
             <View style={{ marginRight: 10 }}>
+              <PackenUiAvatar size="medium_alt" src={require("../../assets/images/avatar.jpg")} />
+            </View>
+            <View style={{ marginRight: 10 }}>
+              <PackenUiAvatar size="medium_alt" callback={this.mockCallback} />
+            </View>
+          </View>
+          <View style={{ flexDirection: "row", marginTop: 20 }}>
+            <View style={{ marginRight: 10 }}>
               <PackenUiAvatar size="large" src={require("../../assets/images/avatar.jpg")} />
             </View>
             <View style={{ marginRight: 10 }}>
