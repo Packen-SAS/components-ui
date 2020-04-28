@@ -381,8 +381,16 @@ describe("<PackenUiInput/>", () => {
       expect(renderInstance.state.state).toBe("focus");
     });
 
+    it("returns false while onFocus if the theme is 'list'", () => {
+      renderInstance.setState({ theme: "list" });
+      const res = renderInstance.handleFocus();
+
+      expect(res).toBe(false);
+    });
+
     it("executes event handlers and changes styles while onFocus", () => {
       renderInstance.setState({
+        theme: "primary",
         eventHandlers: {
           onFocus: jest.fn()
         }
@@ -439,7 +447,6 @@ describe("<PackenUiInput/>", () => {
       });
       renderInstance.handleChangeText("Test");
 
-      expect(renderInstance.state.value).toBe("Test");
       expect(mockCallback).toHaveBeenCalled();
     });
 
@@ -570,6 +577,13 @@ describe("<PackenUiInput/>", () => {
       renderInstance.triggerHelpCallback();
 
       expect(renderInstance.props.help.callback).toHaveBeenCalled();
+    });
+
+    it("returns false while triggering the help callback if not provided", () => {
+      renderInstance.setState({ help: { callback: undefined } });
+      const res = renderInstance.triggerHelpCallback();
+
+      expect(res).toBe(false);
     });
   });
 

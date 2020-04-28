@@ -50,6 +50,7 @@ describe("<PackenUiListItem/>", () => {
           subtitle: undefined,
           label: undefined,
           icon: undefined,
+          input: undefined,
           media: undefined,
           callback: undefined,
           customWrapperStyle: undefined
@@ -63,15 +64,20 @@ describe("<PackenUiListItem/>", () => {
           title: "",
           subtitle: false,
           label: false,
-          icon: {
-            name: "chevron-right",
-            color: Colors.brand.primary.drk
-          },
+          icon: false,
+          input: false,
           media: false,
           callback: false,
           customWrapperStyle: {}
         }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if input is provided", () => {
+      render.setProps({ data: { input: { test: "Test" } } });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.data.input).toEqual({ test: "Test" });
     });
   });
 
@@ -116,6 +122,20 @@ describe("<PackenUiListItem/>", () => {
       expect(returnedElement).toBeDefined();
     });
 
+    it("returns the main content if it's provided and is a dropdown", () => {
+      renderInstance.setState({ data: { input: { isDropdown: true } } });
+      const returnedElement = renderInstance.getMainContent();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns the main content if it's provided and is an input", () => {
+      renderInstance.setState({ data: { input: { isDropdown: false } } });
+      const returnedElement = renderInstance.getMainContent();
+
+      expect(returnedElement).toBeDefined();
+    });
+
     it("returns the sub content if it's provided", () => {
       const returnedElement = renderInstance.getSubContent();
 
@@ -146,6 +166,40 @@ describe("<PackenUiListItem/>", () => {
       const res = renderInstance.onPressHandler();
 
       expect(res).toBe(false);
+    });
+
+    it("executes the inputChangeHandler", () => {
+      renderInstance.setState({ data: { input: { onChange: jest.fn() } } });
+      renderInstance.inputChangeHandler("Test", "val");
+
+      expect(renderInstance.state.data.input.onChange).toHaveBeenCalledWith("Test", "val");
+    });
+
+    it("returns false while executing the inputChangeHandler if not provided", () => {
+      renderInstance.setState({ data: { input: { onChange: undefined } } });
+      const res = renderInstance.inputChangeHandler("Test", "val");
+
+      expect(res).toBe(false);
+    });
+
+    it("returns the correct placeholder configuration if a value is provided", () => {
+      renderInstance.setState({ data: { input: { value: "Test" } } });
+      const res = renderInstance.getPlaceholder();
+
+      expect(res).toEqual({
+        val: "Test",
+        color: Colors.basic.independence.drk
+      });
+    });
+
+    it("returns the correct placeholder configuration if a value is not provided", () => {
+      renderInstance.setState({ data: { input: { value: "", placeholder: "Test 2" } } });
+      const res = renderInstance.getPlaceholder();
+
+      expect(res).toEqual({
+        val: "Test 2",
+        color: Colors.basic.gray.dft
+      });
     });
   });
 });

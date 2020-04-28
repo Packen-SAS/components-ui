@@ -57,6 +57,8 @@ class PackenUiListItem extends Component {
   inputChangeHandler = (name, val) => {
     if (this.state.data.input.onChange) {
       this.state.data.input.onChange(name, val);
+    } else {
+      return false;
     }
   }
 

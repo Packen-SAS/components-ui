@@ -148,6 +148,8 @@ class PackenUiInput extends Component {
       if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
         this.state.eventHandlers.onFocus(this.state.name);
       } 
+    } else {
+      return false;
     }
   }
 
@@ -210,6 +212,8 @@ class PackenUiInput extends Component {
   triggerHelpCallback = () => {
     if (this.state.help && this.state.help.callback) {
       this.state.help.callback();
+    } else {
+      return false;
     }
   }
 
