@@ -141,11 +141,13 @@ class PackenUiInput extends Component {
   }
 
   handleFocus = () => {
-    this.setState({
-      state: "focus"
-    }, this.addKeyboardEvents);
-    if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
-      this.state.eventHandlers.onFocus(this.state.name);
+    if (this.state.theme !== "list") {
+      this.setState({
+        state: "focus"
+      }, this.addKeyboardEvents);
+      if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
+        this.state.eventHandlers.onFocus(this.state.name);
+      } 
     }
   }
 
@@ -166,9 +168,6 @@ class PackenUiInput extends Component {
   }
 
   handleChangeText = text => {
-    this.setState({
-      value: text
-    });
     this.state.onChangeText(this.state.name, text);
   }
 
@@ -209,7 +208,9 @@ class PackenUiInput extends Component {
   }
 
   triggerHelpCallback = () => {
-    this.state.help.callback();
+    if (this.state.help && this.state.help.callback) {
+      this.state.help.callback();
+    }
   }
 
   getHelp = () => {
@@ -381,7 +382,10 @@ class PackenUiInput extends Component {
   render() {
     return (
       <View style={this.getStyles().container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}>
-        <View style={this.getStyles().header}>
+        <View style={[
+          this.getStyles().header.base,
+          this.getStyles().header.theme[this.state.theme]
+        ]}>
           <PackenUiText style={{
             ...this.getStyles().label.base,
             ...this.getStyles().label.size[this.state.size],
@@ -389,7 +393,10 @@ class PackenUiInput extends Component {
           }}>{this.state.label.toUpperCase()}</PackenUiText>
           {this.getHelp()}
         </View>
-        <View style={this.getStyles().box} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
+        <View style={[
+          this.getStyles().box.base,
+          this.getStyles().box.theme[this.state.theme]
+        ]} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
           {this.getMainIcon()}
           <TextInput
             style={{
@@ -431,9 +438,20 @@ class PackenUiInput extends Component {
     return {
       container: {},
       header: {
-        flexDirection: "row",
-        alignItems: "flex-end",
-        justifyContent: "space-between"
+        base: {
+          flexDirection: "row",
+          alignItems: "flex-end",
+          justifyContent: "space-between"
+        },
+        theme: {
+          default: {},
+          danger: {},
+          success: {},
+          primary: {},
+          list: {
+            display: "none"
+          }
+        }
       },
       label: {
         base: {
@@ -500,7 +518,18 @@ class PackenUiInput extends Component {
         }
       },
       box: {
-        marginTop: 5
+        base: {
+          marginTop: 5
+        },
+        theme: {
+          default: {},
+          danger: {},
+          success: {},
+          primary: {},
+          list: {
+            marginTop: 0
+          }
+        }
       },
       icon_wrapper: {
         base: {
@@ -517,7 +546,7 @@ class PackenUiInput extends Component {
       },
       icon: {
         base: {
-          color: Colors.basic.independence.dft
+          color: Colors.basic.independence.dft,
         },
         size: {
           tiny: {
@@ -534,6 +563,9 @@ class PackenUiInput extends Component {
           },
           giant: {
             size: Typography.size.xhuge
+          },
+          list: {
+            size: Typography.size.medium
           }
         },
         state: {
@@ -554,6 +586,12 @@ class PackenUiInput extends Component {
             color: Colors.success.default
           },
           primary: {
+            color: Colors.primary.default
+          },
+          list: {
+            marginTop: 12,
+            marginRight: -15,
+            transform: [{ translateX: 10 }],
             color: Colors.primary.default
           }
         }
@@ -618,6 +656,13 @@ class PackenUiInput extends Component {
           primary: {
             borderColor: Colors.brand.primary.drk,
             borderWidth: 2
+          },
+          list: {
+            height: "auto",
+            borderWidth: 0,
+            paddingVertical: 0,
+            paddingHorizontal: 0,
+            backgroundColor: "transparent"
           }
         },
         state: {
@@ -760,7 +805,8 @@ class PackenUiInput extends Component {
             },
             primary: {
               color: Colors.brand.primary.drk
-            }
+            },
+            list: {}
           },
           state: {
             default: {},
@@ -800,7 +846,8 @@ class PackenUiInput extends Component {
             },
             primary: {
               color: Colors.brand.primary.drk
-            }
+            },
+            list: {}
           },
           state: {
             default: {},

@@ -186,7 +186,10 @@ class PackenUiDropdown extends Component {
               disabled={this.state.isDisabled}
               isOpen={this.state.isOpen}
               multiline
-              style={this.getCustomStyle()}
+              style={{
+                ...this.getCustomStyle(),
+                ...this.state.input.style
+              }}
               name="dropdownInput"
             />
             <View
@@ -194,20 +197,23 @@ class PackenUiDropdown extends Component {
               style={{
                 ...this.getStyles().contentSizer.wrapper.base,
                 ...this.getStyles().contentSizer.wrapper.size[this.state.size],
-                ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size]
+                ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size],
+                ...this.getStyles().contentSizer.wrapper.theme[this.state.input.theme]
               }}
             >
               <View
                 onLayout={this.getContentSizerDimensions}
                 style={{
                   ...this.getStyles().contentSizer.inner.base,
-                  ...this.getStyles().contentSizer.inner.size[this.state.size]
+                  ...this.getStyles().contentSizer.inner.size[this.state.size],
+                  ...this.getStyles().contentSizer.inner.theme[this.state.input.theme]
                 }}
               >
                 <PackenUiText
                   style={{
                     ...this.getStyles().contentSizer.text.base,
-                    ...this.getStyles().contentSizer.text.size[this.state.size]
+                    ...this.getStyles().contentSizer.text.size[this.state.size],
+                    ...this.getStyles().contentSizer.text.theme[this.state.input.theme]
                   }}
                 >{this.state.finalSelectionString}</PackenUiText>
               </View>
@@ -273,6 +279,15 @@ class PackenUiDropdown extends Component {
               paddingHorizontal: 16
             }
           },
+          theme: {
+            default: {},
+            success: {},
+            danger: {},
+            list: {
+              minHeight: 48,
+              paddingHorizontal: 0
+            }
+          },
           padding: {
             left: {
               tiny: {
@@ -321,6 +336,12 @@ class PackenUiDropdown extends Component {
             medium: { paddingVertical: 13 },
             large: { paddingVertical: 17 },
             giant: { paddingVertical: 23 }
+          },
+          theme: {
+            default: {},
+            success: {},
+            danger: {},
+            list: { paddingVertical: 0 }
           }
         },
         text: {
@@ -347,6 +368,15 @@ class PackenUiDropdown extends Component {
             giant: {
               fontSize: Typography.size.giant_alt,
               lineHeight: Typography.lineheight.huge
+            }
+          },
+          theme: {
+            default: {},
+            success: {},
+            danger: {},
+            list: {
+              fontSize: Typography.size.large,
+              lineHeight: Typography.lineheight.large
             }
           }
         }
