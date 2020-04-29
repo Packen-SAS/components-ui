@@ -151,7 +151,8 @@ describe("<PackenUiSelectionButtons/>", () => {
         items: undefined,
         selection: undefined,
         itemsPerRow: undefined,
-        onNewSelection: undefined
+        onNewSelection: undefined,
+        altStyle: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -161,8 +162,16 @@ describe("<PackenUiSelectionButtons/>", () => {
         items: [],
         selection: "single",
         itemsPerRow: 2,
-        onNewSelection: false
+        onNewSelection: false,
+        altStyle: false
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if altStyle is defined", () => {
+      render.setProps({ altStyle: true });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.altStyle).toBe(true);
     });
   });
 });

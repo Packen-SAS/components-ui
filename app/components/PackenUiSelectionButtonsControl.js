@@ -11,18 +11,24 @@ class PackenUiSelectionButtonsControl extends Component {
     super(props);
 
     this.state = {
-      type: props.type,
-      data: { ...props.data },
-      selected: props.selected,
-      selection: props.selection,
-      onNewSelection: props.onNewSelection,
+      ...this.setPropsToState(),
       state: this.getInitialState(),
-      config: this.getConfig()
+      config: this.getConfig(),
+      labelPreset: "s2"
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.type === "label") {
+      this.setState({
+        labelPreset: this.state.config.label.preset
+      });
     }
   }
 
   setPropsToState = () => {
     return {
+      altStyle: this.props.altStyle ? this.props.altStyle : false,
       type: this.props.type ? this.props.type : "label",
       data: this.props.data ? { ...this.props.data } : {
         value: "",
@@ -33,7 +39,7 @@ class PackenUiSelectionButtonsControl extends Component {
           height: 0
         }
       },
-      selected: this.props.selected ? this.props.selected : [],
+      selected: this.props.selected === false ? false : this.props.selected ? this.props.selected : [],
       selection: this.props.selection ? this.props.selection : "single",
       onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
     };
@@ -41,21 +47,17 @@ class PackenUiSelectionButtonsControl extends Component {
 
   getConfig = () => {
     let config = {};
-    const data = this.setPropsToState().data;
+    const { data, altStyle } = this.setPropsToState();
 
     if (this.props.type === "label") {
       config = {
         label: {
-          preset: "s2"
+          preset: altStyle ? "h6" : "s2"
         }
       };
     } else {
       config = {
-        image: {
-          src: data.image.src,
-          width: data.image.width,
-          height: data.image.height
-        }
+        image: { ...data.image }
       }
     }
 
@@ -91,11 +93,11 @@ class PackenUiSelectionButtonsControl extends Component {
     if (this.state.type === "image") {
       image = (
         <Image
-          source={this.state.config.image.src}
+          source={this.state.config.image[this.state.state].src}
           style={[
             this.getStyles().img.base,
             this.getStyles().img.state[this.state.state],
-            { width: this.state.config.image.width, height: this.state.config.image.height }
+            { width: this.state.config.image[this.state.state].width, height: this.state.config.image[this.state.state].height }
           ]}
         />
       );
@@ -123,9 +125,17 @@ class PackenUiSelectionButtonsControl extends Component {
 
     if (this.state.type === "label") {
       if (newState.state === "active") {
-        newState.config.label.preset = "s1";
+        newState.config = {
+          label: {
+            preset: "s1"
+          }
+        };
       } else {
-        newState.config.label.preset = "s2";
+        newState.config = {
+          label: {
+            preset: "s2"
+          }
+        };
       }
     }
 
@@ -137,11 +147,7 @@ class PackenUiSelectionButtonsControl extends Component {
 
   updateState = prevProps => {
     this.setState({
-      type: this.props.type,
-      data: { ...this.props.data },
-      selected: this.props.selected,
-      selection: this.props.selection,
-      onNewSelection: this.props.onNewSelection
+      ...this.setPropsToState()
     }, () => {
       if (prevProps.selected !== this.props.selected && this.state.selected !== undefined) {
         this.checkIfActive();
@@ -158,12 +164,19 @@ class PackenUiSelectionButtonsControl extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.newSelection}>
-        <View style={[this.getStyles().box.type[this.state.type], this.getStyles().box.state[this.state.state].type[this.state.type]]}>
+        <View style={[
+          this.getStyles().box.type[this.state.type],
+          this.getStyles().box.state[this.state.state].type[this.state.type],
+          this.getStyles().box.altStyle[this.state.altStyle].base,
+          this.getStyles().box.altStyle[this.state.altStyle].state[this.state.state]
+        ]}>
           {this.getImage()}
           <PackenUiText
+            preset={this.state.labelPreset}
             style={{
               ...this.getStyles().label.type[this.state.type],
-              ...this.getStyles().label.state[this.state.state].type[this.state.type]
+              ...this.getStyles().label.state[this.state.state].type[this.state.type],
+              ...this.getStyles().label.altStyle[this.state.altStyle].state[this.state.state]
             }}>{this.state.data.label}</PackenUiText>
         </View>
       </TouchableWithoutFeedback>
@@ -193,9 +206,9 @@ class PackenUiSelectionButtonsControl extends Component {
             width: "auto",
             borderWidth: 1,
             borderStyle: "solid",
-            borderColor: Colors.basic.white.drk,
-            backgroundColor: Colors.basic.white.dft,
-            borderRadius: 4
+            borderColor: Colors.basic.gray.lgt,
+            backgroundColor: Colors.basic.gray.lgt,
+            borderRadius: 8
           }
         },
         state: {
@@ -210,7 +223,27 @@ class PackenUiSelectionButtonsControl extends Component {
               image: {
                 elevation: 5,
                 backgroundColor: Colors.brand.primary.snw,
-                borderColor: Colors.brand.primary.ulgt
+                borderColor: Colors.brand.primary.drk
+              }
+            }
+          }
+        },
+        altStyle: {
+          false: { base: {}, state: { default: {}, active: {} } },
+          true: {
+            base: {
+              borderRadius: 8,
+              borderWidth: 1,
+              borderBottomWidth: 1,
+              borderColor: Colors.basic.gray.lgt,
+              borderBottomColor: Colors.base.gray.lgt
+            },
+            state: {
+              default: {
+                backgroundColor: Colors.basic.gray.lgt
+              },
+              active: {
+                borderColor: Colors.brand.primary.drk
               }
             }
           }
@@ -218,14 +251,11 @@ class PackenUiSelectionButtonsControl extends Component {
       },
       img: {
         base: {
-          opacity: 0.35,
           marginBottom: 10
         },
         state: {
           default: {},
-          active: {
-            opacity: 1
-          }
+          active: {}
         }
       },
       label: {
@@ -234,10 +264,10 @@ class PackenUiSelectionButtonsControl extends Component {
             color: "rgba(48, 77, 109, 0.4)"
           },
           image: {
-            color: Colors.basic.independence.lgt,
-            fontFamily: Typography.family.regular,
-            fontSize: Typography.size.small,
-            lineHeight: Typography.lineheight.medium_alt
+            color: Colors.basic.independence.dft,
+            fontFamily: Typography.family.bold,
+            fontSize: Typography.size.giant,
+            lineHeight: Typography.lineheight.huge
           }
         },
         state: {
@@ -248,7 +278,20 @@ class PackenUiSelectionButtonsControl extends Component {
                 color: Colors.brand.primary.drk
               },
               image: {
-                color: Colors.basic.yankees.dft
+                color: Colors.brand.primary.udrk
+              }
+            }
+          }
+        },
+        altStyle: {
+          false: { state: { default: {}, active: {} } },
+          true: {
+            state: {
+              default: {
+                color: Colors.basic.independence.lgt
+              },
+              active: {
+                color: Colors.brand.primary.udrk
               }
             }
           }

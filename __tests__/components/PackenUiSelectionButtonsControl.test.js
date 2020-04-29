@@ -17,8 +17,40 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
     { label: "C3", value: "C3", isSelected: false }
   ];
   const itemsImgs = [
-    { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "Sí", value: true, isSelected: true },
-    { image: { src: require("../../assets/images/i-propietario.png"), width: 51, height: 45 }, label: "No", value: false, isSelected: false }
+    {
+      image: {
+        default: {
+          src: require("../../assets/images/i-propietario-default.png"),
+          width: 26,
+          height: 45
+        },
+        active: {
+          src: require("../../assets/images/i-propietario.png"),
+          width: 51,
+          height: 45
+        }
+      },
+      label: "SÍ",
+      value: true,
+      isSelected: true
+    },
+    {
+      image: {
+        default: {
+          src: require("../../assets/images/i-propietario-default.png"),
+          width: 26,
+          height: 45
+        },
+        active: {
+          src: require("../../assets/images/i-propietario.png"),
+          width: 51,
+          height: 45
+        }
+      },
+      label: "NO",
+      value: false,
+      isSelected: false
+    }
   ];
 
   beforeAll(() => {
@@ -62,6 +94,14 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       const returnedConfig = renderInstance.getConfig();
 
       expect(returnedConfig).toEqual({ label: { preset: "s2" } });
+    });
+
+    it("returns the correct initial config if the type is 'label' and altStyle is defined", () => {
+      render.setProps({ altStyle: true });
+      renderInstance.setState({ altStyle: true });
+      const returnedConfig = renderInstance.getConfig();
+
+      expect(returnedConfig).toEqual({ label: { preset: "h6" } });
     });
 
     it("returns the correct initial config if the type is 'image'", () => {
@@ -135,7 +175,7 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
 
     it("returns the new inner state while checking if it's active, type is 'label', selection is 'single' and values match", () => {
       render.setProps({ selected: "Test" });
-      renderInstance.setState({ type: "label", data: { value: "Test" } });
+      renderInstance.setState({ selection: "single", selected: "Test", type: "label", data: { value: "Test" } });
       const returnedState = renderInstance.checkIfActive();
 
       expect(returnedState.state).toBe("active");
@@ -143,8 +183,8 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
     });
 
     it("returns the new inner state while checking if it's active, type is 'label, selection is 'single' and values don't match", () => {
-      render.setProps({ selected: "Test" });
-      renderInstance.setState({ type: "label", data: { value: "Test 2" } });
+      render.setProps({ type: "label", selected: "Test" });
+      renderInstance.setState({ type: "label", selected: "Test", data: { value: "Test 2" } });
       const returnedState = renderInstance.checkIfActive();
 
       expect(returnedState.state).toBe("default");
@@ -158,11 +198,7 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         selection: "multiple",
         data: { value: "Test" },
         config: {
-          image: {
-            src: require("../../assets/images/i-propietario.png"),
-            width: 50,
-            height: 45
-          }
+          image: { ...itemsImgs[0].image }
         }
       });
       const returnedState = renderInstance.checkIfActive();
@@ -177,11 +213,7 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         selection: "multiple",
         data: { value: "Test 2" },
         config: {
-          image: {
-            src: require("../../assets/images/i-propietario.png"),
-            width: 50,
-            height: 45
-          }
+          image: { ...itemsImgs[0].image }
         }
       });
       const returnedState = renderInstance.checkIfActive();
@@ -214,11 +246,7 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       renderInstance.setState({
         type: "image",
         config: {
-          image: {
-            src: require("../../assets/images/i-propietario.png"),
-            width: 50,
-            height: 45
-          }
+          image: { ...itemsImgs[0].image }
         }
       });
       const returnedElement = renderInstance.getImage();
@@ -234,7 +262,8 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         data: undefined,
         selected: undefined,
         selection: undefined,
-        onNewSelection: undefined
+        onNewSelection: undefined,
+        altStyle: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -251,8 +280,16 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         },
         selected: [],
         selection: "single",
-        onNewSelection: false
+        onNewSelection: false,
+        altStyle: false
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if selected is 'false'", () => {
+      render.setProps({ selected: false });
+      const res = renderInstance.setPropsToState();
+  
+      expect(res.selected).toBe(false);
     });
   });
 });
