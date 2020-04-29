@@ -17,8 +17,7 @@ class PackenUiProgressbar extends Component {
     return {
       wrapperStyle: this.props.wrapperStyle ? this.props.wrapperStyle : {},
       type: this.props.type ? this.getDeterminate() : "indeterminate",
-      heightVal: this.props.height ? this.props.height : 12,
-      height: this.props.height ? new Animated.Value(this.props.height) : 12,
+      height: this.props.height ? new Animated.Value(this.props.height) : 5,
       radius: this.props.radius ? this.props.radius : 0,
       isComplete: this.props.isComplete ? this.props.isComplete : false,
       colors: {
@@ -136,9 +135,7 @@ class PackenUiProgressbar extends Component {
   getStyles = () => {
     return {
       wrapper: {
-        flex: 1,
-        width: "100%",
-        height: this.state.heightVal
+        width: "100%"
       },
       track: {
         overflow: "hidden",
