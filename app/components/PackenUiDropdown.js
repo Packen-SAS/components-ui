@@ -41,6 +41,7 @@ class PackenUiDropdown extends Component {
       input: this.props.input ? {...this.props.input} : {
         placeholder: "",
         onChangeText: this.mockCallback,
+        onOpenStateChange: this.mockCallback,
         icon: { name: "chevron-down", position: "right" },
         message: false,
         label: "",
@@ -71,9 +72,16 @@ class PackenUiDropdown extends Component {
   }
 
   setCustomStyles = () => {
-    let customStyles = {
-      bottom: -(this.state.dimensions.menu.height + 8)
-    };
+    let customStyles = {};
+    if (this.state.input && this.state.input.theme === "list") {
+      customStyles = {
+        bottom: 0
+      };
+    } else {
+      customStyles = {
+        bottom: -(this.state.dimensions.menu.height + 8)
+      };
+    }
 
     this.setState({
       styles: {
@@ -83,10 +91,16 @@ class PackenUiDropdown extends Component {
     });
   }
 
+  onOpenStateChange = () => {
+    if (this.state.input.onOpenStateChange) {
+      this.state.input.onOpenStateChange(this.state.isOpen, this.state.dimensions.menu.height);
+    }
+  }
+
   toggleMenu = () => {
     this.setState({
       isOpen: !this.state.isOpen
-    });
+    }, this.onOpenStateChange);
   }
 
   getFinalSelection = selectedItems => {
@@ -117,7 +131,7 @@ class PackenUiDropdown extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (prevProps !== this.props) {
       this.updateState();
     }
   }
@@ -166,7 +180,12 @@ class PackenUiDropdown extends Component {
   render() {
     return (
       <View
-        style={this.getStyles().wrapper}
+        style={[
+          this.getStyles().wrapper,
+          {
+            paddingBottom: this.state.input && this.state.input.theme === "list" ? this.state.isOpen ? this.state.dimensions.menu.height : 0 : 0
+          }
+        ]}
         pointerEvents={this.state.isDisabled ? "none" : "auto"}
       >
         <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
@@ -188,7 +207,8 @@ class PackenUiDropdown extends Component {
               multiline
               style={{
                 ...this.getCustomStyle(),
-                ...this.state.input.style
+                ...this.state.input.style,
+                ...this.getStyles().input
               }}
               name="dropdownInput"
             />
@@ -223,7 +243,8 @@ class PackenUiDropdown extends Component {
         <View
           onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
           style={[
-            this.getStyles().menu,
+            this.getStyles().menu.base,
+            this.getStyles().menu.theme[this.state.input.theme],
             this.state.styles.menu,
             {
               opacity: this.state.isOpen ? 1 : 0
@@ -382,20 +403,37 @@ class PackenUiDropdown extends Component {
         }
       },
       menu: {
-        backgroundColor: Colors.basic.white.dft,
-        shadowColor: Colors.basic.black.dft,
-        shadowOffset: {
-          width: 0,
-          height: 2
+        base: {
+          backgroundColor: Colors.basic.white.dft,
+          shadowColor: Colors.basic.black.dft,
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+          elevation: Shadows.md.elevation,
+          position: "absolute",
+          zIndex: 10,
+          left: 0,
+          width: "100%",
+          opacity: 0
         },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: Shadows.md.elevation,
-        position: "absolute",
-        zIndex: 10,
-        left: 0,
-        width: "100%",
-        opacity: 0
+        theme: {
+          default: {},
+          success: {},
+          danger: {},
+          list: {
+            transform: [{translateY: 20}],
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.18,
+            shadowRadius: 1,
+            elevation: 1
+          }
+        }
       }
     };
   }

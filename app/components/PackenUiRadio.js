@@ -17,7 +17,7 @@ class PackenUiRadio extends Component {
   setPropsToState = () => {
     return {
       items: this.props.items ? [...this.props.items] : [],
-      checkedIndex: this.props.initialIndex ? this.props.initialIndex : -1,
+      checkedIndex: this.props.initialIndex === 0 ? 0 : this.props.initialIndex ? this.props.initialIndex : -1,
       callback: this.props.callback ? this.props.callback : false,
       name: this.props.name ? this.props.name : "",
       layout: this.props.layout ? this.props.layout : "column"

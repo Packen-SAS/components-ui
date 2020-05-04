@@ -23,7 +23,7 @@ class PackenUiList extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (prevProps !== this.props) {
       this.updateState();
     }
   }
@@ -33,7 +33,13 @@ class PackenUiList extends Component {
       <View style={[this.getStyles().wrapper, { ...this.state.customWrapperStyles }]}>
         {
           this.state.items.map((item, i) => (
-            <PackenUiListItem data={item} key={i} />
+            <View
+              style={{
+                zIndex: this.state.items.length - i
+              }}
+            >
+              <PackenUiListItem data={item} key={i} />
+            </View>
           ))
         }
       </View>

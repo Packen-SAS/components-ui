@@ -15,6 +15,7 @@ class PackenUiDivider extends Component {
     return {
       type: this.props.type ? this.props.type : "light",
       size: this.props.size ? this.props.size : 1,
+      width: this.props.width ? this.props.width : "100%",
       margin: this.props.margin ? { ...this.props.margin } : false
     };
   }
@@ -44,7 +45,7 @@ class PackenUiDivider extends Component {
   getStyles = () => {
     return {
       base: {
-        width: "100%",
+        width: this.state.width,
         alignItems: "stretch"
       },
       type: {

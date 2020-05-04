@@ -46,7 +46,7 @@ class Radios extends Component {
                 value: "This text is both checked and disabled",
                 isDisabled: true
               }
-            ]} initialIndex={2} name="radios1" callback={this.handleNotify} />
+            ]} initialIndex={0} name="radios1" callback={this.handleNotify} />
             <PackenUiDivider size={1} type="light" margin={{ top: 15, bottom: 15 }} />
             <PackenUiText style={{ marginBottom: 5, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Row layout</PackenUiText>
             <PackenUiRadio layout="row" items={[
