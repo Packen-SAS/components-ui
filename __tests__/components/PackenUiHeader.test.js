@@ -6,7 +6,6 @@ import PackenUiHeader from "../../app/components/PackenUiHeader";
 
 describe("<PackenUiHeader/>", () => {
   let render, renderInstance;
-  const mockCallback = jest.fn();
 
   beforeAll(() => {
     render = shallow(
@@ -59,7 +58,7 @@ describe("<PackenUiHeader/>", () => {
       const res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
-        children: null,
+        children: "",
         onBackPress: false,
         customStyle: {}
       });
