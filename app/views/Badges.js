@@ -12,8 +12,6 @@ class Badges extends Component {
     super(props);
   }
 
-  onCloseHandler = () => true;
-
   render() {
     return (
       <PageView>

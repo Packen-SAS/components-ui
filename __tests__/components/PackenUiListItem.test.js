@@ -79,6 +79,13 @@ describe("<PackenUiListItem/>", () => {
 
       expect(res.data.input).toEqual({ test: "Test" });
     });
+
+    it("changes the state when opening and closing if it's a dropdown", () => {
+      renderInstance.onOpenStateChangeHandler(true, 10);
+
+      expect(renderInstance.state.data.input.isOpen).toBe(true);
+      expect(renderInstance.state.data.input.dropdownHeight).toBe(10);
+    });
   });
 
   describe("styling", () => {
@@ -200,6 +207,22 @@ describe("<PackenUiListItem/>", () => {
         val: "Test 2",
         color: Colors.basic.gray.dft
       });
+    });
+
+    it("returns the main wrapper if it's an open dropdown", () => {
+      renderInstance.setState({
+        data: {
+          input: {
+            isOpen: true,
+            dropdownHeight: 10
+          },
+          subtitle: true
+        }
+      });
+      const returnedElement = renderInstance.getMainWrapper(<View></View>);
+      
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.children[1].props.style.transform[0].translateY).toBe(-10);
     });
   });
 });

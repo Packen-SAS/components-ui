@@ -100,7 +100,6 @@ describe("<PackenUiDropdown/>", () => {
         callback={mockCallback}
       />
     );
-
     renderInstance = render.instance();
 
     renderInstance.setState({
@@ -134,28 +133,6 @@ describe("<PackenUiDropdown/>", () => {
       },
       finalSelection: [],
       finalSelectionString: ""
-    });
-  });
-
-  describe("rendering", () => {
-    it("renders correctly", () => {
-      expect(render).toBeDefined();
-    });
-
-    it("disables pointer events if set so via props", () => {
-      render.setProps({
-        isDisabled: true
-      });
-
-      expect(render.props().pointerEvents).toBe("none");
-    });
-
-    it("enables pointer events if it's not disabled", () => {
-      render.setProps({
-        isDisabled: false
-      });
-      
-      expect(render.props().pointerEvents).toBe("auto");
     });
   });
 
@@ -245,6 +222,7 @@ describe("<PackenUiDropdown/>", () => {
         input: {
           placeholder: "",
           onChangeText: renderInstance.mockCallback,
+          onOpenStateChange: renderInstance.mockCallback,
           icon: { name: "chevron-down", position: "right" },
           message: false,
           label: "",
@@ -261,6 +239,21 @@ describe("<PackenUiDropdown/>", () => {
         list: { items: [], config: {} },
         size: "medium"
       });
+    });
+
+    it("sets custom styles to position the menu if its theme is 'list'", () => {
+      renderInstance.setState({
+        input: {
+          theme: "list",
+          icon: {
+            name: "chevron-down",
+            position: "right"
+          }
+        }
+      });
+      renderInstance.setCustomStyles();
+
+      expect(renderInstance.state.styles.menu).toEqual({ bottom: 0 });
     });
   });
 
@@ -283,6 +276,60 @@ describe("<PackenUiDropdown/>", () => {
       const res = renderInstance.mockCallback();
 
       expect(res).toBe(false);
+    });
+
+    it("executes the onOpenStateChange handler if provided", () => {
+      renderInstance.setState({
+        input: {
+          onOpenStateChange: mockCallback,
+          icon: {
+            name: "chevron-down",
+            position: "right"
+          }
+        }
+      });
+      renderInstance.state.input.onOpenStateChange = jest.fn();
+      renderInstance.onOpenStateChange();
+
+      expect(renderInstance.state.input.onOpenStateChange).toHaveBeenCalled();
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders correctly", () => {
+      expect(render).toBeDefined();
+    });
+
+    it("adds a '0' bottom padding when rendering if it's an input of theme 'list' and it's not open", () => {
+      renderInstance.setState({
+        input: {
+          theme: "list",
+          icon: {
+            position: "right"
+          }
+        },
+        isOpen: false
+      });
+
+      expect(render).toBeDefined();
+      console.log(render.props());
+      expect(render.props().style[1].paddingBottom).toBe(0);
+    });
+
+    it("disables pointer events if set so via props", () => {
+      render.setProps({
+        isDisabled: true
+      });
+
+      expect(render.props().pointerEvents).toBe("none");
+    });
+
+    it("enables pointer events if it's not disabled", () => {
+      render.setProps({
+        isDisabled: false
+      });
+      
+      expect(render.props().pointerEvents).toBe("auto");
     });
   });
 });

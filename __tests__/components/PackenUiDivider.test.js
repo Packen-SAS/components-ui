@@ -56,15 +56,24 @@ describe("<PackenUiDivider/>", () => {
       render.setProps({
         type: "",
         size: 0,
-        margin: undefined
+        margin: undefined,
+        width: undefined
       });
       const res = renderInstance.setPropsToState();
       
       expect(res).toEqual({
         type: "light",
         size: 1,
-        margin: false
+        margin: false,
+        width: "100%"
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if a width is provided", () => {
+      render.setProps({ width: 50 });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res.width).toBe(50);
     });
   });
 });

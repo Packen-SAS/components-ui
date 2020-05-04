@@ -249,6 +249,7 @@ describe("<PackenUiInput/>", () => {
         style: {},
         onChangeText: mockCallback,
         eventHandlers: false,
+        propagateRef: false,
         ref: null
       });
     });
@@ -345,6 +346,13 @@ describe("<PackenUiInput/>", () => {
           }
         }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if propagateRef is provided", () => {
+      render.setProps({ propagateRef: mockCallback });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.propagateRef).toBe(mockCallback);
     });
   });
 
@@ -510,6 +518,22 @@ describe("<PackenUiInput/>", () => {
       renderInstance.getRef(ref);
       
       expect(renderInstance.state.ref).toEqual(ref);
+    });
+
+    it("executes the propagation callback after returning the ref if provided", () => {
+      renderInstance.setState({ propagateRef: mockCallback });
+      const ref = { blur: mockCallback, focus: mockCallback };
+      renderInstance.getRef(ref);
+      
+      expect(renderInstance.state.propagateRef).toHaveBeenCalledWith(ref);
+    });
+
+    it("returns false while executing the propagation callback after returning the ref if not provided", () => {
+      renderInstance.setState({ propagateRef: undefined });
+      const ref = { blur: mockCallback, focus: mockCallback };
+      const res = renderInstance.getRef(ref);
+      
+      expect(res).toBe(false);
     });
 
     it("focuses the input if ref is defined", () => {

@@ -225,5 +225,12 @@ describe("<PackenUiRadio/>", () => {
 
       expect(res.callback).toBe(mockCallback);
     });
+
+    it("returns incoming props as the state key-value pairs if a checkedIndex of 0 is provided", () => {
+      renderColumn.setProps({ initialIndex: 0 });
+      const res = renderColumnInstance.setPropsToState();
+
+      expect(res.checkedIndex).toBe(0);
+    });
   });
 });

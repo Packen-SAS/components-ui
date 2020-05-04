@@ -302,6 +302,8 @@ class PackenUiInput extends Component {
     
     if (this.state.propagateRef) {
       this.state.propagateRef(input);
+    } else {
+      return false;
     }
   }
 
