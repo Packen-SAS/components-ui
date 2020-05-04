@@ -6,7 +6,7 @@ import PageView from "./PageView";
 
 import PackenUiAlert from "../components/PackenUiAlert";
 
-class ServiceStatus extends Component {
+class Alerts extends Component {
   constructor(props) {
     super(props);
   }
@@ -95,4 +95,4 @@ class ServiceStatus extends Component {
   }
 }
 
-export default ServiceStatus;
+export default Alerts;
