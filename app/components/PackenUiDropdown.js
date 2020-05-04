@@ -189,7 +189,7 @@ class PackenUiDropdown extends Component {
         pointerEvents={this.state.isDisabled ? "none" : "auto"}
       >
         <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
-          <View pointerEvents="box-only">
+          <View pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
             <PackenUiInput
               size={this.state.size}
               placeholder={this.getPlaceholderConfig().text}
