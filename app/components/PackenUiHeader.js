@@ -25,6 +25,8 @@ class PackenUiHeader extends Component {
   onPressHandler = () => {
     if (this.state.onBackPress) {
       this.state.onBackPress();
+    } else {
+      return false;
     }
   }
 

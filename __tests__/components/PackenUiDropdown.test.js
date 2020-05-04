@@ -312,7 +312,6 @@ describe("<PackenUiDropdown/>", () => {
       });
 
       expect(render).toBeDefined();
-      console.log(render.props());
       expect(render.props().style[1].paddingBottom).toBe(0);
     });
 
