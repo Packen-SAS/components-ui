@@ -25,8 +25,16 @@ class IconTexts extends Component {
             <PackenUiText
               preset="p2"
               touchable={{
-                color: Colors.brand.secondary.dft,
-                underline: true,
+                style: {
+                  label: {
+                    color: Colors.brand.secondary.dft,
+                    textDecorationLine: "underline"
+                  },
+                  wrapper: {
+                    width: "100%",
+                    justifyContent: "flex-start"
+                  }
+                },
                 callback: this.mockCallback
               }}
               icon={{

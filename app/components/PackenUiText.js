@@ -25,12 +25,15 @@ class PackenUiText extends Component {
   }
 
   getTouchableStyles = () => {
-    let styles = {};
+    let styles = {
+      wrapper: {},
+      label: {}
+    };
 
-    if (this.props.touchable) {
+    if (this.props.touchable && this.props.touchable.style) {
       styles = {
-        color: this.props.touchable.color,
-        textDecorationLine: this.props.touchable.underline ? "underline" : "none"
+        wrapper: this.props.touchable.style.wrapper ? { ...this.props.touchable.style.wrapper } : {},
+        label: this.props.touchable.style.label ? { ...this.props.touchable.style.label } : {}
       };
     }
 
@@ -51,7 +54,7 @@ class PackenUiText extends Component {
         ...styles.base,
         ...this.state.presetStyle,
         ...this.props.style,
-        ...this.state.touchableStyles
+        ...this.state.touchableStyles.label
       }}>{this.state.children}</Text>
     );
 
@@ -61,7 +64,10 @@ class PackenUiText extends Component {
       const marginStyle = position === "left" ? styles.iconLabelLeft : styles.iconLabelRight;
 
       content = (
-        <View style={styles.iconWrapper}>
+        <View style={{
+          ...styles.iconWrapper,
+          ...this.state.touchableStyles.wrapper
+        }}>
           {position === "left" ? icon : null}
           <View style={marginStyle}>{content}</View>
           {position === "right" ? icon : null}
