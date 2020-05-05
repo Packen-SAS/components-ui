@@ -40,6 +40,19 @@ class PackenUiListItem extends Component {
     }
   }
 
+  onOpenStateChangeHandler = (newState, height) => {
+    this.setState({
+      data: {
+        ...this.state.data,
+        input: {
+          ...this.state.data.input,
+          isOpen: newState,
+          dropdownHeight: height
+        }
+      }
+    });
+  }
+
   getMedia = () => {
     let media = null;
 
@@ -68,7 +81,12 @@ class PackenUiListItem extends Component {
         {children}
         {
           this.state.data.subtitle ? (
-            <PackenUiText style={{ color: "rgba(48, 77, 109, 0.4)" }} preset="c1">{this.state.data.subtitle}</PackenUiText>
+            <PackenUiText style={{
+              color: "rgba(48, 77, 109, 0.4)",
+              transform: [
+                { translateY: this.state.data.input && this.state.data.input.isOpen ? -this.state.data.input.dropdownHeight : 0 }
+              ]
+            }} preset="c1">{this.state.data.subtitle}</PackenUiText>
           ) : null
         }
       </View>
@@ -99,13 +117,14 @@ class PackenUiListItem extends Component {
         content = (
           <PackenUiDropdown
             size="medium"
-            name="listItemDropdown"
+            name={this.state.data.input.name}
             list={this.state.data.input.list}
             callback={this.inputChangeHandler}
             input={{
               theme: "list",
               size: "medium",
               onChangeText: false,
+              onOpenStateChange: this.onOpenStateChangeHandler,
               style: {
                 paddingHorizontal: 24,
                 marginHorizontal: -24,
@@ -125,12 +144,15 @@ class PackenUiListItem extends Component {
           <PackenUiInput
             theme="list"
             size="medium"
-            name="listItemInput"
+            name={this.state.data.input.name}
             style={{ marginVertical: -5 }}
+            keyboardType={this.state.data.input.keyboardType}
             onChangeText={this.inputChangeHandler}
             placeholder={this.getPlaceholder().val}
             placeholderTextColor={this.getPlaceholder().color}
             nonEditable={this.state.data.input.nonEditable}
+            multiline={this.state.data.input.multiline}
+            maxLength={this.state.data.input.maxLength}
           />
         )
       }
@@ -174,11 +196,14 @@ class PackenUiListItem extends Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={this.onPressHandler}>
+      <TouchableWithoutFeedback
+        onPress={this.onPressHandler}
+      >
         <View style={[
           this.getStyles().wrapper.base,
           this.getStyles().wrapper.size[this.state.data.size],
-          { ...this.state.data.customWrapperStyle }]}>
+          { ...this.state.data.customWrapperStyle }
+        ]}>
           {this.getMedia()}
           {this.getMainContent()}
           {this.getSubContent()}

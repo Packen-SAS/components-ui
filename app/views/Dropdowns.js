@@ -1469,7 +1469,7 @@ class Dropdowns extends Component {
                     style: { color: Colors.brand.primary.drk }
                   },
                   theme: "default",
-                  nonEditable: true,
+                  nonEditable: false,
                   help: "Help text"
                 }}
                 name="dropdown1"

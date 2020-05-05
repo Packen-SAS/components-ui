@@ -38,7 +38,8 @@ class PackenUiInput extends Component {
       maxLength: this.props.maxLength,
       style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
-      eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false
+      eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
+      propagateRef: this.props.propagateRef ? this.props.propagateRef : false
     };
   }
 
@@ -133,7 +134,8 @@ class PackenUiInput extends Component {
       multilineStyles = {
         ...this.getStyles().textarea.base,
         ...this.getStyles().textarea.isDropdown[this.state.isDropdown].base,
-        ...this.getStyles().textarea.isDropdown[this.state.isDropdown].size[this.state.size]
+        ...this.getStyles().textarea.isDropdown[this.state.isDropdown].size[this.state.size],
+        ...this.getStyles().textarea.isDropdown[this.state.isDropdown].theme[this.state.theme]
       }
     }
 
@@ -297,6 +299,12 @@ class PackenUiInput extends Component {
     this.setState({
       ref: input
     }, this.checkFocus);
+    
+    if (this.state.propagateRef) {
+      this.state.propagateRef(input);
+    } else {
+      return false;
+    }
   }
 
   focus = () => {
@@ -742,6 +750,13 @@ class PackenUiInput extends Component {
               giant: {
                 height: heights.giant
               }
+            },
+            theme: {
+              default: {},
+              danger: {},
+              success: {},
+              primary: {},
+              list: {}
             }
           },
           false: {
@@ -763,6 +778,17 @@ class PackenUiInput extends Component {
               },
               giant: {
                 height: 104
+              }
+            },
+            theme: {
+              default: {},
+              danger: {},
+              success: {},
+              primary: {},
+              list: {
+                paddingLeft: 0,
+                paddingRight: 0,
+                height: 150
               }
             }
           }
