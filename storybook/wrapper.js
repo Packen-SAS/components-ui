@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     lineHeight: 14
   },
   scrolling: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: "column",
     alignItems: "stretch",
     justifyContent: "flex-start"
