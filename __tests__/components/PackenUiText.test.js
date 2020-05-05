@@ -121,7 +121,10 @@ describe("<PackenUiText/>", () => {
         children: null,
         icon: false,
         presetStyle: {},
-        touchableStyles: {}
+        touchableStyles: {
+          label: {},
+          wrapper: {}
+        }
       });
     });
   });
@@ -158,30 +161,44 @@ describe("<PackenUiText/>", () => {
     it("returns the touchable styles with underline if set so via props", () => {
       render.setProps({
         touchable: {
-          color: "#FFFFFF",
-          underline: true
+          style: {
+            label: {
+              color: "#FFFFFF",
+              textDecorationLine: "underline"
+            }
+          }
         }
       });
       const returnedStyles = renderInstance.getTouchableStyles();
 
       expect(returnedStyles).toEqual({
-        color: "#FFFFFF",
-        textDecorationLine: "underline"
+        label: {
+          color: "#FFFFFF",
+          textDecorationLine: "underline",
+        },
+        wrapper: {}
       });
     });
 
     it("returns the touchable styles without underline if set so via props", () => {
       render.setProps({
         touchable: {
-          color: "#FFFFFF",
-          underline: false
+          style: {
+            label: {
+              color: "#FFFFFF",
+              textDecorationLine: "none"
+            }
+          }
         }
       });
       const returnedStyles = renderInstance.getTouchableStyles();
 
       expect(returnedStyles).toEqual({
-        color: "#FFFFFF",
-        textDecorationLine: "none"
+        label: {
+          color: "#FFFFFF",
+          textDecorationLine: "none"
+        },
+        wrapper: {}
       });
     });
 
@@ -191,7 +208,31 @@ describe("<PackenUiText/>", () => {
       });
       const returnedStyles = renderInstance.getTouchableStyles();
 
-      expect(returnedStyles).toEqual({});
+      expect(returnedStyles).toEqual({
+        label: {},
+        wrapper: {}
+      });
+    });
+
+    it("returns the correct touchable styles if wrapper styles are set, and no label styles are set", () => {
+      render.setProps({
+        touchable: {
+          style: {
+            label: undefined,
+            wrapper: {
+              backgroundColor: "#FFFFFF"
+            }
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getTouchableStyles();
+
+      expect(returnedStyles).toEqual({
+        label: {},
+        wrapper: {
+          backgroundColor: "#FFFFFF"
+        }
+      });
     });
   });
 });
