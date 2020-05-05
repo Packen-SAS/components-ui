@@ -35,8 +35,8 @@ class UILibrary extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Storybook">
-          <Drawer.Screen name="Storybook" component={Storybook} />
+        <Drawer.Navigator initialRouteName="--- STORYBOOK ---">
+          <Drawer.Screen name="--- STORYBOOK ---" component={Storybook} />
           <Drawer.Screen name="Badges" component={Badges} />
           <Drawer.Screen name="Headers" component={Headers} />
           <Drawer.Screen name="Alerts" component={Alerts} />
