@@ -187,8 +187,7 @@ describe("<PackenUiProgressbar/>", () => {
       expect(res).toEqual({
         wrapperStyle: {},
         type: "indeterminate",
-        heightVal: 12,
-        height: 12,
+        height: 5,
         radius: 0,
         isComplete: false,
         colors: {

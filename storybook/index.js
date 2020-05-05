@@ -5,9 +5,14 @@ import './rn-addons';
 
 // import stories
 configure(() => {
+  require("./stories/PackenUiAlert");
   require("./stories/PackenUiAvatar");
+  require("./stories/PackenUiBadge");
   require("./stories/PackenUiButton");
+  require("./stories/PackenUiCheckbox");
+  require("./stories/PackenUiDivider");
   require("./stories/PackenUiDropdown");
+  require("./stories/PackenUiHeader");
 }, module);
 
 // Refer to https://github.com/storybookjs/storybook/tree/master/app/react-native#start-command-parameters

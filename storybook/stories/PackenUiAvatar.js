@@ -89,4 +89,21 @@ storiesOf("PackenUiAvatar", module)
         src={require("../../assets/images/avatar.jpg")}
       />
     </Wrapper>
+  ))
+  .add("Giant empty state", () => (
+    <Wrapper
+      title="PackenUiAvatar"
+      description="Avatar with size set to giant and no source. This enables the touchable callback."
+      code={
+`<PackenUiAvatar
+  size="giant"
+  callback={() => true}
+/>`
+      }
+    >
+      <PackenUiAvatar
+        size="giant"
+        callback={() => true}
+      />
+    </Wrapper>
   ));
