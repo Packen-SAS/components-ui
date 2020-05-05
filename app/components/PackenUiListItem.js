@@ -5,6 +5,8 @@ import { View, TouchableWithoutFeedback } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
 
+import PackenUiInput from "./PackenUiInput";
+import PackenUiDropdown from "./PackenUiDropdown";
 import PackenUiText from "./PackenUiText";
 
 class PackenUiListItem extends Component {
@@ -17,14 +19,12 @@ class PackenUiListItem extends Component {
   setPropsToState = () => {
     return {
       data: {
+        input: this.props.data.input ? { ...this.props.data.input } : false,
         size: this.props.data.size ? this.props.data.size : "default",
         title: this.props.data.title ? this.props.data.title : "",
         subtitle: this.props.data.subtitle ? this.props.data.subtitle : false,
         label: this.props.data.label ? this.props.data.label : false,
-        icon: this.props.data.icon ? { ...this.props.data.icon } : {
-          name: "chevron-right",
-          color: Colors.brand.primary.drk
-        },
+        icon: this.props.data.icon ? { ...this.props.data.icon } : false,
         media: this.props.data.media ? this.props.data.media : false,
         callback: this.props.data.callback ? this.props.data.callback : false,
         customWrapperStyle: this.props.data.customWrapperStyle ? this.props.data.customWrapperStyle : {}
@@ -54,15 +54,93 @@ class PackenUiListItem extends Component {
     return media;
   }
 
-  getMainContent = () => {
+  inputChangeHandler = (name, val) => {
+    if (this.state.data.input.onChange) {
+      this.state.data.input.onChange(name, val);
+    } else {
+      return false;
+    }
+  }
+
+  getMainWrapper = children => {
     return (
       <View style={[this.getStyles().main]}>
-        <PackenUiText preset="p1">{this.state.data.title}</PackenUiText>
-        {this.state.data.subtitle ?  (
-          <PackenUiText style={{ color: "rgba(48, 77, 109, 0.4)" }} preset="c1">{this.state.data.subtitle}</PackenUiText>
-        ) : null}
+        {children}
+        {
+          this.state.data.subtitle ? (
+            <PackenUiText style={{ color: "rgba(48, 77, 109, 0.4)" }} preset="c1">{this.state.data.subtitle}</PackenUiText>
+          ) : null
+        }
       </View>
     );
+  }
+
+  getPlaceholder = () => {
+    let config = {
+      val: this.state.data.input.placeholder,
+      color: Colors.basic.gray.dft
+    };
+
+    if (this.state.data.input.value !== "") {
+      config = {
+        val: this.state.data.input.value,
+        color: Colors.basic.independence.drk
+      };
+    }
+
+    return config;
+  }
+
+  getMainContent = () => {
+    let content = null;
+
+    if (this.state.data.input) {
+      if (this.state.data.input.isDropdown) {
+        content = (
+          <PackenUiDropdown
+            size="medium"
+            name="listItemDropdown"
+            list={this.state.data.input.list}
+            callback={this.inputChangeHandler}
+            input={{
+              theme: "list",
+              size: "medium",
+              onChangeText: false,
+              style: {
+                paddingHorizontal: 24,
+                marginHorizontal: -24,
+                paddingVertical: 15,
+                marginVertical: -15
+              },
+              placeholder: this.getPlaceholder().val,
+              placeholderTextColor: this.getPlaceholder().color,
+              nonEditable: this.state.data.input.nonEditable,
+              isOpen: this.state.data.input.isOpen,
+              icon: { position: "right" }
+            }}
+          />
+        );
+      } else {
+        content = (
+          <PackenUiInput
+            theme="list"
+            size="medium"
+            name="listItemInput"
+            style={{ marginVertical: -5 }}
+            onChangeText={this.inputChangeHandler}
+            placeholder={this.getPlaceholder().val}
+            placeholderTextColor={this.getPlaceholder().color}
+            nonEditable={this.state.data.input.nonEditable}
+          />
+        )
+      }
+    } else {
+      content = (
+        <PackenUiText preset="p1">{this.state.data.title}</PackenUiText>
+      );
+    }
+
+    return this.getMainWrapper(content);
   }
 
   getSubContent = () => {
@@ -73,9 +151,13 @@ class PackenUiListItem extends Component {
             <PackenUiText style={{ color: this.state.data.label.color }} preset="c1">{this.state.data.label.text}</PackenUiText>
           ) : null
         }
-        <View style={this.getStyles().icon}>
-          <Icon name={this.state.data.icon.name} color={this.state.data.icon.color} size={14} />
-        </View>
+        {
+          this.state.data.icon ? (
+            <View style={this.getStyles().icon}>
+              <Icon name={this.state.data.icon.name} color={this.state.data.icon.color} size={14} />
+            </View>
+          ) : null
+        }
       </View>
     )
   }
@@ -118,10 +200,10 @@ class PackenUiListItem extends Component {
         },
         size: {
           default: {
-            height: 48
+            minHeight: 48
           },
           large: {
-            height: 56
+            minHeight: 56
           }
         }
       },
@@ -145,8 +227,9 @@ class PackenUiListItem extends Component {
 
 PackenUiListItem.propTypes = {
   data: PropTypes.shape({
+    input: PropTypes.object,
     size: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     subtitle: PropTypes.string,
     label: PropTypes.shape({
       text: PropTypes.string.isRequired,
