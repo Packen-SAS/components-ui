@@ -94,6 +94,13 @@ describe("<PackenUiVehicleBox/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("returns the default image object", () => {
       renderInstance.setState({ type: "" });
       const res = renderInstance.getImage();

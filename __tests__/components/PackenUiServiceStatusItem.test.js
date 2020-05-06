@@ -249,6 +249,13 @@ describe("<PackenUiServiceStatusItem/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes the onLayout callback for the main box", () => {
       const spySetBoxDimensions = jest.spyOn(renderInstance, "setBoxDimensions");
       render.props().onLayout({

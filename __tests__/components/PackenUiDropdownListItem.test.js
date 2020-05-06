@@ -285,6 +285,13 @@ describe("<PackenUiDropdownListItem/>", () => {
       spySetMainContent.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("returns false while checking selected items state if they didn't change", () => {
       const prevProps = {
         selectedItems: ["Test 2", "Test 3"]

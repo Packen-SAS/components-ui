@@ -171,5 +171,12 @@ describe("<PackenUiCheckbox/>", () => {
       
       expect(renderColumnInstance.pressHandler).toHaveBeenCalledWith(0);
     });
+
+    it("executes the instance callback on componentDidMount if provided", () => {
+      renderColumn.setProps({ instance: jest.fn() });
+      renderColumnInstance.componentDidMount();
+
+      expect(renderColumnInstance.props.instance).toHaveBeenCalled();
+    });
   });
 });

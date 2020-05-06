@@ -33,6 +33,13 @@ describe("<PackenUiHeader/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes the onPressHandler if provided", () => {
       renderInstance.setState({ onBackPress: jest.fn() });
       renderInstance.onPressHandler();

@@ -133,6 +133,13 @@ describe("<PackenUiSelectionButtons/>", () => {
 
       expect(returnedElement).toEqual([items[0].value]);
     });
+
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
   });
 
   describe("styling", () => {

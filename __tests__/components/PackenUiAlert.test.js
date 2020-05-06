@@ -76,6 +76,13 @@ describe("<PackenUiAlert/>", () => {
       spyCheckIfTimed.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("starts a timeout to close the alert if set so", () => {
       const spyClose = jest.spyOn(renderInstance, "close");
       render.setProps({

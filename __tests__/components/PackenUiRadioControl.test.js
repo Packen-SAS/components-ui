@@ -146,6 +146,13 @@ describe("<PackenUiRadioControl/>", () => {
       spyCheckIfDisabled.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("sets checked state onPress", () => {
       render.setProps({
         selfIndex: 0,
