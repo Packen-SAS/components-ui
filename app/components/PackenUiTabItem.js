@@ -32,6 +32,10 @@ class PackenUiTabItem extends Component {
 
   componentDidMount() {
     this.checkIfActive();
+    
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   getItemStyles = () => {

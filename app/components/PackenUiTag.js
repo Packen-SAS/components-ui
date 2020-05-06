@@ -17,6 +17,12 @@ class PackenUiTag extends Component {
     }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       style: this.props.style ? { ...this.props.style } : {},

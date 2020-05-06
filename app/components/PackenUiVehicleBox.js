@@ -15,6 +15,12 @@ class PackenUiVehicleBox extends Component {
     this.state = { ...this.setPropsToState() }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       type: this.props.type ? this.props.type : "",

@@ -59,6 +59,10 @@ class PackenUiToggle extends Component {
   componentDidMount = () => {
     this.positionElement();
     this.checkIfDisabled();
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   setDisabledStyles = () => {

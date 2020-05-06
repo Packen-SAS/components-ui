@@ -33,6 +33,10 @@ class PackenUiCheckboxControl extends Component {
 
   componentDidMount = () => {
     this.setDisabledStyles();
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   setActiveStyles = () => {

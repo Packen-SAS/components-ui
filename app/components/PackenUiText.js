@@ -13,6 +13,12 @@ class PackenUiText extends Component {
     this.state = { ...this.setPropsToState() }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       preset: this.props.preset ? this.props.preset : false,

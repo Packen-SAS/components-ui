@@ -14,6 +14,12 @@ class PackenUiHeader extends Component {
     this.state = { ...this.setPropsToState() }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       children: this.props.children || "",

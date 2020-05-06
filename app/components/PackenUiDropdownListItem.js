@@ -68,6 +68,10 @@ class PackenUiDropdownListItem extends Component {
 
   componentDidMount() {
     this.setMainContent();
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   mockCallback = () => true;

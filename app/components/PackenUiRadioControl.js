@@ -34,6 +34,10 @@ class PackenUiRadioControl extends Component {
   componentDidMount() {
     this.checkIfChecked();
     this.checkIfDisabled();
+    
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   onPressHandler = () => {
