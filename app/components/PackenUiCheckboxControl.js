@@ -39,10 +39,12 @@ class PackenUiCheckboxControl extends Component {
     }
   }
 
+  findItemToCheck = item => item.label === this.state.label; 
+
   setActiveStyles = () => {
     if (this.state.layout === "dropdown") {
       const newCheckedItems = [...this.state.checkedItems];
-      const foundItem = newCheckedItems.find(item => item.label === this.state.label);
+      const foundItem = newCheckedItems.find(this.findItemToCheck);
       this.setState({
         isChecked: foundItem.isChecked
       });
