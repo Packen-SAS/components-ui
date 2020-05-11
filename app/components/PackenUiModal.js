@@ -306,70 +306,78 @@ class PackenUiModal extends Component {
     return header;
   }
 
+  getCustomContent = () => (
+    <View style={this.getStyles().info}>
+      <View style={this.getContentStyles()}>
+        {this.state.content}
+      </View>
+    </View>
+  )
+
+  getInfoContent = () => (
+    <View style={this.getStyles().info}>
+      {this.getBanner()}
+      <View style={this.getContentStyles()}>
+        <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
+        <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
+        {this.getInfoButton()}
+      </View>
+    </View>
+  )
+
+  getGalleryArrows = () => (
+    this.state.images.length > 1 ? (
+      <>
+        {
+          this.state.has.prev ? (
+            <TouchableWithoutFeedback onPress={this.prevSlide}>
+              <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.left]}>
+                <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
+              </View>
+            </TouchableWithoutFeedback>
+          ) : null
+        }
+        {
+          this.state.has.next ? (
+            <TouchableWithoutFeedback onPress={this.nextSlide}>
+              <View style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.right]}>
+                <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
+              </View>
+            </TouchableWithoutFeedback>
+          ) : null
+        }
+      </>
+    ) : null
+  )
+
+  getGalleryContent = () => (
+    <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
+      {this.getGalleryArrows()}
+      <Carousel
+        ref={c => { this.carouselRef = c; }}
+        onBeforeSnapToItem={this.handleBeforeSnap}
+        data={this.state.images}
+        renderItem={this.renderGallerySlide}
+        itemWidth={this.getGalleryBoxDimensions().width}
+        sliderWidth={this.getGalleryBoxDimensions().width}
+        inactiveSlideOpacity={1}
+        inactiveSlideScale={1}
+      />
+    </View>
+  )
+
   getContent = () => {
     let content = null;
-    
+
     switch (this.state.type) {
       case "custom":
-        content = (
-          <View style={this.getStyles().info}>
-            <View style={this.getContentStyles()}>
-              {this.state.content}
-            </View>
-          </View>
-        );
+        content = this.getCustomContent();
         break;
       case "info":
-        content = (
-          <View style={this.getStyles().info}>
-            {this.getBanner()}
-            <View style={this.getContentStyles()}>
-              <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
-              <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
-              {this.getInfoButton()}
-            </View>
-          </View>
-        );
+        content = this.getInfoContent();
         break;
       case "gallery":
-        content = (
-          <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
-            {
-              this.state.images.length > 1 ? (
-                <>
-                  {
-                    this.state.has.prev ? (
-                      <TouchableWithoutFeedback onPress={this.prevSlide}>
-                        <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.left]}>
-                          <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
-                        </View>
-                      </TouchableWithoutFeedback>
-                    ) : null
-                  }
-                  {
-                    this.state.has.next ? (
-                      <TouchableWithoutFeedback onPress={this.nextSlide}>
-                        <View style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.right]}>
-                          <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
-                        </View>
-                      </TouchableWithoutFeedback>
-                    ) : null
-                  }
-                </>
-              ) : null
-            }
-            <Carousel
-              ref={c => { this.carouselRef = c; }}
-              onBeforeSnapToItem={this.handleBeforeSnap}
-              data={this.state.images}
-              renderItem={this.renderGallerySlide}
-              itemWidth={this.getGalleryBoxDimensions().width}
-              sliderWidth={this.getGalleryBoxDimensions().width}
-              inactiveSlideOpacity={1}
-              inactiveSlideScale={1}
-            />
-          </View>
-        );
+        content = this.getGalleryContent();
         break;
     }
 
@@ -386,7 +394,7 @@ class PackenUiModal extends Component {
 
   onRequestCloseHandler = () => {
     if (this.state.onRequestClose) {
-      this.state.onRequestClose();   
+      this.state.onRequestClose();
     } else {
       return false;
     }
