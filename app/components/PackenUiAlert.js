@@ -136,8 +136,7 @@ class PackenUiAlert extends Component {
       box: {
         base: {
           width: "100%",
-          paddingVertical: 16,
-          paddingHorizontal: 16,
+          padding: 16,
           borderWidth: 1,
           borderStyle: "solid",
           flexDirection: "row",
