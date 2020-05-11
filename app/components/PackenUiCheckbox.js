@@ -61,13 +61,13 @@ class PackenUiCheckbox extends Component {
     }
   }
 
-  mapUpdatedCheckedItems = item => ({ label: item, isChecked: newState, isDisabled: false });
+  mapUpdatedCheckedItems = (item, newState) => ({ label: item, isChecked: newState, isDisabled: false });
 
   findMatchedItemToCheck = (item, valueToSearch) => item.label === valueToSearch;
 
   setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
     let updatedCheckedItems = [...finalSelectionArray];
-    updatedCheckedItems = updatedCheckedItems.map(this.mapUpdatedCheckedItems);
+    updatedCheckedItems = updatedCheckedItems.map(item => this.mapUpdatedCheckedItems(item, newState));
 
     const foundItem = updatedCheckedItems.find(item => this.findMatchedItemToCheck(item, valueToSearch));
     if (foundItem) {
