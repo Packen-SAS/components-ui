@@ -284,24 +284,6 @@ describe("<PackenUiButton/>", () => {
   });
 
   describe("state changing", () => {
-    it("sets initial icon if defined", () => {
-      renderRegular.setProps({
-        icon: "Test"
-      });
-      const returnedIcon = renderRegularInstance.getInitialIcon();
-
-      expect(returnedIcon).toBe("Test");
-    });
-
-    it("sets initial icon as undefined if not provided via props", () => {
-      renderRegular.setProps({
-        icon: undefined
-      });
-      const returnedIcon = renderRegularInstance.getInitialIcon();
-
-      expect(returnedIcon).toBe(undefined);
-    });
-
     it("returns incoming props as the state key-value pairs", () => {
       renderRegular.setProps({
         type: undefined,

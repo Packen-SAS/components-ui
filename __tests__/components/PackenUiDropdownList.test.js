@@ -232,12 +232,10 @@ describe("<PackenUiDropdownList/>", () => {
         },
         toggleMenu: undefined
       });
-      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
+      const spyHandleSingleRadioUpdate = jest.spyOn(renderInstance, "handleSingleRadioUpdate");
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
 
-      expect(renderInstance.state.currentRadiosState).toEqual({
-        checkedValue: "Medellín"
-      });
-      expect(res).toBe(false);
+      expect(spyHandleSingleRadioUpdate).toHaveBeenCalled();
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {

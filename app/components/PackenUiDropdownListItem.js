@@ -117,6 +117,8 @@ class PackenUiDropdownListItem extends Component {
   checkUnselectedChildren = checkedValue => {
     if (checkedValue !== this.props.mainContent.value) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, false, this.props.currentCheckboxesState.finalSelectionArray);
+    } else {
+      return false;
     }
   }
 
@@ -420,6 +422,8 @@ class PackenUiDropdownListItem extends Component {
   checkDisabledChildren = child => {
     if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
       child.props.style.color = Colors.basic.gray.lgt;
+    } else {
+      return false;
     }
   }
 
@@ -429,6 +433,8 @@ class PackenUiDropdownListItem extends Component {
     } else {
       if (mainContent.main.type.displayName !== "PackenUiRadio" && mainContent.main.type.displayName !== "PackenUiCheckbox") {
         mainContent.main.props.style.color = Colors.basic.gray.lgt;
+      } else {
+        return false;
       }
     }
   }
@@ -436,6 +442,8 @@ class PackenUiDropdownListItem extends Component {
   checkSelectedChildren = child => {
     if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
       child.props.style.color = Colors.basic.white.dft;
+    } else {
+      return false;
     }
   }
 
@@ -445,6 +453,8 @@ class PackenUiDropdownListItem extends Component {
     } else {
       if (mainContent.main.type.displayName !== "PackenUiRadio" && mainContent.main.type.displayName !== "PackenUiCheckbox") {
         mainContent.main.props.style.color = Colors.basic.white.dft;
+      } else {
+        return false;
       }
     }
   }
