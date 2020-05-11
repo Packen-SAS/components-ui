@@ -51,68 +51,84 @@ class PackenUiDropdownList extends Component {
     });
   }
 
+  findItemSingleRadio = (item, itemValue) => item.value === itemValue;
+
+  handleSingleRadioUpdate = (itemValue, payload) => {
+    const newItems = [...this.state.items];
+    newItems.forEach(item => {
+      item.isSelected = false;
+    });
+
+    const foundItem = newItems.find(item => this.findItemSingleRadio(item, itemValue));
+    foundItem.isSelected = true;
+
+    this.setState({
+      items: newItems,
+      selectedItems: [itemValue]
+    });
+
+    if (payload) {
+      if (payload.checkedType === "radio") {
+        this.setState({
+          currentRadiosState: {
+            checkedValue: payload.checkedValue
+          }
+        });
+      }
+    }
+
+    if (this.state.toggleMenu) {
+      this.state.toggleMenu();
+    } else {
+      return false;
+    }
+  }
+
+  findItemMultipleCheckbox = (item, itemValue) => item.value === itemValue;
+
+  filterNewItems = item => item.isSelected;
+
+  mapNewItems = item => item.value;
+
+  handleMultipleCheckboxUpdate = (itemValue, isSelected, payload) => {
+    const newItems = [...this.state.items];
+
+    const foundItem = newItems.find(item => this.findItemMultipleCheckbox(item, itemValue));
+    foundItem.isSelected = isSelected;
+
+    let newSelectedItems = newItems.filter(this.filterNewItems);
+    newSelectedItems = newSelectedItems.map(this.mapNewItems);
+
+    this.setState({
+      items: newItems,
+      selectedItems: newSelectedItems
+    });
+
+    if (payload) {
+      if (payload.checkedType === "checkbox") {
+        let newCheckedValues = [...this.state.currentCheckboxesState.checkedValues];
+        newCheckedValues.push(payload.checkedValue);
+        newCheckedValues = [...new Set(newCheckedValues)];
+
+        this.setState({
+          currentCheckboxesState: {
+            ...this.state.currentCheckboxesState,
+            checkedValues: newCheckedValues
+          }
+        });
+      }
+    }
+  }
+
   updateSelectedItems = (itemValue, isSelected, payload) => {
     switch (this.state.config.selectionType) {
       case "single":
       case "radio": {
-        const newItems = [...this.state.items];
-        newItems.forEach(item => {
-          item.isSelected = false;
-        });
-
-        const foundItem = newItems.find(item => item.value === itemValue);
-        foundItem.isSelected = true;
-
-        this.setState({
-          items: newItems,
-          selectedItems: [itemValue]
-        });
-
-        if (payload) {
-          if (payload.checkedType === "radio") {
-            this.setState({
-              currentRadiosState: {
-                checkedValue: payload.checkedValue
-              }
-            });
-          }
-        }
-
-        if (this.state.toggleMenu) {
-          this.state.toggleMenu();
-        } else {
-          return false;
-        }
+        this.handleSingleRadioUpdate(itemValue, payload);
       } break;
       case "multiple":
       case "checkbox": {
-        const newItems = [...this.state.items];
-
-        const foundItem = newItems.find(item => item.value === itemValue);
-        foundItem.isSelected = isSelected;
-
-        let newSelectedItems = newItems.filter(item => item.isSelected);
-        newSelectedItems = newSelectedItems.map(item => item.value);
-
-        this.setState({
-          items: newItems,
-          selectedItems: newSelectedItems
-        });
-
-        if (payload) {
-          if (payload.checkedType === "checkbox") {
-            let newCheckedValues = [...this.state.currentCheckboxesState.checkedValues];
-            newCheckedValues.push(payload.checkedValue);
-            newCheckedValues = [...new Set(newCheckedValues)];
-
-            this.setState({
-              currentCheckboxesState: {
-                ...this.state.currentCheckboxesState,
-                checkedValues: newCheckedValues
-              }
-            });
-          }
-        }
+        this.handleMultipleCheckboxUpdate(itemValue, isSelected, payload);
       } break;
       default:
         return false;
