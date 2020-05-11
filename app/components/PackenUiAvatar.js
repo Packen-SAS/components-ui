@@ -107,7 +107,7 @@ class PackenUiAvatar extends Component {
         base: {
           borderRadius: 100,
           overflow: "hidden",
-          backgroundColor: !this.state.src ? Colors.brand.primary.ulgt : Colors.basic.white.dft
+          backgroundColor: !this.state.src ? Colors.brand.primary.ulgt : "transparent"
         },
         size: {
           xtiny: {
