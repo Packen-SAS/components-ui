@@ -24,12 +24,8 @@ class PackenUiRadar extends Component {
     return {
       theme: this.props.theme ? this.props.theme : "wait",
       animated: this.props.animated ? this.props.animated : false,
-      isAnimating: this.getInitialAnimatingState()
+      isAnimating: this.props.animated ? this.props.isAnimating ? this.props.isAnimating : false : false
     };
-  }
-
-  getInitialAnimatingState = () => {
-    return this.props.animated ? this.props.isAnimating : false;
   }
 
   getInitialShadowTransform = () => {

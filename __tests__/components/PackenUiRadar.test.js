@@ -186,20 +186,6 @@ describe("<PackenUiRadar/>", () => {
   });
 
   describe("state changing", () => {
-    it("returns false as initial 'isAnimating' state if it's not animated", () => {
-      renderStatic.setProps({ animated: false });
-      const res = renderStaticInstance.getInitialAnimatingState();
-
-      expect(res).toBe(false);
-    });
-
-    it("returns correct prop as initial 'isAnimating' state if it's animated", () => {
-      render.setProps({ animated: true, isAnimating: true });
-      const res = renderInstance.getInitialAnimatingState();
-
-      expect(res).toBe(true);
-    });
-
     it("returns a regular transform if it's not animated", () => {
       renderStatic.setProps({ animated: false });
       const res = renderStaticInstance.getInitialShadowTransform();
