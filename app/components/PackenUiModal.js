@@ -449,14 +449,7 @@ class PackenUiModal extends Component {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
-        elevation: Shadows.md.elevation,
-        shadowColor: Colors.basic.black.dft,
-        shadowOffset: {
-          width: 0,
-          height: 0
-        },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22
+        ...Shadows.md
       },
       header: {
         width: "100%",

@@ -423,19 +423,12 @@ class PackenUiDropdown extends Component {
       menu: {
         base: {
           backgroundColor: Colors.basic.white.dft,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 2
-          },
-          shadowOpacity: 0.23,
-          shadowRadius: 2.62,
-          elevation: Shadows.md.elevation,
           position: "absolute",
           zIndex: 10,
           left: 0,
           width: "100%",
-          opacity: 0
+          opacity: 0,
+          ...Shadows.md
         },
         theme: {
           default: {},
@@ -443,13 +436,7 @@ class PackenUiDropdown extends Component {
           danger: {},
           list: {
             transform: [{ translateY: 20 }],
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.18,
-            shadowRadius: 1,
-            elevation: 1
+            ...Shadows.xs
           }
         }
       }

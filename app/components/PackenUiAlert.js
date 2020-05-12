@@ -3,8 +3,10 @@ import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
-import PackenUiText from "./PackenUiText";
+import Shadows from "../styles/abstracts/shadows";
 import Typography from "../styles/abstracts/typography";
+
+import PackenUiText from "./PackenUiText";
 
 class PackenUiAlert extends Component {
   constructor(props) {
@@ -143,14 +145,7 @@ class PackenUiAlert extends Component {
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: 4,
-          elevation: 5,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 4
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 5
+          ...Shadows.md
         },
         theme: {
           default: {

@@ -5,6 +5,7 @@ import { View, TouchableWithoutFeedback, Image } from "react-native";
 import PackenUiText from "./PackenUiText";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
+import Shadows from "../styles/abstracts/shadows";
 
 class PackenUiSelectionButtonsControl extends Component {
   constructor(props) {
@@ -219,14 +220,14 @@ class PackenUiSelectionButtonsControl extends Component {
           active: {
             type: {
               label: {
-                elevation: 5,
                 backgroundColor: Colors.brand.primary.snw,
-                borderBottomColor: Colors.brand.primary.drk
+                borderBottomColor: Colors.brand.primary.drk,
+                ...Shadows.md
               },
               image: {
-                elevation: 5,
                 backgroundColor: Colors.brand.primary.snw,
-                borderColor: Colors.brand.primary.drk
+                borderColor: Colors.brand.primary.drk,
+                ...Shadows.md
               }
             }
           }

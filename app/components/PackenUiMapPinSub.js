@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Typography from "../styles/abstracts/typography";
 import Colors from "../styles/abstracts/colors";
+import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
@@ -177,14 +178,7 @@ class PackenUiMapPinSub extends Component {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: Colors.basic.independence.drk,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 3,
-          },
-          shadowOpacity: 0.29,
-          shadowRadius: 4.65,
-          elevation: 7
+          ...Shadows.lg
         },
         type: {
           icon: {
