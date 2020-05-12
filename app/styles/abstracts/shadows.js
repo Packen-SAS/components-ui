@@ -1,6 +1,8 @@
+import Colors from "./colors";
+
 export default {
   xs: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -10,7 +12,7 @@ export default {
     elevation: 1
   },
   sm: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -20,7 +22,7 @@ export default {
     elevation: 3
   },
   md: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -30,7 +32,7 @@ export default {
     elevation: 4
   },
   lg: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 4,
@@ -40,7 +42,7 @@ export default {
     elevation: 8
   },
   xl: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 6,
@@ -50,7 +52,7 @@ export default {
     elevation: 12
   },
   gt: {
-    shadowColor: "#000",
+    shadowColor: Colors.basic.black.dft,
     shadowOffset: {
       width: 0,
       height: 12,
