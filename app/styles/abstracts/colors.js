@@ -11,7 +11,6 @@ export default {
   },
   secondary: {
     default: "#F5F7F8",
-    default_drk: "#556D87",
     focus: "#C6CED7"
   },
   tertiary: {
