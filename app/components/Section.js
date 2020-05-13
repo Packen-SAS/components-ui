@@ -29,7 +29,7 @@ class Section extends Component {
         paddingVertical: Spacing.padding.horizontal.base
       },
       section__title: {
-        color: Colors.base.default_alt,
+        color: Colors.basic.independence.drk,
         fontSize: Typography.size.huge,
         fontFamily: Typography.family.bold,
         paddingBottom: 10,

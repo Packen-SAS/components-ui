@@ -84,7 +84,7 @@ describe("<PackenUiButton/>", () => {
       renderRegularInstance.pressInHandler();
 
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
-      expect(renderRegularInstance.state.styles.shape.borderColor).toBe(Colors.secondary.focus);
+      expect(renderRegularInstance.state.styles.shape.borderColor).toBe(Colors.basic.gray.dft);
     });
 
     it("changes styles while onPressOut", () => {
@@ -159,8 +159,8 @@ describe("<PackenUiButton/>", () => {
       });
       const returnedStyles = renderRegularInstance.getStyles();
 
-      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.disabled);
-      expect(returnedStyles.icon.color).toBe(Colors.base.white);
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.ghost.focus);
+      expect(returnedStyles.icon.color).toBe(Colors.basic.white.dft);
     });
 
     it("sets correct styles if it's disabled, a ghost, and has no label", () => {
@@ -176,7 +176,7 @@ describe("<PackenUiButton/>", () => {
       });
       const returnedStyles = renderRegularInstance.getStyles();
 
-      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.ghost.default);
       expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
     });
 
@@ -188,7 +188,7 @@ describe("<PackenUiButton/>", () => {
       });
       const returnedStyles = renderRegularInstance.getStyles();
 
-      expect(returnedStyles.shape.backgroundColor).toBe(Colors.base.transparent);
+      expect(returnedStyles.shape.backgroundColor).toBe(Colors.ghost.default);
       expect(returnedStyles.icon.color).toBe(Colors.base.disabled_alt);
       expect(returnedStyles.label.color).toBe(Colors.base.disabled_alt);
     });

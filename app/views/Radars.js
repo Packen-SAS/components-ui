@@ -30,11 +30,11 @@ class Radars extends Component {
       <PageView>
         <Section title="Radars">
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Animated by default</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Animated by default</PackenUiText>
             <PackenUiRadar theme="search" animated={true} isAnimating={true} />
           </View>
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, animatable</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Static, animatable</PackenUiText>
             <PackenUiRadar theme="wait" animated={true} isAnimating={this.state.isWaitAnimating} />
             <View style={{ marginTop: 10 }}></View>
             <PackenUiButton
@@ -44,7 +44,7 @@ class Radars extends Component {
               callback={this.toggleAnimation}>Toggle animation</PackenUiButton>
           </View>
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Static, non-animatable</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Static, non-animatable</PackenUiText>
             <PackenUiRadar theme="alert" animated={false} />
           </View>
         </Section>

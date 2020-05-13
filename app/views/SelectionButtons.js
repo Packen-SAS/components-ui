@@ -24,7 +24,7 @@ class SelectionButtons extends Component {
       <PageView>
         <Section title="Selection Buttons">
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, single selection, alternative style</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Label, single selection, alternative style</PackenUiText>
             <PackenUiSelectionButtons
               type="label"
               selection="single"
@@ -45,7 +45,7 @@ class SelectionButtons extends Component {
             />
           </View>
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Image, single selection</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Image, single selection</PackenUiText>
             <PackenUiSelectionButtons
               type="image"
               selection="single"
@@ -91,7 +91,7 @@ class SelectionButtons extends Component {
             />
           </View>
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Label, multiple selection</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Label, multiple selection</PackenUiText>
             <PackenUiSelectionButtons
               type="label"
               selection="multiple"
@@ -111,7 +111,7 @@ class SelectionButtons extends Component {
             />
           </View>
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Image, multiple selection</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Image, multiple selection</PackenUiText>
             <PackenUiSelectionButtons
               type="image"
               selection="multiple"

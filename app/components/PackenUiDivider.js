@@ -56,10 +56,10 @@ class PackenUiDivider extends Component {
       },
       type: {
         light: {
-          backgroundColor: Colors.secondary.focus
+          backgroundColor: Colors.basic.gray.dft
         },
         dark: {
-          backgroundColor: Colors.base.gray
+          backgroundColor: Colors.basic.independence.lgt
         }
       }
     };

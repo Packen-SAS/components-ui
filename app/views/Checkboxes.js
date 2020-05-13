@@ -85,7 +85,7 @@ class Checkboxes extends Component {
       <PageView>
         <Section title="Checkboxes">
           <View style={{ marginTop: 10 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Column layout</PackenUiText>
             <View style={{ marginBottom: 10 }}>
               <PackenUiCheckbox
                 layout="column"
@@ -95,7 +95,7 @@ class Checkboxes extends Component {
               />
             </View>
             <PackenUiDivider size={1} type="light" margin={{top: 5, bottom: 15}}/>
-            <PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt}}>Row layout</PackenUiText>
+            <PackenUiText style={{marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk}}>Row layout</PackenUiText>
             <View style={{ marginBottom: 10 }}>
               <PackenUiCheckbox
                 layout="row"

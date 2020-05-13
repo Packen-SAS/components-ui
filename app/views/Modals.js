@@ -68,13 +68,13 @@ class Modals extends Component {
       <PageView>
         <Section title="Modals">
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Custom type</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Custom type</PackenUiText>
             <View style={{ marginBottom: Spacing[2] }}>
               <PackenUiButton type="regular" level="primary" size="small" callback={() => { this.toggleModal("custom.small"); }}>Custom small</PackenUiButton>
             </View>
 
             <PackenUiDivider size={1} type="light" margin={{ top: 15, bottom: 15 }} />
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Information type</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Information type</PackenUiText>
 
             <View style={{ marginBottom: Spacing[2] }}>
               <PackenUiButton type="regular" level="primary" size="small" callback={() => { this.toggleModal("primary.default"); }}>Primary default</PackenUiButton>
@@ -108,7 +108,7 @@ class Modals extends Component {
             </View>
 
             <PackenUiDivider size={1} type="light" margin={{ top: 15, bottom: 15 }} />
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Gallery type</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Gallery type</PackenUiText>
 
             <View style={{ marginBottom: Spacing[2] }}>
               <PackenUiButton type="regular" level="primary" size="small" callback={() => { this.toggleModal("gallery.multiple"); }}>Gallery multiple</PackenUiButton>

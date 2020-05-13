@@ -98,7 +98,7 @@ class PackenUiButton extends Component {
           ...styles.shape,
           borderWidth: 1,
           borderStyle: "solid",
-          borderColor: Color.secondary.default_drk
+          borderColor: Color.basic.independence.dft
         }
         break;
     }
@@ -107,11 +107,11 @@ class PackenUiButton extends Component {
 
   getDisabledStyles = (styles, isDisabled, level) => {
     if (isDisabled) {
-      styles.shape.backgroundColor = Color.base.disabled;
-      styles.icon.color = Color.base.white;
+      styles.shape.backgroundColor = Color.ghost.focus;
+      styles.icon.color = Color.basic.white.dft;
 
       if (styles.label) {
-        styles.label.color = Color.base.white;
+        styles.label.color = Color.basic.white.dft;
       }
 
       if (styles.shape.borderWidth) {
@@ -119,7 +119,7 @@ class PackenUiButton extends Component {
       }
 
       if (level === "ghost") {
-        styles.shape.backgroundColor = Color.base.transparent;
+        styles.shape.backgroundColor = Color.ghost.default;
         styles.icon.color = Color.base.disabled_alt;
 
         if (styles.label) {
@@ -186,7 +186,7 @@ class PackenUiButton extends Component {
     /* Custom focus styles */
     switch (this.state.level) {
       case "secondary":
-        newStyles.shape.borderColor = Color.secondary.focus;
+        newStyles.shape.borderColor = Color.basic.gray.dft;
         break;
     }
 
@@ -283,13 +283,13 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            backgroundColor: Color.primary.default
+            backgroundColor: Color.brand.primary.drk
           },
           secondary: {
-            backgroundColor: Color.secondary.default
+            backgroundColor: Color.basic.white.drk
           },
           tertiary: {
-            backgroundColor: Color.tertiary.default
+            backgroundColor: Color.basic.independence.dft
           },
           ghost: {
             backgroundColor: Color.ghost.default
@@ -388,19 +388,19 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           secondary: {
-            color: Color.secondary.default_drk
+            color: Color.basic.independence.dft
           },
           tertiary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           ghost: {
-            color: Color.tertiary.default
+            color: Color.basic.independence.dft
           },
           danger: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           }
         }
       },
@@ -424,19 +424,19 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           secondary: {
-            color: Color.secondary.default_drk
+            color: Color.basic.independence.dft
           },
           tertiary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           ghost: {
-            color: Color.tertiary.default
+            color: Color.basic.independence.dft
           },
           danger: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           }
         }
       }

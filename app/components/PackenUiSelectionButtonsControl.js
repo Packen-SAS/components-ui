@@ -239,12 +239,12 @@ class PackenUiSelectionButtonsControl extends Component {
               borderRadius: 8,
               borderWidth: 1,
               borderBottomWidth: 1,
-              borderColor: Colors.basic.gray.lgt,
-              borderBottomColor: Colors.base.gray.lgt
+              borderColor: Colors.basic.gray.lgt
             },
             state: {
               default: {
-                backgroundColor: Colors.basic.gray.lgt
+                backgroundColor: Colors.basic.gray.lgt,
+                borderBottomColor: Colors.basic.gray.lgt
               },
               active: {
                 borderColor: Colors.brand.primary.drk

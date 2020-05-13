@@ -29,7 +29,7 @@ class Radios extends Component {
       <PageView>
         <Section title="Radios">
           <View style={{ marginTop: 20 }}>
-            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Column layout</PackenUiText>
+            <PackenUiText style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Column layout</PackenUiText>
             <PackenUiRadio layout="column" items={[
               {
                 label: "Place your text",
@@ -48,7 +48,7 @@ class Radios extends Component {
               }
             ]} initialIndex={0} name="radios1" callback={this.handleNotify} />
             <PackenUiDivider size={1} type="light" margin={{ top: 15, bottom: 15 }} />
-            <PackenUiText style={{ marginBottom: 5, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}>Row layout</PackenUiText>
+            <PackenUiText style={{ marginBottom: 5, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}>Row layout</PackenUiText>
             <PackenUiRadio layout="row" items={[
               {
                 label: "Placeholder",
