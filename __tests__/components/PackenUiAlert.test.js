@@ -84,7 +84,7 @@ describe("<PackenUiAlert/>", () => {
     });
 
     it("starts a timeout to close the alert if set so", () => {
-      const spyClose = jest.spyOn(renderInstance, "close");
+      const spyCloseHandler = jest.spyOn(renderInstance, "closeHandler");
       render.setProps({
         type: "timed",
         countdown: 5000
@@ -93,9 +93,20 @@ describe("<PackenUiAlert/>", () => {
       renderInstance.checkIfTimed();
       jest.advanceTimersByTime(6000);
 
-      expect(spyClose).toHaveBeenCalled();
-      spyClose.mockRestore();
+      expect(spyCloseHandler).toHaveBeenCalled();
+      spyCloseHandler.mockRestore();
       jest.useRealTimers();
+    });
+
+    it("executes the closeHandler callback", () => {
+      const spyClose = jest.spyOn(renderInstance, "close");
+      const spyClearTimeout = jest.spyOn(global, "clearTimeout");
+      renderInstance.closeHandler("Test");
+
+      expect(spyClose).toHaveBeenCalled();
+      expect(spyClearTimeout).toHaveBeenCalledWith("Test");
+      spyClose.mockRestore();
+      spyClearTimeout.mockRestore();
     });
 
     it("returns false while starting a timeout to close the alert if not set so", () => {
