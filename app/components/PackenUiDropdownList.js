@@ -11,6 +11,7 @@ class PackenUiDropdownList extends Component {
     this.state = {
       ...this.setPropsToState(),
       height: "100%",
+      itemHeight: 0,
       selectedItems: [],
       currentRadiosState: {
         checkedValue: ""
@@ -47,7 +48,8 @@ class PackenUiDropdownList extends Component {
     }
 
     this.setState({
-      height: itemHeight * finalNumShownRows
+      height: itemHeight * finalNumShownRows,
+      itemHeight: itemHeight
     });
   }
 
@@ -149,6 +151,12 @@ class PackenUiDropdownList extends Component {
     );
   }
 
+  getItemLayout = (data, index) => ({
+    length: this.state.itemHeight,
+    offset: this.state.itemHeight * index,
+    index: index
+  })
+
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
@@ -180,6 +188,7 @@ class PackenUiDropdownList extends Component {
           nestedScrollEnabled
           data={this.state.items}
           renderItem={this.renderItem}
+          getItemLayout={this.getItemLayout}
           style={{ height: this.state.height }}
         />
       </View>
