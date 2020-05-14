@@ -186,10 +186,13 @@ class PackenUiDropdownList extends Component {
       <View style={{ height: this.state.height }}>
         <FlatList
           nestedScrollEnabled
+          removeClippedSubviews
           data={this.state.items}
           renderItem={this.renderItem}
           getItemLayout={this.getItemLayout}
           style={{ height: this.state.height }}
+          initialNumToRender={this.state.numShownRows + 2}
+          maxToRenderPerBatch={this.state.numShownRows + 2}
         />
       </View>
     );
