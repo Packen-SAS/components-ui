@@ -50,7 +50,7 @@
       "./jest/setup.js",
       "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
-    "collectCoverageFrom": [ 
+    "collectCoverageFrom": [
       "app/**/*.{js,jsx}",
       "!storybook/**/*.{js,jsx}"
     ]
