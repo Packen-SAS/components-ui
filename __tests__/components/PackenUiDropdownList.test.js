@@ -149,6 +149,17 @@ describe("<PackenUiDropdownList/>", () => {
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
     });
+
+    it("returns the items layout object", () => {
+      renderInstance.setState({ itemHeight: 10 });
+      const res = renderInstance.getItemLayout("Test", 2);
+
+      expect(res).toEqual({
+        length: 10,
+        offset: 20,
+        index: 2
+      });
+    });
   });
 
   describe("state changing", () => {
