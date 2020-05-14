@@ -39,13 +39,15 @@ class PackenUiAlert extends Component {
 
   checkIfTimed = () => {
     if(this.state.type === "timed" && this.state.countdown) {
-      const timeout = setTimeout(() => {
-        this.close();
-        clearTimeout(timeout);
-      }, this.state.countdown);
+      const timeout = setTimeout(() => { this.closeHandler(timeout); }, this.state.countdown);
     } else {
       return false;
     }
+  }
+
+  closeHandler = timeout => {
+    this.close();
+    clearTimeout(timeout);
   }
 
   close = () => {
