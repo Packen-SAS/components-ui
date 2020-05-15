@@ -69,14 +69,12 @@ class PackenUiDropdownList extends Component {
       selectedItems: [itemValue]
     });
 
-    if (payload) {
-      if (payload.checkedType === "radio") {
-        this.setState({
-          currentRadiosState: {
-            checkedValue: payload.checkedValue
-          }
-        });
-      }
+    if (payload && payload.checkedType === "radio") {
+      this.setState({
+        currentRadiosState: {
+          checkedValue: payload.checkedValue
+        }
+      });
     }
 
     if (this.state.toggleMenu) {
