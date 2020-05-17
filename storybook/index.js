@@ -3,19 +3,35 @@ import { getStorybookUI, configure } from '@storybook/react-native';
 
 import './rn-addons';
 
-// import stories
 configure(() => {
-  require("./stories/PackenUiAvatar");
-  require("./stories/PackenUiButton");
-  require("./stories/PackenUiDropdown");
+  require("./stories/PackenUiAlert.story");
+  require("./stories/PackenUiAvatar.story");
+  require("./stories/PackenUiBadge.story");
+  require("./stories/PackenUiButton.story");
+  require("./stories/PackenUiCheckbox.story");
+  require("./stories/PackenUiDivider.story");
+  require("./stories/PackenUiDropdown.story");
+  require("./stories/PackenUiHeader.story");
+  require("./stories/PackenUiIconText.story");
+  require("./stories/PackenUiInfoAction.story");
+  require("./stories/PackenUiInput.story");
+  require("./stories/PackenUiList.story");
+  require("./stories/PackenUiLoaderButton.story");
+  require("./stories/PackenUiMapPin.story");
+  require("./stories/PackenUiModal.story");
+  require("./stories/PackenUiNotificationBanner.story");
+  require("./stories/PackenUiProgressbar.story");
+  require("./stories/PackenUiRadar.story");
+  require("./stories/PackenUiRadio.story");
+  require("./stories/PackenUiSelectionButtons.story");
+  require("./stories/PackenUiServiceStatus.story");
+  require("./stories/PackenUiTabs.story");
+  require("./stories/PackenUiToggle.story");
+  require("./stories/PackenUiVehicleBox.story");
 }, module);
 
-// Refer to https://github.com/storybookjs/storybook/tree/master/app/react-native#start-command-parameters
-// To find allowed options for getStorybookUI
 const StorybookUIRoot = getStorybookUI({});
 
-// If you are using React Native vanilla and after installation you don't see your app name here, write it manually.
-// If you use Expo you can safely remove this line.
-AppRegistry.registerComponent('ui_library', () => StorybookUIRoot);
+AppRegistry.registerComponent("ui_library", () => StorybookUIRoot);
 
 export default StorybookUIRoot;

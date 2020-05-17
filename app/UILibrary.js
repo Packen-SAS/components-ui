@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+import Storybook from "./views/Storybook";
 import Buttons from "./views/Buttons";
 import Avatars from "./views/Avatars";
 import Dividers from "./views/Dividers";
@@ -34,7 +35,8 @@ class UILibrary extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Drawer.Navigator initialRouteName="Badges">
+        <Drawer.Navigator initialRouteName="--- STORYBOOK ---">
+          <Drawer.Screen name="--- STORYBOOK ---" component={Storybook} />
           <Drawer.Screen name="Badges" component={Badges} />
           <Drawer.Screen name="Headers" component={Headers} />
           <Drawer.Screen name="Alerts" component={Alerts} />

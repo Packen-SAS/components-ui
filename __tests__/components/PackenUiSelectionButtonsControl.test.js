@@ -135,6 +135,13 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("updates the current state with newly received props", () => {
       const prevProps = { selected: false };
       render.setProps({ selected: true });

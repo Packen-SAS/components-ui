@@ -293,6 +293,13 @@ describe("<PackenUiDropdown/>", () => {
 
       expect(renderInstance.state.input.onOpenStateChange).toHaveBeenCalled();
     });
+
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
   });
 
   describe("rendering", () => {

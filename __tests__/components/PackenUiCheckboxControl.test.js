@@ -69,6 +69,13 @@ describe("<PackenUiCheckboxControl/>", () => {
       spySetDisabledStyles.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes correct code on componentDidUpdate if checked items don't match", () => {
       const spySetActiveStyles = jest.spyOn(renderInstance, "setActiveStyles");
       const prevProps = { checkedItems: [] };

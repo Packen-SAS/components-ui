@@ -134,6 +134,13 @@ describe("<PackenUiRadio/>", () => {
       spyUpdateCurrentSelection.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      renderColumn.setProps({ instance: jest.fn() });
+      renderColumnInstance.componentDidMount();
+
+      expect(renderColumnInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("can use latest currentSelection", () => {
       const prevState = {
         currentSelection: {

@@ -81,6 +81,13 @@ describe("<PackenUiProgressbar/>", () => {
       spyCheckAnimToStart.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes the correct code on componentDidUpdate", () => {
       const prevProps = { test: "Test" };
       render.setProps({ test: "Test 2" });
@@ -187,8 +194,7 @@ describe("<PackenUiProgressbar/>", () => {
       expect(res).toEqual({
         wrapperStyle: {},
         type: "indeterminate",
-        heightVal: 12,
-        height: 12,
+        height: 5,
         radius: 0,
         isComplete: false,
         colors: {

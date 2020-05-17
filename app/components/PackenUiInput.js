@@ -15,6 +15,12 @@ class PackenUiInput extends Component {
     this.state = { ...this.setInitialState() }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       state: this.props.disabled ? "disabled" : "default",

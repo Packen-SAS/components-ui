@@ -30,6 +30,10 @@ class PackenUiLoaderButton extends Component {
 
   componentDidMount() {
     this.setAnim();
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   setAnim = () => {

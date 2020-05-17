@@ -4,6 +4,11 @@ import { shallow } from "enzyme";
 
 import UILibrary from "../../app/UILibrary";
 
+jest.mock("global", () => ({
+  ...global,
+  WebSocket: function WebSocket() {}
+}));
+
 jest.mock("react-native-reanimated", () => {
   const View = require('react-native').View;
   return {

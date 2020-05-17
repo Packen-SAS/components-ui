@@ -161,6 +161,13 @@ describe("<PackenUiListItem/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes the onPress handler", () => {
       renderInstance.state.data.callback = jest.fn();
       renderInstance.onPressHandler();

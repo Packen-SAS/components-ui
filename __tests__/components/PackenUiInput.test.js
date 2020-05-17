@@ -470,6 +470,13 @@ describe("<PackenUiInput/>", () => {
       spyCheckFocus.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("executes onLayout event callback for the box", () => {
       const spyGetBoxDimensions = jest.spyOn(renderInstance, "getBoxDimensions");
       render.props().children[1].props.onLayout({

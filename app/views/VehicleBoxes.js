@@ -19,15 +19,11 @@ class VehicleBoxes extends Component {
         <Section title="Vehicle Boxes">
           <View style={{ marginTop: 20 }}>
             <PackenUiVehicleBox
-              type="Carry"
-              make="Chevrolet"
+              type="carry"
+              overview="Camión con refrigeración"
               year="2017"
               plate="USC-914"
-              img={{
-                src: require("../../assets/images/carry.png"),
-                width: 130,
-                height: 61
-              }}
+              state="approved"
               callback={this.mockCallback}
             />
           </View>

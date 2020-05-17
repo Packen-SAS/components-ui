@@ -118,4 +118,13 @@ describe("<PackenUiMapPin/>", () => {
       });
     });
   });
+
+  describe("triggering actions", () => {
+    it("executes the instance callback on componentDidMount if provided", () => {
+      renderInfo.setProps({ instance: jest.fn() });
+      renderInfoInstance.componentDidMount();
+
+      expect(renderInfoInstance.props.instance).toHaveBeenCalled();
+    });
+  });
 });

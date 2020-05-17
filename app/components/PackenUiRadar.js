@@ -78,6 +78,9 @@ class PackenUiRadar extends Component {
   }
 
   componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
     if (this.state.animated && this.state.isAnimating) {
       this.startShadowAnimation();
     } else {

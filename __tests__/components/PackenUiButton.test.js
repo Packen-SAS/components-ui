@@ -104,6 +104,13 @@ describe("<PackenUiButton/>", () => {
       spyUpdateState.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      renderRegular.setProps({ instance: jest.fn() });
+      renderRegularInstance.componentDidMount();
+
+      expect(renderRegularInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("starts the icon animation while checking its state", () => {
       renderRegularInstance.setState({
         icon: {

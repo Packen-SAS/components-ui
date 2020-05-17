@@ -37,6 +37,10 @@ class PackenUiProgressbar extends Component {
 
   componentDidMount() {
     this.checkAnimToStart();
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   setCompleteAnim = () => {

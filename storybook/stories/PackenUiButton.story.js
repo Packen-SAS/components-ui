@@ -93,7 +93,7 @@ storiesOf("PackenUiButton", module)
         callback={() => { return; }} />
     </Wrapper>
   ))
-  .add("Icon primary large disabled", () => (
+  .add("Icon primary giant disabled", () => (
     <Wrapper
       title="PackenUiButton"
       description="Icon button with size set to giant."
@@ -115,5 +115,49 @@ storiesOf("PackenUiButton", module)
         size="giant"
         callback={() => { return; }}
         isDisabled />
+    </Wrapper>
+  ))
+  .add("Primary medium", () => (
+    <Wrapper
+      title="PackenUiButton"
+      description="Regular button with size set to medium."
+      code={
+`<PackenUiButton
+  icon={{ name: "arrow-right", position: "right" }}
+  type="regular"
+  level="primary"
+  size="medium"
+  callback={() => { return; }}
+>Medium</PackenUiButton>`
+      }
+    >
+      <PackenUiButton
+        icon={{ name: "arrow-right", position: "right" }}
+        type="regular"
+        level="primary"
+        size="medium"
+        callback={() => { return; }}
+      >Medium</PackenUiButton>
+    </Wrapper>
+  ))
+  .add("Danger small, no icon", () => (
+    <Wrapper
+      title="PackenUiButton"
+      description="Regular button with size set to small and theme set to danger."
+      code={
+`<PackenUiButton
+  type="regular"
+  level="danger"
+  size="small"
+  callback={() => { return; }}
+>Small</PackenUiButton>`
+      }
+    >
+      <PackenUiButton
+        type="regular"
+        level="danger"
+        size="small"
+        callback={() => { return; }}
+      >Small</PackenUiButton>
     </Wrapper>
   ));

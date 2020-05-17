@@ -2,6 +2,8 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
+import Colors from "../../app/styles/abstracts/colors";
+
 import PackenUiVehicleBox from "../../app/components/PackenUiVehicleBox";
 
 describe("<PackenUiVehicleBox/>", () => {
@@ -11,28 +13,15 @@ describe("<PackenUiVehicleBox/>", () => {
   beforeAll(() => {
     render = shallow(
       <PackenUiVehicleBox
-        type="Carry"
-        make="Chevrolet"
+        type="carry"
+        overview="Camión con refrigeración"
         year="2017"
         plate="USC-914"
-        img={{
-          src: require("../../assets/images/carry.png"),
-          width: 130,
-          height: 61
-        }}
+        state="approved"
         callback={mockCallback}
       />
     );
     renderInstance = render.instance();
-    
-    renderInstance.setState({
-      type: "Carry",
-      make: "Chevrolet",
-      year: "2017",
-      plate: "USC-914",
-      img: require("../../assets/images/carry.png"),
-      callback: mockCallback
-    });
   });
 
   describe("rendering", () => {
@@ -43,25 +32,15 @@ describe("<PackenUiVehicleBox/>", () => {
     it("returns the content without a touchable if not set so", () => {
       renderInstance.setState({ callback: undefined });
       const returnedElement = renderInstance.getContent();
-      
+
       expect(returnedElement).toBeDefined();
     });
 
     it("returns the content with a touchable if set so", () => {
       renderInstance.setState({ callback: mockCallback });
       const returnedElement = renderInstance.getContent();
-      
+
       expect(returnedElement).toBeDefined();
-    });
-  });
-
-  describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate", () => {
-      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
-      renderInstance.componentDidUpdate();
-
-      expect(spyUpdateState).toHaveBeenCalled();
-      spyUpdateState.mockRestore();
     });
   });
 
@@ -79,24 +58,20 @@ describe("<PackenUiVehicleBox/>", () => {
     it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
         type: undefined,
-        make: undefined,
+        overview: undefined,
         year: undefined,
         plate: undefined,
-        img: undefined,
+        state: undefined,
         callback: undefined
       });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res).toEqual({
         type: "",
-        make: "",
+        overview: "",
         year: "",
         plate: "",
-        img: {
-          src: "",
-          width: 0,
-          height: 0
-        },
+        state: "reviewing",
         callback: false
       });
     });
@@ -107,6 +82,141 @@ describe("<PackenUiVehicleBox/>", () => {
       const returnedStyles = renderInstance.getStyles();
 
       expect(returnedStyles).toBeDefined();
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("executes correct code on componentDidUpdate", () => {
+      const spyUpdateState = jest.spyOn(renderInstance, "updateState");
+      renderInstance.componentDidUpdate();
+
+      expect(spyUpdateState).toHaveBeenCalled();
+      spyUpdateState.mockRestore();
+    });
+
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
+    it("returns the default image object", () => {
+      renderInstance.setState({ type: "" });
+      const res = renderInstance.getImage();
+
+      expect(res).toEqual({
+        src: "",
+        style: {
+          width: 0,
+          height: 0
+        }
+      });
+    });
+
+    it("returns the image object if it's a carry", () => {
+      renderInstance.setState({ type: "carry" });
+      const res = renderInstance.getImage();
+
+      expect(res).toEqual({
+        src: require("../../assets/images/carry.png"),
+        style: {
+          width: 202,
+          height: 95
+        }
+      });
+    });
+
+    it("returns the image object if it's a npr", () => {
+      renderInstance.setState({ type: "npr" });
+      const res = renderInstance.getImage();
+
+      expect(res).toEqual({
+        src: require("../../assets/images/npr.png"),
+        style: {
+          width: 176,
+          height: 95
+        }
+      });
+    });
+
+    it("returns the image object if it's a sencillo", () => {
+      renderInstance.setState({ type: "sencillo" });
+      const res = renderInstance.getImage();
+
+      expect(res).toEqual({
+        src: require("../../assets/images/sencillo.png"),
+        style: {
+          width: 213,
+          height: 95
+        }
+      });
+    });
+
+    it("returns the image object if it's a tractomula", () => {
+      renderInstance.setState({ type: "tractomula" });
+      const res = renderInstance.getImage();
+
+      expect(res).toEqual({
+        src: require("../../assets/images/tractomula.png"),
+        style: {
+          width: 205,
+          height: 95
+        }
+      });
+    });
+
+    it("returns the declined state object", () => {
+      renderInstance.setState({ state: "declined" });
+      const res = renderInstance.getState();
+
+      expect(res).toEqual({
+        label: "Rechazado",
+        icon: {
+          name: "alert-circle",
+          color: Colors.danger.default
+        }
+      });
+    });
+
+    it("returns the reviewing state object", () => {
+      renderInstance.setState({ state: "reviewing" });
+      const res = renderInstance.getState();
+
+      expect(res).toEqual({
+        label: "En revisión",
+        icon: {
+          name: "pause-circle",
+          color: Colors.basic.gray.drk
+        }
+      });
+    });
+
+    it("returns the approved state object", () => {
+      renderInstance.setState({ state: "approved" });
+      const res = renderInstance.getState();
+
+      expect(res).toEqual({
+        label: "Aprobado",
+        icon: {
+          name: "check-circle",
+          color: Colors.success.default
+        }
+      });
+    });
+
+    it("returns the custom image styles if it's not a motorcycle", () => {
+      renderInstance.setState({ type: "carry" });
+      const returnedStyles = renderInstance.getImgStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().img });
+    });
+
+    it("returns the custom image styles if it's a motorcycle", () => {
+      renderInstance.setState({ type: "moto" });
+      const returnedStyles = renderInstance.getImgStyles();
+
+      expect(returnedStyles).toEqual({});
     });
   });
 });

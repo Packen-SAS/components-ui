@@ -82,6 +82,9 @@ class PackenUiModal extends Component {
     if (this.state.type === "gallery") {
       this.setGalleryArrowsPosition();
     }
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   getContentStyles = () => {

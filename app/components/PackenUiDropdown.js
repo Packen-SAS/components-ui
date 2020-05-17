@@ -31,6 +31,12 @@ class PackenUiDropdown extends Component {
     }
   }
 
+  componentDidMount = () => {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   mockCallback = () => false;
 
   setPropsToState = () => {

@@ -29,6 +29,10 @@ class PackenUiAlert extends Component {
 
   componentDidMount() {
     this.checkIfTimed();
+    
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   checkIfTimed = () => {

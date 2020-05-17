@@ -84,6 +84,13 @@ describe("<PackenUiToggle/>", () => {
       spyCheckIfDisabled.mockRestore();
     });
 
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
     it("toggles inner state if 'state' is 'active'", () => {
       render.setProps({ name:"toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "active" });

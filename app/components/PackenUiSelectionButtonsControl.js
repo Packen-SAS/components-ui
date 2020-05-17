@@ -24,6 +24,9 @@ class PackenUiSelectionButtonsControl extends Component {
         labelPreset: this.state.config.label.preset
       });
     }
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
   }
 
   setPropsToState = () => {

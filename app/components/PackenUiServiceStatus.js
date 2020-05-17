@@ -14,6 +14,12 @@ class PackenUiServiceStatus extends Component {
     }
   }
 
+  componentDidMount() {
+    if (typeof this.props.instance === "function") {
+      this.props.instance(this);
+    }
+  }
+
   setPropsToState = () => {
     return {
       steps: this.props.steps ? [...this.props.steps] : [],
