@@ -220,7 +220,7 @@ describe("<PackenUiDropdownListItem/>", () => {
         }
       };
       const returnedContent = renderInstance.getLeftContent();
-      
+
       expect(returnedContent).not.toBe(undefined);
     });
 
@@ -236,8 +236,546 @@ describe("<PackenUiDropdownListItem/>", () => {
         }
       };
       const returnedContent = renderInstance.getRightContent();
-      
+
       expect(returnedContent).not.toBe(undefined);
+    });
+
+    it("returns false when getting the main content if it's a control but no case is matched", () => {
+      render.setProps({ mainContent: { main: { control: { type: "Test" } } } });
+      const res = renderInstance.getMainControl();
+      expect(res).toBe(false);
+    });
+  });
+
+  describe("state changing", () => {
+    it("sets correct initial state if it's disabled", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: true,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("disabled");
+    });
+
+    it("sets correct initial state if it's not disabled, and not selected", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: false,
+          isSelected: false,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("default");
+    });
+
+    it("sets correct initial state if it's not disabled, and selected", () => {
+      render.setProps({
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            control: {}
+          }
+        }
+      });
+      const res = renderInstance.setInitialState();
+
+      expect(res).toBe("active");
+    });
+
+    it("creates refs if it's a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: {}
+          }
+        }
+      });
+      renderInstance.createRefs();
+
+      expect(renderInstance.radioRef).toBeDefined();
+      expect(renderInstance.checkboxRef).toBeDefined();
+    });
+
+    it("returns false if it's not a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: undefined,
+            props: {
+              children: []
+            }
+          }
+        }
+      });
+      const res = renderInstance.createRefs();
+
+      expect(res).toBe(false);
+    });
+
+    it("sets the radio ref", () => {
+      renderInstance.setRadioRef("ref");
+
+      expect(renderInstance.radioRef).toBe("ref");
+    });
+
+    it("sets the checkbox ref", () => {
+      renderInstance.setCheckboxRef("ref");
+
+      expect(renderInstance.checkboxRef).toBe("ref");
+    });
+
+    it("sets main content if it's not a control type", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {}
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+
+    it("sets main content if it's a control of type 'radio'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        },
+        mainContent: {
+          main: {
+            control: {
+              type: "radio"
+            }
+          }
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+
+    it("sets main content if it's a control of type 'checkbox'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "checkbox"
+        },
+        mainContent: {
+          main: {
+            control: {
+              type: "checkbox"
+            }
+          }
+        }
+      };
+      renderInstance.setMainContent();
+
+      expect(renderInstance.state.mainContent).toBeDefined();
+    });
+  });
+
+  describe("styling", () => {
+    it("returns an empty active styles object if selection type is 'radio' or 'checkbox'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        }
+      };
+      const returnedStyles = renderInstance.getActiveStyles();
+
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns active styles it selection type is 'single' or 'multiple' and is selected", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "single"
+        },
+        mainContent: {
+          isSelected: true
+        }
+      };
+      const returnedStyles = renderInstance.getActiveStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
+    });
+
+    it("returns default active styles it selection type is 'single' or 'multiple' and is not selected", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "multiple"
+        },
+        mainContent: {
+          isSelected: false
+        }
+      };
+      const returnedStyles = renderInstance.getActiveStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
+    });
+
+    it("returns an empty focus styles object if selection type is 'radio' or 'checkbox'", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "radio"
+        }
+      };
+      const returnedStyles = renderInstance.getFocusStyles();
+
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns focus styles if selection type is 'single' or 'multiple' and is selected", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "single"
+        },
+        mainContent: {
+          isSelected: true
+        }
+      };
+      const returnedStyles = renderInstance.getFocusStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
+    });
+
+    it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is focused", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "multiple"
+        },
+        mainContent: {
+          isSelected: false
+        }
+      };
+      renderInstance.state.state = "focus";
+      const returnedStyles = renderInstance.getFocusStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.focus });
+    });
+
+    it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is not focused", () => {
+      renderInstance.props = {
+        config: {
+          selectionType: "multiple"
+        },
+        mainContent: {
+          isSelected: false
+        }
+      };
+      renderInstance.state.state = "default";
+      const returnedStyles = renderInstance.getFocusStyles();
+
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
+    });
+
+    it("returns an empty disabled styles object if its state is not defined like so", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false
+        }
+      };
+      const returnedStyles = renderInstance.getDisabledStyles();
+
+      expect(returnedStyles).toEqual({
+        box: {},
+        content: { wrapper: {} }
+      });
+    });
+
+    it("returns disabled styles if is disabled", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: true
+        }
+      };
+      const returnedStyles = renderInstance.getDisabledStyles();
+
+      expect(returnedStyles).toEqual({
+        box: {
+          ...renderInstance.getStyles().box.state.disabled
+        },
+        content: {
+          wrapper: {
+            ...renderInstance.getStyles().content.wrapper.state.disabled
+          }
+        }
+      });
+    });
+
+    it("checks main content styles before rendering if it's disabled, not a 'PackenUiRadio' or 'PackenUiCheckbox' and an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: true,
+          main: {
+            props: {
+              children: [
+                {
+                  type: { displayName: "Test" },
+                  props: {
+                    style: { color: "" }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
+    });
+
+    it("checks main content styles before rendering if it's disabled, not a 'PackenUiRadio' or 'PackenUiCheckbox' and not an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: true,
+          main: {
+            type: {
+              displayName: "Test"
+            },
+            props: {
+              children: {},
+              style: { color: "" }
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.gray.lgt);
+    });
+
+    it("checks main content styles before rendering if it's not disabled, is selected, not a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            type: {
+              displayName: "Test"
+            },
+            props: {
+              children: {},
+              style: {
+                color: ""
+              }
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.white.dft);
+    });
+
+    it("checks main content styles before rendering if it's not disabled, is selected, is a 'PackenUiText', not a 'PackenUiRadio' or 'PackenUiCheckbox', and an array", () => {
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: true,
+          main: {
+            props: {
+              children: [
+                {
+                  type: {
+                    displayName: "PackenUiText"
+                  },
+                  props: {
+                    style: {
+                      color: ""
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.white.dft);
+    });
+
+    it("checks main content styles before rendering if it's not disabled, not selected, not a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
+      renderInstance.setState({
+        originalStyles: {
+          color: "#000000"
+        }
+      });
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: false,
+          main: {
+            type: {
+              displayName: "Test"
+            },
+            props: {
+              style: {
+                color: ""
+              }
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.style.color).toBe("#000000");
+    });
+
+    it("checks main content styles before rendering if it's not disabled, not selected, a 'PackenUiText', and an array", () => {
+      renderInstance.setState({
+        originalStyles: [{ color: "#000000" }]
+      });
+      renderInstance.props = {
+        mainContent: {
+          isDisabled: false,
+          isSelected: false,
+          main: {
+            type: {
+              displayName: "Test"
+            },
+            props: {
+              children: [
+                {
+                  type: {
+                    displayName: "PackenUiText"
+                  },
+                  props: {
+                    style: {
+                      color: ""
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      };
+      renderInstance.checkMainContentStyles();
+
+      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe("#000000");
+    });
+
+    it("returns an empty object if it's a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: {}
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual({});
+    });
+
+    it("returns correct styles if it's not a control, it's not an array, and it's not a radio or checkbox", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            control: undefined,
+            type: {
+              displayName: "PackenUiText"
+            },
+            props: {
+              style: {
+                color: "#FFFFFF"
+              },
+              children: "Test"
+            }
+          }
+        }
+      };
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual({ color: "#FFFFFF" });
+    });
+
+    it("returns correct styles if it's not a control, it's an array, and it's not a radio or checkbox", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            control: undefined,
+            type: {
+              displayName: "View"
+            },
+            props: {
+              children: [
+                {
+                  type: { displayName: "PackenUiText" },
+                  props: { style: { color: "#FFFFFF" } }
+                },
+                {
+                  type: { displayName: "PackenUiText" },
+                  props: { style: { color: "#FFFFFF" } }
+                }
+              ]
+            }
+          }
+        }
+      };
+      renderInstance.state = {
+        ...renderInstance.state,
+        originalStyles: [
+          { color: "#FFFFFF" },
+          { color: "#FFFFFF" }
+        ]
+      };
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual([
+        { color: "#FFFFFF" },
+        { color: "#FFFFFF" }
+      ]);
+    });
+
+    it("returns an empty array if it's a control", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: false,
+            props: {
+              children: [
+                {
+                  type: { displayName: "PackenUiRadio" }
+                }
+              ]
+            }
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual([]);
+    });
+
+    it("returns an empty object if it's not a control, but the inner content is", () => {
+      render.setProps({
+        mainContent: {
+          main: {
+            control: false,
+            props: {
+              children: {}
+            },
+            type: {
+              displayName: "PackenUiRadio"
+            }
+          }
+        }
+      });
+      const returnedStyles = renderInstance.getOriginalStyles();
+
+      expect(returnedStyles).toEqual({});
     });
   });
 
@@ -280,7 +818,7 @@ describe("<PackenUiDropdownListItem/>", () => {
         }
       };
       renderInstance.componentDidMount();
-      
+
       expect(spySetMainContent).toHaveBeenCalled();
       spySetMainContent.mockRestore();
     });
@@ -477,26 +1015,6 @@ describe("<PackenUiDropdownListItem/>", () => {
         .toHaveBeenCalledWith(renderInstance.props.mainContent.value, false, renderInstance.props.currentCheckboxesState.finalSelectionArray);
     });
 
-    it("returns false while checking if unselected, if selection type is 'checkbox' and values match", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "checkbox"
-        },
-        mainContent: {
-          main: {
-            control: true
-          },
-          value: "Test"
-        },
-        currentCheckboxesState: {
-          checkedValues: ["Test"]
-        }
-      };
-      const res = renderInstance.checkIfUnselected();
-
-      expect(res).toBe(false);
-    });
-
     it("executes correct code on pressIn", () => {
       renderInstance.props = {
         mainContent: {
@@ -603,7 +1121,7 @@ describe("<PackenUiDropdownListItem/>", () => {
       renderInstance.state.prevState = "active";
 
       renderInstance.pressHandler();
-      
+
       expect(renderInstance.state.prevState).toBe("default");
       expect(renderInstance.state.state).toBe("default");
       expect(renderInstance.state.newSelectedState).toBe(false);
@@ -624,7 +1142,7 @@ describe("<PackenUiDropdownListItem/>", () => {
       renderInstance.state.prevState = "default";
 
       renderInstance.pressHandler();
-      
+
       expect(renderInstance.state.prevState).toBe("active");
       expect(renderInstance.state.state).toBe("active");
       expect(renderInstance.state.newSelectedState).toBe(true);
@@ -645,645 +1163,65 @@ describe("<PackenUiDropdownListItem/>", () => {
     it("gets item height", () => {
       renderInstance.props.getItemHeight = mockCallback;
       renderInstance.getItemHeight({ height: 10 });
-      
+
       expect(renderInstance.props.getItemHeight).toHaveBeenCalledWith(10);
     });
-  });
 
-  describe("state changing", () => {
-    it("sets correct initial state if it's disabled", () => {
-      render.setProps({
-        mainContent: {
-          isDisabled: true,
-          main: {
-            control: {}
-          }
-        }
-      });
-      const res = renderInstance.setInitialState();
-
-      expect(res).toBe("disabled");
-    });
-
-    it("sets correct initial state if it's not disabled, and not selected", () => {
-      render.setProps({
-        mainContent: {
-          isDisabled: false,
-          isSelected: false,
-          main: {
-            control: {}
-          }
-        }
-      });
-      const res = renderInstance.setInitialState();
-
-      expect(res).toBe("default");
-    });
-
-    it("sets correct initial state if it's not disabled, and selected", () => {
-      render.setProps({
-        mainContent: {
-          isDisabled: false,
-          isSelected: true,
-          main: {
-            control: {}
-          }
-        }
-      });
-      const res = renderInstance.setInitialState();
-
-      expect(res).toBe("active");
-    });
-
-    it("creates refs if it's a control", () => {
-      render.setProps({
-        mainContent: {
-          main: {
-            control: {}
-          }
-        }
-      });
-      renderInstance.createRefs();
-
-      expect(renderInstance.radioRef).toBeDefined();
-      expect(renderInstance.checkboxRef).toBeDefined();
-    });
-
-    it("returns false if it's not a control", () => {
-      render.setProps({
-        mainContent: {
-          main: {
-            control: undefined,
-            props: {
-              children: []
-            }
-          }
-        }
-      });
-      const res = renderInstance.createRefs();
+    it("returns false while checking the unselected children", () => {
+      render.setProps({ mainContent: { main: { control: {} }, value: "Test" } });
+      const res = renderInstance.checkUnselectedChildren("Test");
 
       expect(res).toBe(false);
     });
 
-    it("sets the radio ref", () => {
-      renderInstance.setRadioRef("ref");
-
-      expect(renderInstance.radioRef).toBe("ref");
-    });
-
-    it("sets the checkbox ref", () => {
-      renderInstance.setCheckboxRef("ref");
-
-      expect(renderInstance.checkboxRef).toBe("ref");
-    });
-
-    it("sets main content if it's not a control type", () => {
-      renderInstance.props = {
-        mainContent: {
-          main: {}
+    it("returns false when checking the disabled children", () => {
+      const child = {
+        type: {
+          displayName: "PackenUiRadio"
         }
       };
-      renderInstance.setMainContent();
-
-      expect(renderInstance.state.mainContent).toBeDefined();
-    });
-
-    it("sets main content if it's a control of type 'radio'", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "radio"
-        },
-        mainContent: {
-          main: {
-            control: {
-              type: "radio"
-            }
-          }
-        }
-      };
-      renderInstance.setMainContent();
-
-      expect(renderInstance.state.mainContent).toBeDefined();
-    });
-
-    it("sets main content if it's a control of type 'checkbox'", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "checkbox"
-        },
-        mainContent: {
-          main: {
-            control: {
-              type: "checkbox"
-            }
-          }
-        }
-      };
-      renderInstance.setMainContent();
-
-      expect(renderInstance.state.mainContent).toBeDefined();
-    });
-
-    it("sets main content if it's a control of type not defined", () => {
-      renderInstance.props = {
-        mainContent: {
-          main: {
-            control: {
-              type: undefined
-            }
-          }
-        }
-      };
-      const res = renderInstance.setMainContent();
+      const res = renderInstance.checkDisabledChildren(child);
 
       expect(res).toBe(false);
     });
-  });
 
-  describe("styling", () => {
-    it("returns an empty active styles object if selection type is 'radio' or 'checkbox'", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "radio"
-        }
-      };
-      const returnedStyles = renderInstance.getActiveStyles();
-      
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns active styles it selection type is 'single' or 'multiple' and is selected", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "single"
-        },
-        mainContent: {
-          isSelected: true
-        }
-      };
-      const returnedStyles = renderInstance.getActiveStyles();
-      
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
-    });
-
-    it("returns default active styles it selection type is 'single' or 'multiple' and is not selected", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "multiple"
-        },
-        mainContent: {
-          isSelected: false
-        }
-      };
-      const returnedStyles = renderInstance.getActiveStyles();
-      
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
-    });
-
-    it("returns an empty focus styles object if selection type is 'radio' or 'checkbox'", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "radio"
-        }
-      };
-      const returnedStyles = renderInstance.getFocusStyles();
-      
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns focus styles if selection type is 'single' or 'multiple' and is selected", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "single"
-        },
-        mainContent: {
-          isSelected: true
-        }
-      };
-      const returnedStyles = renderInstance.getFocusStyles();
-      
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.active });
-    });
-
-    it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is focused", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "multiple"
-        },
-        mainContent: {
-          isSelected: false
-        }
-      };
-      renderInstance.state.state = "focus";
-      const returnedStyles = renderInstance.getFocusStyles();
-      
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.focus });
-    });
-
-    it("returns focus styles if selection type is 'single' or 'multiple', is not selected, and is not focused", () => {
-      renderInstance.props = {
-        config: {
-          selectionType: "multiple"
-        },
-        mainContent: {
-          isSelected: false
-        }
-      };
-      renderInstance.state.state = "default";
-      const returnedStyles = renderInstance.getFocusStyles();
-      
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().box.state.default });
-    });
-
-    it("returns an empty disabled styles object if its state is not defined like so", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false
-        }
-      };
-      const returnedStyles = renderInstance.getDisabledStyles();
-      
-      expect(returnedStyles).toEqual({
-        box: {},
-        content: { wrapper: {} }
-      });
-    });
-
-    it("returns disabled styles if is disabled", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: true
-        }
-      };
-      const returnedStyles = renderInstance.getDisabledStyles();
-      
-      expect(returnedStyles).toEqual({
-        box: {
-          ...renderInstance.getStyles().box.state.disabled
-        },
-        content: {
-          wrapper: {
-            ...renderInstance.getStyles().content.wrapper.state.disabled
-          }
-        }
-      });
-    });
-
-    it("checks main content styles before rendering if it's disabled, not a 'PackenUiRadio' or 'PackenUiCheckbox' and an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: true,
-          main: {
-            props: {
-              children: [
-                {
-                  type: { displayName: "Test" },
-                  props: {
-                    style: { color: "" }
-                  }
-                }
-              ]
-            }
+    it("returns false when checking the disabled styles", () => {
+      const mainContent = {
+        main: {
+          type: {
+            displayName: "PackenUiRadio"
+          },
+          props: {
+            children: "Test"
           }
         }
       };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.gray.lgt);
-    });
+      const res = renderInstance.checkDisabledStyles(mainContent);
 
-    it("returns false if it's disabled, a 'PackenUiRadio' or 'PackenUiCheckbox' and an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: true,
-          main: {
-            props: {
-              children: [
-                { type: { displayName: "PackenUiRadio" } },
-                { type: { displayName: "PackenUiCheckbox" } }
-              ]
-            }
-          }
-        }
-      };
-      const res = renderInstance.checkMainContentStyles();
-      
       expect(res).toBe(false);
     });
 
-    it("returns false if it's disabled, a 'PackenUiRadio' or 'PackenUiCheckbox' and not an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: true,
-          main: {
-            type: {
-              displayName: "PackenUiRadio"
-            },
-            props: {
-              children: {},
-              style: { color: "" }
-            }
-          }
-        }
-      };
-      const res = renderInstance.checkMainContentStyles();
-      
+    it("returns false while checking the selected children", () => {
+      const child = { type: { displayName: "PackenUiRadio" } };
+      const res = renderInstance.checkSelectedChildren(child);
+
       expect(res).toBe(false);
     });
 
-    it("checks main content styles before rendering if it's disabled, not a 'PackenUiRadio' or 'PackenUiCheckbox' and not an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: true,
-          main: {
-            type: {
-              displayName: "Test"
-            },
-            props: {
-              children: {},
-              style: { color: "" }
-            }
+    it("returns false when checking the selected styles", () => {
+      const mainContent = {
+        main: {
+          type: {
+            displayName: "PackenUiRadio"
+          },
+          props: {
+            children: "Test"
           }
         }
       };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.gray.lgt);
-    });
+      const res = renderInstance.checkSelectedStyles(mainContent);
 
-    it("checks main content styles before rendering if it's not disabled, is selected, not a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: true,
-          main: {
-            type: {
-              displayName: "Test"
-            },
-            props: {
-              children: {},
-              style: {
-                color: ""
-              }
-            }
-          }
-        }
-      };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.style.color).toBe(Colors.basic.white.dft);
-    });
-
-    it("returns false while checking main content styles before rendering, if it's not disabled, is selected, a 'PackenUiRadio' or 'PackenUiCheckbox', and an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: true,
-          main: {
-            type: {
-              displayName: "Test"
-            },
-            props: {
-              children: [
-                {
-                  type: {
-                    displayName: "PackenUiRadio"
-                  },
-                  props: {
-                    style: {
-                      color: ""
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      };
-      const res = renderInstance.checkMainContentStyles();
-      
       expect(res).toBe(false);
-    });
-
-    it("returns false while checking main content styles before rendering, if it's not disabled, is selected, a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: true,
-          main: {
-            type: {
-              displayName: "PackenUiRadio"
-            },
-            props: {
-              children: {}
-            }
-          }
-        }
-      };
-      const res = renderInstance.checkMainContentStyles();
-      
-      expect(res).toBe(false);
-    });
-
-    it("checks main content styles before rendering if it's not disabled, is selected, is a 'PackenUiText', not a 'PackenUiRadio' or 'PackenUiCheckbox', and an array", () => {
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: true,
-          main: {
-            props: {
-              children: [
-                {
-                  type: {
-                    displayName: "PackenUiText"
-                  },
-                  props: {
-                    style: {
-                      color: ""
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe(Colors.basic.white.dft);
-    });
-
-    it("checks main content styles before rendering if it's not disabled, not selected, not a 'PackenUiRadio' or 'PackenUiCheckbox', and not an array", () => {
-      renderInstance.setState({
-        originalStyles: {
-          color: "#000000"
-        }
-      });
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: false,
-          main: {
-            type: {
-              displayName: "Test"
-            },
-            props: {
-              style: {
-                color: ""
-              }
-            }
-          }
-        }
-      };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.style.color).toBe("#000000");
-    });
-
-    it("checks main content styles before rendering if it's not disabled, not selected, a 'PackenUiText', and an array", () => {
-      renderInstance.setState({
-        originalStyles: [{ color: "#000000" }]
-      });
-      renderInstance.props = {
-        mainContent: {
-          isDisabled: false,
-          isSelected: false,
-          main: {
-            type: {
-              displayName: "Test"
-            },
-            props: {
-              children: [
-                {
-                  type: {
-                    displayName: "PackenUiText"
-                  },
-                  props: {
-                    style: {
-                      color: ""
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        }
-      };
-      renderInstance.checkMainContentStyles();
-      
-      expect(renderInstance.props.mainContent.main.props.children[0].props.style.color).toBe("#000000");
-    });
-
-    it("returns an empty object if it's a control", () => {
-      render.setProps({
-        mainContent: {
-          main: {
-            control: {}
-          }
-        }
-      });
-      const returnedStyles = renderInstance.getOriginalStyles();
-
-      expect(returnedStyles).toEqual({});
-    });
-
-    it("returns correct styles if it's not a control, it's not an array, and it's not a radio or checkbox", () => {
-      renderInstance.props = {
-        mainContent: {
-          main: {
-            control: undefined,
-            type: {
-              displayName: "PackenUiText"
-            },
-            props: {
-              style: {
-                color: "#FFFFFF"
-              },
-              children: "Test"
-            }
-          }
-        }
-      };
-      const returnedStyles = renderInstance.getOriginalStyles();
-
-      expect(returnedStyles).toEqual({ color: "#FFFFFF" });
-    });
-
-    it("returns correct styles if it's not a control, it's an array, and it's not a radio or checkbox", () => {
-      renderInstance.props = {
-        mainContent: {
-          main: {
-            control: undefined,
-            type: {
-              displayName: "View"
-            },
-            props: {
-              children: [
-                {
-                  type: { displayName: "PackenUiText" },
-                  props: { style: { color: "#FFFFFF" } }
-                },
-                {
-                  type: { displayName: "PackenUiText" },
-                  props: { style: { color: "#FFFFFF" } }
-                }
-              ]
-            }
-          }
-        }
-      };
-      renderInstance.state = {
-        ...renderInstance.state,
-        originalStyles: [
-          { color: "#FFFFFF" },
-          { color: "#FFFFFF" }
-        ]
-      };
-      const returnedStyles = renderInstance.getOriginalStyles();
-
-      expect(returnedStyles).toEqual([
-        { color: "#FFFFFF" },
-        { color: "#FFFFFF" }
-      ]);
-    });
-
-    it("returns an empty array if it's a control", () => {
-      render.setProps({
-        mainContent: {
-          main: {
-            control: false,
-            props: {
-              children: [
-                {
-                  type: { displayName: "PackenUiRadio" }
-                }
-              ]
-            }
-          }
-        }
-      });
-      const returnedStyles = renderInstance.getOriginalStyles();
-
-      expect(returnedStyles).toEqual([]);
-    });
-
-    it("returns an empty object if it's not a control, but the inner content is", () => {
-      render.setProps({
-        mainContent: {
-          main: {
-            control: false,
-            props: {
-              children: {}
-            },
-            type: {
-              displayName: "PackenUiRadio"
-            }
-          }
-        }
-      });
-      const returnedStyles = renderInstance.getOriginalStyles();
-
-      expect(returnedStyles).toEqual({});
     });
   });
 });

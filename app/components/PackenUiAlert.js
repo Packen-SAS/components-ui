@@ -3,8 +3,10 @@ import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
-import PackenUiText from "./PackenUiText";
+import Shadows from "../styles/abstracts/shadows";
 import Typography from "../styles/abstracts/typography";
+
+import PackenUiText from "./PackenUiText";
 
 class PackenUiAlert extends Component {
   constructor(props) {
@@ -37,13 +39,15 @@ class PackenUiAlert extends Component {
 
   checkIfTimed = () => {
     if(this.state.type === "timed" && this.state.countdown) {
-      const timeout = setTimeout(() => {
-        this.close();
-        clearTimeout(timeout);
-      }, this.state.countdown);
+      const timeout = setTimeout(() => { this.closeHandler(timeout); }, this.state.countdown);
     } else {
       return false;
     }
+  }
+
+  closeHandler = timeout => {
+    this.close();
+    clearTimeout(timeout);
   }
 
   close = () => {
@@ -136,22 +140,14 @@ class PackenUiAlert extends Component {
       box: {
         base: {
           width: "100%",
-          paddingVertical: 16,
-          paddingHorizontal: 16,
+          padding: 16,
           borderWidth: 1,
           borderStyle: "solid",
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: 4,
-          elevation: 5,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 4
-          },
-          shadowOpacity: 0.1,
-          shadowRadius: 5
+          ...Shadows.md
         },
         theme: {
           default: {

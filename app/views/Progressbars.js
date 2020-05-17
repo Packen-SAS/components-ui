@@ -47,7 +47,7 @@ class Progressbars extends Component {
         <Section title="Progressbars">
           <View style={{ marginTop: 20 }}>
             <PackenUiText
-              style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
+              style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}
             >Determinate</PackenUiText>
             <PackenUiProgressbar
               wrapperStyle={{ marginBottom: 10 }}
@@ -85,7 +85,7 @@ class Progressbars extends Component {
           </View>
           <View style={{ marginTop: 20 }}>
             <PackenUiText
-              style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.base.default_alt }}
+              style={{ marginBottom: 10, fontFamily: Typography.family.bold, color: Colors.basic.independence.drk }}
             >Indeterminate</PackenUiText>
             <PackenUiProgressbar
               wrapperStyle={{ marginBottom: 10 }}

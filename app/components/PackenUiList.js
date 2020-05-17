@@ -24,6 +24,12 @@ class PackenUiList extends Component {
     };
   }
 
+  mapItems = (item, i) => (
+    <View style={{ zIndex: this.state.items.length - i }}>
+      <PackenUiListItem data={item} key={i} />
+    </View>
+  )
+
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
@@ -38,15 +44,7 @@ class PackenUiList extends Component {
     return (
       <View style={[this.getStyles().wrapper, { ...this.state.customWrapperStyles }]}>
         {
-          this.state.items.map((item, i) => (
-            <View
-              style={{
-                zIndex: this.state.items.length - i
-              }}
-            >
-              <PackenUiListItem data={item} key={i} />
-            </View>
-          ))
+          this.state.items.map(this.mapItems)
         }
       </View>
     );

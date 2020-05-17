@@ -59,20 +59,6 @@ describe("<PackenUiProgressbar/>", () => {
       expect(returnedProgress).toEqual(new Animated.Value(1));
     });
 
-    it("returns the correct type if it's determinate", () => {
-      render.setProps({ type: "determinate" });
-      const returnedType = renderInstance.getDeterminate();
-
-      expect(returnedType).toBe("determinate");
-    });
-
-    it("returns the correct type if it's indeterminate", () => {
-      render.setProps({ type: "indeterminate" });
-      const returnedType = renderInstance.getDeterminate();
-
-      expect(returnedType).toBe("indeterminate");
-    });
-
     it("executes the correct code on componentDidMount", () => {
       const spyCheckAnimToStart = jest.spyOn(renderInstance, "checkAnimToStart");
       renderInstance.componentDidMount();

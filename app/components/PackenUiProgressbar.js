@@ -16,7 +16,7 @@ class PackenUiProgressbar extends Component {
   setPropsToState = () => {
     return {
       wrapperStyle: this.props.wrapperStyle ? this.props.wrapperStyle : {},
-      type: this.props.type ? this.getDeterminate() : "indeterminate",
+      type: this.props.type ? this.props.type : "indeterminate",
       height: this.props.height ? new Animated.Value(this.props.height) : 5,
       radius: this.props.radius ? this.props.radius : 0,
       isComplete: this.props.isComplete ? this.props.isComplete : false,
@@ -29,10 +29,6 @@ class PackenUiProgressbar extends Component {
 
   getProgress = () => {
     return this.props.type === "determinate" ? new Animated.Value(this.props.progress) : new Animated.Value(1);
-  }
-
-  getDeterminate = () => {
-    return this.props.type === "determinate" ? "determinate" : "indeterminate";
   }
 
   componentDidMount() {

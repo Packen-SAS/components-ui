@@ -604,13 +604,13 @@ class PackenUiInput extends Component {
             color: Colors.success.default
           },
           primary: {
-            color: Colors.primary.default
+            color: Colors.brand.primary.drk
           },
           list: {
             marginTop: 12,
             marginRight: -15,
             transform: [{ translateX: 10 }],
-            color: Colors.primary.default
+            color: Colors.brand.primary.drk
           }
         }
       },

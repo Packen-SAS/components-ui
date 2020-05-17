@@ -22,7 +22,7 @@ class PackenUiRadioControl extends Component {
       updateCheckedIndex: this.props.updateCheckedIndex ? this.props.updateCheckedIndex : false,
       selfIndex: this.props.selfIndex ? this.props.selfIndex : 0,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
-      checkedIndex: this.props.checkedIndex === 0 ? 0 : (typeof this.props.checkedIndex === 'number') && (this.props.checkedIndex > 0) ? this.props.checkedIndex : -1,
+      checkedIndex: this.props.checkedIndex === 0 ? 0 : (typeof this.props.checkedIndex === "number") && (this.props.checkedIndex > 0) ? this.props.checkedIndex : -1,
       label: this.props.label ? this.props.label : ""
     };
   }
@@ -137,18 +137,18 @@ class PackenUiRadioControl extends Component {
           borderRadius: 18,
           borderWidth: 2,
           borderStyle: "solid",
-          borderColor: Colors.primary.default
+          borderColor: Colors.brand.primary.drk
         },
         checked: {
           borderWidth: 6,
-          backgroundColor: Colors.base.white
+          backgroundColor: Colors.basic.white.dft
         },
         default_disabled: {
           borderColor: Colors.base.disabled_alt
         },
         checked_disabled: {
           borderWidth: 6,
-          backgroundColor: Colors.base.white,
+          backgroundColor: Colors.basic.white.dft,
           borderColor: Colors.base.disabled_alt
         }
       },

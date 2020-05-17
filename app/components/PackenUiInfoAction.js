@@ -4,9 +4,10 @@ import { View, Image, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
+import Typography from "../styles/abstracts/typography";
+import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
-import Typography from "../styles/abstracts/typography";
 
 class PackenUiInfoAction extends Component {
   constructor(props) {
@@ -125,13 +126,13 @@ class PackenUiInfoAction extends Component {
           height: 56,
           borderWidth: 1,
           borderStyle: "solid",
-          elevation: 2,
           paddingRight: 20,
           paddingLeft: 15,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
           backgroundColor: Colors.basic.white.dft,
+          ...Shadows.sm
         },
         theme: {
           primary: {

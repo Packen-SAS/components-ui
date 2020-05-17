@@ -115,53 +115,59 @@ class PackenUiListItem extends Component {
     return config;
   }
 
+  determineInputContent = () => {
+    let content = null;
+    if (this.state.data.input.isDropdown) {
+      content = (
+        <PackenUiDropdown
+          size="medium"
+          name={this.state.data.input.name}
+          list={this.state.data.input.list}
+          callback={this.inputChangeHandler}
+          input={{
+            theme: "list",
+            size: "medium",
+            onChangeText: false,
+            onOpenStateChange: this.onOpenStateChangeHandler,
+            style: {
+              paddingHorizontal: 24,
+              marginHorizontal: -24,
+              paddingVertical: 15,
+              marginVertical: -15
+            },
+            placeholder: this.getPlaceholder().val,
+            placeholderTextColor: this.getPlaceholder().color,
+            nonEditable: this.state.data.input.nonEditable,
+            isOpen: this.state.data.input.isOpen,
+            icon: { position: "right" }
+          }}
+        />
+      );
+    } else {
+      content = (
+        <PackenUiInput
+          theme="list"
+          size="medium"
+          name={this.state.data.input.name}
+          style={{ marginVertical: -5 }}
+          keyboardType={this.state.data.input.keyboardType}
+          onChangeText={this.inputChangeHandler}
+          placeholder={this.getPlaceholder().val}
+          placeholderTextColor={this.getPlaceholder().color}
+          nonEditable={this.state.data.input.nonEditable}
+          multiline={this.state.data.input.multiline}
+          maxLength={this.state.data.input.maxLength}
+        />
+      )
+    }
+    return content;
+  }
+
   getMainContent = () => {
     let content = null;
 
     if (this.state.data.input) {
-      if (this.state.data.input.isDropdown) {
-        content = (
-          <PackenUiDropdown
-            size="medium"
-            name={this.state.data.input.name}
-            list={this.state.data.input.list}
-            callback={this.inputChangeHandler}
-            input={{
-              theme: "list",
-              size: "medium",
-              onChangeText: false,
-              onOpenStateChange: this.onOpenStateChangeHandler,
-              style: {
-                paddingHorizontal: 24,
-                marginHorizontal: -24,
-                paddingVertical: 15,
-                marginVertical: -15
-              },
-              placeholder: this.getPlaceholder().val,
-              placeholderTextColor: this.getPlaceholder().color,
-              nonEditable: this.state.data.input.nonEditable,
-              isOpen: this.state.data.input.isOpen,
-              icon: { position: "right" }
-            }}
-          />
-        );
-      } else {
-        content = (
-          <PackenUiInput
-            theme="list"
-            size="medium"
-            name={this.state.data.input.name}
-            style={{ marginVertical: -5 }}
-            keyboardType={this.state.data.input.keyboardType}
-            onChangeText={this.inputChangeHandler}
-            placeholder={this.getPlaceholder().val}
-            placeholderTextColor={this.getPlaceholder().color}
-            nonEditable={this.state.data.input.nonEditable}
-            multiline={this.state.data.input.multiline}
-            maxLength={this.state.data.input.maxLength}
-          />
-        )
-      }
+      content = this.determineInputContent();
     } else {
       content = (
         <PackenUiText preset="p1">{this.state.data.title}</PackenUiText>

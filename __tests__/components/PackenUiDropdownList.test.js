@@ -149,6 +149,17 @@ describe("<PackenUiDropdownList/>", () => {
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
     });
+
+    it("returns the items layout object", () => {
+      renderInstance.setState({ itemHeight: 10 });
+      const res = renderInstance.getItemLayout("Test", 2);
+
+      expect(res).toEqual({
+        length: 10,
+        offset: 20,
+        index: 2
+      });
+    });
   });
 
   describe("state changing", () => {
@@ -232,12 +243,10 @@ describe("<PackenUiDropdownList/>", () => {
         },
         toggleMenu: undefined
       });
-      const res = renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
+      const spyHandleSingleRadioUpdate = jest.spyOn(renderInstance, "handleSingleRadioUpdate");
+      renderInstance.updateSelectedItems("Medellín", true, { checkedType: undefined, checkedValue: "Medellín" });
 
-      expect(renderInstance.state.currentRadiosState).toEqual({
-        checkedValue: "Medellín"
-      });
-      expect(res).toBe(false);
+      expect(spyHandleSingleRadioUpdate).toHaveBeenCalled();
     });
 
     it("updates selected items if selection type is 'multiple' or 'checkbox' and no payload is passed", () => {

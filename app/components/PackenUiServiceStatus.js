@@ -37,7 +37,7 @@ class PackenUiServiceStatus extends Component {
         this.state.steps[i].isComplete = false;
         this.state.steps[i].isCurrent = false;
       }
-      
+
       this.setState({
         currentStepIndex: this.state.currentStepIndex
       }, this.state.steps[this.state.currentStepIndex].callback);
@@ -67,21 +67,21 @@ class PackenUiServiceStatus extends Component {
     }
   }
 
+  mapItems = (step, i) => (
+    <PackenUiServiceStatusItem
+      key={i}
+      index={i}
+      data={step}
+      currentStepIndex={this.state.currentStepIndex}
+      itemsHeights={this.state.itemsHeights}
+      setItemsHeights={this.setItemsHeights}
+    />
+  )
+
   render() {
     return (
       <View style={this.getStyles().wrapper}>
-        {
-          this.state.steps.map((step, i) => (
-            <PackenUiServiceStatusItem
-              key={i}
-              index={i}
-              data={step}
-              currentStepIndex={this.state.currentStepIndex}
-              itemsHeights={this.state.itemsHeights}
-              setItemsHeights={this.setItemsHeights}
-            />
-          ))
-        }
+        {this.state.steps.map(this.mapItems)}
       </View>
     );
   }

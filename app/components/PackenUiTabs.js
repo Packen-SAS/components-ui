@@ -46,21 +46,21 @@ class PackenUiTabs extends Component {
     }
   }
 
+  mapItems = (item, i) => (
+    <PackenUiTabItem
+      key={`${item.label}-${i}`}
+      activeTabIndex={this.state.activeTabIndex}
+      selfIndex={i}
+      label={item.label}
+      icon={item.icon}
+      updateActiveTabIndex={this.updateActiveIndex}
+      callback={item.callback}/>
+  )
+
   render() {
     return (
       <View style={this.getStyles().container}>
-        {
-          this.state.items.map((item, i) => (
-            <PackenUiTabItem
-              key={`${item.label}-${i}`}
-              activeTabIndex={this.state.activeTabIndex}
-              selfIndex={i}
-              label={item.label}
-              icon={item.icon}
-              updateActiveTabIndex={this.updateActiveIndex}
-              callback={item.callback}/>
-          ))
-        }
+        {this.state.items.map(this.mapItems)}
       </View>
     );
   }

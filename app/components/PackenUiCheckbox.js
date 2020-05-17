@@ -24,7 +24,7 @@ class PackenUiCheckbox extends Component {
   setPropsToState = () => {
     return {
       layout: this.props.layout ? this.props.layout : "column",
-      items: this.props.items ? [...this.props.items] : [] ,
+      items: this.props.items ? [...this.props.items] : [],
       callback: this.props.callback ? this.props.callback : false,
       name: this.props.name ? this.props.name : ""
     };
@@ -36,12 +36,16 @@ class PackenUiCheckbox extends Component {
     }, this.updateCheckedItems);
   }
 
+  filterUpdatedItems = item => item.isChecked;
+
+  mapNewCheckedItems = item => item.value;
+
   updateCheckedItems = () => {
     if (this.state.selectedIndex !== null) {
       const updatedItems = [...this.state.items];
       updatedItems[this.state.selectedIndex].isChecked = !updatedItems[this.state.selectedIndex].isChecked;
-      newCheckedItems = updatedItems.filter(item => item.isChecked);
-      newCheckedItems = newCheckedItems.map(item => item.value);
+      let newCheckedItems = updatedItems.filter(this.filterUpdatedItems);
+      newCheckedItems = newCheckedItems.map(this.mapNewCheckedItems);
 
       this.setState({
         checkedItems: newCheckedItems
@@ -57,11 +61,15 @@ class PackenUiCheckbox extends Component {
     }
   }
 
+  mapUpdatedCheckedItems = (item, newState) => ({ label: item, isChecked: newState, isDisabled: false });
+
+  findMatchedItemToCheck = (item, valueToSearch) => item.label === valueToSearch;
+
   setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
     let updatedCheckedItems = [...finalSelectionArray];
-    updatedCheckedItems = updatedCheckedItems.map(item => ({ label: item, isChecked: newState, isDisabled: false }))
+    updatedCheckedItems = updatedCheckedItems.map(item => this.mapUpdatedCheckedItems(item, newState));
 
-    const foundItem = updatedCheckedItems.find(item => item.label === valueToSearch);
+    const foundItem = updatedCheckedItems.find(item => this.findMatchedItemToCheck(item, valueToSearch));
     if (foundItem) {
       foundItem.isChecked = newState;
       this.setState({
@@ -71,6 +79,26 @@ class PackenUiCheckbox extends Component {
       return false;
     }
   }
+
+  mapRenderedControls = (item, i) => (
+    <View
+      key={i}
+      pointerEvents={item.isDisabled ? "none" : "auto"}
+      style={this.getStyles().content.layout[this.state.layout]}
+    >
+      <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
+        <View style={{ alignSelf: "flex-start" }}>
+          <PackenUiCheckboxControl
+            label={item.label}
+            layout={this.state.layout}
+            isChecked={item.isChecked}
+            isDisabled={item.isDisabled}
+            checkedItems={this.state.checkedItems}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  )
 
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
@@ -89,25 +117,7 @@ class PackenUiCheckbox extends Component {
         pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
       >
         {
-          this.state.items.map((item, i) => (
-            <View
-              key={i}
-              pointerEvents={item.isDisabled ? "none" : "auto"}
-              style={this.getStyles().content.layout[this.state.layout]}
-            >
-              <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
-                <View style={{ alignSelf: "flex-start" }}>
-                  <PackenUiCheckboxControl
-                    label={item.label}
-                    layout={this.state.layout}
-                    isChecked={item.isChecked}
-                    isDisabled={item.isDisabled}
-                    checkedItems={this.state.checkedItems}
-                  />
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          ))
+          this.state.items.map(this.mapRenderedControls)
         }
       </View>
     );

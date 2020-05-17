@@ -215,22 +215,22 @@ class PackenUiTabItem extends Component {
             borderBottomColor: Colors.base.disabled_alt_drk
           },
           label: {
-            color: Colors.secondary.focus
+            color: Colors.basic.gray.dft
           },
           icon: {
-            color: Colors.secondary.focus
+            color: Colors.basic.gray.dft
           }
         },
         active: {
           shape: {
-            backgroundColor: Colors.base.transparent,
-            borderBottomColor: Colors.primary.default
+            backgroundColor: Colors.ghost.default,
+            borderBottomColor: Colors.brand.primary.drk
           },
           label: {
-            color: Colors.primary.default
+            color: Colors.brand.primary.drk
           },
           icon: {
-            color: Colors.primary.default
+            color: Colors.brand.primary.drk
           }
         }
       }

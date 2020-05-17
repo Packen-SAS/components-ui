@@ -29,7 +29,7 @@ class PackenUiButton extends Component {
       type: this.props.type ? this.props.type : "regular",
       level: this.props.level ? this.props.level : "primary",
       size: this.props.size ? this.props.size : "medium",
-      icon: this.getInitialIcon(),
+      icon: this.props.icon ? this.props.icon : undefined,
       callback: this.props.callback ? this.props.callback : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
@@ -37,27 +37,24 @@ class PackenUiButton extends Component {
     };
   }
 
-  getInitialIcon = () => {
-    return this.props.icon ? this.props.icon : undefined;
-  }
-
-  getStyles = () => {
+  setStyleVariables = () => {
     let type, size, level, isDisabled;
     if (this.state) {
       type = this.state.type;
       size = this.state.size;
       level = this.state.level;
-      icon = this.state.icon;
       isDisabled = this.state.isDisabled;
     } else {
       type = this.setPropsToState().type,
       level = this.setPropsToState().level,
       size = this.setPropsToState().size,
-      icon = this.getInitialIcon(),
       isDisabled = this.setPropsToState().isDisabled;
     }
+    return { type, size, level, isDisabled };
+  }
 
-    let styles = {
+  getBaseStyles = (type, size, level) => {
+    return {
       shape: {
         ...this.createStyles().shape.base,
         ...this.createStyles().shape.type[type][size],
@@ -71,7 +68,9 @@ class PackenUiButton extends Component {
         ...this.createStyles().icon.size[size]
       }
     };
+  }
 
+  getTypeStyles = (styles, type, size, level) => {
     switch (type) {
       case "icon":
         styles = {
@@ -89,26 +88,30 @@ class PackenUiButton extends Component {
         };
         break;
     }
+    return styles;
+  }
 
-    /* Custom styles depending on the level */
+  getLevelStyles = (styles, level) => {
     switch (level) {
       case "secondary":
         styles.shape = {
           ...styles.shape,
           borderWidth: 1,
           borderStyle: "solid",
-          borderColor: Color.secondary.default_drk
+          borderColor: Color.basic.independence.dft
         }
         break;
     }
+    return styles;
+  }
 
-    /* Custom styles for isDisabled states */
+  getDisabledStyles = (styles, isDisabled, level) => {
     if (isDisabled) {
-      styles.shape.backgroundColor = Color.base.disabled;
-      styles.icon.color = Color.base.white;
+      styles.shape.backgroundColor = Color.ghost.focus;
+      styles.icon.color = Color.basic.white.dft;
 
       if (styles.label) {
-        styles.label.color = Color.base.white;
+        styles.label.color = Color.basic.white.dft;
       }
 
       if (styles.shape.borderWidth) {
@@ -116,7 +119,7 @@ class PackenUiButton extends Component {
       }
 
       if (level === "ghost") {
-        styles.shape.backgroundColor = Color.base.transparent;
+        styles.shape.backgroundColor = Color.ghost.default;
         styles.icon.color = Color.base.disabled_alt;
 
         if (styles.label) {
@@ -124,7 +127,15 @@ class PackenUiButton extends Component {
         }
       }
     }
+    return styles;
+  }
 
+  getStyles = () => {
+    const { type, size, level, isDisabled } = this.setStyleVariables();
+    let styles = this.getBaseStyles(type, size, level);
+    styles = this.getTypeStyles(styles, type, size, level);
+    styles = this.getLevelStyles(styles, level);
+    styles = this.getDisabledStyles(styles, isDisabled, level);
     return styles;
   }
 
@@ -175,7 +186,7 @@ class PackenUiButton extends Component {
     /* Custom focus styles */
     switch (this.state.level) {
       case "secondary":
-        newStyles.shape.borderColor = Color.secondary.focus;
+        newStyles.shape.borderColor = Color.basic.gray.dft;
         break;
     }
 
@@ -272,13 +283,13 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            backgroundColor: Color.primary.default
+            backgroundColor: Color.brand.primary.drk
           },
           secondary: {
-            backgroundColor: Color.secondary.default
+            backgroundColor: Color.basic.white.drk
           },
           tertiary: {
-            backgroundColor: Color.tertiary.default
+            backgroundColor: Color.basic.independence.dft
           },
           ghost: {
             backgroundColor: Color.ghost.default
@@ -377,19 +388,19 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           secondary: {
-            color: Color.secondary.default_drk
+            color: Color.basic.independence.dft
           },
           tertiary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           ghost: {
-            color: Color.tertiary.default
+            color: Color.basic.independence.dft
           },
           danger: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           }
         }
       },
@@ -413,19 +424,19 @@ class PackenUiButton extends Component {
         },
         level: {
           primary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           secondary: {
-            color: Color.secondary.default_drk
+            color: Color.basic.independence.dft
           },
           tertiary: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           },
           ghost: {
-            color: Color.tertiary.default
+            color: Color.basic.independence.dft
           },
           danger: {
-            color: Color.base.white
+            color: Color.basic.white.dft
           }
         }
       }

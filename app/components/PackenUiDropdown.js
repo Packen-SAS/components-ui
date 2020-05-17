@@ -44,7 +44,7 @@ class PackenUiDropdown extends Component {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
       name: this.props.name ? this.props.name : "",
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
-      input: this.props.input ? {...this.props.input} : {
+      input: this.props.input ? { ...this.props.input } : {
         placeholder: "",
         onChangeText: this.mockCallback,
         onOpenStateChange: this.mockCallback,
@@ -61,7 +61,7 @@ class PackenUiDropdown extends Component {
         name: "",
         style: {}
       },
-      list: this.props.list ? {...this.props.list} : { items: [], config: {} },
+      list: this.props.list ? { ...this.props.list } : { items: [], config: {} },
       size: this.props.size ? this.props.size : "medium"
     };
   }
@@ -117,12 +117,12 @@ class PackenUiDropdown extends Component {
     this.state.callback(this.state.name, selectedItems);
   }
 
+  concatFinalSelectionString = (item, finalSelectionString) => finalSelectionString += `${item}, `;
+
   composeFinalSelectionString = () => {
     let finalSelectionString = "";
 
-    this.state.finalSelection.forEach(item => {
-      finalSelectionString += `${item}, `;
-    });
+    this.state.finalSelection.forEach(item => finalSelectionString = this.concatFinalSelectionString(item, finalSelectionString));
     finalSelectionString = finalSelectionString.slice(0, -2);
 
     this.setState({
@@ -161,7 +161,7 @@ class PackenUiDropdown extends Component {
   getContentSizerDimensions = ({ nativeEvent }) => {
     let { height } = nativeEvent.layout;
     const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
-    
+
     if (height < minHeight) {
       height = minHeight;
     }
@@ -183,6 +183,84 @@ class PackenUiDropdown extends Component {
     return styles;
   }
 
+  getInput = () => (
+    <PackenUiInput
+      size={this.state.size}
+      placeholder={this.getPlaceholderConfig().text}
+      placeholderTextColor={this.getPlaceholderConfig().color}
+      onChangeText={this.state.input.onChangeText}
+      icon={this.state.input.icon}
+      message={this.state.input.message}
+      label={this.state.input.label}
+      help={this.state.input.help}
+      theme={this.state.input.theme}
+      isDropdown={true}
+      nonEditable={this.state.input.nonEditable}
+      disabled={this.state.isDisabled}
+      isOpen={this.state.isOpen}
+      multiline
+      style={{
+        ...this.getCustomStyle(),
+        ...this.state.input.style,
+        ...this.getStyles().input
+      }}
+      name="dropdownInput"
+    />
+  )
+
+  getContentSizer = () => (
+    <View
+      pointerEvents="none"
+      style={{
+        ...this.getStyles().contentSizer.wrapper.base,
+        ...this.getStyles().contentSizer.wrapper.size[this.state.size],
+        ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size],
+        ...this.getStyles().contentSizer.wrapper.theme[this.state.input.theme]
+      }}
+    >
+      <View
+        onLayout={this.getContentSizerDimensions}
+        style={{
+          ...this.getStyles().contentSizer.inner.base,
+          ...this.getStyles().contentSizer.inner.size[this.state.size],
+          ...this.getStyles().contentSizer.inner.theme[this.state.input.theme]
+        }}
+      >
+        <PackenUiText
+          style={{
+            ...this.getStyles().contentSizer.text.base,
+            ...this.getStyles().contentSizer.text.size[this.state.size],
+            ...this.getStyles().contentSizer.text.theme[this.state.input.theme]
+          }}
+        >{this.state.finalSelectionString}</PackenUiText>
+      </View>
+    </View>
+  )
+
+  getMenu = () => (
+    <View
+      onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
+      style={[
+        this.getStyles().menu.base,
+        this.getStyles().menu.theme[this.state.input.theme],
+        this.state.styles.menu,
+        {
+          opacity: this.state.isOpen ? 1 : 0
+        }
+      ]}
+      pointerEvents={this.state.isOpen ? "auto" : "none"}
+    >
+      <PackenUiDropdownList
+        items={this.state.list.items}
+        config={{ size: this.state.size, ...this.state.list.config }}
+        numShownRows={4}
+        getFinalSelection={this.getFinalSelection}
+        finalSelectionArray={this.state.finalSelection}
+        toggleMenu={this.toggleMenu}
+      />
+    </View>
+  )
+
   render() {
     return (
       <View
@@ -196,77 +274,11 @@ class PackenUiDropdown extends Component {
       >
         <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
           <View pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
-            <PackenUiInput
-              size={this.state.size}
-              placeholder={this.getPlaceholderConfig().text}
-              placeholderTextColor={this.getPlaceholderConfig().color}
-              onChangeText={this.state.input.onChangeText}
-              icon={this.state.input.icon}
-              message={this.state.input.message}
-              label={this.state.input.label}
-              help={this.state.input.help}
-              theme={this.state.input.theme}
-              isDropdown={true}
-              nonEditable={this.state.input.nonEditable}
-              disabled={this.state.isDisabled}
-              isOpen={this.state.isOpen}
-              multiline
-              style={{
-                ...this.getCustomStyle(),
-                ...this.state.input.style,
-                ...this.getStyles().input
-              }}
-              name="dropdownInput"
-            />
-            <View
-              pointerEvents="none"
-              style={{
-                ...this.getStyles().contentSizer.wrapper.base,
-                ...this.getStyles().contentSizer.wrapper.size[this.state.size],
-                ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size],
-                ...this.getStyles().contentSizer.wrapper.theme[this.state.input.theme]
-              }}
-            >
-              <View
-                onLayout={this.getContentSizerDimensions}
-                style={{
-                  ...this.getStyles().contentSizer.inner.base,
-                  ...this.getStyles().contentSizer.inner.size[this.state.size],
-                  ...this.getStyles().contentSizer.inner.theme[this.state.input.theme]
-                }}
-              >
-                <PackenUiText
-                  style={{
-                    ...this.getStyles().contentSizer.text.base,
-                    ...this.getStyles().contentSizer.text.size[this.state.size],
-                    ...this.getStyles().contentSizer.text.theme[this.state.input.theme]
-                  }}
-                >{this.state.finalSelectionString}</PackenUiText>
-              </View>
-            </View>
+            {this.getInput()}
+            {this.getContentSizer()}
           </View>
         </TouchableWithoutFeedback>
-        <View
-          onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
-          style={[
-            this.getStyles().menu.base,
-            this.getStyles().menu.theme[this.state.input.theme],
-            this.state.styles.menu,
-            {
-              opacity: this.state.isOpen ? 1 : 0
-            }
-          ]}
-          pointerEvents={this.state.isOpen ? "auto" : "none"}
-        >
-          <PackenUiDropdownList
-            items={this.state.list.items}
-            config={{ size: this.state.size, ...this.state.list.config }}
-            numShownRows={4}
-            getFinalSelection={this.getFinalSelection}
-            finalSelectionArray={this.state.finalSelection}
-            toggleMenu={this.toggleMenu}
-          />
-        </View>
+        {this.getMenu()}
       </View>
     );
   }
@@ -411,33 +423,20 @@ class PackenUiDropdown extends Component {
       menu: {
         base: {
           backgroundColor: Colors.basic.white.dft,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 2
-          },
-          shadowOpacity: 0.23,
-          shadowRadius: 2.62,
-          elevation: Shadows.md.elevation,
           position: "absolute",
           zIndex: 10,
           left: 0,
           width: "100%",
-          opacity: 0
+          opacity: 0,
+          ...Shadows.md
         },
         theme: {
           default: {},
           success: {},
           danger: {},
           list: {
-            transform: [{translateY: 20}],
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.18,
-            shadowRadius: 1,
-            elevation: 1
+            transform: [{ translateY: 20 }],
+            ...Shadows.xs
           }
         }
       }

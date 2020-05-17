@@ -93,14 +93,7 @@ class PackenUiMapPin extends Component {
         flexDirection: "row",
         alignItems: "stretch",
         justifyContent: "flex-start",
-        shadowColor: Colors.basic.black.dft,
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: Shadows.md.elevation
+        ...Shadows.md
       },
       main: {
         base: {
@@ -113,14 +106,7 @@ class PackenUiMapPin extends Component {
           textAlign: "center",
           position: "relative",
           zIndex: 2,
-          shadowColor: Colors.basic.black.dft,
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.23,
-          shadowRadius: 2.62,
-          elevation: Shadows.md.elevation
+          ...Shadows.md
         },
         theme: {
           primary: {

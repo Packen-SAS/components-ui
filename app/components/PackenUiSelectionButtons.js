@@ -32,12 +32,20 @@ class PackenUiSelectionButtons extends Component {
     };
   }
 
+  filterInitialSelected = item => item.isSelected;
+
+  pushPreselected = (item, preSelected) => {
+    if (item.isSelected) {
+      preSelected.push(item.value);
+    }
+  }
+
   getInitialSelected = () => {
     const items = this.setPropsToState().items;
     let selected;
 
     if (this.props.selection === "single") {
-      const found = items.filter(item => item.isSelected)[0];
+      const found = items.filter(this.filterInitialSelected)[0];
       if (found) {
         selected = found.value;
       } else {
@@ -45,16 +53,14 @@ class PackenUiSelectionButtons extends Component {
       }
     } else {
       const preSelected = [];
-      items.forEach(item => {
-        if (item.isSelected) {
-          preSelected.push(item.value);
-        }
-      });
+      items.forEach(item => this.pushPreselected(item, preSelected));
       selected = [...preSelected];
     }
 
     return selected;
   }
+
+  findNewSelectedIndex = (item, newValue) => item === newValue;
 
   newSelectionHandler = newValue => {
     let newSelected;
@@ -63,11 +69,11 @@ class PackenUiSelectionButtons extends Component {
       newSelected = newValue;
     } else {
       newSelected = [...this.state.selected];
-      
+
       if (newSelected.includes(newValue)) {
-        const foundIndex = newSelected.findIndex(item => item === newValue);
+        const foundIndex = newSelected.findIndex(item => this.findNewSelectedIndex(item, newValue));
         if (newSelected.length > 1) {
-          newSelected.splice(foundIndex, 1); 
+          newSelected.splice(foundIndex, 1);
         }
       } else {
         newSelected.push(newValue);
@@ -97,6 +103,23 @@ class PackenUiSelectionButtons extends Component {
     }
   }
 
+  mapItems = (item, i) => (
+    <View key={i} style={[
+      this.getStyles().item.type[this.state.type],
+      this.getStyles().item.altStyle[this.state.altStyle],
+      { width: `${100 / this.state.itemsPerRow}%` }
+    ]}>
+      <PackenUiSelectionButtonsControl
+        data={item}
+        altStyle={this.state.altStyle}
+        type={this.state.type}
+        selected={this.state.selected}
+        selection={this.state.selection}
+        onNewSelection={this.newSelectionHandler}
+      />
+    </View>
+  )
+
   render() {
     return (
       <View style={[
@@ -104,24 +127,7 @@ class PackenUiSelectionButtons extends Component {
         this.getStyles().wrapper.type[this.state.type],
         this.getStyles().wrapper.altStyle[this.state.altStyle]
       ]}>
-        {
-          this.state.items.map((item, i) => (
-            <View key={i} style={[
-              this.getStyles().item.type[this.state.type],
-              this.getStyles().item.altStyle[this.state.altStyle],
-              { width: `${100/this.state.itemsPerRow}%` }
-            ]}>
-              <PackenUiSelectionButtonsControl
-                data={item}
-                altStyle={this.state.altStyle}
-                type={this.state.type}
-                selected={this.state.selected}
-                selection={this.state.selection}
-                onNewSelection={this.newSelectionHandler}
-              />
-            </View>
-          ))
-        }
+        {this.state.items.map(this.mapItems)}
       </View>
     );
   }

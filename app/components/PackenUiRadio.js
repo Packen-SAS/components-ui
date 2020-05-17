@@ -67,25 +67,25 @@ class PackenUiRadio extends Component {
     });
   }
 
+  mapItems = (item, i) => (
+    <View
+      key={i}
+      style={this.getStyles().item[this.state.layout]}
+      pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
+    >
+      <PackenUiRadioControl
+        checkedIndex={this.state.checkedIndex}
+        selfIndex={i}
+        label={item.label}
+        isDisabled={item.isDisabled}
+        updateCheckedIndex={this.setCheckedIndex} />
+    </View>
+  )
+
   render() {
     return (
       <View style={this.getStyles().container[this.state.layout]}>
-        {
-          this.state.items.map((item, i) => (
-            <View
-              key={i}
-              style={this.getStyles().item[this.state.layout]}
-              pointerEvents={this.state.layout === "dropdown" ?  "none" : "auto"}
-            >
-              <PackenUiRadioControl
-                checkedIndex={this.state.checkedIndex}
-                selfIndex={i}
-                label={item.label}
-                isDisabled={item.isDisabled}
-                updateCheckedIndex={this.setCheckedIndex}/>
-            </View>
-          ))
-        }
+        {this.state.items.map(this.mapItems)}
       </View>
     );
   }

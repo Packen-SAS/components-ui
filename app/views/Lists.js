@@ -16,6 +16,110 @@ class Lists extends Component {
   constructor(props) {
     super(props);
 
+    this.items = [
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Bogotá, D.C.",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Test",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Test 2",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test 2</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Test 3",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test 3</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Lorem ipsum dolor sit amet consectetur adipiscing elit!",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Lorem ipsum dolor sit amet consectetur adipiscing elit!</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Medellín",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Bucaramanga",
+        isSelected: false,
+        isDisabled: true,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Santa Marta",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Cali",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cali</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Cartagena",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenUiText>)
+      },
+      {
+        key: genKey(),
+        left: false,
+        right: false,
+        value: "Leticia",
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenUiText>)
+      }
+    ];
+
+    const testItems = [];
+    for(let i = 1; i <= 100; i++) {
+      testItems.push({
+        key: genKey(),
+        left: false,
+        right: false,
+        value: i,
+        isSelected: false,
+        main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>{i}</PackenUiText>)
+      });
+    }
+
     this.state = {
       items: [
         {
@@ -34,97 +138,7 @@ class Lists extends Component {
                 checkedIcon: "check",
                 selectionType: "single"
               },
-              items: [
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Bogotá, D.C.",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bogotá, D.C.</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Test",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Test 2",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test 2</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Test 3",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Test 3</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Lorem ipsum dolor sit amet consectetur adipiscing elit!",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Lorem ipsum dolor sit amet consectetur adipiscing elit!</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Medellín",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Medellín</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Bucaramanga",
-                  isSelected: false,
-                  isDisabled: true,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Bucaramanga</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Santa Marta",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Santa Marta</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Cali",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cali</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Cartagena",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Cartagena</PackenUiText>)
-                },
-                {
-                  key: genKey(),
-                  left: false,
-                  right: false,
-                  value: "Leticia",
-                  isSelected: false,
-                  main: (<PackenUiText style={{ color: Colors.basic.independence.dft }}>Leticia</PackenUiText>)
-                }
-              ]
+              items: [...testItems]
             }
           },
           customWrapperStyle: { marginBottom: 16 }
