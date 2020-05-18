@@ -11,10 +11,7 @@ class PackenUiTag extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      style: props.style,
-      children: props.children
-    }
+    this.state = { ...this.setPropsToState() }
   }
 
   componentDidMount() {
@@ -31,10 +28,7 @@ class PackenUiTag extends Component {
   }
 
   updateState = () => {
-    this.setState({
-      style: this.props.style,
-      children: this.props.children
-    });
+    this.setState({ ...this.setPropsToState() });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
