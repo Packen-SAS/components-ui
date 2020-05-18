@@ -2,15 +2,15 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
-import PackenUiTabItem from "../../app/components/PackenUiTabItem";
+import PackenUiTabsItem from "../../app/components/PackenUiTabsItem";
 
-describe("<PackenUiTabItem/>", () => {
+describe("<PackenUiTabsItem/>", () => {
   let render, renderInstance;
   const mockCallback = jest.fn();
 
   beforeAll(() => {
     render = shallow(
-      <PackenUiTabItem
+      <PackenUiTabsItem
         key={0}
         activeTabIndex={0}
         selfIndex={0}

@@ -31,8 +31,8 @@ import PackenUiSelectionButtons from "./app/components/PackenUiSelectionButtons"
 import PackenUiSelectionButtonsControl from "./app/components/PackenUiSelectionButtonsControl";
 import PackenUiServiceStatus from "./app/components/PackenUiServiceStatus";
 import PackenUiServiceStatusItem from "./app/components/PackenUiServiceStatusItem";
-import PackenUiTabItem from "./app/components/PackenUiTabItem";
 import PackenUiTabs from "./app/components/PackenUiTabs";
+import PackenUiTabsItem from "./app/components/PackenUiTabsItem";
 import PackenUiTag from "./app/components/PackenUiTag";
 import PackenUiText from "./app/components/PackenUiText";
 import PackenUiToggle from "./app/components/PackenUiToggle";
@@ -66,8 +66,8 @@ export {
   PackenUiSelectionButtonsControl,
   PackenUiServiceStatus,
   PackenUiServiceStatusItem,
-  PackenUiTabItem,
   PackenUiTabs,
+  PackenUiTabsItem,
   PackenUiTag,
   PackenUiText,
   PackenUiToggle,

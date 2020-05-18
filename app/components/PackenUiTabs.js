@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 
-import PackenUiTabItem from "./PackenUiTabItem";
+import PackenUiTabsItem from "./PackenUiTabsItem";
 
 class PackenUiTabs extends Component {
   constructor(props) {
@@ -47,7 +47,7 @@ class PackenUiTabs extends Component {
   }
 
   mapItems = (item, i) => (
-    <PackenUiTabItem
+    <PackenUiTabsItem
       key={`${item.label}-${i}`}
       activeTabIndex={this.state.activeTabIndex}
       selfIndex={i}
