@@ -1,6 +1,7 @@
 export default {
   base: {
     default_lgt: "#EDF1F7",
+    default_alt: "#E6E6E6",
     disabled: "rgba(48, 77, 109, 0.05)",
     disabled_alt: "rgba(48, 77, 109, 0.2)",
     disabled_alt_drk: "rgba(48, 77, 109, 0.4)"
