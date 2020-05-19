@@ -131,7 +131,7 @@ class PackenUiButton extends Component {
   }
 
   getStyles = () => {
-    const { type, size, level, isDisabled } = this.setStyleVariables();
+    const { type, size, level, isDisabled } = this.state ? this.state : this.setPropsToState();
     let styles = this.getBaseStyles(type, size, level);
     styles = this.getTypeStyles(styles, type, size, level);
     styles = this.getLevelStyles(styles, level);
