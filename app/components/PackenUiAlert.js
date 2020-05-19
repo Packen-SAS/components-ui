@@ -78,7 +78,7 @@ class PackenUiAlert extends Component {
     let title = "";
 
     if (this.state.text.title) {
-      title = this.state.text.title + ": ";
+      title = `${this.state.text.title}: `;
     }
 
     return title;
