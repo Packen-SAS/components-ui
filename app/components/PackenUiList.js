@@ -43,9 +43,7 @@ class PackenUiList extends Component {
   render() {
     return (
       <View style={[this.getStyles().wrapper, { ...this.state.customWrapperStyles }]}>
-        {
-          this.state.items.map(this.mapItems)
-        }
+        {this.state.items.map(this.mapItems)}
       </View>
     );
   }
