@@ -37,22 +37,6 @@ class PackenUiButton extends Component {
     };
   }
 
-  setStyleVariables = () => {
-    let type, size, level, isDisabled;
-    if (this.state) {
-      type = this.state.type;
-      size = this.state.size;
-      level = this.state.level;
-      isDisabled = this.state.isDisabled;
-    } else {
-      type = this.setPropsToState().type,
-      level = this.setPropsToState().level,
-      size = this.setPropsToState().size,
-      isDisabled = this.setPropsToState().isDisabled;
-    }
-    return { type, size, level, isDisabled };
-  }
-
   getBaseStyles = (type, size, level) => {
     return {
       shape: {
