@@ -23,7 +23,9 @@ class PackenUiTag extends Component {
   setPropsToState = () => {
     return {
       style: this.props.style ? { ...this.props.style } : {},
-      children: this.props.children ? this.props.children : null
+      children: this.props.children ? this.props.children : null,
+      backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : Colors.brand.primary.snw,
+      textColor: this.props.textColor ? this.props.textColor : Colors.basic.independence.dft
     };
   }
 
@@ -56,12 +58,13 @@ class PackenUiTag extends Component {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: Colors.brand.primary.snw,
+          backgroundColor: this.state.backgroundColor,
           alignSelf: "flex-start"
         }
       },
       label: {
         base: {
+          color: this.state.textColor,
           fontFamily: Typography.family.regular,
           fontSize: Typography.size.tiny_alt,
           lineHeight: Typography.lineheight.medium_alt
