@@ -9,7 +9,7 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
-class PackenUiTabItem extends Component {
+class PackenUiTabsItem extends Component {
   constructor(props) {
     super(props);
 
@@ -238,7 +238,7 @@ class PackenUiTabItem extends Component {
   }
 }
 
-PackenUiTabItem.propTypes = {
+PackenUiTabsItem.propTypes = {
   updateActiveTabIndex: PropTypes.func.isRequired,
   activeTabIndex: PropTypes.number.isRequired,
   selfIndex: PropTypes.number.isRequired,
@@ -247,4 +247,4 @@ PackenUiTabItem.propTypes = {
   icon: PropTypes.string,
 };
 
-export default PackenUiTabItem;
+export default PackenUiTabsItem;

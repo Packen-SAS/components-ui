@@ -43,6 +43,27 @@ class PackenUiMapPin extends Component {
     }
   }
 
+  getInfoRender = () => (
+    <View style={this.getStyles().inner}>
+      {
+        this.state.sub && this.state.sub.position === "left" ? this.getSubRender() : null
+      }
+      <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme] }}>
+        <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme] }}>
+          {this.getLabel()}
+          {this.state.main.text}
+        </PackenUiText>
+      </View>
+      {
+        this.state.sub && this.state.sub.position === "right" ? this.getSubRender() : null
+      }
+    </View>
+  )
+
+  getSubRender = () => (
+    <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
+  )
+
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
@@ -57,28 +78,7 @@ class PackenUiMapPin extends Component {
     return (
       <View style={this.getStyles().container}>
         {
-          this.state.type === "info" ? (
-            <View style={this.getStyles().inner}>
-              {
-                this.state.sub && this.state.sub.position === "left" ? (
-                  <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
-                ) : null
-              }
-              <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme] }}>
-                <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme] }}>
-                  {this.getLabel()}
-                  {this.state.main.text}
-                </PackenUiText>
-              </View>
-              {
-                this.state.sub && this.state.sub.position === "right" ? (
-                  <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
-                ) : null
-              }
-            </View>
-          ) : (
-              <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
-            )
+          this.state.type === "info" ? this.getInfoRender() : this.getSubRender()
         }
       </View>
     );

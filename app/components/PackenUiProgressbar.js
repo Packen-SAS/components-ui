@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, Animated } from "react-native";
 
+import Colors from "../styles/abstracts/colors";
+
 class PackenUiProgressbar extends Component {
   constructor(props) {
     super(props);
@@ -21,8 +23,8 @@ class PackenUiProgressbar extends Component {
       radius: this.props.radius ? this.props.radius : 0,
       isComplete: this.props.isComplete ? this.props.isComplete : false,
       colors: {
-        track: this.props.trackColor ? this.props.trackColor : "#E6E6E6",
-        indicator: this.props.indicatorColor ? this.props.indicatorColor : "#20D292"
+        track: this.props.trackColor ? this.props.trackColor : Colors.base.default_alt,
+        indicator: this.props.indicatorColor ? this.props.indicatorColor : Colors.success.default
       }
     };
   };
