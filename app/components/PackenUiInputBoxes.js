@@ -18,7 +18,7 @@ class PackenUiInputBoxes extends Component {
 
   componentDidMount = () => {
     const { boxes } = this.props;
-    for (var i = 0; i < boxes; i++) {
+    for (let i = 0; i < boxes; i++) {
       this.items.push(i + 1);
     }
     this.setState({ boxes: this.items.map(this.renderBox) });
@@ -31,8 +31,8 @@ class PackenUiInputBoxes extends Component {
   reducer = (a, b) => (a.text + b.text);
 
   getVerificationCode = () => {
-    var code = "";
-    for (var i = 0; i < this.items.length; i++) {
+    let code = "";
+    for (let i = 0; i < this.items.length; i++) {
       if (this.items[i].text != null) {
         code += this.items[i].text;
       }
@@ -55,7 +55,7 @@ class PackenUiInputBoxes extends Component {
   }
 
   clearInputs = () => {
-    for (var i = 0; this.items[i] != null; i++) {
+    for (let i = 0; this.items[i] != null; i++) {
       if (this.items[i].input != null) {
         this.items[i].input.clear();
       }
