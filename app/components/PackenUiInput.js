@@ -915,7 +915,7 @@ PackenUiInput.propTypes = {
   size: PropTypes.string.isRequired,
   theme: PropTypes.string.isRequired,
   multiline: PropTypes.bool,
-  name: PropTypes.string.isRequired,
+  name: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   nonEditable: PropTypes.bool,
   isDropdown: PropTypes.bool,
   isOpen: PropTypes.bool,
