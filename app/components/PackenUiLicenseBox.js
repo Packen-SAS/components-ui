@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableNativeFeedback } from "react-native";
 
-import i18n from "../modules/i18n";
 import * as UTIL from "../utils";
 import Colors from "../styles/abstracts/colors";
 
@@ -10,8 +9,6 @@ import PackenUiText from "./PackenUiText";
 import PackenUiTag from "./PackenUiTag";
 
 class PackenUiLicenseBox extends Component {
-  language = i18n();
-
   constructor(props) {
     super(props);
     this.state = { ...this.setPropsToState() }
@@ -23,23 +20,29 @@ class PackenUiLicenseBox extends Component {
       category: this.props.category ? this.props.category : null,
       number: this.props.number ? this.props.number : null,
       state: this.props.state ? this.props.state : null,
-      due_date: this.props.due_date ? this.props.due_date : null,
-      callback: this.props.callback ? this.props.callback : null
+      dueDate: this.props.dueDate ? this.props.dueDate : null,
+      callback: this.props.callback ? this.props.callback : null,
+      labels: this.props.labels ? { ...this.props.labels } : {
+        approved: "Aprobado",
+        expired: "Vencido",
+        rejected: "Rechazado",
+        pending: "Pendiente"
+      }
     };
   }
 
   getLicenseState = state => {
     switch (state) {
-      case 'approved':
-        return { label: this.language.status.approved, bg: Colors.success.default, text: Colors.white.default };
-      case 'expired':
-        return { label: this.language.status.expired, bg: Colors.base.gray, text: Colors.white.default };
-      case 'blocked':
-      case 'rejected':
-        return { label: this.language.status.declined, bg: Colors.danger.default, text: Colors.white.default };
-      case 'pending':
+      case "approved":
+        return { label: this.state.labels.approved, bg: Colors.success.default, text: Colors.white.default };
+      case "expired":
+        return { label: this.state.labels.expired, bg: Colors.base.gray, text: Colors.white.default };
+      case "blocked":
+      case "rejected":
+        return { label: this.state.labels.rejected, bg: Colors.danger.default, text: Colors.white.default };
+      case "pending":
       default:
-        return { label: this.language.status.pending, bg: Colors.warning.default, text: Colors.white.default };
+        return { label: this.state.labels.pending, bg: Colors.warning.default, text: Colors.white.default };
     }
   }
 
@@ -48,7 +51,7 @@ class PackenUiLicenseBox extends Component {
     const licenseExpired = (UTIL.datetime()
       .diff(
         UTIL.toMomentObject(new Date(state)),
-        UTIL.toMomentObject(Date.now()), 'days')
+        UTIL.toMomentObject(Date.now()), "days")
       >
       0);
     return licenseExpired
@@ -87,10 +90,10 @@ class PackenUiLicenseBox extends Component {
             </PackenUiTag>
             {/* Fecha de expiración de la licencia*/}
             <PackenUiTag
-              backgroundColor={this.getDueDateState(this.state.due_date)}
+              backgroundColor={this.getDueDateState(this.state.dueDate)}
               textColor={Colors.white.default}
               style={this.getStyles().spacing}>
-              {this.state.due_date}
+              {this.state.dueDate}
             </PackenUiTag>
             {/* Estado de la licencia: pending, rejected, approved, expired */}
             <PackenUiTag
@@ -107,7 +110,7 @@ class PackenUiLicenseBox extends Component {
 
   getStyles = () => {
     return {
-      wt: { width: '100%' },
+      wt: { width: "100%" },
       box: {
         padding: 8,
         backgroundColor: Colors.basic.white.dft,
@@ -115,17 +118,17 @@ class PackenUiLicenseBox extends Component {
         marginBottom: 16
       },
       licenseNumber: {
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
         marginBottom: 5
       },
       licenseData: {
         marginTop: 5,
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        flexDirection: 'row'
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+        flexDirection: "row"
       },
       subtitle: {
         color: Colors.basic.gray.drk
@@ -138,11 +141,13 @@ class PackenUiLicenseBox extends Component {
 }
 
 PackenUiLicenseBox.propTypes = {
-  type: PropTypes.string.isRequired,
-  make: PropTypes.string.isRequired,
-  year: PropTypes.string.isRequired,
-  plate: PropTypes.string.isRequired,
-  callback: PropTypes.func
+  overview: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
+  number: PropTypes.string.isRequired,
+  state: PropTypes.string.isRequired,
+  dueDate: PropTypes.string,
+  callback: PropTypes.func,
+  labels: PropTypes.object.isRequired
 };
 
 export default PackenUiLicenseBox;
