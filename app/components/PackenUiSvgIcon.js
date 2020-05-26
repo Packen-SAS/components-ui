@@ -22,30 +22,30 @@ import PackenProfileBlur from "../../assets/icons/profile_blur.svg";
 
 import PackenUiText from "./PackenUiText";
 
-const Icon = ({ width, heigth, name }) => {
+const Icon = ({ width, height, name }) => {
   const icons = {
-    "logo-inverted": <PackenLogoInverted width={width} heigth={heigth} />,
-    "logo-main": <PackenLogoMain width={width} heigth={heigth} />,
-    "icon-vehicle": <PackenIconVehicle width={width} heigth={heigth} />,
-    "whatsapp": <PackenWhatsApp width={width} heigth={heigth} />,
-    "whatsapp_inverted": <PackenWhatsAppInverted width={width} heigth={heigth} />,
-    "backhandler": <PackenBackHandler width={width} heigth={heigth} />,
-    "document_back": <PackenDocumentBack width={width} heigth={heigth} />,
-    "document_front": <PackenDocumentFront width={width} heigth={heigth} />,
-    "document_file": <PackenDocumentFile width={width} heigth={heigth} />,
+    "logo-inverted": <PackenLogoInverted width={width} height={height} />,
+    "logo-main": <PackenLogoMain width={width} height={height} />,
+    "icon-vehicle": <PackenIconVehicle width={width} height={height} />,
+    "whatsapp": <PackenWhatsApp width={width} height={height} />,
+    "whatsapp_inverted": <PackenWhatsAppInverted width={width} height={height} />,
+    "backhandler": <PackenBackHandler width={width} height={height} />,
+    "document_back": <PackenDocumentBack width={width} height={height} />,
+    "document_front": <PackenDocumentFront width={width} height={height} />,
+    "document_file": <PackenDocumentFile width={width} height={height} />,
     /* Toolbar icons */
-    "navigation": <PackenNavigation width={width} heigth={heigth} />,
-    "navigation_blur": <PackenNavigationBlur width={width} heigth={heigth} />,
-    "shipments": <PackenShipments width={width} heigth={heigth} />,
-    "shipments_blur": <PackenShipmentsBlur width={width} heigth={heigth} />,
-    "myshipments": <PackenMyShipments width={width} heigth={heigth} />,
-    "myshipments_blur": <PackenMyShipmentsBlur width={width} heigth={heigth} />,
-    "support": <PackenSupport width={width} heigth={heigth} />,
-    "support_blur": <PackenSupportBlur width={width} heigth={heigth} />,
-    "myshipments": <PackenMyShipments width={width} heigth={heigth} />,
-    "myshipments_blur": <PackenMyShipmentsBlur width={width} heigth={heigth} />,
-    "profile": <PackenProfile width={width} heigth={heigth} />,
-    "profile_blur": <PackenProfileBlur width={width} heigth={heigth} />
+    "navigation": <PackenNavigation width={width} height={height} />,
+    "navigation_blur": <PackenNavigationBlur width={width} height={height} />,
+    "shipments": <PackenShipments width={width} height={height} />,
+    "shipments_blur": <PackenShipmentsBlur width={width} height={height} />,
+    "myshipments": <PackenMyShipments width={width} height={height} />,
+    "myshipments_blur": <PackenMyShipmentsBlur width={width} height={height} />,
+    "support": <PackenSupport width={width} height={height} />,
+    "support_blur": <PackenSupportBlur width={width} height={height} />,
+    "myshipments": <PackenMyShipments width={width} height={height} />,
+    "myshipments_blur": <PackenMyShipmentsBlur width={width} height={height} />,
+    "profile": <PackenProfile width={width} height={height} />,
+    "profile_blur": <PackenProfileBlur width={width} height={height} />
   };
   return icons[name] || <PackenUiText>Icon not found.</PackenUiText>
 }
