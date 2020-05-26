@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { View, TouchableNativeFeedback } from "react-native";
 
 import colors from "../styles/abstracts/colors";
-import PackenUiSvgIcon from "../PackenUiSvgIcon";
+import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
 
 class PackenUiWhatsAppLink extends Component {
   constructor(props) {
     super(props);
-    this.setState({ ...this.setPropsToState() });
+    this.state = { ...this.setPropsToState() };
   }
 
   componentDidMount() {
@@ -59,7 +59,7 @@ class PackenUiWhatsAppLink extends Component {
     return (
       <React.Fragment>
         {
-          this.state.visible ? (
+          this.props.visible ? (
             <TouchableNativeFeedback
               onPress={this.trigger}>
               <View style={this.getStyles()}>
