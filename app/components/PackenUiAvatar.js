@@ -34,6 +34,7 @@ class PackenUiAvatar extends Component {
       inner = (
         <Image
           source={this.state.src}
+          resizeMode="cover"
           style={{
             height: "100%",
             width: "100%",

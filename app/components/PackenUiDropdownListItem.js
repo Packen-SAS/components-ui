@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
-import { arraysEqual } from "../utils";
+import * as UTIL from "../utils";
 
 import PackenUiAvatar from "./PackenUiAvatar";
 import PackenUiRadio from "./PackenUiRadio";
@@ -81,7 +81,7 @@ class PackenUiDropdownListItem extends Component {
   findSelectedItem = item => item === this.props.mainContent.value;
 
   checkSelectedItems = prevProps => {
-    if (!arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
+    if (!UTIL.arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
       if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
         const found = this.props.selectedItems.find(this.findSelectedItem);
         if (!found) {

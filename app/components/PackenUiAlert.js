@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -25,7 +26,9 @@ class PackenUiAlert extends Component {
         preset: undefined
       },
       onClose: this.props.onClose ? this.props.onClose : false,
-      countdown: this.props.countdown ? this.props.countdown : false
+      countdown: this.props.countdown ? this.props.countdown : false,
+      visible: this.props.visible ? this.props.visible : false,
+      position: this.props.position ? this.props.position : "bottom"
     };
   }
 
@@ -39,22 +42,21 @@ class PackenUiAlert extends Component {
 
   checkIfTimed = () => {
     if (this.state.type === "timed" && this.state.countdown) {
-      const timeout = setTimeout(() => { this.closeHandler(timeout); }, this.state.countdown);
+      const timeout = setTimeout(() => {
+        this.close();
+        clearTimeout(timeout);
+      }, this.state.countdown);
     } else {
       return false;
     }
   }
 
-  closeHandler = timeout => {
-    this.close();
-    clearTimeout(timeout);
-  }
-
   close = () => {
-    if (this.state.onClose) {
+    if (typeof this.state.onClose === "function") {
       this.state.onClose();
-    } else {
-      return false;
+    }
+    if (typeof this.props.dismiss === "function") {
+      this.props.dismiss();
     }
   }
 
@@ -122,6 +124,14 @@ class PackenUiAlert extends Component {
     </TouchableWithoutFeedback>
   )
 
+  getPositionAlert = () => {
+    const position = this.getStyles().box.position[this.state.position];
+    if (!position) {
+      return this.getStyles().box.position.top;
+    }
+    return position;
+  }
+
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -136,22 +146,39 @@ class PackenUiAlert extends Component {
 
   render() {
     return (
-      <View style={[
-        this.getStyles().box.base,
-        this.getStyles().box.theme[this.state.theme]
-      ]}>
-        {this.getIcon()}
-        {this.getMain()}
-        {this.getClose()}
-      </View>
+      this.state.visible ? (
+        <View style={[this.getStyles().box.main, this.getPositionAlert()]}>
+          <View style={[
+            this.getStyles().box.base,
+            this.getStyles().box.theme[this.state.theme]
+          ]}>
+            {this.getIcon()}
+            {this.getMain()}
+            {this.getClose()}
+          </View>
+        </View>
+      ) : null
     );
   }
 
   getStyles = () => {
     return {
       box: {
-        base: {
+        main: {
           width: "100%",
+          position: "absolute",
+          left: 0,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        position: {
+          top: { top: 30 },
+          bottom: { bottom: 30 }
+        },
+        base: {
+          width: "90%",
+          position: "relative",
           padding: 16,
           borderWidth: 1,
           borderStyle: "solid",
@@ -245,5 +272,16 @@ class PackenUiAlert extends Component {
     };
   }
 }
+
+PackenUiAlert.propTypes = {
+  type: PropTypes.string.isRequired,
+  theme: PropTypes.string.isRequired,
+  text: PropTypes.object.isRequired,
+  onClose: PropTypes.func.isRequired,
+  dismiss: PropTypes.func,
+  countdown: PropTypes.number,
+  visible: PropTypes.bool,
+  position: PropTypes.string
+};
 
 export default PackenUiAlert;

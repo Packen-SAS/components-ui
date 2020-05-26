@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import Icon from "react-native-vector-icons/dist/Feather";
 import { View, Image, TouchableWithoutFeedback } from "react-native";
+import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 
@@ -27,96 +27,44 @@ class PackenUiVehicleBox extends Component {
       overview: this.props.overview ? this.props.overview : "",
       year: this.props.year ? this.props.year : "",
       plate: this.props.plate ? this.props.plate : "",
-      state: this.props.state ? this.props.state : "reviewing",
-      callback: this.props.callback ? this.props.callback : false
-    };
-  }
-
-  getImage = () => {
-    let image = {
-      src: "",
-      style: {
-        width: 0,
-        height: 0
+      state: this.props.state ? this.props.state : "pending",
+      callback: this.props.callback ? this.props.callback : false,
+      image: this.props.image ? this.props.image : null,
+      labels: this.props.labels ? { ...this.props.labels } : {
+        approved: "Aprobado",
+        rejected: "Rechazado",
+        pending: "Pendiente"
       }
     };
-
-    switch (this.state.type) {
-      case "carry":
-        image = {
-          src: require("../../assets/images/carry.png"),
-          style: {
-            width: 202,
-            height: 95
-          }
-        };
-        break;
-      case "moto":
-        image = {
-          src: require("../../assets/images/moto.png"),
-          style: {
-            width: 121,
-            height: 80
-          }
-        };
-        break;
-      case "npr":
-        image = {
-          src: require("../../assets/images/npr.png"),
-          style: {
-            width: 176,
-            height: 95
-          }
-        };
-        break;
-      case "sencillo":
-        image = {
-          src: require("../../assets/images/sencillo.png"),
-          style: {
-            width: 213,
-            height: 95
-          }
-        };
-        break;
-      case "tractomula":
-        image = {
-          src: require("../../assets/images/tractomula.png"),
-          style: {
-            width: 205,
-            height: 95
-          }
-        };
-        break;
-    }
-
-    return image;
   }
 
   getState = () => {
     let state = null;
 
     switch (this.state.state) {
+      case "taken":
       case "approved":
         state = {
-          label: "Aprobado",
+          label: this.state.labels.approved,
           icon: {
             name: "check-circle",
             color: Colors.success.default
           }
         };
         break;
-      case "declined":
+      case "blocked":
+      case "rejected":
         state = {
-          label: "Rechazado",
+          label: this.state.labels.rejected,
           icon: {
             name: "alert-circle",
             color: Colors.danger.default
           }
         };
         break;
-      case "reviewing":
+      case "pending":
         state = {
-          label: "En revisión",
+          label: this.state.labels.pending,
           icon: {
             name: "pause-circle",
             color: Colors.basic.gray.drk
@@ -130,11 +78,11 @@ class PackenUiVehicleBox extends Component {
 
   getImgStyles = () => {
     let styles = {};
-
     if (this.state.type !== "moto") {
-      styles = { ...this.getStyles().img }
+      styles = { ...this.getStyles().img, width: 206, height: 95 };
+    } else {
+      styles = { width: 121, height: 80 };
     }
-
     return styles;
   }
 
@@ -146,10 +94,7 @@ class PackenUiVehicleBox extends Component {
     let content = (
       <View style={this.getStyles().box}>
         <View style={this.getStyles().imgWrapper}>
-          <Image source={this.getImage().src} style={{
-            ...this.getImage().style,
-            ...this.getImgStyles(),
-          }} />
+          <Image source={{ uri: this.state.image }} style={{ ...this.getImgStyles() }} />
         </View>
         <View style={this.getStyles().copy}>
           <PackenUiText preset="t1" style={this.getStyles().type}>{this.state.type.charAt(0).toUpperCase() + this.state.type.substring(1)}</PackenUiText>
@@ -201,7 +146,7 @@ class PackenUiVehicleBox extends Component {
       },
       imgWrapper: {
         width: "42%",
-        height: this.getImage().style.height,
+        height: 95,
         paddingRight: 12,
         alignItems: "center",
         justifyContent: "center"

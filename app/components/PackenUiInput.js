@@ -7,6 +7,7 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
+import PackenUiLoaderButton from "./PackenUiLoaderButton";
 
 class PackenUiInput extends Component {
   constructor(props) {
@@ -16,8 +17,8 @@ class PackenUiInput extends Component {
   }
 
   componentDidMount() {
-    if (typeof this.props.instance === "function") {
-      this.props.instance(this);
+    if (this.state.propagateRef) {
+      this.state.propagateRef(this, this.state.name);
     }
   }
 
@@ -45,7 +46,8 @@ class PackenUiInput extends Component {
       style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
-      propagateRef: this.props.propagateRef ? this.props.propagateRef : false
+      propagateRef: this.props.propagateRef ? this.props.propagateRef : false,
+      loading: this.props.loading ? this.props.loading : false
     };
   }
 
@@ -155,7 +157,7 @@ class PackenUiInput extends Component {
       }, this.addKeyboardEvents);
       if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
         this.state.eventHandlers.onFocus(this.state.name);
-      } 
+      }
     } else {
       return false;
     }
@@ -178,7 +180,10 @@ class PackenUiInput extends Component {
   }
 
   handleChangeText = text => {
-    this.state.onChangeText(this.state.name, text);
+    this.setState({
+      value: text
+    });
+    this.state.onChangeText(this.state.name, text ? text : null);
   }
 
   addKeyboardEvents = () => {
@@ -305,9 +310,9 @@ class PackenUiInput extends Component {
     this.setState({
       ref: input
     }, this.checkFocus);
-    
-    if (this.state.propagateRef) {
-      this.state.propagateRef(input);
+
+    if (typeof this.props.instance === "function") {
+      this.props.instance(input, this.state.name);
     } else {
       return false;
     }
@@ -352,7 +357,7 @@ class PackenUiInput extends Component {
     let icon = null;
 
     if (this.state.icon) {
-      const inner = (
+      const inner = !this.state.loading ? (
         <Icon
           name={this.getIconName()}
           size={this.getStyles().icon.size[this.state.size].size}
@@ -362,6 +367,14 @@ class PackenUiInput extends Component {
             ...this.getStyles().icon.state[this.state.state],
             ...this.state.icon.style
           }}
+        />
+      ) : (
+        <PackenUiLoaderButton
+          type="icon"
+          level="ghost"
+          size="tiny"
+          isDone={false}
+          callback={null}
         />
       );
 
@@ -386,9 +399,7 @@ class PackenUiInput extends Component {
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
-    }, () => {
-      this.checkFocus();
-    });
+    }, this.checkFocus);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -433,8 +444,8 @@ class PackenUiInput extends Component {
             onBlur={this.handleBlur}
             onChangeText={this.handleChangeText}
             onSubmitEditing={this.handleSubmitEditing}
-            placeholder={this.state.placeholder}
-            placeholderTextColor={this.state.placeholderTextColor}
+            placeholder={String(this.state.placeholder)}
+            placeholderTextColor={String(this.state.placeholderTextColor)}
             multiline={this.state.multiline ? true : false}
             editable={this.setEditable()}
             maxLength={this.state.maxLength}
@@ -917,7 +928,9 @@ PackenUiInput.propTypes = {
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
   onChangeText: PropTypes.func.isRequired,
-  eventHandlers: PropTypes.object
+  eventHandlers: PropTypes.object,
+  propagateRef: PropTypes.func,
+  loading: PropTypes.bool
 };
 
 export default PackenUiInput;

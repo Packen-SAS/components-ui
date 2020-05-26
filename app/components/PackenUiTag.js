@@ -10,7 +10,6 @@ import PackenUiText from "./PackenUiText";
 class PackenUiTag extends Component {
   constructor(props) {
     super(props);
-
     this.state = { ...this.setPropsToState() }
   }
 
@@ -23,6 +22,7 @@ class PackenUiTag extends Component {
   setPropsToState = () => {
     return {
       style: this.props.style ? { ...this.props.style } : {},
+      boxStyles: this.props.style ? { ...this.props.style } : {},
       children: this.props.children ? this.props.children : null,
       backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : Colors.brand.primary.snw,
       textColor: this.props.textColor ? this.props.textColor : Colors.basic.independence.dft
@@ -41,8 +41,11 @@ class PackenUiTag extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().box.base}>
-        <PackenUiText style={{ ...this.getStyles().label.base, ...this.state.style }}>{this.state.children}</PackenUiText>
+      <View style={{
+        ...this.getStyles().box.base,
+        ...this.state.boxStyles
+      }}>
+        <PackenUiText preset="c1" style={{ ...this.getStyles().label.base, ...this.state.style }}>{this.state.children}</PackenUiText>
       </View>
     );
   }

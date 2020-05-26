@@ -24,7 +24,7 @@ class PackenUiLicenseBox extends Component {
       callback: this.props.callback ? this.props.callback : null,
       labels: this.props.labels ? { ...this.props.labels } : {
         approved: "Aprobado",
-        expired: "Vencido",
+        expired: "Expirado",
         rejected: "Rechazado",
         pending: "Pendiente"
       }

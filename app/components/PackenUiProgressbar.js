@@ -4,6 +4,8 @@ import { View, Animated } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
 
+import PackenUiText from "./PackenUiText";
+
 class PackenUiProgressbar extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +24,7 @@ class PackenUiProgressbar extends Component {
       height: this.props.height ? new Animated.Value(this.props.height) : 5,
       radius: this.props.radius ? this.props.radius : 0,
       isComplete: this.props.isComplete ? this.props.isComplete : false,
+      label: this.props.label ? this.props.label : false,
       colors: {
         track: this.props.trackColor ? this.props.trackColor : Colors.base.default_alt,
         indicator: this.props.indicatorColor ? this.props.indicatorColor : Colors.success.default
@@ -90,10 +93,6 @@ class PackenUiProgressbar extends Component {
         Animated.timing(this.state.progress, {
           toValue: 1,
           duration: 250
-        }),
-        Animated.timing(this.state.progress, {
-          toValue: 0,
-          duration: 500
         })
       ])
     ).start();
@@ -105,6 +104,25 @@ class PackenUiProgressbar extends Component {
     } else {
       this.setIndeterminateAnim();
     }
+  }
+
+  getLabel = () => {
+    let label = null;
+
+    if (this.state.label) {
+      label = (
+        <PackenUiText style={{
+          color: this.props.indicatorColor,
+          width: "100%",
+          textAlign: "center",
+          paddingBottom: 10
+        }}>
+          {this.state.label}
+        </PackenUiText>
+      );
+    }
+
+    return label;
   }
 
   updateState = () => {
@@ -122,6 +140,7 @@ class PackenUiProgressbar extends Component {
   render() {
     return (
       <View style={[this.getStyles().wrapper, this.state.wrapperStyle]}>
+        {this.getLabel()}
         <Animated.View style={this.getStyles().track}>
           <Animated.View
             style={[
@@ -142,7 +161,7 @@ class PackenUiProgressbar extends Component {
       track: {
         overflow: "hidden",
         width: "100%",
-        height: this.state.height,
+        height: "auto",
         borderRadius: this.state.radius,
         backgroundColor: this.state.colors.track
       },
