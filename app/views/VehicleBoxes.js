@@ -19,6 +19,7 @@ class VehicleBoxes extends Component {
         <Section title="Vehicle Boxes">
           <View style={{ marginTop: 20 }}>
             <PackenUiVehicleBox
+              image="https://via.placeholder.com/250"
               type="carry"
               overview="Camión con refrigeración"
               year="2017"

@@ -17,7 +17,7 @@ class Alerts extends Component {
     return (
       <PageView>
         <Section title="Alerts">
-          <View style={{ marginTop: 20 }}>
+          <View style={{ marginTop: 20, flex: 1, height: 300, backgroundColor: "lightgray" }}>
             <PackenUiAlert
               type="timed"
               countdown={5000}
@@ -26,10 +26,12 @@ class Alerts extends Component {
                 main: "Alerta gris para información default",
                 preset: "c2"
               }}
+              visible={true}
+              position="top"
               onClose={this.onCloseHandler}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <PackenUiAlert
               type="static"
               theme="info"
@@ -38,10 +40,12 @@ class Alerts extends Component {
                 main: "Alerta morada para información de interés",
                 preset: "c2"
               }}
+              visible={true}
+              position="bottom"
               onClose={this.onCloseHandler}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <PackenUiAlert
               type="static"
               theme="primary"
@@ -53,7 +57,7 @@ class Alerts extends Component {
               onClose={this.onCloseHandler}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <PackenUiAlert
               type="static"
               theme="success"
@@ -65,7 +69,7 @@ class Alerts extends Component {
               onClose={this.onCloseHandler}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <PackenUiAlert
               type="static"
               theme="warning"
@@ -77,7 +81,7 @@ class Alerts extends Component {
               onClose={this.onCloseHandler}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+          <View>
             <PackenUiAlert
               type="static"
               theme="danger"

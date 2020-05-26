@@ -25,11 +25,7 @@ class Avatars extends Component {
               theme="primary"
               title="Sólo un título"
               callback={this.mockCallback}
-              img={{
-                src: require("../../assets/images/i-doc.png"),
-                height: 23,
-                width: 19
-              }}
+              img="document_file"
               icon={{
                 name: "play",
                 size: 14
@@ -42,11 +38,7 @@ class Avatars extends Component {
               title="Subir documento"
               subtitle="Pendiente"
               callback={this.mockCallback}
-              img={{
-                src: require("../../assets/images/i-doc.png"),
-                height: 23,
-                width: 19
-              }}
+              img="document_file"
               icon={{
                 name: "play",
                 size: 14
@@ -60,11 +52,7 @@ class Avatars extends Component {
               caption="(Lado de la fotografía)"
               subtitle="Listo"
               callback={this.mockCallback}
-              img={{
-                src: require("../../assets/images/i-cara-1.png"),
-                height: 19,
-                width: 19
-              }}
+              img="document_front"
               icon={{
                 name: "play",
                 size: 14
@@ -77,11 +65,7 @@ class Avatars extends Component {
               title="Cara 2"
               subtitle="Error al cargar"
               callback={this.mockCallback}
-              img={{
-                src: require("../../assets/images/i-cara-1.png"),
-                height: 19,
-                width: 19
-              }}
+              img="document_back"
               icon={{
                 name: "play",
                 size: 14
