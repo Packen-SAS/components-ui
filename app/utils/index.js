@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const genKey = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
@@ -26,3 +28,8 @@ export const datetime = () => {
 }
 
 export const toMomentObject = date => moment(date != null ? date : Date.now());
+
+export const formatDateSimple = (date, format) => {
+  if (!date) { return null; }
+  return moment(date).format(format);
+}
