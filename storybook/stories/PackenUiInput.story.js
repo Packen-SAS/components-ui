@@ -63,6 +63,66 @@ storiesOf("PackenUiInput", module)
       />
     </Wrapper>
   ))
+  .add("Loading", () => (
+    <Wrapper
+      full
+      title="PackenUiInput"
+      description="Input con spinner de carga animado."
+      code={
+`<PackenUiInput
+  name="input1"
+  size="tiny"
+  placeholder="Placeholder"
+  onChangeText={() => true}
+  maxLength={10}
+  icon={{
+    name: "lock",
+    position: "left"
+  }}
+  message={{
+    text: "Caption text, description, error notification",
+    icon: "info"
+  }}
+  label="Label tiny"
+  help="Number-pad keyboard"
+  keyboardType="number-pad"
+  theme="default"
+  eventHandlers={{
+    onFocus: () => true,
+    onBlur: () => true,
+    onSubmitEditing: () => true
+  }}
+  loading
+/>`
+      }
+    >
+      <PackenUiInput
+        name="input1"
+        size="tiny"
+        placeholder="Placeholder"
+        onChangeText={() => true}
+        maxLength={10}
+        icon={{
+          name: "lock",
+          position: "right"
+        }}
+        message={{
+          text: "Caption text, description, error notification",
+          icon: "info"
+        }}
+        label="Label tiny"
+        help="Number-pad keyboard"
+        keyboardType="number-pad"
+        theme="default"
+        eventHandlers={{
+          onFocus: () => true,
+          onBlur: () => true,
+          onSubmitEditing: () => true
+        }}
+        loading
+      />
+    </Wrapper>
+  ))
   .add("Disabled", () => (
     <Wrapper
       full

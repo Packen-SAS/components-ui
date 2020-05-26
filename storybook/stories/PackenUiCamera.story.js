@@ -17,7 +17,7 @@ storiesOf("PackenUiCamera", module)
 />`
       }
     >
-      <PackenUiText style={{ textAlign: "center" }} preset="c2">Este componente no puede ser renderizado en este contexto</PackenUiText>
+      <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
     </Wrapper>
   ))
   .add("Document", () => (
@@ -33,7 +33,7 @@ storiesOf("PackenUiCamera", module)
 />`
       }
     >
-      <PackenUiText style={{ textAlign: "center" }} preset="c2">Este componente no puede ser renderizado en este contexto</PackenUiText>
+      <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
     </Wrapper>
   ))
   .add("Avatar", () => (
@@ -49,6 +49,6 @@ storiesOf("PackenUiCamera", module)
 />`
       }
     >
-      <PackenUiText style={{ textAlign: "center" }} preset="c2">Este componente no puede ser renderizado en este contexto</PackenUiText>
+      <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
     </Wrapper>
   ));

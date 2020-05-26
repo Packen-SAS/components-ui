@@ -15,11 +15,7 @@ storiesOf("PackenUiInfoAction", module)
   theme="primary"
   title="Sólo un título"
   callback={() => true}
-  img={{
-    src: require("../../assets/images/i-doc.png"),
-    height: 23,
-    width: 19
-  }}
+  img="document_file"
   icon={{
     name: "play",
     size: 14
@@ -31,11 +27,7 @@ storiesOf("PackenUiInfoAction", module)
         theme="primary"
         title="Sólo un título"
         callback={() => true}
-        img={{
-          src: require("../../assets/images/i-doc.png"),
-          height: 23,
-          width: 19
-        }}
+        img="document_file"
         icon={{
           name: "play",
           size: 14
@@ -55,11 +47,7 @@ storiesOf("PackenUiInfoAction", module)
   caption="(Lado de la fotografía)"
   subtitle="Listo"
   callback={() => true}
-  img={{
-    src: require("../../assets/images/i-cara-1.png"),
-    height: 19,
-    width: 19
-  }}
+  img="document_front"
   icon={{
     name: "play",
     size: 14
@@ -73,11 +61,7 @@ storiesOf("PackenUiInfoAction", module)
         caption="(Lado de la fotografía)"
         subtitle="Listo"
         callback={() => true}
-        img={{
-          src: require("../../assets/images/i-cara-1.png"),
-          height: 19,
-          width: 19
-        }}
+        img="document_front"
         icon={{
           name: "play",
           size: 14

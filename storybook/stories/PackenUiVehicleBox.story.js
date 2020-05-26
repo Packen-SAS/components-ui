@@ -11,6 +11,7 @@ storiesOf("PackenUiVehicleBox", module)
       description="VehicleBox default. No presenta variaciones."
       code={
 `<PackenUiVehicleBox
+  image="https://via.placeholder.com/250"
   type="carry"
   overview="Camión con refrigeración"
   year="2017"
@@ -21,6 +22,7 @@ storiesOf("PackenUiVehicleBox", module)
       }
     >
       <PackenUiVehicleBox
+        image="https://via.placeholder.com/250"
         type="carry"
         overview="Camión con refrigeración"
         year="2017"

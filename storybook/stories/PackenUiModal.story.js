@@ -122,19 +122,7 @@ storiesOf("PackenUiModal", module)
   toggle={() => true}
 />`
     }>
-      <PackenUiModal
-        isOpen={false}
-        size="small"
-        type="info"
-        theme="danger"
-        banner={{ icon: "x-circle" }}
-        info={{
-          title: "Title",
-          text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
-          btn: <PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() => { this.toggleModal("danger.default"); }}>BUTTON</PackenUiButton>
-        }}
-        toggle={() => true}
-      />
+      <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
     </Wrapper>
   ))
   .add("Gallery", () => (
@@ -152,13 +140,6 @@ storiesOf("PackenUiModal", module)
   toggle={() => true}
 />`
     }>
-      <PackenUiModal
-        isOpen={false}
-        size="small"
-        type="gallery"
-        theme="white"
-        images={[require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png")]}
-        toggle={() => true}
-      />
+      <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
     </Wrapper>
   ));
