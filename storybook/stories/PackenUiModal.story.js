@@ -7,7 +7,6 @@ import Colors from "../../app/styles/abstracts/colors";
 import Typography from "../../app/styles/abstracts/typography";
 import PackenUiText from "../../app/components/PackenUiText";
 import PackenUiButton from "../../app/components/PackenUiButton";
-import PackenUiModal from "../../app/components/PackenUiModal";
 
 storiesOf("PackenUiModal", module)
   .add("Custom", () => (
@@ -21,7 +20,7 @@ storiesOf("PackenUiModal", module)
   size="small"
   type="custom"
   theme="primary"
-  toggle={() => true}
+  modalClose={() => true}
   onDismiss={() => true}
   onRequestClose={() => true}
   content={(
@@ -119,7 +118,7 @@ storiesOf("PackenUiModal", module)
     text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
     btn: <PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={() => { this.toggleModal("danger.default"); }}>BUTTON</PackenUiButton>
   }}
-  toggle={() => true}
+  modalClose={() => true}
 />`
     }>
       <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
@@ -137,7 +136,7 @@ storiesOf("PackenUiModal", module)
   type="gallery"
   theme="white"
   images={[require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png"), require("../../assets/images/placeholder.png")]}
-  toggle={() => true}
+  modalClose={() => true}
 />`
     }>
       <PackenUiText preset="c2" style={{ textAlign: "center" }}>This component cannot be rendered in this context</PackenUiText>
