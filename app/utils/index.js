@@ -15,3 +15,14 @@ export const arraysEqual = (_arr1, _arr2) => {
   }
   return true;
 }
+
+export const datetime = () => {
+  return {
+    plain: (time) => getDate(time),
+    parts: time => getDateByChunks(time),
+    obj: o => moment(o),
+    diff: (a, b, mode) => (a.diff(b, mode))
+  }
+}
+
+export const toMomentObject = date => moment(date != null ? date : Date.now());
