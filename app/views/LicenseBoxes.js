@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View } from "react-native";
-import moment from "moment";
 
 import * as UTIL from "../utils";
 import Section from "../components/Section";
