@@ -42,8 +42,6 @@ const Icon = ({ width, height, name }) => {
     "myshipments_blur": <PackenMyShipmentsBlur width={width} height={height} />,
     "support": <PackenSupport width={width} height={height} />,
     "support_blur": <PackenSupportBlur width={width} height={height} />,
-    "myshipments": <PackenMyShipments width={width} height={height} />,
-    "myshipments_blur": <PackenMyShipmentsBlur width={width} height={height} />,
     "profile": <PackenProfile width={width} height={height} />,
     "profile_blur": <PackenProfileBlur width={width} height={height} />
   };
