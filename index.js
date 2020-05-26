@@ -1,10 +1,6 @@
-/**
- * @format
- */
-
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
+import {AppRegistry} from "react-native";
+import App from "./App";
+import {name as appName} from "./app.json";
 
 import PackenUiAvatar from "./app/components/PackenUiAvatar";
 import PackenUiButton from "./app/components/PackenUiButton";
@@ -37,6 +33,11 @@ import PackenUiTag from "./app/components/PackenUiTag";
 import PackenUiText from "./app/components/PackenUiText";
 import PackenUiToggle from "./app/components/PackenUiToggle";
 import PackenUiVehicleBox from "./app/components/PackenUiVehicleBox";
+import PackenUiSvgIcon from "./app/components/PackenUiSvgIcon";
+import PackenUiWhatsAppLink from "./app/components/PackenUiWhatsAppLink";
+import PackenUiLicenseBox from "./app/components/PackenUiLicenseBox";
+import PackenUiInputBoxes from "./app/components/PackenUiInputBoxes";
+import PackenUiCamera from "./app/components/PackenUiCamera";
 
 AppRegistry.registerComponent(appName, () => App);
 
@@ -71,5 +72,10 @@ export {
   PackenUiTag,
   PackenUiText,
   PackenUiToggle,
-  PackenUiVehicleBox
+  PackenUiVehicleBox,
+  PackenUiSvgIcon,
+  PackenUiWhatsAppLink,
+  PackenUiLicenseBox,
+  PackenUiInputBoxes,
+  PackenUiCamera
 };
