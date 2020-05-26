@@ -21,7 +21,8 @@ export default class PackenUiCamera extends Component {
     cameraType: 0,
     flashMode: 0,
     picture: null,
-    imageViewble: false
+    imageViewble: false,
+    labels: this.props.labels ? { ...this.props.labels } : false
   };
 
   constructor(props) {
@@ -68,7 +69,7 @@ export default class PackenUiCamera extends Component {
   callCamera = async () => await this.makeCapture();
 
   makeCapture = async () => this.setState({
-    picture: await this.state.camera.takePictureAsync(PackenCameraPermissionOpts.picture)
+    picture: await this.state.camera.takePictureAsync(getPermissionOpts().picture)
   }, this.finalize);
 
   setCamera = camera => this.setState({ camera: camera });
@@ -124,13 +125,13 @@ export default class PackenUiCamera extends Component {
       case "document":
         return (
           <View style={PackenCameraStyles.layout}>
-            <DocumentLayout width={250} height={400} color="#FFFFFF" />
+            <DocumentLayout width={250} height={400} color={Color.basic.white.dft} />
           </View>
         );
       case "avatar":
         return (
           <View style={PackenCameraStyles.layout}>
-            <AvatarLayout width={100} height={200} color="#1E9078" />
+            <AvatarLayout width={100} height={200} color={Color.success.drk} />
           </View>
         );
       default:
@@ -148,8 +149,8 @@ export default class PackenUiCamera extends Component {
           <View style={PackenCameraStyles.container}>
             <RNCamera ref={this.setCamera} style={PackenCameraStyles.rncamera}
               flashMode={this.state.flashMode} type={this.state.cameraType} onCameraReady={this.cameraReady}
-              zoom={0} autoFocus={true} androidCameraPermissionOptions={PackenCameraPermissionOpts.camera}
-              androidRecordAudioPermissionOptions={PackenCameraPermissionOpts.audio}
+              zoom={0} autoFocus={true} androidCameraPermissionOptions={getPermissionOpts(this.state.labels).camera}
+              androidRecordAudioPermissionOptions={getPermissionOpts(this.state.labels).audio}
             />
             {this.getCameraLayout()}
 
@@ -182,7 +183,7 @@ const CameraImagePreviewTriggers = props => {
         }]}>
           <ConfirmPicture solid size={25}
             name="check-circle"
-            color={Color.base.white}
+            color={Color.basic.white.dft}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -193,7 +194,7 @@ const CameraImagePreviewTriggers = props => {
         }]}>
           <TrashPicture solid size={25}
             name="trash-2"
-            color={Color.base.white}
+            color={Color.basic.white.dft}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -219,7 +220,7 @@ const CameraTopTriggers = props => {
         }]}>
           <CloseCamera solid size={25}
             name="x"
-            color={Color.base.white}
+            color={Color.basic.white.dft}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -259,7 +260,7 @@ const CameraBottomTriggers = props => {
           <View style={[PackenCameraStyles.trigger, {
             width: 75, height: 75, borderRadius: 37.5,
             marginLeft: 15, marginRight: 15,
-            backgroundColor: Color.base.white
+            backgroundColor: Color.basic.white.dft
           }]}>
             <View style={PackenCameraStyles.triggerChild}>
             </View>
@@ -271,7 +272,7 @@ const CameraBottomTriggers = props => {
       <View style={[PackenCameraStyles.trigger, {
         width: 75, height: 75, borderRadius: 37.5,
         marginLeft: 15, marginRight: 15,
-        backgroundColor: Color.base.white
+        backgroundColor: Color.basic.white.dft
       }]}>
         <PackenUiLoaderButton
           type="icon"
@@ -296,7 +297,7 @@ const CameraBottomTriggers = props => {
         }]}>
           <TurnOnOffFlash solid size={25}
             name={hasFlash ? "ios-flash" : "ios-flash-off"}
-            color={!props.cameraIsLoading ? Color.base.white : Color.base.default}
+            color={!props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -307,13 +308,12 @@ const CameraBottomTriggers = props => {
         }]}>
           <CameraReverse solid size={25}
             name="md-reverse-camera"
-            color={!props.cameraIsLoading ? Color.base.white : Color.base.default}
+            color={!props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
           />
         </View>
       </TouchableWithoutFeedback>
     </View>);
 }
-
 
 const DocumentLayout = ({ width, height, color }) => (
   <Svg height={height} width={width} fill="transparent">
@@ -339,27 +339,44 @@ const AvatarLayout = ({ width, height, color }) => (
   </Svg>
 );
 
-const PackenCameraPermissionOpts = {
-  camera: {
-    title: i18n().camera.access_title,
-    message: i18n().camera.access_message,
-    buttonPositive: i18n().buttons.ok,
-    buttonNegative: i18n().buttons.cancel,
-  },
-  audio: {
-    title: i18n().mic.access_title,
-    message: i18n().mic.access_message,
-    buttonPositive: i18n().buttons.ok,
-    buttonNegative: i18n().buttons.cancel,
-  },
-  picture: {
-    quality: 0.5,
-    skipProcessing: false,
-    orientation: "portrait",
-    fixOrientation: true,
-    forceUpOrientation: true
+const getPermissionOpts = labels => {
+  const { camera, buttons, mic } = labels ? labels : {
+    camera: {
+      access_title: "Acceso a la cámara",
+      access_message: "Deberá permitir el acceso a la cámara para anexarlas como soporte al servicio activo."
+    },
+    mic: {
+      access_title: "Acceso al micrófono",
+      access_message: "Está función es requerida por la cámara"
+    },
+    buttons: {
+      ok: "Aceptar",
+      cancel: "Cancelar"
+    }
+  };
+
+  return {
+    camera: {
+      title: camera.access_title,
+      message: camera.access_message,
+      buttonPositive: buttons.ok,
+      buttonNegative: buttons.cancel,
+    },
+    audio: {
+      title: mic.access_title,
+      message: mic.access_message,
+      buttonPositive: buttons.ok,
+      buttonNegative: buttons.cancel,
+    },
+    picture: {
+      quality: 0.5,
+      skipProcessing: false,
+      orientation: "portrait",
+      fixOrientation: true,
+      forceUpOrientation: true
+    }
   }
-};
+}
 
 const PackenCameraStyles = StyleSheet.create({
   rncamera: {
@@ -391,19 +408,19 @@ const PackenCameraStyles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Color.primary.default
+    backgroundColor: Color.brand.primary.drk
   },
   triggerChild: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Color.primary.default
+    backgroundColor: Color.brand.primary.drk
   },
   triggerChildDisabled: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Color.base.default
+    backgroundColor: Color.basic.independence.drk_alt
   },
   bottomTriggersContainer: {
     position: "absolute",
