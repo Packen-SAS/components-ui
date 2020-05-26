@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { StyleSheet, View } from "react-native";
 
-import * as UTIL from "../modules/utils";
+import * as UTIL from "../utils";
 import PackenUiInput from "./PackenUiInput";
 
-export default class PackenInputBoxes extends Component {
+class PackenUiInputBoxes extends Component {
   state = {
     boxes: [],
     boxesRefs: []
@@ -53,6 +53,7 @@ export default class PackenInputBoxes extends Component {
       if (typeof this.props.emitCode === "function") { this.props.emitCode(this.getVerificationCode()); }
     }
   }
+
   clearInputs = () => {
     for (var i = 0; this.items[i] != null; i++) {
       if (this.items[i].input != null) {
@@ -81,7 +82,7 @@ export default class PackenInputBoxes extends Component {
       currentItem.input.blur();
       if (typeof this.props.emitCode === "function") {
         this.props.emitCode(this.getVerificationCode());
-        //this.clearInputs();
+        /* this.clearInputs(); */
       }
     }
   }
@@ -124,3 +125,5 @@ const PackenInputBoxesStyles = StyleSheet.create({
     marginBottom: 15
   }
 });
+
+export default PackenUiInputBoxes;
