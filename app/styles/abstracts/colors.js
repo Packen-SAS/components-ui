@@ -76,7 +76,8 @@ export default {
     independence: {
       dft: "#556D87",
       lgt: "#7B8DA2",
-      drk: "#304D6D"
+      drk: "#304D6D",
+      drk_alt: "#222B45"
     },
     yankees: {
       dft: "#1F3246"
