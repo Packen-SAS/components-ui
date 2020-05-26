@@ -82,6 +82,5 @@ yarn.lock
 package-lock.json
 
 # Unnecessary source files
-app/utils
 app/views
 app/UILibrary.js
