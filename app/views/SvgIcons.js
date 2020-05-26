@@ -6,7 +6,7 @@ import PageView from "./PageView";
 
 import PackenUiSvgIcon from "../components/PackenUiSvgIcon";
 
-class Tabs extends Component {
+class SvgIcons extends Component {
   constructor(props) {
     super(props);
   }
@@ -44,4 +44,4 @@ class Tabs extends Component {
   }
 }
 
-export default Tabs;
+export default SvgIcons;
