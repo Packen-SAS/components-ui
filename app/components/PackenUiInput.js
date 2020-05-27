@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 
+import * as UTIL from "../utils";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
@@ -47,7 +48,8 @@ class PackenUiInput extends Component {
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
       propagateRef: this.props.propagateRef ? this.props.propagateRef : false,
-      loading: this.props.loading ? this.props.loading : false
+      loading: this.props.loading ? this.props.loading : false,
+      validator: this.props.validator ? this.props.validator : false
     };
   }
 
@@ -180,10 +182,15 @@ class PackenUiInput extends Component {
   }
 
   handleChangeText = text => {
-    this.setState({
-      value: text
-    });
-    this.state.onChangeText(this.state.name, text ? text : null);
+    let newText = text;
+    let isValid = true;
+
+    if (typeof this.state.validator === "string") {
+      isValid = UTIL.validators[this.state.validator](text);
+      if (isValid) { newText = text; }
+    }
+
+    this.state.onChangeText(this.state.name, newText ? newText : null, isValid);
   }
 
   addKeyboardEvents = () => {
@@ -374,7 +381,7 @@ class PackenUiInput extends Component {
           level="ghost"
           size="tiny"
           isDone={false}
-          callback={null}
+          callback={() => false}
         />
       );
 
@@ -930,7 +937,8 @@ PackenUiInput.propTypes = {
   onChangeText: PropTypes.func.isRequired,
   eventHandlers: PropTypes.object,
   propagateRef: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
 export default PackenUiInput;
