@@ -43,7 +43,7 @@ class PackenUiInput extends Component {
       label: this.props.label ? this.props.label : "",
       placeholder: this.props.placeholder,
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
-      maxLength: this.props.maxLength ? this.props.maxLength : undefined,
+      maxLength: this.props.maxLength ? parseInt(this.props.maxLength) : undefined,
       minLength: this.props.minLength ? parseInt(this.props.minLength) : 0,
       style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
