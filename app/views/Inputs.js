@@ -117,7 +117,7 @@ class Inputs extends Component {
                   onBlur: this.mockBlur,
                   onSubmitEditing: this.mockSubmitEditing
                 }}
-                validator="onlySpecial"
+                validator="special"
               />
             </View>
             <View style={{ marginBottom: 10 }}>
@@ -167,12 +167,12 @@ class Inputs extends Component {
                   onBlur: this.mockBlur,
                   onSubmitEditing: this.mockSubmitEditing
                 }}
-                validator="onlyLetters"
+                validator="letters"
               />
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiInput
-                name="inputLetras"
+                name="inputLetrasNumeros"
                 size="tiny"
                 placeholder="Letras y números"
                 onChangeText={this.handleChangeText}
@@ -193,6 +193,31 @@ class Inputs extends Component {
                   onSubmitEditing: this.mockSubmitEditing
                 }}
                 validator="lettersNumbers"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputUrls"
+                size="tiny"
+                placeholder="Urls"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "globe",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta urls",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Regular keyboard"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="url"
               />
             </View>
             <View style={{ marginBottom: 10 }}>
