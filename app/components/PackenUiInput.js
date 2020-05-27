@@ -187,7 +187,6 @@ class PackenUiInput extends Component {
 
     if (typeof this.state.validator === "string") {
       isValid = UTIL.validators[this.state.validator](text);
-      if (isValid) { newText = text; }
     }
 
     this.state.onChangeText(this.state.name, newText ? newText : null, isValid);
