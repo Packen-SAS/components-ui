@@ -933,6 +933,7 @@ PackenUiInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
+  minLength: PropTypes.number,
   onChangeText: PropTypes.func.isRequired,
   eventHandlers: PropTypes.object,
   propagateRef: PropTypes.func,
