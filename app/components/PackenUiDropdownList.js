@@ -31,7 +31,7 @@ class PackenUiDropdownList extends Component {
 
   setPropsToState = () => {
     return {
-      items: this.props.items ? [...this.props.items] : [],
+      items: this.state ? [...this.state.items] : this.props.items ? [...this.props.items] : [],
       numShownRows: this.props.numShownRows ? this.props.numShownRows : 4,
       config: this.props.config ? { ...this.props.config } : {},
       toggleMenu: this.props.toggleMenu ? this.props.toggleMenu : false,
