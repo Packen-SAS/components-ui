@@ -11,9 +11,9 @@ class Inputs extends Component {
     super(props);
   }
 
-  handleChangeText = (name, value) => {
+  handleChangeText = (name, value, isValid) => {
     /* Content can be used here */
-    /* console.log(`New value for ${name} is: ${value}`); */
+    /* console.log(`New value for ${name} is: ${value} and its validity is: ${isValid}`); */
     return value;
   }
 
@@ -42,6 +42,159 @@ class Inputs extends Component {
       <PageView>
         <Section title="Inputs">
           <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputNumber"
+                size="tiny"
+                placeholder="Número"
+                onChangeText={this.handleChangeText}
+                maxLength={10}
+                icon={{
+                  name: "hash",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta números",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Number-pad keyboard"
+                keyboardType="number-pad"
+                theme="primary"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="number"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputEmail"
+                size="tiny"
+                placeholder="Email"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "at-sign",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta emails",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Email keyboard"
+                keyboardType="email-address"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="email"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputEspeciales"
+                size="tiny"
+                placeholder="Especiales"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "command",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta caracteres especiales",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Regular keyboard"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="onlySpecial"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputLetrasEspeciales"
+                size="tiny"
+                placeholder="Letras y especiales"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "command",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta letras y caracteres especiales",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Regular keyboard"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="lettersSpecial"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputLetras"
+                size="tiny"
+                placeholder="Letras"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "edit-2",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta letras",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Regular keyboard"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="onlyLetters"
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiInput
+                name="inputLetras"
+                size="tiny"
+                placeholder="Letras y números"
+                onChangeText={this.handleChangeText}
+                icon={{
+                  name: "plus",
+                  position: "left"
+                }}
+                message={{
+                  text: "Este input sólo acepta letras y números",
+                  icon: "info"
+                }}
+                label="Label tiny"
+                help="Regular keyboard"
+                theme="default"
+                eventHandlers={{
+                  onFocus: this.mockFocus,
+                  onBlur: this.mockBlur,
+                  onSubmitEditing: this.mockSubmitEditing
+                }}
+                validator="lettersNumbers"
+              />
+            </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiInput
                 name="input1"
