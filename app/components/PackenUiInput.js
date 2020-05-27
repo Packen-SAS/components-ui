@@ -43,7 +43,8 @@ class PackenUiInput extends Component {
       label: this.props.label ? this.props.label : "",
       placeholder: this.props.placeholder,
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
-      maxLength: this.props.maxLength,
+      maxLength: this.props.maxLength ? this.props.maxLength : undefined,
+      minLength: this.props.minLength ? parseInt(this.props.minLength) : 0,
       style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
@@ -182,14 +183,13 @@ class PackenUiInput extends Component {
   }
 
   handleChangeText = text => {
-    let newText = text;
     let isValid = true;
 
     if (typeof this.state.validator === "string") {
-      isValid = UTIL.validators[this.state.validator](text);
+      isValid = UTIL.validators[this.state.validator](text) && text !== "" && text.length >= this.state.minLength;
     }
 
-    this.state.onChangeText(this.state.name, newText ? newText : null, isValid);
+    this.state.onChangeText(this.state.name, text ? text : null, isValid);
   }
 
   addKeyboardEvents = () => {

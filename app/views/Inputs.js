@@ -49,6 +49,7 @@ class Inputs extends Component {
                 placeholder="Número"
                 onChangeText={this.handleChangeText}
                 maxLength={10}
+                minLength={5}
                 icon={{
                   name: "hash",
                   position: "left"
