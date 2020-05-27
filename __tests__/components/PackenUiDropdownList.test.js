@@ -305,8 +305,9 @@ describe("<PackenUiDropdownList/>", () => {
     });
 
     it("returns incoming props as the state key-value pairs", () => {
+      renderInstance.setState({ items: [] });
       render.setProps({
-        items: undefined,
+        items: [],
         numShownRows: undefined,
         config: undefined,
         toggleMenu: undefined,

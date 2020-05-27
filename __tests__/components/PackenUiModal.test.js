@@ -514,7 +514,7 @@ describe("<PackenUiModal/>", () => {
         isOpen: undefined,
         images: undefined,
         info: undefined,
-        toggle: undefined,
+        modalClose: undefined,
         theme: undefined,
         content: undefined,
         onDismiss: undefined,
@@ -532,7 +532,7 @@ describe("<PackenUiModal/>", () => {
           title: "",
           text: ""
         },
-        toggle: renderInstance.mockCallback,
+        modalClose: renderInstance.mockCallback,
         theme: "primary",
         content: null,
         onDismiss: false,

@@ -62,7 +62,9 @@ describe("<PackenUiVehicleBox/>", () => {
         year: undefined,
         plate: undefined,
         state: undefined,
-        callback: undefined
+        callback: undefined,
+        image: undefined,
+        labels: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -71,8 +73,14 @@ describe("<PackenUiVehicleBox/>", () => {
         overview: "",
         year: "",
         plate: "",
-        state: "reviewing",
-        callback: false
+        state: "pending",
+        callback: false,
+        image: null,
+        labels: {
+          approved: "Aprobado",
+          rejected: "Rechazado",
+          pending: "Pendiente"
+        }
       });
     });
   });
@@ -101,73 +109,8 @@ describe("<PackenUiVehicleBox/>", () => {
       expect(renderInstance.props.instance).toHaveBeenCalled();
     });
 
-    it("returns the default image object", () => {
-      renderInstance.setState({ type: "" });
-      const res = renderInstance.getImage();
-
-      expect(res).toEqual({
-        src: "",
-        style: {
-          width: 0,
-          height: 0
-        }
-      });
-    });
-
-    it("returns the image object if it's a carry", () => {
-      renderInstance.setState({ type: "carry" });
-      const res = renderInstance.getImage();
-
-      expect(res).toEqual({
-        src: require("../../assets/images/carry.png"),
-        style: {
-          width: 202,
-          height: 95
-        }
-      });
-    });
-
-    it("returns the image object if it's a npr", () => {
-      renderInstance.setState({ type: "npr" });
-      const res = renderInstance.getImage();
-
-      expect(res).toEqual({
-        src: require("../../assets/images/npr.png"),
-        style: {
-          width: 176,
-          height: 95
-        }
-      });
-    });
-
-    it("returns the image object if it's a sencillo", () => {
-      renderInstance.setState({ type: "sencillo" });
-      const res = renderInstance.getImage();
-
-      expect(res).toEqual({
-        src: require("../../assets/images/sencillo.png"),
-        style: {
-          width: 213,
-          height: 95
-        }
-      });
-    });
-
-    it("returns the image object if it's a tractomula", () => {
-      renderInstance.setState({ type: "tractomula" });
-      const res = renderInstance.getImage();
-
-      expect(res).toEqual({
-        src: require("../../assets/images/tractomula.png"),
-        style: {
-          width: 205,
-          height: 95
-        }
-      });
-    });
-
-    it("returns the declined state object", () => {
-      renderInstance.setState({ state: "declined" });
+    it("returns the rejected state object", () => {
+      renderInstance.state.state = "rejected";
       const res = renderInstance.getState();
 
       expect(res).toEqual({
@@ -179,12 +122,12 @@ describe("<PackenUiVehicleBox/>", () => {
       });
     });
 
-    it("returns the reviewing state object", () => {
-      renderInstance.setState({ state: "reviewing" });
+    it("returns the pending state object", () => {
+      renderInstance.state.state = "pending";
       const res = renderInstance.getState();
 
       expect(res).toEqual({
-        label: "En revisión",
+        label: "Pendiente",
         icon: {
           name: "pause-circle",
           color: Colors.basic.gray.drk
@@ -193,7 +136,7 @@ describe("<PackenUiVehicleBox/>", () => {
     });
 
     it("returns the approved state object", () => {
-      renderInstance.setState({ state: "approved" });
+      renderInstance.state.state = "approved";
       const res = renderInstance.getState();
 
       expect(res).toEqual({
@@ -209,14 +152,14 @@ describe("<PackenUiVehicleBox/>", () => {
       renderInstance.setState({ type: "carry" });
       const returnedStyles = renderInstance.getImgStyles();
 
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().img });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().img, width: 206, height: 95 });
     });
 
     it("returns the custom image styles if it's a motorcycle", () => {
-      renderInstance.setState({ type: "moto" });
+      renderInstance.state.type = "moto";
       const returnedStyles = renderInstance.getImgStyles();
 
-      expect(returnedStyles).toEqual({});
+      expect(returnedStyles).toEqual({ width: 121, height: 80 });
     });
   });
 });

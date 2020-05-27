@@ -115,6 +115,7 @@ describe("<PackenUiInfoAction/>", () => {
         caption: undefined,
         subtitle: undefined,
         callback: undefined,
+        boxStyle: undefined,
         img: undefined,
         icon: undefined
       });
@@ -126,11 +127,8 @@ describe("<PackenUiInfoAction/>", () => {
         caption: false,
         subtitle: false,
         callback: renderInstance.mockCallback,
-        img: {
-          src: undefined,
-          width: 0,
-          height: 0
-        },
+        boxStyle: {},
+        img: "",
         icon: {
           name: "play",
           size: 14

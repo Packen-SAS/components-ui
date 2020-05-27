@@ -44,18 +44,13 @@ describe("<PackenUiAlert/>", () => {
   });
 
   describe("triggering actions", () => {
-    it("executes the close callback to ba handled by the parent component", () => {
+    it("executes the close callback to be handled by the parent component", () => {
       renderInstance.setState({ onClose: mockCallback });
+      render.setProps({ onDismiss: mockCallback });
       renderInstance.close();
 
       expect(renderInstance.state.onClose).toHaveBeenCalled();
-    });
-
-    it("returns false while executing the close callback if not provided", () => {
-      renderInstance.setState({ onClose: false });
-      const res = renderInstance.close();
-
-      expect(res).toBe(false);
+      expect(renderInstance.props.onDismiss).toHaveBeenCalled();
     });
 
     it("executes the correct code on componentDidUpdate", () => {
@@ -84,7 +79,7 @@ describe("<PackenUiAlert/>", () => {
     });
 
     it("starts a timeout to close the alert if set so", () => {
-      const spyCloseHandler = jest.spyOn(renderInstance, "closeHandler");
+      const spyClose = jest.spyOn(renderInstance, "close");
       render.setProps({
         type: "timed",
         countdown: 5000
@@ -93,20 +88,9 @@ describe("<PackenUiAlert/>", () => {
       renderInstance.checkIfTimed();
       jest.advanceTimersByTime(6000);
 
-      expect(spyCloseHandler).toHaveBeenCalled();
-      spyCloseHandler.mockRestore();
-      jest.useRealTimers();
-    });
-
-    it("executes the closeHandler callback", () => {
-      const spyClose = jest.spyOn(renderInstance, "close");
-      const spyClearTimeout = jest.spyOn(global, "clearTimeout");
-      renderInstance.closeHandler("Test");
-
       expect(spyClose).toHaveBeenCalled();
-      expect(spyClearTimeout).toHaveBeenCalledWith("Test");
       spyClose.mockRestore();
-      spyClearTimeout.mockRestore();
+      jest.useRealTimers();
     });
 
     it("returns false while starting a timeout to close the alert if not set so", () => {
@@ -135,7 +119,9 @@ describe("<PackenUiAlert/>", () => {
         theme: undefined,
         text: undefined,
         onClose: undefined,
-        countdown: undefined
+        countdown: undefined,
+        visible: undefined,
+        position: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -148,7 +134,9 @@ describe("<PackenUiAlert/>", () => {
           preset: undefined
         },
         onClose: false,
-        countdown: false
+        countdown: false,
+        visible: false,
+        position: "bottom"
       });
     });
 

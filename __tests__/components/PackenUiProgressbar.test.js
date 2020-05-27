@@ -172,6 +172,7 @@ describe("<PackenUiProgressbar/>", () => {
         height: undefined,
         radius: undefined,
         isComplete: undefined,
+        label: undefined,
         trackColor: undefined,
         indicatorColor: undefined
       });
@@ -183,6 +184,7 @@ describe("<PackenUiProgressbar/>", () => {
         height: 5,
         radius: 0,
         isComplete: false,
+        label: false,
         colors: {
           track: "#E6E6E6",
           indicator: "#20D292"
