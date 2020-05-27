@@ -35,11 +35,11 @@ export const formatDateSimple = (date, format) => {
 }
 
 export const isNumber = number => {
-  return /[\d]+$/.test(number.toString());
+  return /^\d+$/.test(number.toString());
 }
 
 export const isOnlyLetters = string => {
-  return /^[A-Za-z ]+$/.test(string);
+  return /^[A-Za-z ]+$/.test(string.toString());
 }
 
 export const isEmail = email => {
@@ -47,7 +47,7 @@ export const isEmail = email => {
 }
 
 export const isURL = url => {
-  return /^http(s?):\/\/(.*)$/.test(url);
+  return /^http(s?):\/\/(.*)$/.test(url.toString());
 }
 
 export const isOnlySpecial = string => {
@@ -66,8 +66,8 @@ export const validators = {
   number: isNumber,
   url: isURL,
   email: isEmail,
-  onlyLetters: isOnlyLetters,
-  onlySpecial: isOnlySpecial,
+  letters: isOnlyLetters,
+  special: isOnlySpecial,
   lettersSpecial: isLettersSpecial,
   lettersNumbers: isLettersNumbers
 }
