@@ -1,6 +1,5 @@
 import moment from "moment";
 import * as UTIL from "../../app/utils";
-import { ReloadInstructions } from "react-native/Libraries/NewAppScreen";
 
 describe("arraysEqual", () => {
   it("returns true if arrays contain the same items", () => {
