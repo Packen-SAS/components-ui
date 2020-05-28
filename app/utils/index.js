@@ -72,17 +72,17 @@ export const getDate = time => {
   return result;
 }
 
-export const getDateByChunks = d => {
+export const getDateByChunks = (d, locale) => {
   const date = d instanceof Date ? d : new Date(d);
-  const lang = i18n();
-  const date_local = datetime_locale[lang.locale];
+  const lang = locale;
+  const date_local = datetime_locale[lang];
   return {
     month: date_local.months[date.getMonth()],
     day: date_local.days[date.getDay()],
     nday: zeroPaddingForDate(date.getDate()),
     year: date.getUTCFullYear(),
     time: getTime(date),
-    locale: lang.locale,
+    locale: lang,
     unix: date.getTime()
   }
 }
@@ -90,7 +90,7 @@ export const getDateByChunks = d => {
 export const datetime = () => {
   return {
     plain: time => getDate(time),
-    parts: time => getDateByChunks(time),
+    parts: (time, locale) => getDateByChunks(time, locale),
     obj: o => moment(o),
     diff: (a, b, mode) => (a.diff(b, mode))
   }
