@@ -83,6 +83,22 @@ describe("<PackenUiVehicleBox/>", () => {
         }
       });
     });
+
+    it("returns incoming props as the state key-value pairs if image and labels are provided", () => {
+      const labels = {
+        approved: "Aprobado",
+        rejected: "Rechazado",
+        pending: "Pendiente"
+      };
+      render.setProps({
+        image: "test-url",
+        labels: { ...labels }
+      });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.image).toBe("test-url");
+      expect(res.labels).toEqual({ ...labels });
+    });
   });
 
   describe("styling", () => {
@@ -122,6 +138,19 @@ describe("<PackenUiVehicleBox/>", () => {
       });
     });
 
+    it("returns the blocked state object", () => {
+      renderInstance.state.state = "blocked";
+      const res = renderInstance.getState();
+
+      expect(res).toEqual({
+        label: "Rechazado",
+        icon: {
+          name: "alert-circle",
+          color: Colors.danger.default
+        }
+      });
+    });
+
     it("returns the pending state object", () => {
       renderInstance.state.state = "pending";
       const res = renderInstance.getState();
@@ -137,6 +166,19 @@ describe("<PackenUiVehicleBox/>", () => {
 
     it("returns the approved state object", () => {
       renderInstance.state.state = "approved";
+      const res = renderInstance.getState();
+
+      expect(res).toEqual({
+        label: "Aprobado",
+        icon: {
+          name: "check-circle",
+          color: Colors.success.default
+        }
+      });
+    });
+
+    it("returns the taken state object", () => {
+      renderInstance.state.state = "taken";
       const res = renderInstance.getState();
 
       expect(res).toEqual({

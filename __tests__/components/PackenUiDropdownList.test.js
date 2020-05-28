@@ -9,7 +9,7 @@ import Colors from "../../app/styles/abstracts/colors";
 import { genKey } from "../../app/utils";
 
 describe("<PackenUiDropdownList/>", () => {
-  let render, renderInstance;
+  let render, renderInstance, renderEmpty, renderEmptyInstance;
   const list = {
     config: {
       size: "medium",
@@ -107,6 +107,17 @@ describe("<PackenUiDropdownList/>", () => {
         checkedValues: []
       }
     });
+
+    renderEmpty = shallow(
+      <PackenUiDropdownList
+        config={{ size: "medium", ...list.config }}
+        numShownRows={4}
+        getFinalSelection={mockCallback}
+        finalSelectionArray={mockCallback}
+        toggleMenu={mockCallback}
+      />
+    );
+    renderEmptyInstance = renderEmpty.instance();
   });
 
   describe("rendering", () => {
@@ -322,6 +333,14 @@ describe("<PackenUiDropdownList/>", () => {
         toggleMenu: false,
         getFinalSelection: false
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if no items are defined", () => {
+      renderEmptyInstance.setState(undefined);
+      renderEmpty.setProps({ items: undefined });
+      const res = renderEmptyInstance.setPropsToState();
+
+      expect(res.items).toEqual([]);
     });
   });
 });

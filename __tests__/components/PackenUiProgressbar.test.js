@@ -198,5 +198,12 @@ describe("<PackenUiProgressbar/>", () => {
 
       expect(res.isComplete).toBe(true);
     });
+
+    it("returns incoming props as the state key-value pairs if label is provided", () => {
+      render.setProps({ label: "Test" });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.label).toBe("Test");
+    });
   });
 });

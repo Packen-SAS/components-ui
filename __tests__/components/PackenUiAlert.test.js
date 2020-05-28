@@ -46,11 +46,19 @@ describe("<PackenUiAlert/>", () => {
   describe("triggering actions", () => {
     it("executes the close callback to be handled by the parent component", () => {
       renderInstance.setState({ onClose: mockCallback });
-      render.setProps({ onDismiss: mockCallback });
+      render.setProps({ dismiss: mockCallback });
       renderInstance.close();
 
       expect(renderInstance.state.onClose).toHaveBeenCalled();
-      expect(renderInstance.props.onDismiss).toHaveBeenCalled();
+      expect(renderInstance.props.dismiss).toHaveBeenCalled();
+    });
+
+    it("returns false while executing the close callback to be handled by the parent component if not provided", () => {
+      renderInstance.setState({ onClose: undefined });
+      render.setProps({ dismiss: undefined });
+      const res = renderInstance.close();
+
+      expect(res).toBe(false);
     });
 
     it("executes the correct code on componentDidUpdate", () => {
@@ -102,6 +110,18 @@ describe("<PackenUiAlert/>", () => {
       
       expect(res).toBe(false);
     });
+
+    it("returns the correct styles object for the provided position", () => {
+      renderInstance.setState({ position: "bottom" });
+      const res = renderInstance.getPositionAlert();
+      expect(res).toEqual(renderInstance.getStyles().box.position.bottom);
+    });
+
+    it("returns the correct styles object if no position is provided", () => {
+      renderInstance.setState({ position: undefined });
+      const res = renderInstance.getPositionAlert();
+      expect(res).toEqual(renderInstance.getStyles().box.position.top);
+    });
   });
 
   describe("state changing", () => {
@@ -140,14 +160,18 @@ describe("<PackenUiAlert/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if a countdown is provided", () => {
+    it("returns incoming props as the state key-value pairs if a countdown, visible and position are provided", () => {
       render.setProps({
         type: "timed",
-        countdown: 5000
+        countdown: 5000,
+        visible: true,
+        position: "top"
       });
       const res = renderInstance.setPropsToState();
 
       expect(res.countdown).toBe(5000);
+      expect(res.visible).toBe(true);
+      expect(res.position).toBe("top")
     });
   });
 

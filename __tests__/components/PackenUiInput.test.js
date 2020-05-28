@@ -354,11 +354,21 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if propagateRef is provided", () => {
-      render.setProps({ propagateRef: mockCallback });
+    it("returns incoming props as the state key-value pairs if propagateRef, maxLength, minLength, loading and validator are provided", () => {
+      render.setProps({
+        propagateRef: mockCallback,
+        maxLength: 10,
+        minLength: 5,
+        loading: true,
+        validator: "number"
+      });
       const res = renderInstance.setPropsToState();
 
       expect(res.propagateRef).toBe(mockCallback);
+      expect(res.maxLength).toBe(10);
+      expect(res.minLength).toBe(5);
+      expect(res.loading).toBe(true);
+      expect(res.validator).toBe("number");
     });
   });
 
@@ -456,12 +466,35 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("handles onChangeText", () => {
-      render.setProps({
-        onChangeText: mockCallback
-      });
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: false })
       renderInstance.handleChangeText("Test");
 
-      expect(mockCallback).toHaveBeenCalled();
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+    });
+
+    it("handles onChangeText if a validator is provided and it's valid", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: "letters" })
+      renderInstance.handleChangeText("Test");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+    });
+
+    it("handles onChangeText if a validator is provided and it's invalid", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: "letters" })
+      renderInstance.handleChangeText("123");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "123", false);
+    });
+
+    it("propagates null as the input value while handling onChangeText", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: false })
+      renderInstance.handleChangeText("");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", null, true);
     });
 
     it("executes correct code on componentDidUpdate", () => {

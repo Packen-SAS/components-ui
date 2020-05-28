@@ -143,5 +143,12 @@ describe("<PackenUiInfoAction/>", () => {
       
       expect(res.callback).toBe(mockCallback);
     });
+
+    it("returns incoming props as the state key-value pairs if a boxStyle is provided", () => {
+      render.setProps({ style: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res.boxStyle).toEqual({ test: "Test" });
+    });
   });
 });
