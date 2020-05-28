@@ -44,6 +44,16 @@ class PackenUiDropdown extends Component {
 
   mockCallback = () => false;
 
+  setDefaultState = () => {
+    return {
+      flag: true,
+      isOpen: false,
+      finalSelection: [],
+      finalSelectionString: "",
+      list: { items: [], config: {} }
+    };
+  }
+
   setPropsToState = () => {
     return {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
@@ -139,6 +149,7 @@ class PackenUiDropdown extends Component {
 
   updateState = () => {
     const newFlagState = this.state.list.items.length > 0 ? true : !this.state.flag;
+    if (this.state.list.items.length <= 0) { this.getFinalSelection([]); }
     this.setState({ ...this.setPropsToState(), flag: newFlagState });
   }
 
