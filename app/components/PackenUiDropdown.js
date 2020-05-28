@@ -16,6 +16,7 @@ class PackenUiDropdown extends Component {
 
     this.state = {
       ...this.setPropsToState(),
+      flag: true,
       contentSizerHeight: 0,
       isOpen: false,
       dimensions: {
@@ -137,7 +138,8 @@ class PackenUiDropdown extends Component {
   }
 
   updateState = () => {
-    this.setState({ ...this.setPropsToState() });
+    const newFlagState = this.state.list.items.length > 0 ? true : !this.state.flag;
+    this.setState({ ...this.setPropsToState(), flag: newFlagState });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -255,6 +257,7 @@ class PackenUiDropdown extends Component {
       pointerEvents={this.state.isOpen ? "auto" : "none"}
     >
       <PackenUiDropdownList
+        key={this.state.flag}
         items={this.state.list.items}
         config={{ size: this.state.size, ...this.state.list.config }}
         numShownRows={4}
