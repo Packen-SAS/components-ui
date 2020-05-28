@@ -380,7 +380,7 @@ class PackenUiInput extends Component {
           level="ghost"
           size="tiny"
           isDone={false}
-          callback={() => false}
+          callback={this.mockCallback}
         />
       );
 
