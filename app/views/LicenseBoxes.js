@@ -12,6 +12,8 @@ class LicenseBoxes extends Component {
     super(props);
   }
 
+  mockCallback = () => false;
+
   render() {
     return (
       <PageView>
@@ -24,7 +26,7 @@ class LicenseBoxes extends Component {
                 number="000000"
                 state="approved"
                 dueDate={UTIL.formatDateSimple("2021-08-14", "DD/MM/YYYY")}
-                callback={() => false}
+                callback={this.mockCallback}
                 labels={{
                   approved: "Approved",
                   expired: "Expired",
