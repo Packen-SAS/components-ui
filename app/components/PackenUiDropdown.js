@@ -44,16 +44,6 @@ class PackenUiDropdown extends Component {
 
   mockCallback = () => false;
 
-  setDefaultState = () => {
-    return {
-      flag: true,
-      isOpen: false,
-      finalSelection: [],
-      finalSelectionString: "",
-      list: { items: [], config: {} }
-    };
-  }
-
   setPropsToState = () => {
     return {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
