@@ -28,8 +28,6 @@ class PackenUiInputBoxes extends Component {
     this.items[ref] = { ref: ref, input: input, text: null };
   }
 
-  reducer = (a, b) => (a.text + b.text);
-
   getVerificationCode = () => {
     let code = "";
     for (let i = 0; i < this.items.length; i++) {
@@ -74,10 +72,8 @@ class PackenUiInputBoxes extends Component {
     currentItem.text = text;
     this.items[ref] = currentItem;
     if (currentItem.ref !== lastItem.ref) {
-      if (currentItem.text != null) {
-        const nextItem = this.items[currentItem.ref + 1];
-        nextItem.input.focus();
-      }
+      const nextItem = this.items[currentItem.ref + 1];
+      nextItem.input.focus();
     } else {
       currentItem.input.blur();
       if (typeof this.props.emitCode === "function") {
@@ -98,7 +94,7 @@ class PackenUiInputBoxes extends Component {
         onSubmit={this.handleOnSubmit}
         placeholder="0"
         onChangeText={this.handleInputText}
-        max={1}
+        maxLength={1}
         alignText="center"
         theme="default"
         style={{ textAlign: "center", padding: 5 }}
