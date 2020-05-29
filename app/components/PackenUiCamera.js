@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image } from "react-native";
 
 import { RNCamera } from "react-native-camera";
@@ -203,13 +203,25 @@ export const CameraImagePreviewTriggers = props => {
 };
 
 export class CameraTopTriggers extends Component {
-  source = {
-    uri: (this.props.image != null ? this.props.image.uri : null)
-  };
+  state = {
+    source: {
+      uri: (this.props.image != null ? this.props.image.uri : null)
+    }
+  }
 
   propagePicture = () => {
     if ((typeof this.props.showPicture === "function")) {
       this.props.showPicture();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.setState({
+        source: {
+          uri: (this.props.image != null ? this.props.image.uri : null)
+        }
+      });
     }
   }
 
@@ -226,7 +238,7 @@ export class CameraTopTriggers extends Component {
             />
           </View>
         </TouchableWithoutFeedback>
-        <PackenUiAvatar size="medium" src={this.source} callback={this.propagePicture} />
+        <PackenUiAvatar size="medium" src={this.state.source} callback={this.propagePicture} />
       </View>
     );
   }
@@ -289,10 +301,12 @@ export class CameraBottomTriggers extends Component {
     );
   }
 
-  componentDidMount() {
-    this.setState({
-      loading: this.props.cameraIsLoading
-    });
+  componentDidUpdate(prevProps, prevState) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.setState({
+        loading: this.props.cameraIsLoading
+      });
+    }
   }
 
   render() {
