@@ -173,7 +173,7 @@ export default class PackenUiCamera extends Component {
   }
 }
 
-const CameraImagePreviewTriggers = props => {
+export const CameraImagePreviewTriggers = props => {
   return (
     <View style={PackenCameraStyles.imagePreviewTriggersContainer}>
       <TouchableWithoutFeedback onPress={props.confirmPicture}>
@@ -202,61 +202,65 @@ const CameraImagePreviewTriggers = props => {
   );
 };
 
-const CameraTopTriggers = props => {
-  var source = {
-    uri: (props.image != null ? props.image.uri : null)
+export class CameraTopTriggers extends Component {
+  source = {
+    uri: (this.props.image != null ? this.props.image.uri : null)
   };
 
-  const propagePicture = () => {
-    if ((typeof props.showPicture === "function")) {
-      props.showPicture();
+  propagePicture = () => {
+    if ((typeof this.props.showPicture === "function")) {
+      this.props.showPicture();
     }
   }
-  return (
-    <View style={PackenCameraStyles.topTriggersContainer}>
-      <TouchableWithoutFeedback onPress={props.closeCameraTrigger}>
-        <View style={[PackenCameraStyles.trigger, {
-          width: 40, height: 40, borderRadius: 20
-        }]}>
-          <CloseCamera solid size={25}
-            name="x"
-            color={Color.basic.white.dft}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      <PackenUiAvatar size="medium" src={source} callback={propagePicture} />
-    </View>
-  );
+
+  render() {
+    return (
+      <View style={PackenCameraStyles.topTriggersContainer}>
+        <TouchableWithoutFeedback onPress={this.props.closeCameraTrigger}>
+          <View style={[PackenCameraStyles.trigger, {
+            width: 40, height: 40, borderRadius: 20
+          }]}>
+            <CloseCamera solid size={25}
+              name="x"
+              color={Color.basic.white.dft}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <PackenUiAvatar size="medium" src={this.source} callback={this.propagePicture} />
+      </View>
+    );
+  }
 };
 
-const CameraBottomTriggers = props => {
+export class CameraBottomTriggers extends Component {
+  state = {
+    hasFlash: false,
+    loading: false
+  }
 
-  var [hasFlash, setFlashActive] = useState(false);
-  var [loading, setLoading] = useState(false);
-
-  const propagateFlashMode = () => {
-    if ((typeof props.flashTrigger === "function") && !loading) {
-      setFlashActive(!hasFlash);
-      props.flashTrigger();
+  propagateFlashMode = () => {
+    if ((typeof this.props.flashTrigger === "function") && !this.state.loading) {
+      this.setState({ hasFlash: !this.state.hasFlash });
+      this.props.flashTrigger();
     }
   };
 
-  const propagatePictureTaked = () => {
-    if ((typeof props.pictureTrigger === "function") && !loading) {
-      props.pictureTrigger();
+  propagatePictureTaked = () => {
+    if ((typeof this.props.pictureTrigger === "function") && !this.state.loading) {
+      this.props.pictureTrigger();
     }
   }
 
-  const propagateReverseCamera = () => {
-    if ((typeof props.reverseCameraTrigger === "function") && !loading) {
-      props.reverseCameraTrigger();
+  propagateReverseCamera = () => {
+    if ((typeof this.props.reverseCameraTrigger === "function") && !this.state.loading) {
+      this.props.reverseCameraTrigger();
     }
   }
 
-  const getCaptureTrigger = () => {
-    if (!loading) {
+  getCaptureTrigger = () => {
+    if (!this.state.loading) {
       return (
-        <TouchableWithoutFeedback onPress={propagatePictureTaked}>
+        <TouchableWithoutFeedback onPress={this.propagatePictureTaked}>
           <View style={[PackenCameraStyles.trigger, {
             width: 75, height: 75, borderRadius: 37.5,
             marginLeft: 15, marginRight: 15,
@@ -285,37 +289,41 @@ const CameraBottomTriggers = props => {
     );
   }
 
-  useEffect(() => {
-    setLoading(props.cameraIsLoading);
-  });
+  componentDidMount() {
+    this.setState({
+      loading: this.props.cameraIsLoading
+    });
+  }
 
-  return (
-    <View style={PackenCameraStyles.bottomTriggersContainer}>
-      <TouchableWithoutFeedback onPress={propagateFlashMode}>
-        <View style={[PackenCameraStyles.trigger, {
-          width: 50, height: 50, borderRadius: 25
-        }]}>
-          <TurnOnOffFlash solid size={25}
-            name={hasFlash ? "ios-flash" : "ios-flash-off"}
-            color={!props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      {getCaptureTrigger()}
-      <TouchableWithoutFeedback onPress={propagateReverseCamera}>
-        <View style={[PackenCameraStyles.trigger, {
-          width: 50, height: 50, borderRadius: 25
-        }]}>
-          <CameraReverse solid size={25}
-            name="md-reverse-camera"
-            color={!props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
-          />
-        </View>
-      </TouchableWithoutFeedback>
-    </View>);
+  render() {
+    return (
+      <View style={PackenCameraStyles.bottomTriggersContainer}>
+        <TouchableWithoutFeedback onPress={this.propagateFlashMode}>
+          <View style={[PackenCameraStyles.trigger, {
+            width: 50, height: 50, borderRadius: 25
+          }]}>
+            <TurnOnOffFlash solid size={25}
+              name={this.state.hasFlash ? "ios-flash" : "ios-flash-off"}
+              color={!this.props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        {this.getCaptureTrigger()}
+        <TouchableWithoutFeedback onPress={this.propagateReverseCamera}>
+          <View style={[PackenCameraStyles.trigger, {
+            width: 50, height: 50, borderRadius: 25
+          }]}>
+            <CameraReverse solid size={25}
+              name="md-reverse-camera"
+              color={!this.props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      </View>);
+  }
 }
 
-const DocumentLayout = ({ width, height, color }) => (
+export const DocumentLayout = ({ width, height, color }) => (
   <Svg height={height} width={width} fill="transparent">
     {/* Esquina superior izquierda */}
     <Line x1="0" y1="0" x2="0" y2="50" stroke={color} strokeWidth="5" />
@@ -332,7 +340,7 @@ const DocumentLayout = ({ width, height, color }) => (
   </Svg>
 );
 
-const AvatarLayout = ({ width, height, color }) => (
+export const AvatarLayout = ({ width, height, color }) => (
   <Svg height={height} width={width} fill="transparent">
     {/* Frame para encuadrar rostro del conductor */}
     <Ellipse cx={(width / 2)} cy={(height / 2)} rx={(width / 2)} ry={(height / 2)} stroke={color} strokeWidth="8" />
