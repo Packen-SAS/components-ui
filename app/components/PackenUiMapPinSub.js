@@ -14,13 +14,7 @@ class PackenUiMapPinSub extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      theme: props.theme,
-      icon: props.icon,
-      label: props.label,
-      dotPosition: props.dotPosition,
-      type: props.type
-    }
+    this.state = { ...this.setPropsToState() }
   }
 
   componentDidMount() {
@@ -35,7 +29,14 @@ class PackenUiMapPinSub extends Component {
       icon: this.props.icon ? this.props.icon : false,
       label: this.props.label ? this.props.label : false,
       dotPosition: this.props.dotPosition ? this.props.dotPosition : false,
-      type: this.props.type ? this.props.type : "info"
+      type: this.props.type ? this.props.type : "info",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        iconSize: undefined,
+        iconColor: undefined,
+        character: {},
+        dot: {}
+      }
     };
   }
 
@@ -56,8 +57,8 @@ class PackenUiMapPinSub extends Component {
       icon = (
         <Icon
           name={this.state.icon}
-          color={this.getIconColor()}
-          size={this.getStyles().icon.type.icon.fontSize}
+          color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getIconColor()}
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.type.icon.fontSize}
         />
       );
     }
@@ -73,7 +74,8 @@ class PackenUiMapPinSub extends Component {
         <PackenUiText
           style={{
             ...this.getStyles().character.base,
-            ...this.getStyles().character.theme[this.state.theme]
+            ...this.getStyles().character.theme[this.state.theme],
+            ...this.state.styling.character
           }}
         >
           {this.state.label.toUpperCase()}
@@ -92,7 +94,8 @@ class PackenUiMapPinSub extends Component {
         <View
           style={{
             ...this.getStyles().dot.base,
-            ...this.getStyles().dot.positioning.type[this.state.type][this.state.dotPosition]
+            ...this.getStyles().dot.positioning.type[this.state.type][this.state.dotPosition],
+            ...this.state.styling.dot
           }}
         ></View>
       );
@@ -101,13 +104,24 @@ class PackenUiMapPinSub extends Component {
     return dot;
   }
 
+  updateState = () => {
+    this.setState({ ...this.setPropsToState() });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+      this.updateState();
+    }
+  }
+
   render() {
     return (
       <View
         style={{
           ...this.getStyles().sub.base,
           ...this.getStyles().sub.type[this.state.type],
-          ...this.getStyles().sub.theme[this.state.theme]
+          ...this.getStyles().sub.theme[this.state.theme],
+          ...this.state.styling.box
         }}
       >
         {this.getIcon()}

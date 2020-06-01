@@ -27,6 +27,12 @@ class PackenUiLicenseBox extends Component {
         expired: "Expirado",
         rejected: "Rechazado",
         pending: "Pendiente"
+      },
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        top: {},
+        overview: {},
+        bottom: {}
       }
     };
   }
@@ -69,14 +75,26 @@ class PackenUiLicenseBox extends Component {
     const state = this.getLicenseState(this.state.state);
     return (
       <TouchableNativeFeedback onPress={this.state.callback}>
-        <View style={this.getStyles().box}>
+        <View style={{
+          ...this.getStyles().box,
+          ...this.state.styling.box
+        }}>
           {/* Descripcion de la licencia */}
-          <View style={this.getStyles().wt}>
-            <PackenUiText preset="c1" style={this.getStyles().subtitle}>
+          <View style={{
+            ...this.getStyles().wt,
+            ...this.state.styling.top
+          }}>
+            <PackenUiText preset="c1" style={{
+              ...this.getStyles().subtitle,
+              ...this.state.styling.overview
+            }}>
               {this.state.overview}
             </PackenUiText>
           </View>
-          <View style={this.getStyles().licenseData}>
+          <View style={{
+            ...this.getStyles().licenseData,
+            ...this.state.styling.bottom
+          }}>
             {/* Numero de licencia */}
             <PackenUiTag
               backgroundColor={Colors.primary.focus}

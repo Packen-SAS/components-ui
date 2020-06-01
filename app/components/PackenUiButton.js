@@ -204,8 +204,8 @@ class PackenUiButton extends Component {
 
     if (this.state.icon.anim) {
       icon = (
-        <Animated.View style={this.state.icon.styles[this.state.icon.anim.state]}>
-          <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
+        <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
+          <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
         </Animated.View>
       );
     }

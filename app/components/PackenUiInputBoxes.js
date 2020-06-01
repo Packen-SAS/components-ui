@@ -24,6 +24,14 @@ class PackenUiInputBoxes extends Component {
     this.setState({ boxes: this.items.map(this.renderBox) });
   }
 
+  getPropStyling = () => {
+    return this.props.styling ? { ...this.props.styling } : {
+      container: {},
+      item: {},
+      input: {}
+    }
+  }
+
   setInputRef = (input, ref) => {
     this.items[ref] = { ref: ref, input: input, text: null };
   }
@@ -86,7 +94,7 @@ class PackenUiInputBoxes extends Component {
   renderBox = id => (
     <View
       key={id}
-      style={{ padding: 5 }}>
+      style={{ padding: 5, ...this.getPropStyling().item }}>
       <PackenUiInput
         instance={this.setInputRef}
         name={id}
@@ -98,6 +106,7 @@ class PackenUiInputBoxes extends Component {
         alignText="center"
         theme="default"
         style={{ textAlign: "center", padding: 5 }}
+        styling={this.getPropStyling().input}
         keyboardType="numeric"
       />
     </View>
@@ -105,7 +114,10 @@ class PackenUiInputBoxes extends Component {
 
   render = () => {
     return (
-      <View style={PackenInputBoxesStyles.box_container}>
+      <View style={{
+        ...PackenInputBoxesStyles.box_container,
+        ...this.getPropStyling().container
+      }}>
         {this.state.boxes}
       </View>
     );
