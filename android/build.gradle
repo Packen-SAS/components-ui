@@ -30,6 +30,11 @@ allprojects {
             // Android JSC is installed from npm
             url("$rootDir/../node_modules/jsc-android/dist")
         }
+        configurations.matching { it.name == '_internal_aapt2_binary' }.all { config ->
+            config.resolutionStrategy.eachDependency { details ->
+                details.useVersion("3.5.0-alpha03-5252756")
+            }
+        }
 
         google()
         jcenter()
