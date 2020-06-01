@@ -27,7 +27,14 @@ class PackenUiCheckboxControl extends Component {
       layout: this.props.layout ? this.props.layout : "column",
       isChecked: this.props.isChecked ? this.props.isChecked : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
-      checkedItems: this.props.checkedItems ? this.props.checkedItems : []
+      checkedItems: this.props.checkedItems ? this.props.checkedItems : [],
+      styling: this.props.styling ? { ...this.props.styling } : {
+        inner: {},
+        iconBox: {},
+        iconSize: undefined,
+        iconColor: undefined,
+        label: {}
+      }
     };
   }
 
@@ -98,11 +105,12 @@ class PackenUiCheckboxControl extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().inner.base}>
+      <View style={{ ...this.getStyles().inner.base, ...this.state.styling.inner }}>
         <View
           style={{
             ...this.getStyles().iconBox.base,
             ...this.getStyles().iconBox.state[this.state.isChecked ? "active" : "inactive"],
+            ...this.state.styling.iconBox,
             ...this.state.styles.disabled
           }}
         >
@@ -110,8 +118,8 @@ class PackenUiCheckboxControl extends Component {
             this.state.isChecked ? (
               <Icon
                 name="check"
-                size={this.getStyles().icon.base.size}
-                color={this.getStyles().icon.base.color}
+                size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.base.size}
+                color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.base.color}
               />
             ) : null
           }
@@ -119,7 +127,8 @@ class PackenUiCheckboxControl extends Component {
         <PackenUiText
           style={{
             ...this.getStyles().label.base,
-            ...this.getStyles().label.state[this.state.isDisabled ? "disabled" : "default"]
+            ...this.getStyles().label.state[this.state.isDisabled ? "disabled" : "default"],
+            ...this.state.styling.label
           }}
         >{this.state.label}</PackenUiText>
       </View>

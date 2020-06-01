@@ -22,7 +22,8 @@ class PackenUiDivider extends Component {
       type: this.props.type ? this.props.type : "light",
       size: this.props.size ? this.props.size : 1,
       width: this.props.width ? this.props.width : "100%",
-      margin: this.props.margin ? { ...this.props.margin } : false
+      margin: this.props.margin ? { ...this.props.margin } : false,
+      color: this.props.color ? this.props.color : this.getStyles().type[this.props.type].backgroundColor
     };
   }
 
@@ -43,7 +44,7 @@ class PackenUiDivider extends Component {
         marginTop: this.state.margin ? this.state.margin.top : 0,
         marginBottom: this.state.margin ? this.state.margin.bottom : 0,
         ...this.getStyles().base,
-        ...this.getStyles().type[this.state.type]
+        ...{ backgroundColor: this.state.color }
       }}></View>
     );
   }
@@ -51,7 +52,7 @@ class PackenUiDivider extends Component {
   getStyles = () => {
     return {
       base: {
-        width: this.state.width,
+        width: this.props.width,
         alignItems: "stretch"
       },
       type: {

@@ -23,6 +23,7 @@ class PackenUiBadge extends Component {
       width: this.props.width ? this.props.width : 16,
       height: this.props.height ? this.props.height : 16,
       color: this.props.color ? this.props.color : colors.basic.white.dft,
+      borderRadius: this.props.borderRadius ? this.props.borderRadius : this.props.height,
       backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : colors.brand.primary.drk
     };
   }
@@ -48,7 +49,7 @@ class PackenUiBadge extends Component {
   getStyle = () => {
     return {
       wrapper: {
-        borderRadius: 100,
+        borderRadius: this.state.borderRadius,
         width: this.state.width,
         height: this.state.height,
         backgroundColor: this.state.backgroundColor,
