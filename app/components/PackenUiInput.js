@@ -71,7 +71,7 @@ class PackenUiInput extends Component {
           box: {},
           icon: {},
           iconSize: undefined,
-          iconColor: {},
+          iconColor: undefined,
           text: {}
         },
         loader: {},
@@ -283,9 +283,12 @@ class PackenUiInput extends Component {
         help = (
           <PackenUiText
             touchable={{
-              color: Colors.brand.secondary.dft,
-              underline: true,
-              
+              style: {
+                label: {
+                  color: Colors.brand.secondary.dft,
+                  textDecorationLine: "underline"
+                }
+              },
               callback: this.triggerHelpCallback,
               ...this.state.styling.help.touchable
             }}
