@@ -35,7 +35,12 @@ class PackenUiDropdownList extends Component {
       numShownRows: this.props.numShownRows ? this.props.numShownRows : 4,
       config: this.props.config ? { ...this.props.config } : {},
       toggleMenu: this.props.toggleMenu ? this.props.toggleMenu : false,
-      getFinalSelection: this.props.getFinalSelection ? this.props.getFinalSelection : false
+      getFinalSelection: this.props.getFinalSelection ? this.props.getFinalSelection : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        flatlist: {},
+        item: {}
+      }
     };
   }
 
@@ -138,8 +143,9 @@ class PackenUiDropdownList extends Component {
   renderItem = ({ item }) => {
     return (
       <PackenUiDropdownListItem
-        config={this.state.config}
         mainContent={item}
+        config={this.state.config}
+        styling={this.state.styling.item}
         getItemHeight={this.getItemHeight}
         selectedItems={this.state.selectedItems}
         updateSelectedItems={this.updateSelectedItems}
@@ -181,16 +187,16 @@ class PackenUiDropdownList extends Component {
 
   render() {
     return (
-      <View style={{ height: this.state.height }}>
+      <View style={{ height: this.state.height, ...this.state.styling.wrapper }}>
         <FlatList
           nestedScrollEnabled
           removeClippedSubviews
           data={this.state.items}
           renderItem={this.renderItem}
           getItemLayout={this.getItemLayout}
-          style={{ height: this.state.height }}
           initialNumToRender={this.state.numShownRows + 2}
           maxToRenderPerBatch={this.state.numShownRows + 2}
+          style={{ height: this.state.height, ...this.state.styling.flatlist }}
         />
       </View>
     );

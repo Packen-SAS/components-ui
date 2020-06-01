@@ -67,7 +67,19 @@ class PackenUiDropdown extends Component {
         style: {}
       },
       list: this.props.list ? { ...this.props.list } : { items: [], config: {} },
-      size: this.props.size ? this.props.size : "medium"
+      size: this.props.size ? this.props.size : "medium",
+      styling: this.props.styling ? { ...this.props.styling, contentSizer: { ...this.props.styling.contentSizer } } : {
+        wrapper: {},
+        inputWrapper: {},
+        contentSizer: {
+          wrapper: {},
+          inner: {},
+          text: {}
+        },
+        menu: {},
+        list: {},
+        input: {}
+      }
     };
   }
 
@@ -212,6 +224,7 @@ class PackenUiDropdown extends Component {
         ...this.getStyles().input
       }}
       name="dropdownInput"
+      styling={this.state.styling.input}
     />
   )
 
@@ -222,7 +235,8 @@ class PackenUiDropdown extends Component {
         ...this.getStyles().contentSizer.wrapper.base,
         ...this.getStyles().contentSizer.wrapper.size[this.state.size],
         ...this.getStyles().contentSizer.wrapper.padding[this.state.input.icon.position][this.state.size],
-        ...this.getStyles().contentSizer.wrapper.theme[this.state.input.theme]
+        ...this.getStyles().contentSizer.wrapper.theme[this.state.input.theme],
+        ...this.state.styling.contentSizer.wrapper
       }}
     >
       <View
@@ -230,14 +244,16 @@ class PackenUiDropdown extends Component {
         style={{
           ...this.getStyles().contentSizer.inner.base,
           ...this.getStyles().contentSizer.inner.size[this.state.size],
-          ...this.getStyles().contentSizer.inner.theme[this.state.input.theme]
+          ...this.getStyles().contentSizer.inner.theme[this.state.input.theme],
+          ...this.state.styling.contentSizer.inner
         }}
       >
         <PackenUiText
           style={{
             ...this.getStyles().contentSizer.text.base,
             ...this.getStyles().contentSizer.text.size[this.state.size],
-            ...this.getStyles().contentSizer.text.theme[this.state.input.theme]
+            ...this.getStyles().contentSizer.text.theme[this.state.input.theme],
+            ...this.state.styling.contentSizer.text
           }}
         >{this.state.finalSelectionString}</PackenUiText>
       </View>
@@ -251,9 +267,8 @@ class PackenUiDropdown extends Component {
         this.getStyles().menu.base,
         this.getStyles().menu.theme[this.state.input.theme],
         this.state.styles.menu,
-        {
-          opacity: this.state.isOpen ? 1 : 0
-        }
+        this.state.styling.menu,
+        { opacity: this.state.isOpen ? 1 : 0 }
       ]}
       pointerEvents={this.state.isOpen ? "auto" : "none"}
     >
@@ -265,6 +280,7 @@ class PackenUiDropdown extends Component {
         getFinalSelection={this.getFinalSelection}
         finalSelectionArray={this.state.finalSelection}
         toggleMenu={this.toggleMenu}
+        styling={this.state.styling.list}
       />
     </View>
   )
@@ -272,16 +288,15 @@ class PackenUiDropdown extends Component {
   render() {
     return (
       <View
-        style={[
-          this.getStyles().wrapper,
-          {
-            paddingBottom: this.state.input && this.state.input.theme === "list" ? this.state.isOpen ? this.state.dimensions.menu.height : 0 : 0
-          }
-        ]}
+        style={{
+          ...this.getStyles().wrapper,
+          ...this.state.styling.wrapper,
+          ...{ paddingBottom: this.state.input && this.state.input.theme === "list" ? this.state.isOpen ? this.state.dimensions.menu.height : 0 : 0 }
+        }}
         pointerEvents={this.state.isDisabled ? "none" : "auto"}
       >
-        <TouchableWithoutFeedback style={this.getStyles().input} onPress={this.toggleMenu}>
-          <View pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
+        <TouchableWithoutFeedback onPress={this.toggleMenu}>
+          <View style={{ ...this.getStyles().input, ...this.state.styling.inputWrapper }} pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
             {this.getInput()}
             {this.getContentSizer()}
           </View>

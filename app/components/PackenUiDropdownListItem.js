@@ -27,6 +27,24 @@ class PackenUiDropdownListItem extends Component {
     this.createRefs();
   }
 
+  getPropStyling = () => {
+    return this.props.styling ? { ...this.props.styling } : {
+      wrapper: {},
+      box: {},
+      contentWrapper: {},
+      checkIconSize: undefined,
+      checkIconColor: undefined,
+      avatar: {},
+      sideIconSize: undefined,
+      sideIconColor: undefined,
+      leftWrapper: {},
+      mainWrapper: {},
+      rightWrapper: {},
+      checkbox: {},
+      radio: {}
+    };
+  }
+
   createRefs = () => {
     if (this.props.mainContent.main.control) {
       this.radioRef = createRef();
@@ -239,8 +257,8 @@ class PackenUiDropdownListItem extends Component {
         leftRender = (
           <Icon
             name={this.props.mainContent.left.config.name}
-            color={this.getStyles().icon.state[this.state.state].color}
-            size={this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
+            color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
+            size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
           />
         );
         break;
@@ -249,6 +267,7 @@ class PackenUiDropdownListItem extends Component {
           <PackenUiAvatar
             size={this.props.mainContent.left.config.size}
             src={this.props.mainContent.left.config.src}
+            styling={this.getPropStyling().avatar}
           />
         );
         break;
@@ -266,8 +285,8 @@ class PackenUiDropdownListItem extends Component {
         rightRender = (
           <Icon
             name={this.props.mainContent.right.config.name}
-            color={this.getStyles().icon.state[this.state.state].color}
-            size={this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
+            color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
+            size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
           />
         );
         break;
@@ -276,6 +295,7 @@ class PackenUiDropdownListItem extends Component {
           <PackenUiAvatar
             size={this.props.mainContent.right.config.size}
             src={this.props.mainContent.right.config.src}
+            styling={this.getPropStyling().avatar}
           />
         );
         break;
@@ -304,7 +324,7 @@ class PackenUiDropdownListItem extends Component {
 
     if (leftContent !== null) {
       leftContent = (
-        <View style={{ ...this.getStyles().content.left.base, ...this.getStyles().content.left.state[this.state.state] }}>
+        <View style={{ ...this.getStyles().content.left.base, ...this.getStyles().content.left.state[this.state.state], ...this.getPropStyling().leftWrapper }}>
           {leftContent}
         </View>
       );
@@ -312,7 +332,7 @@ class PackenUiDropdownListItem extends Component {
 
     if (rightContent !== null) {
       rightContent = (
-        <View style={{ ...this.getStyles().content.right.base, ...this.getStyles().content.right.state[this.state.state] }}>
+        <View style={{ ...this.getStyles().content.right.base, ...this.getStyles().content.right.state[this.state.state], ...this.getPropStyling().rightWrapper }}>
           {rightContent}
         </View>
       );
@@ -355,6 +375,7 @@ class PackenUiDropdownListItem extends Component {
             name="dropdownItemRadio"
             initialIndex={-1}
             callback={this.mockCallback}
+            styling={this.getPropStyling().radio}
           />
         );
       } break;
@@ -366,6 +387,7 @@ class PackenUiDropdownListItem extends Component {
             callback={this.props.mainContent.main.control.handleNotify}
             ref={this.setCheckboxRef}
             name="dropdownItemCheckbox"
+            styling={this.getPropStyling().checkbox}
           />
         );
       } break;
@@ -382,7 +404,7 @@ class PackenUiDropdownListItem extends Component {
       mainContent = this.getMainControl();
     } else {
       mainContent = (
-        <View style={this.getStyles().content.main}>
+        <View style={{ ...this.getStyles().content.main, ...this.getPropStyling().mainWrapper }}>
           {this.props.mainContent.main}
         </View>
       );
@@ -493,9 +515,10 @@ class PackenUiDropdownListItem extends Component {
     if (!this.props.mainContent.main.control) {
       this.checkMainContentStyles();
     }
+    const propStyling = this.getPropStyling();
 
     return (
-      <View pointerEvents={this.props.mainContent.isDisabled ? "none" : "auto"}>
+      <View style={propStyling.wrapper} pointerEvents={this.props.mainContent.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback
           onPressIn={this.pressInHandler}
           onPressOut={this.pressOutHandler}
@@ -508,19 +531,20 @@ class PackenUiDropdownListItem extends Component {
               ...this.getActiveStyles(),
               ...this.getFocusStyles(),
               ...this.getStyles().box.selection[this.props.config.selectionType],
-              ...this.getDisabledStyles().box
+              ...this.getDisabledStyles().box,
+              ...propStyling.box
             }}
           >
-            <View style={{ ...this.getStyles().content.wrapper.base, ...this.getDisabledStyles().content.wrapper }}>
-              {this.getLeftContent()}
+            <View style={{ ...this.getStyles().content.wrapper.base, ...this.getDisabledStyles().content.wrapper, ...propStyling.contentWrapper }}>
+              {this.getLeftContent(propStyling)}
               {this.state.mainContent}
-              {this.getRightContent()}
+              {this.getRightContent(propStyling)}
               {
                 this.props.mainContent.isSelected && this.props.config.checkedIcon ? (
                   <Icon
                     name={this.props.config.checkedIcon}
-                    size={this.getStyles().icon.size[this.props.config.size].size * 1.2}
-                    color={Colors.basic.white.dft}
+                    size={propStyling.checkIconSize ? propStyling.checkIconSize : this.getStyles().icon.size[this.props.config.size].size * 1.2}
+                    color={propStyling.checkIconColor ? propStyling.checkIconColor : Colors.basic.white.dft}
                   />
                 ) : null
               }
