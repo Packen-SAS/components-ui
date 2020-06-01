@@ -70,7 +70,7 @@ class PackenUiInput extends Component {
         message: {
           box: {},
           icon: {},
-          iconSize: {},
+          iconSize: undefined,
           iconColor: {},
           text: {}
         },
@@ -285,6 +285,7 @@ class PackenUiInput extends Component {
             touchable={{
               color: Colors.brand.secondary.dft,
               underline: true,
+              
               callback: this.triggerHelpCallback,
               ...this.state.styling.help.touchable
             }}
