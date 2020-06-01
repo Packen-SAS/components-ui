@@ -47,7 +47,20 @@ class PackenUiServiceStatusItem extends Component {
       index: this.props.index ? this.props.index : 0,
       itemsHeights: this.props.itemsHeights ? [...this.props.itemsHeights] : [],
       setItemsHeights: this.props.setItemsHeights ? this.props.setItemsHeights : false,
-      currentStepIndex: this.props.currentStepIndex ? this.props.currentStepIndex : -1
+      currentStepIndex: this.props.currentStepIndex ? this.props.currentStepIndex : -1,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        sub: {},
+        time: {},
+        spacer: {},
+        line: {},
+        dot: {},
+        dotIconSize: undefined,
+        dotIconColor: undefined,
+        main: {},
+        title: {},
+        subtitle: {}
+      }
     };
   }
 
@@ -67,11 +80,12 @@ class PackenUiServiceStatusItem extends Component {
   getInitialTime = () => {
     let time = null;
     const data = this.setPropsToState().data;
-
+    const customStyles = this.state && this.state.styling ? { ...this.state.styling.time } : this.props.styling ? { ...this.props.styling.time } : {};
+    
     if (data.time) {
       time = (
         <PackenUiText
-          style={this.getStyles().time}
+          style={{ ...this.getStyles().time, ...customStyles }}
         >{data.time}</PackenUiText>
       );
     }
@@ -92,7 +106,7 @@ class PackenUiServiceStatusItem extends Component {
     this.setState({
       time: (
         <PackenUiText
-          style={this.getStyles().time}
+        style={{ ...this.getStyles().time, ...this.state.styling.time }}
         >{strTime}</PackenUiText>
       )
     });
@@ -106,7 +120,8 @@ class PackenUiServiceStatusItem extends Component {
         <PackenUiText
           style={{
             ...this.getStyles().subtitle.base,
-            ...this.getStyles().subtitle.state[this.state.state]
+            ...this.getStyles().subtitle.state[this.state.state],
+            ...this.state.styling.subtitle
           }}
         >{this.state.data.subtitle}</PackenUiText>
       );
@@ -127,7 +142,8 @@ class PackenUiServiceStatusItem extends Component {
       <View style={{
         ...this.getStyles().line.base,
         ...this.getStyles().line.state[this.state.state],
-        ...this.getLinePositioning()
+        ...this.getLinePositioning(),
+        ...this.state.styling.line
       }}></View>
     );
 
@@ -152,8 +168,8 @@ class PackenUiServiceStatusItem extends Component {
       icon = (
         <Icon
           name="check"
-          size={this.getStyles().icon.size}
-          color={this.getStyles().icon.color} />
+          size={this.state.styling.dotIconSize ? this.state.styling.dotIconSize : this.getStyles().icon.size}
+          color={this.state.styling.dotIconColor ? this.state.styling.dotIconColor : this.getStyles().icon.color} />
       );
     }
 
@@ -221,24 +237,32 @@ class PackenUiServiceStatusItem extends Component {
   render() {
     return (
       <View
-        style={[this.getStyles().item, this.getBoxStyles()]}
+        style={{
+          ...this.getStyles().item,
+          ...this.getBoxStyles(),
+          ...this.state.styling.box
+        }}
         onLayout={e => { this.setBoxDimensions(e); }}
       >
-        <View style={this.getStyles().sub}>
+        <View style={{ ...this.getStyles().sub, ...this.state.styling.sub }}>
           {this.state.time}
         </View>
-        <View style={this.getStyles().spacer}>
+        <View style={{ ...this.getStyles().spacer, ...this.state.styling.spacer }}>
           {this.getLine()}
           <View style={{
             ...this.getStyles().dot.base,
-            ...this.getStyles().dot.state[this.state.state]
+            ...this.getStyles().dot.state[this.state.state],
+            ...this.state.styling.dot
           }}>
             {this.getDotIcon()}
           </View>
         </View>
-        <View style={this.getStyles().main}>
+        <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
           <PackenUiText
-            style={this.getStyles().title.state[this.state.state]}
+            style={{
+              ...this.getStyles().title.state[this.state.state],
+              ...this.state.styling.title
+            }}
           >{this.state.data.title}</PackenUiText>
           {this.getSubtitle()}
         </View>

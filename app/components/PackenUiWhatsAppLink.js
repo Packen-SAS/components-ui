@@ -24,7 +24,13 @@ class PackenUiWhatsAppLink extends Component {
       trigger: this.props.trigger ? this.props.trigger : false,
       visible: this.props.visible ? this.props.visible : false,
       inverted: this.props.inverted ? this.props.inverted : false,
-      color: this.props.color ? this.props.color : colors.basic.independence.drk_alt
+      color: this.props.color ? this.props.color : colors.basic.independence.drk_alt,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        svgWidth: undefined,
+        svgHeight: undefined,
+        text: {}
+      }
     }
   }
 
@@ -41,7 +47,8 @@ class PackenUiWhatsAppLink extends Component {
         alignItems: "center", flexDirection: "row", width: "auto",
         height: "auto", padding: 5
       },
-      (this.state.style !== null ? this.state.style : null)
+      (this.state.style !== null ? this.state.style : null),
+      this.state.styling.box
     ]
   )
 
@@ -63,7 +70,10 @@ class PackenUiWhatsAppLink extends Component {
             <TouchableNativeFeedback
               onPress={this.trigger}>
               <View style={this.getStyles()}>
-                <PackenUiSvgIcon name={!this.state.inverted ? "whatsapp" : "whatsapp_inverted"} width={24} height={24} />
+                <PackenUiSvgIcon
+                  name={!this.state.inverted ? "whatsapp" : "whatsapp_inverted"}
+                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 24}
+                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 24} />
                 <PackenUiText
                   style={{
                     textDecorationStyle: "solid",
@@ -72,6 +82,7 @@ class PackenUiWhatsAppLink extends Component {
                     fontSize: 12,
                     color: this.state.color,
                     textDecorationColor: this.state.color,
+                    ...this.state.styling.text
                   }}>
                   {this.state.text}
                 </PackenUiText>

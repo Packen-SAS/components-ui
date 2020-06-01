@@ -22,7 +22,11 @@ class PackenUiTabs extends Component {
       items: this.props.items ? [...this.props.items] : [],
       name: this.props.name ? this.props.name : "",
       activeTabIndex: this.props.activeIndex ? this.props.activeIndex : 0,
-      onTabChange: this.props.onTabChange ? this.props.onTabChange : false
+      onTabChange: this.props.onTabChange ? this.props.onTabChange : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
+        item: {}
+      }
     };
   }
 
@@ -54,12 +58,13 @@ class PackenUiTabs extends Component {
       label={item.label}
       icon={item.icon}
       updateActiveTabIndex={this.updateActiveIndex}
-      callback={item.callback}/>
+      callback={item.callback}
+      styling={this.state.styling.item} />
   )
 
   render() {
     return (
-      <View style={this.getStyles().container}>
+      <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
         {this.state.items.map(this.mapItems)}
       </View>
     );

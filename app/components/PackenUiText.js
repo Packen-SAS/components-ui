@@ -62,7 +62,8 @@ class PackenUiText extends Component {
         ...this.state.presetStyle,
         ...this.props.style,
         ...this.props.styling,
-        ...this.state.touchableStyles.label
+        ...this.state.touchableStyles.label,
+        ...this.state.styling
       }}>{this.state.children}</Text>
     );
 

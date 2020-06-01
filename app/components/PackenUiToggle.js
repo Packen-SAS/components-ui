@@ -48,7 +48,15 @@ class PackenUiToggle extends Component {
       name: this.props.name ? this.props.name : "",
       onLabel: this.props.onLabel ? this.props.onLabel : "",
       offLabel: this.props.offLabel ? this.props.offLabel : "",
-      state: this.setInitialState()
+      state: this.setInitialState(),
+      styling: this.props.styling ? { ...this.props.styling } : {
+        shape: {},
+        dot: {},
+        onWrapper: {},
+        offWrapper: {},
+        onLabel: {},
+        offLabel: {}
+      }
     };
   }
 
@@ -238,26 +246,30 @@ class PackenUiToggle extends Component {
           <View style={{
             ...this.getStyles().shape.default,
             ...this.getStyles().shape[this.state.state],
-            ...this.state.shape.disabled
+            ...this.state.shape.disabled,
+            ...this.state.styling.shape
           }} onLayout={e => { this.getShapeDimensions(e); }}>
             <View style={{
               ...this.getStyles().dot.default,
               ...this.getStyles().dot[this.state.state],
               ...this.state.dot.positioning,
-              ...this.state.dot.disabled
+              ...this.state.dot.disabled,
+              ...this.state.styling.dot
             }} onLayout={e => { this.getDotDimensions(e); }}></View>
-            <View onLayout={e => { this.getOnDimensions(e); }} style={this.state.on.positioning}>
+            <View onLayout={e => { this.getOnDimensions(e); }} style={{ ...this.state.on.positioning, ...this.state.styling.onWrapper }}>
               <PackenUiText style={{
                 ...this.getStyles().label.default,
                 ...this.getStyles().label.on[this.state.state],
-                ...this.state.on.disabled
+                ...this.state.on.disabled,
+                ...this.state.styling.onLabel
               }}>{this.state.onLabel}</PackenUiText>
             </View>
-            <View onLayout={e => { this.getOffDimensions(e); }} style={this.state.off.positioning}>
+            <View onLayout={e => { this.getOffDimensions(e); }} style={{ ...this.state.off.positioning, ...this.state.styling.offWrapper }}>
               <PackenUiText style={{
                 ...this.getStyles().label.default,
                 ...this.getStyles().label.off[this.state.state],
-                ...this.state.off.disabled
+                ...this.state.off.disabled,
+                ...this.state.styling.offLabel
               }}>{this.state.offLabel}</PackenUiText>
             </View>
           </View>

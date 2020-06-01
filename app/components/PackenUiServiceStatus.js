@@ -23,7 +23,11 @@ class PackenUiServiceStatus extends Component {
   setPropsToState = () => {
     return {
       steps: this.props.steps ? [...this.props.steps] : [],
-      currentStepIndex: this.props.currentStepIndex === 0 ? 0 : this.props.currentStepIndex ? this.props.currentStepIndex : -1
+      currentStepIndex: this.props.currentStepIndex === 0 ? 0 : this.props.currentStepIndex ? this.props.currentStepIndex : -1,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        item: {}
+      }
     };
   }
 
@@ -75,12 +79,13 @@ class PackenUiServiceStatus extends Component {
       currentStepIndex={this.state.currentStepIndex}
       itemsHeights={this.state.itemsHeights}
       setItemsHeights={this.setItemsHeights}
+      styling={this.state.styling.item}
     />
   )
 
   render() {
     return (
-      <View style={this.getStyles().wrapper}>
+      <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
         {this.state.steps.map(this.mapItems)}
       </View>
     );

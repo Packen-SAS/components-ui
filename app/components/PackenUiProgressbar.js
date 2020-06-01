@@ -28,6 +28,12 @@ class PackenUiProgressbar extends Component {
       colors: {
         track: this.props.trackColor ? this.props.trackColor : Colors.base.default_alt,
         indicator: this.props.indicatorColor ? this.props.indicatorColor : Colors.success.default
+      },
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        label: {},
+        track: {},
+        indicator: {}
       }
     };
   };
@@ -115,7 +121,8 @@ class PackenUiProgressbar extends Component {
           color: this.props.indicatorColor,
           width: "100%",
           textAlign: "center",
-          paddingBottom: 10
+          paddingBottom: 10,
+          ...this.state.styling.label
         }}>
           {this.state.label}
         </PackenUiText>
@@ -139,14 +146,22 @@ class PackenUiProgressbar extends Component {
 
   render() {
     return (
-      <View style={[this.getStyles().wrapper, this.state.wrapperStyle]}>
+      <View style={{
+        ...this.getStyles().wrapper,
+        ...this.state.wrapperStyle,
+        ...this.state.styling.wrapper
+        }}>
         {this.getLabel()}
-        <Animated.View style={this.getStyles().track}>
+        <Animated.View style={{
+          ...this.getStyles().track,
+          ...this.state.styling.track
+        }}>
           <Animated.View
-            style={[
-              this.getStyles().indicator.base,
-              this.getStyles().indicator.type[this.state.type]
-            ]}
+            style={{
+              ...this.getStyles().indicator.base,
+              ...this.getStyles().indicator.type[this.state.type],
+              ...this.state.styling.indicator
+            }}
           ></Animated.View>
         </Animated.View>
       </View>

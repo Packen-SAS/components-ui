@@ -45,7 +45,12 @@ class PackenUiSelectionButtonsControl extends Component {
       },
       selected: this.props.selected === false ? false : this.props.selected ? this.props.selected : [],
       selection: this.props.selection ? this.props.selection : "single",
-      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
+      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        image: {},
+        label: {}
+      }
     };
   }
 
@@ -98,11 +103,13 @@ class PackenUiSelectionButtonsControl extends Component {
       image = (
         <Image
           source={this.state.config.image[this.state.state].src}
-          style={[
-            this.getStyles().img.base,
-            this.getStyles().img.state[this.state.state],
-            { width: this.state.config.image[this.state.state].width, height: this.state.config.image[this.state.state].height }
-          ]}
+          style={{
+            ...this.getStyles().img.base,
+            ...this.getStyles().img.state[this.state.state],
+            width: this.state.config.image[this.state.state].width,
+            height: this.state.config.image[this.state.state].height,
+            ...this.state.styling.image
+          }}
         />
       );
     }
@@ -168,19 +175,21 @@ class PackenUiSelectionButtonsControl extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.newSelection}>
-        <View style={[
-          this.getStyles().box.type[this.state.type],
-          this.getStyles().box.state[this.state.state].type[this.state.type],
-          this.getStyles().box.altStyle[this.state.altStyle].base,
-          this.getStyles().box.altStyle[this.state.altStyle].state[this.state.state]
-        ]}>
+        <View style={{
+          ...this.getStyles().box.type[this.state.type],
+          ...this.getStyles().box.state[this.state.state].type[this.state.type],
+          ...this.getStyles().box.altStyle[this.state.altStyle].base,
+          ...this.getStyles().box.altStyle[this.state.altStyle].state[this.state.state],
+          ...this.state.styling.box
+        }}>
           {this.getImage()}
           <PackenUiText
             preset={this.state.labelPreset}
             style={{
               ...this.getStyles().label.type[this.state.type],
               ...this.getStyles().label.state[this.state.state].type[this.state.type],
-              ...this.getStyles().label.altStyle[this.state.altStyle].state[this.state.state]
+              ...this.getStyles().label.altStyle[this.state.altStyle].state[this.state.state],
+              ...this.state.styling.label
             }}>{this.state.data.label}</PackenUiText>
         </View>
       </TouchableWithoutFeedback>
