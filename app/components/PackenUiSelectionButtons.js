@@ -94,7 +94,10 @@ class PackenUiSelectionButtons extends Component {
   }
 
   updateState = () => {
-    this.setState({ ...this.setPropsToState() });
+    this.setState({
+      ...this.setPropsToState(),
+      selected: this.getInitialSelected()
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
