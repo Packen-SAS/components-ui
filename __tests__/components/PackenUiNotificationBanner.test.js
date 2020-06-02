@@ -17,7 +17,7 @@ describe("<PackenUiNotificationBanner/>", () => {
       />
     );
     renderInstance = render.instance();
-    
+
     renderInstance.setState({
       theme: "success",
       type: "default"
@@ -50,7 +50,7 @@ describe("<PackenUiNotificationBanner/>", () => {
       themes.forEach((theme, i) => {
         renderInstance.setState({ theme: theme });
         const returnedElement = renderInstance.getIcon();
-  
+
         expect(returnedElement.props.source).toBe(srcs[i]);
       });
     });
@@ -95,7 +95,8 @@ describe("<PackenUiNotificationBanner/>", () => {
         title: undefined,
         theme: undefined,
         type: undefined,
-        icon: undefined
+        icon: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -103,7 +104,15 @@ describe("<PackenUiNotificationBanner/>", () => {
         title: "",
         theme: "primary",
         type: "accent",
-        icon: "packen"
+        icon: "packen",
+        styling: {
+          box: {},
+          title: {},
+          logo: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
     });
   });

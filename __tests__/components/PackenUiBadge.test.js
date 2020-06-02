@@ -53,7 +53,8 @@ describe("<PackenUiBadge/>", () => {
         width: undefined,
         height: undefined,
         color: undefined,
-        backgroundColor: undefined
+        backgroundColor: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -62,7 +63,8 @@ describe("<PackenUiBadge/>", () => {
         width: 16,
         height: 16,
         color: colors.basic.white.dft,
-        backgroundColor: colors.brand.primary.drk
+        backgroundColor: colors.brand.primary.drk,
+        styling: { wrapper: {}, label: {} }
       });
     });
   });

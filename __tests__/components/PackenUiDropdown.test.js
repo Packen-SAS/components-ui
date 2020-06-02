@@ -119,7 +119,7 @@ describe("<PackenUiDropdown/>", () => {
         nonEditable: true,
         help: "Help text"
       },
-      list: {...list},
+      list: { ...list },
       size: "medium",
       contentSizerHeight: 0,
       isOpen: false,
@@ -211,7 +211,8 @@ describe("<PackenUiDropdown/>", () => {
         isDisabled: false,
         input: undefined,
         list: undefined,
-        size: undefined
+        size: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -237,7 +238,19 @@ describe("<PackenUiDropdown/>", () => {
           style: {}
         },
         list: { items: [], config: {} },
-        size: "medium"
+        size: "medium",
+        styling: {
+          wrapper: {},
+          inputWrapper: {},
+          contentSizer: {
+            wrapper: {},
+            inner: {},
+            text: {}
+          },
+          menu: {},
+          list: {},
+          input: {}
+        }
       });
     });
 
@@ -329,7 +342,7 @@ describe("<PackenUiDropdown/>", () => {
       });
 
       expect(render).toBeDefined();
-      expect(render.props().style[1].paddingBottom).toBe(0);
+      expect(render.props().style.paddingBottom).toBe(0);
     });
 
     it("disables pointer events if set so via props", () => {
@@ -344,7 +357,7 @@ describe("<PackenUiDropdown/>", () => {
       render.setProps({
         isDisabled: false
       });
-      
+
       expect(render.props().pointerEvents).toBe("auto");
     });
   });

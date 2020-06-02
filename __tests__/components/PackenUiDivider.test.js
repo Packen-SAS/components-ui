@@ -57,7 +57,8 @@ describe("<PackenUiDivider/>", () => {
         type: "",
         size: 0,
         margin: undefined,
-        width: undefined
+        width: undefined,
+        color: undefined
       });
       const res = renderInstance.setPropsToState();
       
@@ -65,7 +66,8 @@ describe("<PackenUiDivider/>", () => {
         type: "light",
         size: 1,
         margin: false,
-        width: "100%"
+        width: "100%",
+        color: "#C6CED7"
       });
     });
 

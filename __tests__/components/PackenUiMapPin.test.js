@@ -34,7 +34,7 @@ describe("<PackenUiMapPin/>", () => {
       />
     );
     renderInfoInstance = renderInfo.instance();
-    
+
     renderInfoInstance.setState({
       main: {
         label: "DE",
@@ -102,7 +102,8 @@ describe("<PackenUiMapPin/>", () => {
         sub: undefined,
         theme: undefined,
         type: undefined,
-        dotPosition: undefined
+        dotPosition: undefined,
+        styling: undefined
       });
       const res = renderInfoInstance.setPropsToState();
 
@@ -114,7 +115,15 @@ describe("<PackenUiMapPin/>", () => {
         sub: false,
         theme: "primary",
         type: "info",
-        dotPosition: false
+        dotPosition: false,
+        styling: {
+          container: {},
+          inner: {},
+          main: {},
+          label: {},
+          text: {},
+          sub: {}
+        }
       });
     });
   });

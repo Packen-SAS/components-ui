@@ -174,7 +174,8 @@ describe("<PackenUiProgressbar/>", () => {
         isComplete: undefined,
         label: undefined,
         trackColor: undefined,
-        indicatorColor: undefined
+        indicatorColor: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -188,6 +189,12 @@ describe("<PackenUiProgressbar/>", () => {
         colors: {
           track: "#E6E6E6",
           indicator: "#20D292"
+        },
+        styling: {
+          wrapper: {},
+          label: {},
+          track: {},
+          indicator: {}
         }
       });
     });

@@ -125,13 +125,15 @@ describe("<PackenUiServiceStatus/>", () => {
     it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
         steps: undefined,
-        currentStepIndex: undefined
+        currentStepIndex: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
         steps: [],
-        currentStepIndex: -1
+        currentStepIndex: -1,
+        styling: { wrapper: {}, item: {} }
       });
     });
 

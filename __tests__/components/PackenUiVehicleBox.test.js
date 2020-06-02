@@ -64,7 +64,8 @@ describe("<PackenUiVehicleBox/>", () => {
         state: undefined,
         callback: undefined,
         image: undefined,
-        labels: undefined
+        labels: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -80,6 +81,21 @@ describe("<PackenUiVehicleBox/>", () => {
           approved: "Aprobado",
           rejected: "Rechazado",
           pending: "Pendiente"
+        },
+        styling: {
+          box: {},
+          imgWrapper: {},
+          image: {},
+          copy: {},
+          type: {},
+          overview: {},
+          year: {},
+          plateWrapper: {},
+          tag: {},
+          stateWrapper: {},
+          state: {},
+          stateIconSize: undefined,
+          stateIconColor: undefined
         }
       });
     });

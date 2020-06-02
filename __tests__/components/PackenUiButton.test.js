@@ -293,7 +293,8 @@ describe("<PackenUiButton/>", () => {
         callback: undefined,
         isDisabled: undefined,
         nonTouchable: undefined,
-        children: undefined
+        children: undefined,
+        styling: undefined
       });
       const res = renderRegularInstance.setPropsToState();
 
@@ -305,7 +306,15 @@ describe("<PackenUiButton/>", () => {
         callback: false,
         isDisabled: false,
         nonTouchable: false,
-        children: undefined
+        children: undefined,
+        styling: {
+          shape: {},
+          shapeContent: {},
+          label: {},
+          iconWrapper: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
     });
 

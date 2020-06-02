@@ -117,10 +117,11 @@ describe("<PackenUiInfoAction/>", () => {
         callback: undefined,
         boxStyle: undefined,
         img: undefined,
-        icon: undefined
+        icon: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res).toEqual({
         theme: "primary",
         title: "",
@@ -132,6 +133,20 @@ describe("<PackenUiInfoAction/>", () => {
         icon: {
           name: "play",
           size: 14
+        },
+        styling: {
+          box: {},
+          main: {},
+          mainTop: {},
+          title: {},
+          svgWidth: undefined,
+          svgHeight: undefined,
+          iconSize: undefined,
+          iconColor: undefined,
+          caption: {},
+          subtitle: {},
+          subtitleIconSize: undefined,
+          subtitleIconColor: undefined
         }
       });
     });
@@ -140,14 +155,14 @@ describe("<PackenUiInfoAction/>", () => {
       const mockCallback = jest.fn();
       render.setProps({ callback: mockCallback });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res.callback).toBe(mockCallback);
     });
 
     it("returns incoming props as the state key-value pairs if a boxStyle is provided", () => {
       render.setProps({ style: { test: "Test" } });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res.boxStyle).toEqual({ test: "Test" });
     });
   });

@@ -222,7 +222,8 @@ describe("<PackenUiInput/>", () => {
         icon: false,
         loading: undefined,
         minLength: undefined,
-        validator: undefined
+        validator: undefined,
+        styling: undefined
       });
       const returnedState = renderInstance.setInitialState();
 
@@ -256,7 +257,31 @@ describe("<PackenUiInput/>", () => {
         ref: null,
         loading: false,
         validator: false,
-        minLength: 0
+        minLength: 0,
+        styling: {
+          header: {
+            base: {},
+            label: {}
+          },
+          help: {
+            touchable: {},
+            text: {}
+          },
+          box: {},
+          input: {},
+          message: {
+            box: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined,
+            text: {}
+          },
+          loader: {},
+          iconWrapper: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
     });
 
@@ -338,7 +363,7 @@ describe("<PackenUiInput/>", () => {
           touchable: true,
           callback: this.mockCallback
         },
-        
+
         state: "disabled",
         ref: null,
         dimensions: {
@@ -375,7 +400,7 @@ describe("<PackenUiInput/>", () => {
   describe("triggering actions", () => {
     it("triggers the mock callback", () => {
       const res = renderInstance.mockCallback();
-      
+
       expect(res).toBe(false);
     });
 
@@ -562,7 +587,7 @@ describe("<PackenUiInput/>", () => {
     it("returns the ref", () => {
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
-      
+
       expect(renderInstance.state.ref).toEqual(ref);
     });
 
@@ -571,7 +596,7 @@ describe("<PackenUiInput/>", () => {
       renderInstance.setState({ name: "Test" });
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
-      
+
       expect(renderInstance.props.instance).toHaveBeenCalledWith(ref, "Test");
     });
 
@@ -631,14 +656,14 @@ describe("<PackenUiInput/>", () => {
     it("returns the entry security type as true if set so", () => {
       render.setProps({ isPassword: true });
       const res = renderInstance.getSecureEntryType();
-      
+
       expect(res).toBe(true);
     });
 
     it("returns the entry security type as false if set so", () => {
       render.setProps({ isPassword: false });
       const res = renderInstance.getSecureEntryType();
-      
+
       expect(res).toBe(false);
     });
 
@@ -660,13 +685,13 @@ describe("<PackenUiInput/>", () => {
   describe("styling", () => {
     it("disables pointer events if its state is 'disabled'", () => {
       renderInstance.setState({ state: "disabled" });
-      
+
       expect(render.props().pointerEvents).toBe("none");
     });
 
     it("enables pointer events if its state is no 'disabled'", () => {
       renderInstance.setState({ state: "default" });
-      
+
       expect(render.props().pointerEvents).toBe("auto");
     });
 
@@ -688,7 +713,7 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedStyles = renderInstance.setIconPositionStyles();
-      
+
       expect(returnedStyles).toEqual({
         top: 2,
         left: renderInstance.getStyles().icon_wrapper.offset.small
@@ -713,7 +738,7 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedStyles = renderInstance.setIconPositionStyles();
-      
+
       expect(returnedStyles).toEqual({
         top: 2,
         right: renderInstance.getStyles().icon_wrapper.offset.small
@@ -735,14 +760,14 @@ describe("<PackenUiInput/>", () => {
         size: "tiny"
       });
       const returnedStyles = renderInstance.getPaddingStyles();
-      
+
       expect(returnedStyles).toBeDefined();
     });
 
     it("returns empty padding styles if there's no icon", () => {
       render.setProps({ icon: false });
       const returnedStyles = renderInstance.getPaddingStyles();
-      
+
       expect(returnedStyles).toEqual({});
     });
 
@@ -752,7 +777,7 @@ describe("<PackenUiInput/>", () => {
         size: "tiny"
       });
       const returnedStyles = renderInstance.getMultilineStyles();
-      
+
       expect(returnedStyles).toBeDefined();
     });
 
@@ -800,8 +825,8 @@ describe("<PackenUiInput/>", () => {
   describe("getting dimensions", () => {
     it("sets box dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getBoxDimensions({width: 100, height: 100});
-      
+      renderInstance.getBoxDimensions({ width: 100, height: 100 });
+
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
         box: {
@@ -815,8 +840,8 @@ describe("<PackenUiInput/>", () => {
 
     it("sets icon wrapper dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getIconWrapperDimensions({width: 10, height: 10});
-      
+      renderInstance.getIconWrapperDimensions({ width: 10, height: 10 });
+
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
         iconWrapper: {

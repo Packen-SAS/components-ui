@@ -47,7 +47,7 @@ describe("<PackenUiWhatsAppLink/>", () => {
     it("returns the styles array", () => {
       renderInstance.setState({ style: null });
       const res = renderInstance.getStyles();
-      expect(res).toEqual([renderInstance.getStyles()[0], null]);
+      expect(res).toEqual([renderInstance.getStyles()[0], null, renderInstance.state.styling.box]);
     });
   });
 
@@ -75,7 +75,8 @@ describe("<PackenUiWhatsAppLink/>", () => {
         trigger: undefined,
         visible: undefined,
         inverted: undefined,
-        color: undefined
+        color: undefined,
+        styling: undefined
       });
       let res = renderInstance.setPropsToState();
 
@@ -85,7 +86,13 @@ describe("<PackenUiWhatsAppLink/>", () => {
         trigger: false,
         visible: false,
         inverted: false,
-        color: Colors.basic.independence.drk_alt
+        color: Colors.basic.independence.drk_alt,
+        styling: {
+          box: {},
+          svgWidth: undefined,
+          svgHeight: undefined,
+          text: {}
+        }
       });
 
       const mockCallback = jest.fn();

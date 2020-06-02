@@ -26,7 +26,7 @@ describe("<PackenUiTabs/>", () => {
       ]} activeIndex={0} />
     );
     renderInstance = render.instance();
-    
+
     renderInstance.setState({ activeTabIndex: 0 });
   });
 
@@ -42,7 +42,7 @@ describe("<PackenUiTabs/>", () => {
         onTabChange: jest.fn()
       });
       renderInstance.updateActiveIndex(1);
-      
+
       expect(renderInstance.state.activeTabIndex).toBe(1);
       expect(renderInstance.state.onTabChange).toHaveBeenCalled();
     });
@@ -50,7 +50,7 @@ describe("<PackenUiTabs/>", () => {
     it("updates the active tab index if no callback is provided", () => {
       renderInstance.setState({ onTabChange: false });
       renderInstance.updateActiveIndex(1);
-      
+
       expect(renderInstance.state.activeTabIndex).toBe(1);
     });
 
@@ -67,7 +67,11 @@ describe("<PackenUiTabs/>", () => {
         items: undefined,
         name: undefined,
         activeTabIndex: undefined,
-        onTabChange: undefined
+        onTabChange: undefined,
+        styling: undefined,
+        orientation: undefined,
+        headerComponent: undefined,
+        footerComponent: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -75,7 +79,18 @@ describe("<PackenUiTabs/>", () => {
         items: [],
         name: "",
         activeTabIndex: 0,
-        onTabChange: false
+        onTabChange: false,
+        orientation: "horizontal",
+        headerComponent: null,
+        footerComponent: null,
+        styling: {
+          wrapper: {},
+          main: {},
+          triggers: {},
+          item: {},
+          viewpager: {},
+          view: {}
+        }
       });
     });
 

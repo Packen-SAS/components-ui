@@ -92,7 +92,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'active'", () => {
-      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
+      render.setProps({ name: "toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "active" });
       renderInstance.toggle();
 
@@ -101,7 +101,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'active' and no callback is provided", () => {
-      render.setProps({ name:"toggle1", toggleHandler: undefined });
+      render.setProps({ name: "toggle1", toggleHandler: undefined });
       renderInstance.setState({ state: "active", toggleHandler: false });
       renderInstance.toggle();
 
@@ -109,7 +109,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'inactive'", () => {
-      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
+      render.setProps({ name: "toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "inactive", toggleHandler: mockFunction });
       renderInstance.toggle();
 
@@ -259,7 +259,7 @@ describe("<PackenUiToggle/>", () => {
           }
         }
       });
-      
+
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
         height: 10,
@@ -355,10 +355,11 @@ describe("<PackenUiToggle/>", () => {
         toggleHandler: undefined,
         name: undefined,
         onLabel: undefined,
-        offLabel: undefined
+        offLabel: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res).toEqual({
         isActive: false,
         isDisabled: false,
@@ -366,7 +367,15 @@ describe("<PackenUiToggle/>", () => {
         name: "",
         onLabel: "",
         offLabel: "",
-        state: "inactive"
+        state: "inactive",
+        styling: {
+          shape: {},
+          dot: {},
+          onWrapper: {},
+          offWrapper: {},
+          onLabel: {},
+          offLabel: {}
+        }
       });
     });
   });
@@ -441,7 +450,7 @@ describe("<PackenUiToggle/>", () => {
         }
       });
     });
-    
+
     it("returns correct position styles if 'initialState' is 'inactive' and is disabled", () => {
       renderInactiveInstance.setState({
         isDisabled: true,

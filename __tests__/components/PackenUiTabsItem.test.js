@@ -191,7 +191,8 @@ describe("<PackenUiTabsItem/>", () => {
         activeTabIndex: undefined,
         callback: undefined,
         icon: undefined,
-        label: undefined
+        label: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -201,7 +202,15 @@ describe("<PackenUiTabsItem/>", () => {
         activeTabIndex: 0,
         callback: false,
         icon: false,
-        label: ""
+        label: "",
+        styling: {
+          shape: {},
+          iconWrapper: {},
+          iconCharacter: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          label: {}
+        }
       });
     });
 
@@ -226,20 +235,6 @@ describe("<PackenUiTabsItem/>", () => {
           }
         }
       };
-      const returnedElement = renderInstance.getIcon();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders an icon if provided, and is a '»'", () => {
-      render.setProps({
-        icon: "»"
-      });
-      renderInstance.setState({
-        itemStyles: {
-          icon: {}
-        }
-      });
       const returnedElement = renderInstance.getIcon();
 
       expect(returnedElement).toBeDefined();

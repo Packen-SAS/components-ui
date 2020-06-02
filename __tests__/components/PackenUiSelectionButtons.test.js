@@ -159,7 +159,8 @@ describe("<PackenUiSelectionButtons/>", () => {
         selection: undefined,
         itemsPerRow: undefined,
         onNewSelection: undefined,
-        altStyle: undefined
+        altStyle: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -170,7 +171,8 @@ describe("<PackenUiSelectionButtons/>", () => {
         selection: "single",
         itemsPerRow: 2,
         onNewSelection: false,
-        altStyle: false
+        altStyle: false,
+        styling: { wrapper: {}, item: {}, control: {} }
       });
     });
 

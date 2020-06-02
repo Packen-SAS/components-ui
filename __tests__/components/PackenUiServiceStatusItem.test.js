@@ -456,7 +456,8 @@ describe("<PackenUiServiceStatusItem/>", () => {
         index: undefined,
         itemsHeights: undefined,
         setItemsHeights: undefined,
-        currentStepIndex: undefined
+        currentStepIndex: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -469,7 +470,20 @@ describe("<PackenUiServiceStatusItem/>", () => {
         index: 0,
         itemsHeights: [],
         setItemsHeights: false,
-        currentStepIndex: -1
+        currentStepIndex: -1,
+        styling: {
+          box: {},
+          sub: {},
+          time: {},
+          spacer: {},
+          line: {},
+          dot: {},
+          dotIconSize: undefined,
+          dotIconColor: undefined,
+          main: {},
+          title: {},
+          subtitle: {}
+        }
       });
     });
   });

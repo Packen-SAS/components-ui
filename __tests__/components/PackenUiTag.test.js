@@ -55,7 +55,11 @@ describe("<PackenUiTag/>", () => {
         boxStyles: { color: "#FFFFFF" },
         children: <View></View>,
         backgroundColor: "#FFFFFF",
-        textColor: "#FFFFFF"
+        textColor: "#FFFFFF",
+        styling: {
+          box: { test: "test" },
+          label: { test: "test" }
+        }
       });
       const res =renderInstance.setPropsToState();
 
@@ -64,7 +68,11 @@ describe("<PackenUiTag/>", () => {
         boxStyles: { color: "#FFFFFF" },
         children: <View></View>,
         backgroundColor: "#FFFFFF",
-        textColor: "#FFFFFF"
+        textColor: "#FFFFFF",
+        styling: {
+          box: { test: "test" },
+          label: { test: "test" }
+        }
       });
     });
 
@@ -74,7 +82,8 @@ describe("<PackenUiTag/>", () => {
         boxStyles: undefined,
         children: undefined,
         backgroundColor: undefined,
-        textColor: undefined
+        textColor: undefined,
+        styling: undefined
       });
       const res =renderInstance.setPropsToState();
 
@@ -83,7 +92,8 @@ describe("<PackenUiTag/>", () => {
         boxStyles: {},
         children: null,
         backgroundColor: Colors.brand.primary.snw,
-        textColor: Colors.basic.independence.dft
+        textColor: Colors.basic.independence.dft,
+        styling: { box: {}, label: {} }
       });
     });
   });

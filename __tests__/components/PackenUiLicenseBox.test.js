@@ -72,7 +72,8 @@ describe("<PackenUiLicenseBox/>", () => {
         state: undefined,
         dueDate: undefined,
         callback: undefined,
-        labels: undefined
+        labels: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -88,6 +89,12 @@ describe("<PackenUiLicenseBox/>", () => {
           expired: "Expirado",
           rejected: "Rechazado",
           pending: "Pendiente"
+        },
+        styling: {
+          box: {},
+          top: {},
+          overview: {},
+          bottom: {}
         }
       });
     });

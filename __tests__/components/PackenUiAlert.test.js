@@ -141,7 +141,8 @@ describe("<PackenUiAlert/>", () => {
         onClose: undefined,
         countdown: undefined,
         visible: undefined,
-        position: undefined
+        position: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -156,7 +157,8 @@ describe("<PackenUiAlert/>", () => {
         onClose: false,
         countdown: false,
         visible: false,
-        position: "bottom"
+        position: "bottom",
+        styling: { box: {}, text: {}, iconSize: undefined, iconColor: undefined, iconWrapper: {} }
       });
     });
 

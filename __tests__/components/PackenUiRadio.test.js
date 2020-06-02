@@ -213,7 +213,8 @@ describe("<PackenUiRadio/>", () => {
         initialIndex: undefined,
         callback: undefined,
         name: undefined,
-        layout: undefined
+        layout: undefined,
+        styling: undefined
       });
       const res = renderColumnInstance.setPropsToState();
 
@@ -222,7 +223,8 @@ describe("<PackenUiRadio/>", () => {
         checkedIndex: -1,
         callback: false,
         name: "",
-        layout: "column"
+        layout: "column",
+        styling: { container: {}, item: {}, control: {} }
       });
     });
 

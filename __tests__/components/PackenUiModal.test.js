@@ -224,7 +224,7 @@ describe("<PackenUiModal/>", () => {
   describe("triggering actions", () => {
     it("executes the mockCallback", () => {
       const res = renderInstance.mockCallback();
-      
+
       expect(res).toBe(false);
     });
 
@@ -380,28 +380,28 @@ describe("<PackenUiModal/>", () => {
     it("triggers the onDismissHandler", () => {
       renderInstance.setState({ onDismiss: jest.fn() });
       renderInstance.onDismissHandler();
-      
+
       expect(renderInstance.state.onDismiss).toHaveBeenCalled();
     });
 
     it("returns false while triggering the onDismissHandler if none is passed", () => {
       renderInstance.setState({ onDismiss: undefined });
       const res = renderInstance.onDismissHandler();
-      
+
       expect(res).toBe(false);
     });
 
     it("triggers the onRequestCloseHandler", () => {
       renderInstance.setState({ onRequestClose: jest.fn() });
       renderInstance.onRequestCloseHandler();
-      
+
       expect(renderInstance.state.onRequestClose).toHaveBeenCalled();
     });
 
     it("returns false while triggering the onDismissHandler if none is passed", () => {
       renderInstance.setState({ onRequestClose: undefined });
       const res = renderInstance.onRequestCloseHandler();
-      
+
       expect(res).toBe(false);
     });
 
@@ -545,7 +545,8 @@ describe("<PackenUiModal/>", () => {
         theme: undefined,
         content: undefined,
         onDismiss: undefined,
-        onRequestClose: undefined
+        onRequestClose: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -563,7 +564,29 @@ describe("<PackenUiModal/>", () => {
         theme: "primary",
         content: null,
         onDismiss: false,
-        onRequestClose: false
+        onRequestClose: false,
+        styling: {
+          backdrop: {},
+          wrapper: {},
+          box: {},
+          header: {},
+          headerInner: {},
+          closeIconSize: undefined,
+          closeIconColor: undefined,
+          info: {},
+          banner: {},
+          bannerIconSize: undefined,
+          bannerIconColor: undefined,
+          content: {},
+          title: {},
+          text: {},
+          btnWrapper: {},
+          galleryBox: {},
+          arrowLeft: {},
+          arrowRight: {},
+          arrowIconSize: undefined,
+          arrowIconColor: undefined
+        }
       });
     });
 

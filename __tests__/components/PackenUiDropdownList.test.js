@@ -322,7 +322,8 @@ describe("<PackenUiDropdownList/>", () => {
         numShownRows: undefined,
         config: undefined,
         toggleMenu: undefined,
-        getFinalSelection: undefined
+        getFinalSelection: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -331,7 +332,8 @@ describe("<PackenUiDropdownList/>", () => {
         numShownRows: 4,
         config: {},
         toggleMenu: false,
-        getFinalSelection: false
+        getFinalSelection: false,
+        styling: { wrapper: {}, flatlist: {}, item: {} }
       });
     });
 

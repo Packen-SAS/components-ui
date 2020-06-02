@@ -207,14 +207,16 @@ describe("<PackenUiRadar/>", () => {
       render.setProps({
         theme: undefined,
         animated: undefined,
-        isAnimating: undefined
+        isAnimating: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
       
       expect(res).toEqual({
         theme: "wait",
         animated: false,
-        isAnimating: false
+        isAnimating: false,
+        styling: { wrapper: {}, shadow: {}, dot: {} }
       });
     });
   });

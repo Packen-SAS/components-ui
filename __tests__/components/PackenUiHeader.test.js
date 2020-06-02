@@ -60,14 +60,21 @@ describe("<PackenUiHeader/>", () => {
       render.setProps({
         children: undefined,
         onBackPress: undefined,
-        customStyle: undefined
+        customStyle: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
         children: "",
         onBackPress: false,
-        customStyle: {}
+        customStyle: {},
+        styling: {
+          box: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          title: {}
+        }
       });
     });
   });

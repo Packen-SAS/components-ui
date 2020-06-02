@@ -134,7 +134,8 @@ describe("<PackenUiCheckbox/>", () => {
         layout: undefined,
         items: undefined,
         callback: undefined,
-        name: undefined
+        name: undefined,
+        styling: undefined
       });
       const res = renderColumnInstance.setPropsToState();
 
@@ -142,7 +143,8 @@ describe("<PackenUiCheckbox/>", () => {
         layout: "column",
         items: [],
         callback: false,
-        name: ""
+        name: "",
+        styling: { wrapper: {}, content: {}, control: {} }
       });
     });
 

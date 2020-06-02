@@ -54,7 +54,8 @@ describe("<PackenUiLoaderButton/>", () => {
         level: undefined,
         size: undefined,
         callback: undefined,
-        isDone: undefined
+        isDone: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -64,7 +65,8 @@ describe("<PackenUiLoaderButton/>", () => {
         level: "primary",
         size: "medium",
         callback: renderInstance.mockCallback,
-        isDone: false
+        isDone: false,
+        styling: {}
       });
     });
 

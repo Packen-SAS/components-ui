@@ -53,7 +53,8 @@ describe("<PackenUiListItem/>", () => {
           input: undefined,
           media: undefined,
           callback: undefined,
-          customWrapperStyle: undefined
+          customWrapperStyle: undefined,
+          styling: undefined
         }
       });
       const res = renderInstance.setPropsToState();
@@ -69,6 +70,20 @@ describe("<PackenUiListItem/>", () => {
           media: false,
           callback: false,
           customWrapperStyle: {}
+        },
+        styling: {
+          wrapper: {},
+          media: {},
+          main: {},
+          sub: {},
+          title: {},
+          subtitle: {},
+          dropdown: {},
+          input: {},
+          label: {},
+          iconWrapper: {},
+          iconSize: undefined,
+          iconColor: undefined
         }
       });
     });
@@ -105,7 +120,7 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.setState({
         data: {
           media: undefined,
-          icon: { 
+          icon: {
             name: "chevron-right",
             color: "#FFFFFF"
           }
@@ -227,7 +242,7 @@ describe("<PackenUiListItem/>", () => {
         }
       });
       const returnedElement = renderInstance.getMainWrapper(<View></View>);
-      
+
       expect(returnedElement).toBeDefined();
       expect(returnedElement.props.children[1].props.style.transform[0].translateY).toBe(-10);
     });
