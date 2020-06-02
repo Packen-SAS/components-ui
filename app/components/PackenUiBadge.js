@@ -73,6 +73,7 @@ PackenUiBadge.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   color: PropTypes.string,
+  borderRadius: PropTypes.number,
   backgroundColor: PropTypes.string,
   styling: PropTypes.object
 };
