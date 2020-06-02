@@ -3,6 +3,9 @@ import { View } from "react-native";
 
 import Section from "../components/Section";
 import PageView from "./PageView";
+import Buttons from "./Buttons";
+import Avatars from "./Avatars";
+import InfoActions from "./InfoActions";
 
 import PackenUiTabs from "../components/PackenUiTabs";
 
@@ -24,18 +27,21 @@ class Tabs extends Component {
               <PackenUiTabs
                 items={[
                   {
-                    label: "Button",
                     icon: "»",
+                    label: "Buttons",
+                    view: <Buttons/>,
+                    callback: this.mockCallback,
+                  },
+                  {
+                    icon: "»",
+                    label: "Avatars",
+                    view: <Avatars/>,
                     callback: this.mockCallback
                   },
                   {
-                    label: "Button",
                     icon: "»",
-                    callback: this.mockCallback
-                  },
-                  {
-                    label: "Button",
-                    icon: "»",
+                    label: "InfoActions",
+                    view: <InfoActions/>,
                     callback: this.mockCallback
                   }
                 ]}
@@ -44,7 +50,7 @@ class Tabs extends Component {
                 onTabChange={this.onTabChange}
               />
             </View>
-            <View style={{ marginBottom: 10 }}>
+            {/* <View style={{ marginBottom: 10 }}>
               <PackenUiTabs
                 items={[
                   {
@@ -88,7 +94,7 @@ class Tabs extends Component {
                 activeIndex={2}
                 onTabChange={this.onTabChange}
               />
-            </View>
+            </View> */}
           </View>
         </Section>
       </PageView>

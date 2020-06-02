@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
+import ViewPager from '@react-native-community/viewpager';
 
 import PackenUiTabsItem from "./PackenUiTabsItem";
 
@@ -45,7 +46,7 @@ class PackenUiTabs extends Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (prevProps !== this.props) {
       this.updateState();
     }
   }
@@ -59,14 +60,35 @@ class PackenUiTabs extends Component {
       icon={item.icon}
       updateActiveTabIndex={this.updateActiveIndex}
       callback={item.callback}
-      styling={this.state.styling.item} />
+      styling={this.state.styling.item}
+    />
   )
+
+  mapViews = (item, i) => {
+    return (
+      <View key={i}>
+        {item.view}
+      </View>
+    );
+  }
 
   render() {
     return (
-      <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
-        {this.state.items.map(this.mapItems)}
-      </View>
+      <React.Fragment>
+        <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
+          {this.state.items.map(this.mapItems)}
+        </View>
+        <ViewPager
+          initialPage={0}
+          scrollEnabled={true}
+          transitionStyle="scroll"
+          orientation="horizontal"
+          showPageIndicator={false}
+          style={this.getStyles().viewpager}
+        >
+          {this.state.items.map(this.mapViews)}
+        </ViewPager>
+      </React.Fragment>
     );
   }
 
@@ -76,6 +98,10 @@ class PackenUiTabs extends Component {
         flexDirection: "row",
         alignItems: "flex-end",
         justifyContent: "space-around"
+      },
+      viewpager: {
+        height: 500,
+        
       }
     };
   }
