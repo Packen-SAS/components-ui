@@ -681,7 +681,8 @@ PackenUiDropdownListItem.propTypes = {
   selectedItems: PropTypes.array.isRequired,
   updateSelectedItems: PropTypes.func.isRequired,
   currentRadiosState: PropTypes.object,
-  currentCheckboxesState: PropTypes.object
+  currentCheckboxesState: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiDropdownListItem;

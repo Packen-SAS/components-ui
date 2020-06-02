@@ -444,7 +444,8 @@ PackenUiButton.propTypes = {
   callback: PropTypes.func,
   isDisabled: PropTypes.bool,
   nonTouchable: PropTypes.bool,
-  children: PropTypes.node
+  children: PropTypes.node,
+  styling: PropTypes.object
 };
 
 export default PackenUiButton;

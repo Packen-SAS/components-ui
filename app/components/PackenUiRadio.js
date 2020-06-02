@@ -140,7 +140,8 @@ PackenUiRadio.propTypes = {
   initialIndex: PropTypes.number.isRequired,
   callback: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired
+  layout: PropTypes.string.isRequired,
+  styling: PropTypes.object
 }
 
 export default PackenUiRadio;

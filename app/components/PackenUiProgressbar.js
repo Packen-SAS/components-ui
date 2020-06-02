@@ -216,7 +216,8 @@ PackenUiProgressbar.propTypes = {
   radius: PropTypes.number,
   isComplete: PropTypes.bool,
   trackColor: PropTypes.string.isRequired,
-  indicatorColor: PropTypes.string.isRequired
+  indicatorColor: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiProgressbar;

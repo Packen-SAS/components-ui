@@ -404,7 +404,8 @@ PackenUiServiceStatusItem.propTypes = {
   index: PropTypes.number.isRequired,
   itemsHeights: PropTypes.arrayOf(PropTypes.number).isRequired,
   setItemsHeights: PropTypes.func.isRequired,
-  currentStepIndex: PropTypes.number.isRequired
+  currentStepIndex: PropTypes.number.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiServiceStatusItem;

@@ -368,7 +368,8 @@ PackenUiToggle.propTypes = {
   toggleHandler: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   onLabel: PropTypes.string.isRequired,
-  offLabel: PropTypes.string.isRequired
+  offLabel: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiToggle;

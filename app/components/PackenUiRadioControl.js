@@ -192,7 +192,8 @@ PackenUiRadioControl.propTypes = {
   selfIndex: PropTypes.number.isRequired,
   isDisabled: PropTypes.bool,
   checkedIndex: PropTypes.number,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiRadioControl;

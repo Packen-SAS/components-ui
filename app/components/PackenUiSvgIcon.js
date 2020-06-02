@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import PackenLogoInverted from "../../assets/images/packen_logo_inverted.svg";
 import PackenIconVehicle from "../../assets/images/icon_packen_vehicle.svg";
@@ -51,5 +52,11 @@ export const Icon = ({ width, height, name }) => {
 const PackenUiSvgIcon = props => {
   return <Icon {...props} />
 }
+
+PackenUiSvgIcon.propTypes = {
+  name: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired
+};
 
 export default PackenUiSvgIcon;

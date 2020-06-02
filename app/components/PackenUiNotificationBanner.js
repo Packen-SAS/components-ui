@@ -308,7 +308,8 @@ PackenUiNotificationBanner.propTypes = {
   title: PropTypes.string.isRequired,
   theme: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiNotificationBanner;

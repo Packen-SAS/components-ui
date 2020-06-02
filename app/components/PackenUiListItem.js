@@ -306,7 +306,8 @@ PackenUiListItem.propTypes = {
     media: PropTypes.node,
     callback: PropTypes.func,
     customWrapperStyle: PropTypes.object
-  }).isRequired
+  }).isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiListItem;

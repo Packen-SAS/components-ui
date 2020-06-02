@@ -133,7 +133,8 @@ PackenUiText.propTypes = {
   preset: PropTypes.string,
   touchable: PropTypes.object,
   children: PropTypes.node.isRequired,
-  icon: PropTypes.object
+  icon: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiText;

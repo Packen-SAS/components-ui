@@ -239,7 +239,8 @@ PackenUiInfoAction.propTypes = {
   callback: PropTypes.func.isRequired,
   style: PropTypes.object,
   img: PropTypes.string.isRequired,
-  icon: PropTypes.object
+  icon: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiInfoAction;

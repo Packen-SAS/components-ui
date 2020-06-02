@@ -473,7 +473,8 @@ PackenUiDropdown.propTypes = {
   isDisabled: PropTypes.bool,
   input: PropTypes.object.isRequired,
   list: PropTypes.object.isRequired,
-  size: PropTypes.string.isRequired
+  size: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiDropdown;

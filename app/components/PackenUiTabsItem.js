@@ -269,6 +269,7 @@ PackenUiTabsItem.propTypes = {
   callback: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiTabsItem;

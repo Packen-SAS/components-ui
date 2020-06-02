@@ -266,7 +266,8 @@ PackenUiMapPinSub.propTypes = {
   icon: PropTypes.string,
   label: PropTypes.string,
   dotPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  type: PropTypes.string.isRequired
+  type: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiMapPinSub;

@@ -24,7 +24,11 @@ class PackenUiBadge extends Component {
       height: this.props.height ? this.props.height : 16,
       color: this.props.color ? this.props.color : colors.basic.white.dft,
       borderRadius: this.props.borderRadius ? this.props.borderRadius : this.props.height,
-      backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : colors.brand.primary.drk
+      backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : colors.brand.primary.drk,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        label: {}
+      }
     };
   }
 
@@ -40,8 +44,8 @@ class PackenUiBadge extends Component {
 
   render() {
     return (
-      <View style={this.getStyle().wrapper}>
-        <PackenUiText preset="c2" style={this.getStyle().label}>{this.state.label}</PackenUiText>
+      <View style={{ ...this.getStyle().wrapper, ...this.state.styling.wrapper }}>
+        <PackenUiText preset="c2" style={{ ...this.getStyle().label, ...this.state.styling.label }}>{this.state.label}</PackenUiText>
       </View>
     );
   }
@@ -69,7 +73,8 @@ PackenUiBadge.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   color: PropTypes.string,
-  backgroundColor: PropTypes.string
+  backgroundColor: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiBadge;

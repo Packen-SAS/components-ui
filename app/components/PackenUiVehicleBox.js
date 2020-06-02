@@ -190,12 +190,15 @@ class PackenUiVehicleBox extends Component {
 }
 
 PackenUiVehicleBox.propTypes = {
-  type: PropTypes.string.isRequired,
   overview: PropTypes.string,
+  type: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   plate: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  callback: PropTypes.func
+  image: PropTypes.string.isRequired,
+  callback: PropTypes.func,
+  labels: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiVehicleBox;

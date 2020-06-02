@@ -181,7 +181,8 @@ class PackenUiRadar extends Component {
 PackenUiRadar.propTypes = {
   theme: PropTypes.string.isRequired,
   animated: PropTypes.bool.isRequired,
-  isAnimating: PropTypes.bool
+  isAnimating: PropTypes.bool,
+  styling: PropTypes.object
 };
 
 export default PackenUiRadar;

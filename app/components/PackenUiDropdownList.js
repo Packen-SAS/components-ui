@@ -209,7 +209,8 @@ PackenUiDropdownList.propTypes = {
   config: PropTypes.object.isRequired,
   toggleMenu: PropTypes.func.isRequired,
   getFinalSelection: PropTypes.func.isRequired,
-  finalSelectionArray: PropTypes.array
+  finalSelectionArray: PropTypes.array,
+  styling: PropTypes.object
 };
 
 export default PackenUiDropdownList;

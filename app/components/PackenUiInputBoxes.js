@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { StyleSheet, View } from "react-native";
 
 import * as UTIL from "../utils";
@@ -133,5 +134,11 @@ const PackenInputBoxesStyles = StyleSheet.create({
     marginBottom: 15
   }
 });
+
+PackenUiInputBoxes.propTypes = {
+  boxes: PropTypes.number.isRequired,
+  emitCode: PropTypes.func.isRequired,
+  styling: PropTypes.object
+};
 
 export default PackenUiInputBoxes;

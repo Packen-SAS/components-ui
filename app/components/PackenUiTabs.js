@@ -85,7 +85,8 @@ PackenUiTabs.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   name: PropTypes.string.isRequired,
   activeIndex: PropTypes.number.isRequired,
-  onTabChange: PropTypes.func.isRequired
+  onTabChange: PropTypes.func.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiTabs;

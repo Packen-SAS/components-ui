@@ -205,7 +205,8 @@ PackenUiCheckboxControl.propTypes = {
   layout: PropTypes.string.isRequired,
   isChecked: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool.isRequired,
-  checkedItems: PropTypes.array.isRequired
+  checkedItems: PropTypes.array.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiCheckboxControl;

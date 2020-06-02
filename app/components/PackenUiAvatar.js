@@ -163,7 +163,8 @@ class PackenUiAvatar extends Component {
 PackenUiAvatar.propTypes = {
   src: Image.propTypes.source,
   size: PropTypes.string.isRequired,
-  callback: PropTypes.func
+  callback: PropTypes.func,
+  styling: PropTypes.object
 };
 
 export default PackenUiAvatar;

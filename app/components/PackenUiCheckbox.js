@@ -170,7 +170,8 @@ PackenUiCheckbox.propTypes = {
   layout: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiCheckbox;

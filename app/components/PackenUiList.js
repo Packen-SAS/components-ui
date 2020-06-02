@@ -69,7 +69,8 @@ class PackenUiList extends Component {
 
 PackenUiList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  customWrapperStyles: PropTypes.object
+  customWrapperStyles: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiList;

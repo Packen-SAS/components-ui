@@ -97,7 +97,9 @@ class PackenUiHeader extends Component {
 
 PackenUiHeader.propTypes = {
   children: PropTypes.node.isRequired,
-  onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired
+  onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
+  customStyle: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiHeader;

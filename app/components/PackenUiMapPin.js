@@ -181,7 +181,8 @@ PackenUiMapPin.propTypes = {
   sub: PropTypes.object,
   theme: PropTypes.string,
   type: PropTypes.string.isRequired,
-  dotPosition: PropTypes.string
+  dotPosition: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiMapPin;

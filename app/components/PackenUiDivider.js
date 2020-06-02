@@ -70,7 +70,8 @@ class PackenUiDivider extends Component {
 PackenUiDivider.propTypes = {
   type: PropTypes.string.isRequired,
   size: PropTypes.number.isRequired,
-  margin: PropTypes.object
+  margin: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiDivider;

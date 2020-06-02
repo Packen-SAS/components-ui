@@ -198,7 +198,8 @@ PackenUiSelectionButtons.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   selection: PropTypes.string.isRequired,
   itemsPerRow: PropTypes.number.isRequired,
-  onNewSelection: PropTypes.func.isRequired
+  onNewSelection: PropTypes.func.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiSelectionButtons;

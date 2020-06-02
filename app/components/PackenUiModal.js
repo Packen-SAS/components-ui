@@ -653,7 +653,8 @@ PackenUiModal.propTypes = {
   theme: PropTypes.string.isRequired,
   content: PropTypes.node,
   onDismiss: PropTypes.func,
-  onRequestClose: PropTypes.func
+  onRequestClose: PropTypes.func,
+  styling: PropTypes.object
 };
 
 export default PackenUiModal;

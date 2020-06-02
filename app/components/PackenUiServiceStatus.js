@@ -102,7 +102,8 @@ class PackenUiServiceStatus extends Component {
 
 PackenUiServiceStatus.propTypes = {
   steps: PropTypes.arrayOf(PropTypes.object).isRequired,
-  currentStepIndex: PropTypes.number.isRequired
+  currentStepIndex: PropTypes.number.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiServiceStatus;

@@ -319,7 +319,8 @@ PackenUiSelectionButtonsControl.propTypes = {
   data: PropTypes.object.isRequired,
   selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.bool]).isRequired,
   selection: PropTypes.string.isRequired,
-  onNewSelection: PropTypes.func.isRequired
+  onNewSelection: PropTypes.func.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiSelectionButtonsControl;

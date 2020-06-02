@@ -982,7 +982,8 @@ PackenUiInput.propTypes = {
   eventHandlers: PropTypes.object,
   propagateRef: PropTypes.func,
   loading: PropTypes.bool,
-  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  styling: PropTypes.object
 };
 
 export default PackenUiInput;

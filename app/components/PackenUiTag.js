@@ -91,7 +91,11 @@ class PackenUiTag extends Component {
 
 PackenUiTag.propTypes = {
   style: PropTypes.object,
-  children: PropTypes.node.isRequired
+  boxStyles: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  backgroundColor: PropTypes.string,
+  textColor: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiTag;

@@ -165,7 +165,8 @@ PackenUiLicenseBox.propTypes = {
   state: PropTypes.string.isRequired,
   dueDate: PropTypes.string,
   callback: PropTypes.func,
-  labels: PropTypes.object.isRequired
+  labels: PropTypes.object.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiLicenseBox;

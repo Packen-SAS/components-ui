@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableNativeFeedback } from "react-native";
 
 import colors from "../styles/abstracts/colors";
@@ -94,5 +95,15 @@ class PackenUiWhatsAppLink extends Component {
     )
   };
 }
+
+PackenUiWhatsAppLink.propTypes = {
+  style: PropTypes.object,
+  text: PropTypes.string.isRequired,
+  trigger: PropTypes.func.isRequired,
+  visible: PropTypes.bool,
+  inverted: PropTypes.bool,
+  color: PropTypes.string,
+  styling: PropTypes.object
+};
 
 export default PackenUiWhatsAppLink;

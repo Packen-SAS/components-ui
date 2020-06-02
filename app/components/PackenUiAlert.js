@@ -299,7 +299,8 @@ PackenUiAlert.propTypes = {
   dismiss: PropTypes.func,
   countdown: PropTypes.number,
   visible: PropTypes.bool,
-  position: PropTypes.string
+  position: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiAlert;

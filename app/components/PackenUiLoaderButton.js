@@ -108,7 +108,8 @@ PackenUiLoaderButton.propTypes = {
   level: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  isDone: PropTypes.bool
+  isDone: PropTypes.bool,
+  styling: PropTypes.object
 };
 
 export default PackenUiLoaderButton;
