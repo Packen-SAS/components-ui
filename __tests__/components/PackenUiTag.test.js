@@ -91,7 +91,7 @@ describe("<PackenUiTag/>", () => {
         style: {},
         boxStyles: {},
         children: null,
-        backgroundColor: Colors.brand.primary.snw,
+        backgroundColor: Colors.brand.primary.ulgt,
         textColor: Colors.basic.independence.dft,
         styling: { box: {}, label: {} }
       });
