@@ -89,13 +89,11 @@ class PackenUiTabs extends Component {
     />
   )
 
-  mapViews = (item, i) => {
-    return (
-      <View key={i} style={{ ...this.getStyles().view, ...this.state.styling.view }}>
-        {item.view}
-      </View>
-    );
-  }
+  mapViews = (item, i) => (
+    <View key={i} style={{ ...this.getStyles().view, ...this.state.styling.view }}>
+      {item.view}
+    </View>
+  );
 
   render() {
     return (
