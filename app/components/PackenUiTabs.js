@@ -8,7 +8,7 @@ import PackenUiTabsItem from "./PackenUiTabsItem";
 class PackenUiTabs extends Component {
   constructor(props) {
     super(props);
-
+    this.viewPagerRef = null;
     this.state = { ...this.setPropsToState() }
   }
 
@@ -38,13 +38,24 @@ class PackenUiTabs extends Component {
     };
   }
 
+  propagateTabChange = () => {
+    if (this.state.onTabChange) {
+      this.state.onTabChange(this.state.name, this.state.activeTabIndex);
+    }
+  }
+
+  updatePagePosition = () => {
+    if (this.viewPagerRef) {
+      this.viewPagerRef.setPage(this.state.activeTabIndex);
+    }
+  }
+
   updateActiveIndex = newActiveIndex => {
     this.setState({
       activeTabIndex: newActiveIndex
     }, () => {
-      if (this.state.onTabChange) {
-        this.state.onTabChange(this.state.name, this.state.activeTabIndex);
-      }
+      this.updatePagePosition();
+      this.propagateTabChange();
     });
   }
 
@@ -58,8 +69,11 @@ class PackenUiTabs extends Component {
     }
   }
 
+  getViewPagerRef = ref => { this.viewPagerRef = ref; }
+
   onPageSelected = e => {
-    /* console.log(e); */
+    const newIndex = e.nativeEvent.position;
+    this.setState({ activeTabIndex: newIndex }, this.propagateTabChange);
   }
 
   mapItems = (item, i) => (
@@ -92,6 +106,7 @@ class PackenUiTabs extends Component {
             {this.state.items.map(this.mapItems)}
           </View>
           <ViewPager
+            ref={this.getViewPagerRef}
             initialPage={this.state.activeTabIndex}
             pageMargin={0}
             scrollEnabled={true}
