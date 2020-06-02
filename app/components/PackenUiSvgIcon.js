@@ -22,7 +22,7 @@ import PackenProfileBlur from "../../assets/icons/profile_blur.svg";
 
 import PackenUiText from "./PackenUiText";
 
-const Icon = ({ width, height, name }) => {
+export const Icon = ({ width, height, name }) => {
   const icons = {
     "logo-inverted": <PackenLogoInverted width={width} height={height} />,
     "logo-main": <PackenLogoMain width={width} height={height} />,

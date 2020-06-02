@@ -3,6 +3,7 @@ import React from "react";
 import { View } from "react-native";
 import { shallow } from "enzyme";
 
+import Colors from "../../app/styles/abstracts/colors";
 import PackenUiTag from "../../app/components/PackenUiTag";
 
 describe("<PackenUiTag/>", () => {
@@ -51,26 +52,38 @@ describe("<PackenUiTag/>", () => {
     it("returns the incoming props as the state key-value pairs", () => {
       render.setProps({
         style: { color: "#FFFFFF" },
-        children: <View></View>
+        boxStyles: { color: "#FFFFFF" },
+        children: <View></View>,
+        backgroundColor: "#FFFFFF",
+        textColor: "#FFFFFF"
       });
       const res =renderInstance.setPropsToState();
 
       expect(res).toEqual({
         style: { color: "#FFFFFF" },
-        children: <View></View>
+        boxStyles: { color: "#FFFFFF" },
+        children: <View></View>,
+        backgroundColor: "#FFFFFF",
+        textColor: "#FFFFFF"
       });
     });
 
     it("returns the incoming props as the state key-value pairs if no props are provided", () => {
       render.setProps({
         style: undefined,
-        children: undefined
+        boxStyles: undefined,
+        children: undefined,
+        backgroundColor: undefined,
+        textColor: undefined
       });
       const res =renderInstance.setPropsToState();
 
       expect(res).toEqual({
         style: {},
-        children: null
+        boxStyles: {},
+        children: null,
+        backgroundColor: Colors.brand.primary.snw,
+        textColor: Colors.basic.independence.dft
       });
     });
   });

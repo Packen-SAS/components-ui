@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View, TextInput, TouchableWithoutFeedback, Keyboard } from "react-native";
 import Icon from "react-native-vector-icons/dist/Feather";
 
+import * as UTIL from "../utils";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
@@ -42,12 +43,14 @@ class PackenUiInput extends Component {
       label: this.props.label ? this.props.label : "",
       placeholder: this.props.placeholder,
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
-      maxLength: this.props.maxLength,
+      maxLength: this.props.maxLength ? parseInt(this.props.maxLength) : undefined,
+      minLength: this.props.minLength ? parseInt(this.props.minLength) : 0,
       style: this.props.style ? { ...this.props.style } : {},
       onChangeText: this.props.onChangeText ? this.props.onChangeText : this.mockCallback,
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
       propagateRef: this.props.propagateRef ? this.props.propagateRef : false,
-      loading: this.props.loading ? this.props.loading : false
+      loading: this.props.loading ? this.props.loading : false,
+      validator: this.props.validator ? this.props.validator : false
     };
   }
 
@@ -180,10 +183,13 @@ class PackenUiInput extends Component {
   }
 
   handleChangeText = text => {
-    this.setState({
-      value: text
-    });
-    this.state.onChangeText(this.state.name, text ? text : null);
+    let isValid = true;
+
+    if (typeof this.state.validator === "string") {
+      isValid = UTIL.validators[this.state.validator](text) && text !== "" && text.length >= this.state.minLength;
+    }
+
+    this.state.onChangeText(this.state.name, text ? text : null, isValid);
   }
 
   addKeyboardEvents = () => {
@@ -374,7 +380,7 @@ class PackenUiInput extends Component {
           level="ghost"
           size="tiny"
           isDone={false}
-          callback={null}
+          callback={this.mockCallback}
         />
       );
 
@@ -927,10 +933,12 @@ PackenUiInput.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   maxLength: PropTypes.number,
+  minLength: PropTypes.number,
   onChangeText: PropTypes.func.isRequired,
   eventHandlers: PropTypes.object,
   propagateRef: PropTypes.func,
-  loading: PropTypes.bool
+  loading: PropTypes.bool,
+  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
 export default PackenUiInput;

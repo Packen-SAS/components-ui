@@ -11,13 +11,15 @@ class InputBoxes extends Component {
     super(props);
   }
 
+  mockCallback = () => false;
+
   render() {
     return (
       <PageView>
         <Section title="Input Boxes">
           <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
-              <PackenUiInputBoxes boxes={4} emitCode={() => false} />
+              <PackenUiInputBoxes boxes={4} emitCode={this.mockCallback} />
             </View>
           </View>
         </Section>

@@ -115,6 +115,7 @@ describe("<PackenUiInfoAction/>", () => {
         caption: undefined,
         subtitle: undefined,
         callback: undefined,
+        boxStyle: undefined,
         img: undefined,
         icon: undefined
       });
@@ -126,11 +127,8 @@ describe("<PackenUiInfoAction/>", () => {
         caption: false,
         subtitle: false,
         callback: renderInstance.mockCallback,
-        img: {
-          src: undefined,
-          width: 0,
-          height: 0
-        },
+        boxStyle: {},
+        img: "",
         icon: {
           name: "play",
           size: 14
@@ -144,6 +142,13 @@ describe("<PackenUiInfoAction/>", () => {
       const res = renderInstance.setPropsToState();
       
       expect(res.callback).toBe(mockCallback);
+    });
+
+    it("returns incoming props as the state key-value pairs if a boxStyle is provided", () => {
+      render.setProps({ style: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      
+      expect(res.boxStyle).toEqual({ test: "Test" });
     });
   });
 });

@@ -288,24 +288,24 @@ class PackenUiModal extends Component {
     return btn;
   }
 
+  headerCallDismiss = () => {
+    if (Platform.OS === "ios") {
+      this.onRequestCloseHandler();
+      this.state.modalClose();
+      return;
+    }
+    this.onDismissHandler();
+    this.state.modalClose();
+  };
+
   getHeader = () => {
     let header = null;
-
-    const callDismiss = () => {
-      if (Platform.OS === "ios") {
-        this.onRequestCloseHandler();
-        this.state.modalClose();
-        return;
-      }
-      this.onDismissHandler();
-      this.state.modalClose();
-    };
 
     if (this.state.type !== "custom") {
       header = (
         <View style={this.getStyles().header}>
           <View style={this.getStyles().header__inner}>
-            <TouchableWithoutFeedback onPress={callDismiss}>
+            <TouchableWithoutFeedback onPress={this.headerCallDismiss}>
               <Icon name="x" size={20} color={Colors[this.state.theme].default} style={this.state.type === "gallery" ? this.getStyles().header__close_icon : null} />
             </TouchableWithoutFeedback>
           </View>

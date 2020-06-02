@@ -258,6 +258,16 @@ describe("<PackenUiDropdown/>", () => {
   });
 
   describe("triggering actions", () => {
+    it("executes the openMenu method", () => {
+      renderInstance.openMenu();
+      expect(renderInstance.state.isOpen).toBe(true);
+    });
+
+    it("executes the closeMenu method", () => {
+      renderInstance.closeMenu();
+      expect(renderInstance.state.isOpen).toBe(false);
+    });
+
     it("executes onLayout code for menu", () => {
       renderInstance.getMenuDimensions = jest.fn();
       render.props().children[1].props.onLayout({

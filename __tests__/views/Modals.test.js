@@ -92,7 +92,7 @@ describe("<Modals/>", () => {
       
       render.props().children.props.children[1].props.children.forEach(modalInstance => {
         const spyToggleModal = jest.spyOn(renderInstance, "toggleModal");
-        modalInstance.props.toggle();
+        modalInstance.props.modalClose();
 
         if (modalInstance.props.type === "custom") {
           modalInstance.props.content.props.children[2].props.children.forEach(element => {

@@ -52,12 +52,18 @@ class PackenUiAlert extends Component {
   }
 
   close = () => {
+    let flag = true;
     if (typeof this.state.onClose === "function") {
       this.state.onClose();
+    } else {
+      flag = false;
     }
     if (typeof this.props.dismiss === "function") {
       this.props.dismiss();
+    } else {
+      flag = false;
     }
+    return flag;
   }
 
   getIconName = () => {

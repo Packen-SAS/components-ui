@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { View } from "react-native";
+import { View, Platform } from "react-native";
 import { shallow } from "enzyme";
 
 import PackenUiModal from "../../app/components/PackenUiModal";
@@ -23,7 +23,7 @@ describe("<PackenUiModal/>", () => {
           text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
           btn: <PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={mockCallback}>BUTTON</PackenUiButton>
         }}
-        toggle={mockCallback}
+        mocalClose={mockCallback}
       />
     );
 
@@ -34,7 +34,7 @@ describe("<PackenUiModal/>", () => {
         type="gallery"
         theme="white"
         images={[require("../../assets/images/placeholder.png")]}
-        toggle={mockCallback}
+        mocalClose={mockCallback}
       />
     );
 
@@ -51,7 +51,7 @@ describe("<PackenUiModal/>", () => {
         text: "Fugiat sint eiusmod esse eu duis sint labore. Veniam anim reprehenderit.",
         btn: <PackenUiButton icon={{ name: "arrow-right", position: "right" }} type="regular" level="primary" size="medium" callback={mockCallback}>BUTTON</PackenUiButton>
       },
-      toggle: mockCallback,
+      modalClose: mockCallback,
       theme: "danger",
       content: undefined,
       backdropStyles: { ...renderInstance.getStyles().backdrop.base },
@@ -139,6 +139,11 @@ describe("<PackenUiModal/>", () => {
       });
 
       expect(gallerySlide).toBeDefined();
+    });
+
+    it("returns a header element correctly", () => {
+      const res = renderInstance.getHeader();
+      expect(res).toBeDefined();
     });
   });
 
@@ -399,6 +404,28 @@ describe("<PackenUiModal/>", () => {
       
       expect(res).toBe(false);
     });
+
+    it("executes the headerCallDismiss function it it's iOS", () => {
+      renderInstance.setState({ modalClose: mockCallback });
+      const spyOnRequestCloseHandler = jest.spyOn(renderInstance, "onRequestCloseHandler");
+      Platform.OS = "ios";
+      renderInstance.headerCallDismiss();
+
+      expect(renderInstance.state.modalClose).toHaveBeenCalled();
+      expect(spyOnRequestCloseHandler).toHaveBeenCalled();
+      spyOnRequestCloseHandler.mockRestore();
+    });
+
+    it("executes the headerCallDismiss function it it's not iOS", () => {
+      renderInstance.setState({ modalClose: mockCallback });
+      const spyOnDismissHandler = jest.spyOn(renderInstance, "onDismissHandler");
+      Platform.OS = "android";
+      renderInstance.headerCallDismiss();
+
+      expect(renderInstance.state.modalClose).toHaveBeenCalled();
+      expect(spyOnDismissHandler).toHaveBeenCalled();
+      spyOnDismissHandler.mockRestore();
+    });
   });
 
   describe("getting dimensions", () => {
@@ -514,7 +541,7 @@ describe("<PackenUiModal/>", () => {
         isOpen: undefined,
         images: undefined,
         info: undefined,
-        toggle: undefined,
+        modalClose: undefined,
         theme: undefined,
         content: undefined,
         onDismiss: undefined,
@@ -532,7 +559,7 @@ describe("<PackenUiModal/>", () => {
           title: "",
           text: ""
         },
-        toggle: renderInstance.mockCallback,
+        modalClose: renderInstance.mockCallback,
         theme: "primary",
         content: null,
         onDismiss: false,
@@ -543,12 +570,14 @@ describe("<PackenUiModal/>", () => {
     it("returns incoming props as the state key-value pairs if some are provided", () => {
       render.setProps({
         content: <View></View>,
+        modalClose: mockCallback,
         onDismiss: mockCallback,
         onRequestClose: mockCallback
       });
       const res = renderInstance.setPropsToState();
 
       expect(res.content).toEqual(<View></View>);
+      expect(res.modalClose).toBe(mockCallback);
       expect(res.onDismiss).toBe(mockCallback);
       expect(res.onRequestClose).toBe(mockCallback);
     });

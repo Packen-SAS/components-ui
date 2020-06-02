@@ -216,10 +216,13 @@ describe("<PackenUiInput/>", () => {
   });
 
   describe("state changing", () => {
-    it("sets initial state if it's not disabled, and has no icon", () => {
+    it("sets initial state if it's not disabled, has no icon, it's not a loader, doesn't have a minimum length, and no validator", () => {
       render.setProps({
         disabled: false,
-        icon: false
+        icon: false,
+        loading: undefined,
+        minLength: undefined,
+        validator: undefined
       });
       const returnedState = renderInstance.setInitialState();
 
@@ -250,7 +253,10 @@ describe("<PackenUiInput/>", () => {
         onChangeText: mockCallback,
         eventHandlers: false,
         propagateRef: false,
-        ref: null
+        ref: null,
+        loading: false,
+        validator: false,
+        minLength: 0
       });
     });
 
@@ -348,11 +354,21 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if propagateRef is provided", () => {
-      render.setProps({ propagateRef: mockCallback });
+    it("returns incoming props as the state key-value pairs if propagateRef, maxLength, minLength, loading and validator are provided", () => {
+      render.setProps({
+        propagateRef: mockCallback,
+        maxLength: 10,
+        minLength: 5,
+        loading: true,
+        validator: "number"
+      });
       const res = renderInstance.setPropsToState();
 
       expect(res.propagateRef).toBe(mockCallback);
+      expect(res.maxLength).toBe(10);
+      expect(res.minLength).toBe(5);
+      expect(res.loading).toBe(true);
+      expect(res.validator).toBe("number");
     });
   });
 
@@ -450,12 +466,35 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("handles onChangeText", () => {
-      render.setProps({
-        onChangeText: mockCallback
-      });
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: false })
       renderInstance.handleChangeText("Test");
 
-      expect(mockCallback).toHaveBeenCalled();
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+    });
+
+    it("handles onChangeText if a validator is provided and it's valid", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: "letters" })
+      renderInstance.handleChangeText("Test");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+    });
+
+    it("handles onChangeText if a validator is provided and it's invalid", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: "letters" })
+      renderInstance.handleChangeText("123");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "123", false);
+    });
+
+    it("propagates null as the input value while handling onChangeText", () => {
+      render.setProps({ onChangeText: mockCallback });
+      renderInstance.setState({ name: "Test", validator: false })
+      renderInstance.handleChangeText("");
+
+      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", null, true);
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -471,10 +510,10 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("executes the instance callback on componentDidMount if provided", () => {
-      render.setProps({ instance: jest.fn() });
+      renderInstance.setState({ propagateRef: mockCallback, name: "Test" });
       renderInstance.componentDidMount();
 
-      expect(renderInstance.props.instance).toHaveBeenCalled();
+      expect(renderInstance.state.propagateRef).toHaveBeenCalledWith(renderInstance, "Test");
     });
 
     it("executes onLayout event callback for the box", () => {
@@ -528,19 +567,19 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("executes the propagation callback after returning the ref if provided", () => {
-      renderInstance.setState({ propagateRef: mockCallback });
+      render.setProps({ instance: jest.fn() });
+      renderInstance.setState({ name: "Test" });
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
       
-      expect(renderInstance.state.propagateRef).toHaveBeenCalledWith(ref);
+      expect(renderInstance.props.instance).toHaveBeenCalledWith(ref, "Test");
     });
 
     it("returns false while executing the propagation callback after returning the ref if not provided", () => {
-      renderInstance.setState({ propagateRef: undefined });
-      const ref = { blur: mockCallback, focus: mockCallback };
-      const res = renderInstance.getRef(ref);
-      
-      expect(res).toBe(false);
+      render.setProps({ instance: jest.fn() });
+      renderInstance.getRef();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
     });
 
     it("focuses the input if ref is defined", () => {
