@@ -23,7 +23,7 @@ class PackenUiDivider extends Component {
       size: this.props.size ? this.props.size : 1,
       width: this.props.width ? this.props.width : "100%",
       margin: this.props.margin ? { ...this.props.margin } : false,
-      color: this.props.color ? this.props.color : this.getStyles().type[this.props.type].backgroundColor
+      color: this.props.color ? this.props.color : this.props.type ? this.getStyles().type[this.props.type].backgroundColor : this.getStyles().type.light.backgroundColor
     };
   }
 

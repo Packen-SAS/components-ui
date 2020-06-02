@@ -27,12 +27,12 @@ class PackenUiTabsItem extends Component {
       callback: this.props.callback ? this.props.callback : false,
       icon: this.props.icon ? this.props.icon : false,
       label: this.props.label ? this.props.label : "",
-      styling: this.props.styling ? { ...this.props.styling } : {
+      styling: this.props.styling && Object.keys(this.props.styling).length > 0 ? { ...this.props.styling } : {
         shape: {},
         iconWrapper: {},
         iconCharacter: {},
-        iconSize: {},
-        iconColor: {},
+        iconSize: undefined,
+        iconColor: undefined,
         label: {}
       }
     };
