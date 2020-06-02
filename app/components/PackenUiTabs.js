@@ -99,7 +99,7 @@ class PackenUiTabs extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().wrapper}>
+      <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
         {this.state.headerComponent}
         <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
           <View style={{ ...this.getStyles().triggers, ...this.state.styling.triggers }}>
@@ -113,9 +113,9 @@ class PackenUiTabs extends Component {
             transitionStyle="scroll"
             showPageIndicator={false}
             keyboardDismissMode="on-drag"
-            style={this.getStyles().viewpager}
             orientation={this.state.orientation}
             onPageSelected={this.onPageSelected}
+            style={{ ...this.getStyles().viewpager, ...this.state.styling.viewpager }}
           >
             {this.state.items.map(this.mapViews)}
           </ViewPager>
