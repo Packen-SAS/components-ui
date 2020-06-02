@@ -23,10 +23,17 @@ class PackenUiTabs extends Component {
       items: this.props.items ? [...this.props.items] : [],
       name: this.props.name ? this.props.name : "",
       activeTabIndex: this.props.activeIndex ? this.props.activeIndex : 0,
+      orientation: this.props.orientation ? this.props.orientation : "horizontal",
       onTabChange: this.props.onTabChange ? this.props.onTabChange : false,
+      headerComponent: this.props.headerComponent ? this.props.headerComponent : null,
+      footerComponent: this.props.footerComponent ? this.props.footerComponent : null,
       styling: this.props.styling ? { ...this.props.styling } : {
-        container: {},
-        item: {}
+        wrapper: {},
+        main: {},
+        triggers: {},
+        item: {},
+        viewpager: {},
+        view: {}
       }
     };
   }
@@ -51,6 +58,10 @@ class PackenUiTabs extends Component {
     }
   }
 
+  onPageSelected = e => {
+    /* console.log(e); */
+  }
+
   mapItems = (item, i) => (
     <PackenUiTabsItem
       key={`${item.label}-${i}`}
@@ -66,7 +77,7 @@ class PackenUiTabs extends Component {
 
   mapViews = (item, i) => {
     return (
-      <View key={i}>
+      <View key={i} style={{ ...this.getStyles().view, ...this.state.styling.view }}>
         {item.view}
       </View>
     );
@@ -74,35 +85,42 @@ class PackenUiTabs extends Component {
 
   render() {
     return (
-      <React.Fragment>
-        <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
-          {this.state.items.map(this.mapItems)}
+      <View style={this.getStyles().wrapper}>
+        {this.state.headerComponent}
+        <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
+          <View style={{ ...this.getStyles().triggers, ...this.state.styling.triggers }}>
+            {this.state.items.map(this.mapItems)}
+          </View>
+          <ViewPager
+            initialPage={this.state.activeTabIndex}
+            pageMargin={0}
+            scrollEnabled={true}
+            transitionStyle="scroll"
+            showPageIndicator={false}
+            keyboardDismissMode="on-drag"
+            style={this.getStyles().viewpager}
+            orientation={this.state.orientation}
+            onPageSelected={this.onPageSelected}
+          >
+            {this.state.items.map(this.mapViews)}
+          </ViewPager>
         </View>
-        <ViewPager
-          initialPage={0}
-          scrollEnabled={true}
-          transitionStyle="scroll"
-          orientation="horizontal"
-          showPageIndicator={false}
-          style={this.getStyles().viewpager}
-        >
-          {this.state.items.map(this.mapViews)}
-        </ViewPager>
-      </React.Fragment>
+        {this.state.footerComponent}
+      </View>
     );
   }
 
   getStyles = () => {
     return {
-      container: {
+      wrapper: { flex: 1 },
+      main: { flex: 1 },
+      triggers: {
         flexDirection: "row",
         alignItems: "flex-end",
         justifyContent: "space-around"
       },
-      viewpager: {
-        height: 500,
-        
-      }
+      viewpager: { flex: 1 },
+      view: { flex: 1 }
     };
   }
 }
@@ -111,6 +129,7 @@ PackenUiTabs.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   name: PropTypes.string.isRequired,
   activeIndex: PropTypes.number.isRequired,
+  orientation: PropTypes.string.isRequired,
   onTabChange: PropTypes.func.isRequired,
   styling: PropTypes.object
 };
