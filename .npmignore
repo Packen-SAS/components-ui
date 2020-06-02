@@ -61,6 +61,7 @@ __snapshots__
 
 unit
 coverage
+__mocks__
 __tests__
 jest
 storybook
@@ -79,3 +80,7 @@ metro.config.js
 README.md
 yarn.lock
 package-lock.json
+
+# Unnecessary source files
+app/views
+app/UILibrary.js

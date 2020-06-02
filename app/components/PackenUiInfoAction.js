@@ -8,6 +8,7 @@ import Typography from "../styles/abstracts/typography";
 import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
+import PackenUiSvgIcon from "./PackenUiSvgIcon";
 
 class PackenUiInfoAction extends Component {
   constructor(props) {
@@ -31,11 +32,8 @@ class PackenUiInfoAction extends Component {
       caption: this.props.caption ? this.props.caption : false,
       subtitle: this.props.subtitle ? this.props.subtitle : false,
       callback: this.props.callback ? this.props.callback : this.mockCallback,
-      img: this.props.img ? { ...this.props.img } : {
-        src: undefined,
-        width: 0,
-        height: 0
-      },
+      boxStyle: this.props.style ? { ...this.props.style } : {},
+      img: this.props.img ? this.props.img : "",
       icon: this.props.icon ? { ...this.props.icon } : {
         name: "play",
         size: 14
@@ -104,8 +102,8 @@ class PackenUiInfoAction extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.state.callback}>
-        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.state.theme]]}>
-          <Image source={this.state.img.src} style={this.getStyles().img} />
+        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.state.theme], this.state.boxStyle]}>
+          <PackenUiSvgIcon name={this.state.img} width={20} height={20} />
           <View style={this.getStyles().main}>
             <View style={this.getStyles().mainTop}>
               <PackenUiText preset="p1" style={this.getStyles().title}>{this.state.title}</PackenUiText>
@@ -202,7 +200,8 @@ PackenUiInfoAction.propTypes = {
   caption: PropTypes.string,
   subtitle: PropTypes.string,
   callback: PropTypes.func.isRequired,
-  img: PropTypes.object,
+  style: PropTypes.object,
+  img: PropTypes.string.isRequired,
   icon: PropTypes.object
 };
 

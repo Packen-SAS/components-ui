@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const genKey = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
@@ -14,4 +16,26 @@ export const arraysEqual = (_arr1, _arr2) => {
     }
   }
   return true;
+}
+
+export const datetime = () => {
+  return {
+    plain: (time) => getDate(time),
+    parts: time => getDateByChunks(time),
+    obj: o => moment(o),
+    diff: (a, b, mode) => (a.diff(b, mode))
+  }
+}
+
+export const toMomentObject = date => moment(date != null ? date : Date.now());
+
+export const formatDateSimple = (date, format) => {
+  if (!date) { return null; }
+  return moment(date).format(format);
+}
+
+export const isNumber = number => {
+  if (!number) { return false; }
+  const rx = /^(\d+)$/g;
+  return rx.exec(number) != null;
 }

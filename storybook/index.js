@@ -1,7 +1,7 @@
-import { AppRegistry } from 'react-native';
-import { getStorybookUI, configure } from '@storybook/react-native';
+import { AppRegistry } from "react-native";
+import { getStorybookUI, configure } from "@storybook/react-native";
 
-import './rn-addons';
+import "./rn-addons";
 
 configure(() => {
   require("./stories/PackenUiAlert.story");
@@ -28,6 +28,11 @@ configure(() => {
   require("./stories/PackenUiTabs.story");
   require("./stories/PackenUiToggle.story");
   require("./stories/PackenUiVehicleBox.story");
+  require("./stories/PackenUiSvgIcon.story");
+  require("./stories/PackenUiWhatsAppLink.story");
+  require("./stories/PackenUiLicenseBox.story");
+  require("./stories/PackenUiInputBoxes.story");
+  require("./stories/PackenUiCamera.story");
 }, module);
 
 const StorybookUIRoot = getStorybookUI({});

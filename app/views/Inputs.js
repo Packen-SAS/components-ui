@@ -51,7 +51,7 @@ class Inputs extends Component {
                 maxLength={10}
                 icon={{
                   name: "lock",
-                  position: "left"
+                  position: "right"
                 }}
                 message={{
                   text: "Caption text, description, error notification",
@@ -66,6 +66,7 @@ class Inputs extends Component {
                   onBlur: this.mockBlur,
                   onSubmitEditing: this.mockSubmitEditing
                 }}
+                loading
               />
             </View>
             <View style={{ marginBottom: 10 }}>

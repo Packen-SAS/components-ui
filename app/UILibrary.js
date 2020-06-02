@@ -28,6 +28,11 @@ import Lists from "./views/Lists";
 import Alerts from "./views/Alerts";
 import Headers from "./views/Headers";
 import Badges from "./views/Badges";
+import SvgIcons from "./views/SvgIcons";
+import WhatsAppLinks from "./views/WhatsAppLinks";
+import LicenseBoxes from "./views/LicenseBoxes";
+import InputBoxes from "./views/InputBoxes";
+import Cameras from "./views/Cameras";
 
 const Drawer = createDrawerNavigator();
 
@@ -37,6 +42,11 @@ class UILibrary extends Component {
       <NavigationContainer>
         <Drawer.Navigator initialRouteName="--- STORYBOOK ---">
           <Drawer.Screen name="--- STORYBOOK ---" component={Storybook} />
+          <Drawer.Screen name="Cameras" component={Cameras} />
+          <Drawer.Screen name="InputBoxes" component={InputBoxes} />
+          <Drawer.Screen name="LicenseBoxes" component={LicenseBoxes} />
+          <Drawer.Screen name="WhatsAppLinks" component={WhatsAppLinks} />
+          <Drawer.Screen name="SvgIcons" component={SvgIcons} />
           <Drawer.Screen name="Badges" component={Badges} />
           <Drawer.Screen name="Headers" component={Headers} />
           <Drawer.Screen name="Alerts" component={Alerts} />

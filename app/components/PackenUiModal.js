@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Modal, View, TouchableWithoutFeedback, Image, Dimensions } from "react-native";
+import { Modal, View, TouchableWithoutFeedback, Image, Dimensions, Platform } from "react-native";
 
 import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -70,7 +70,7 @@ class PackenUiModal extends Component {
         title: "",
         text: ""
       },
-      toggle: this.props.toggle ? this.props.toggle : this.mockCallback,
+      modalClose: this.props.modalClose ? this.props.modalClose : this.mockCallback,
       theme: this.props.theme ? this.props.theme : "primary",
       content: this.props.content ? this.props.content : null,
       onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
@@ -197,7 +197,7 @@ class PackenUiModal extends Component {
   renderGallerySlide = ({ item, index }) => {
     return (
       <View key={index} style={this.getStyles().gallery.slide}>
-        <Image source={item} style={this.getGalleryBoxDimensions()} />
+        <Image source={item} resizeMode="cover" style={this.getGalleryBoxDimensions()} />
       </View>
     );
   }
@@ -291,11 +291,21 @@ class PackenUiModal extends Component {
   getHeader = () => {
     let header = null;
 
+    const callDismiss = () => {
+      if (Platform.OS === "ios") {
+        this.onRequestCloseHandler();
+        this.state.modalClose();
+        return;
+      }
+      this.onDismissHandler();
+      this.state.modalClose();
+    };
+
     if (this.state.type !== "custom") {
       header = (
         <View style={this.getStyles().header}>
           <View style={this.getStyles().header__inner}>
-            <TouchableWithoutFeedback onPress={this.state.toggle}>
+            <TouchableWithoutFeedback onPress={callDismiss}>
               <Icon name="x" size={20} color={Colors[this.state.theme].default} style={this.state.type === "gallery" ? this.getStyles().header__close_icon : null} />
             </TouchableWithoutFeedback>
           </View>
@@ -438,7 +448,10 @@ class PackenUiModal extends Component {
       },
       wrapper: {
         default: {
-          padding: 25
+          padding: 25,
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center"
         },
         small: {
           paddingVertical: 25,
@@ -449,6 +462,7 @@ class PackenUiModal extends Component {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
+        width: "85%",
         ...Shadows.md
       },
       header: {
@@ -581,7 +595,7 @@ PackenUiModal.propTypes = {
   isOpen: PropTypes.bool,
   images: PropTypes.array,
   info: PropTypes.object,
-  toggle: PropTypes.func.isRequired,
+  modalClose: PropTypes.func.isRequired,
   theme: PropTypes.string.isRequired,
   content: PropTypes.node,
   onDismiss: PropTypes.func,
