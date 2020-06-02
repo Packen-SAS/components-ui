@@ -67,5 +67,12 @@ describe("<PackenUiBadge/>", () => {
         styling: { wrapper: {}, label: {} }
       });
     });
+
+    it("returns incoming props as the state key-value pairs, if some are provided", () => {
+      render.setProps({ borderRadius: 5, styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.borderRadius).toBe(5);
+      expect(res.styling).toEqual({ test: "Test" });
+    });
   });
 });

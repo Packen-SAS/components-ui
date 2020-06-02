@@ -250,8 +250,23 @@ describe("<PackenUiButton/>", () => {
           color: "#FFFFFF"
         }
       });
-      const returnedElement = renderRegularInstance.getIcon();
+      let returnedElement = renderRegularInstance.getIcon();
+      expect(returnedElement).toBeDefined();
 
+      renderRegularInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      returnedElement = renderRegularInstance.getIcon();
+      expect(returnedElement).toBeDefined();
+
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          anim: {},
+          styles: {},
+          state: "done"
+        },
+        styling: { iconSize: 15, iconColor: "#FFFFFF" }
+      });
+      returnedElement = renderRegularInstance.getIcon();
       expect(returnedElement).toBeDefined();
     });
 
@@ -318,11 +333,12 @@ describe("<PackenUiButton/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if nonTouchable is provided", () => {
-      renderRegular.setProps({ nonTouchable: true });
+    it("returns incoming props as the state key-value pairs, if some are provided", () => {
+      renderRegular.setProps({ nonTouchable: true, styling: { test: "Test" } });
       const res = renderRegularInstance.setPropsToState();
 
       expect(res.nonTouchable).toBe(true);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

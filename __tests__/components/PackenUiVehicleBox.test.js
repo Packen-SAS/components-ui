@@ -30,7 +30,7 @@ describe("<PackenUiVehicleBox/>", () => {
     });
 
     it("returns the content without a touchable if not set so", () => {
-      renderInstance.setState({ callback: undefined });
+      renderInstance.setState({ callback: undefined, styling: { stateIconSize: 15, stateIconColor: "#FFFFFF" } });
       const returnedElement = renderInstance.getContent();
 
       expect(returnedElement).toBeDefined();
@@ -114,6 +114,12 @@ describe("<PackenUiVehicleBox/>", () => {
 
       expect(res.image).toBe("test-url");
       expect(res.labels).toEqual({ ...labels });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

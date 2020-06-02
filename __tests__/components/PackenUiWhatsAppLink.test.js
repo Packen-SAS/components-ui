@@ -21,6 +21,9 @@ describe("<PackenUiWhatsAppLink/>", () => {
 
       renderInstance.setState({ inverted: true });
       expect(render).toBeDefined();
+
+      renderInstance.setState({ styling: { svgWidth: 10, svgHeight: 10 } });
+      expect(render).toBeDefined();
     });
   });
 
@@ -105,6 +108,10 @@ describe("<PackenUiWhatsAppLink/>", () => {
       expect(res.trigger).toBe(mockCallback);
       expect(res.inverted).toBe(true);
       expect(res.color).toBe("#FFFFFF");
+
+      render.setProps({ styling: { test: "Test" } });
+      res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   })
 });

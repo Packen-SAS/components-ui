@@ -87,6 +87,12 @@ describe("<PackenUiMapPin/>", () => {
       expect(returnedElement).toBeDefined();
     });
 
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      renderInfo.setProps({ styling: { test: "Test" } });
+      const res = renderInfoInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
+
     it("doesn't render a label if none is passed via props", () => {
       renderInfoInstance.setState({ main: { label: undefined } });
       const returnedElement = renderInfoInstance.getLabel();

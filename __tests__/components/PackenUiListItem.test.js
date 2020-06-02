@@ -95,6 +95,12 @@ describe("<PackenUiListItem/>", () => {
       expect(res.data.input).toEqual({ test: "Test" });
     });
 
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
+
     it("changes the state when opening and closing if it's a dropdown", () => {
       renderInstance.onOpenStateChangeHandler(true, 10);
 
@@ -159,8 +165,11 @@ describe("<PackenUiListItem/>", () => {
     });
 
     it("returns the sub content if it's provided", () => {
-      const returnedElement = renderInstance.getSubContent();
+      let returnedElement = renderInstance.getSubContent();
+      expect(returnedElement).toBeDefined();
 
+      renderInstance.setState({ data: { icon: {} }, styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      returnedElement = renderInstance.getSubContent();
       expect(returnedElement).toBeDefined();
     });
   });

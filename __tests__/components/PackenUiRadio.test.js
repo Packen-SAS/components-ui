@@ -241,5 +241,11 @@ describe("<PackenUiRadio/>", () => {
 
       expect(res.checkedIndex).toBe(0);
     });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      renderColumn.setProps({ styling: { test: "Test" } });
+      const res = renderColumnInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
   });
 });

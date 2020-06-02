@@ -146,5 +146,11 @@ describe("<PackenUiInputBoxes/>", () => {
       expect(renderInstance.state.boxes).toBeDefined();
       expect(renderInstance.state.boxes.length).toBe(4);
     });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.getPropStyling();
+      expect(res).toEqual({ test: "Test" });
+    });
   })
 });

@@ -19,6 +19,9 @@ describe("<PackenUiHeader/>", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+
+      renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      expect(render).toBeDefined();
     });
   });
 
@@ -76,6 +79,12 @@ describe("<PackenUiHeader/>", () => {
           title: {}
         }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

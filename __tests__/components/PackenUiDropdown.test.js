@@ -254,6 +254,12 @@ describe("<PackenUiDropdown/>", () => {
       });
     });
 
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test", contentSizer: {} });
+    });
+
     it("sets custom styles to position the menu if its theme is 'list'", () => {
       renderInstance.setState({
         input: {

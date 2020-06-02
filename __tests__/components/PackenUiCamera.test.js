@@ -132,6 +132,16 @@ describe("<PackenUiCamera/>", () => {
       renderInstance.finalize();
       expect(renderInstance.state.proccessing).toBe(false);
     });
+
+    it("executes correct code on componentDidUpdate", () => {
+      const prevProps = { test: "Test" };
+      renderTopTriggers.setProps({ test: "Test 2", image: null });
+      renderTopTriggersInstance.componentDidUpdate(prevProps);
+      expect(renderTopTriggersInstance.state.source.uri).toBe(null);
+
+      renderTopTriggers.setProps({ test: "Test 2", image: { uri: "test" } });
+      expect(renderTopTriggersInstance.state.source.uri).toBe("test");
+    })
   });
 
   describe("triggering actions", () => {

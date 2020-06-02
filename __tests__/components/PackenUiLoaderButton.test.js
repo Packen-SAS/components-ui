@@ -70,11 +70,12 @@ describe("<PackenUiLoaderButton/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if isDone is provided", () => {
-      render.setProps({ isDone: true });
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ isDone: true, styling: { test: "Test" } });
       const res = renderInstance.setPropsToState();
 
       expect(res.isDone).toBe(true);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

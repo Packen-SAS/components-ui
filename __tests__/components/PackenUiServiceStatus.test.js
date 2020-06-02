@@ -143,5 +143,11 @@ describe("<PackenUiServiceStatus/>", () => {
 
       expect(res.currentStepIndex).toBe(0);
     });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
   });
 });

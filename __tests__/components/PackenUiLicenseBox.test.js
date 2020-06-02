@@ -98,5 +98,11 @@ describe("<PackenUiLicenseBox/>", () => {
         }
       });
     });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
   })
 });

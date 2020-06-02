@@ -219,5 +219,11 @@ describe("<PackenUiRadar/>", () => {
         styling: { wrapper: {}, shadow: {}, dot: {} }
       });
     });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
   });
 });
