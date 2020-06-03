@@ -447,6 +447,16 @@ describe("<PackenUiModal/>", () => {
       expect(spyOnDismissHandler).toHaveBeenCalled();
       spyOnDismissHandler.mockRestore();
     });
+
+    it("closes the modal", () => {
+      renderInstance.setState({ modalClose: mockCallback });
+      renderInstance.closeModal();
+      expect(renderInstance.state.modalClose).toHaveBeenCalled();
+
+      renderInstance.setState({ modalClose: undefined });
+      const res = renderInstance.closeModal();
+      expect(res).toBe(false);
+    });
   });
 
   describe("getting dimensions", () => {

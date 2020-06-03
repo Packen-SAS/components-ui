@@ -483,6 +483,8 @@ class PackenUiModal extends Component {
   closeModal = () => {
     if (this.state.modalClose) {
       this.state.modalClose();
+    } else {
+      return false;
     }
   }
 
