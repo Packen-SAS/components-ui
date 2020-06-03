@@ -268,8 +268,8 @@ class PackenUiModal extends Component {
 
   getGalleryBoxDimensions = () => {
     return {
-      height: Dimensions.get("screen").height / 3,
-      width: Dimensions.get("screen").width - 50
+      height: Dimensions.get("screen").height / 3.5,
+      width: (Dimensions.get("screen").width * .85) - 40
     };
   }
 
@@ -328,7 +328,7 @@ class PackenUiModal extends Component {
 
     if (this.state.type !== "custom") {
       header = (
-        <View style={{ ...this.getStyles().header, ...this.state.styling.header }}>
+        <View style={{ ...(this.state.type === "gallery" ? this.getStyles().header__gallery : this.getStyles().header), ...this.state.styling.header }}>
           <View style={{ ...this.getStyles().header__inner, ...this.state.styling.headerInner }}>
             <TouchableWithoutFeedback onPress={this.headerCallDismiss}>
               <Icon
@@ -464,6 +464,12 @@ class PackenUiModal extends Component {
     }
   }
 
+  closeModal = () => {
+    if (this.state.modalClose) {
+      this.state.modalClose();
+    }
+  }
+
   render() {
     return (
       <Modal
@@ -473,14 +479,18 @@ class PackenUiModal extends Component {
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
-        <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}>
-          <View style={{ ...this.getStyles().wrapper[this.state.size], ...this.state.styling.wrapper }}>
-            <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
-              {this.getHeader()}
-              {this.getContent()}
+        <TouchableWithoutFeedback onPress={this.closeModal}>
+          <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}>
+            <View style={{ ...this.getStyles().wrapper[this.state.size], ...this.state.styling.wrapper }}>
+              <TouchableWithoutFeedback>
+                <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
+                  {this.getHeader()}
+                  {this.getContent()}
+                </View>
+              </TouchableWithoutFeedback>
             </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     );
   }
@@ -525,6 +535,13 @@ class PackenUiModal extends Component {
         zIndex: 1,
         top: 0,
         left: 0
+      },
+      header__gallery: {
+        width: "100%",
+        position: "absolute",
+        zIndex: 1,
+        top: 0,
+        right: 0
       },
       header__inner: {
         padding: 20,
