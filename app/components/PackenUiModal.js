@@ -94,6 +94,8 @@ class PackenUiModal extends Component {
         text: {},
         btnWrapper: {},
         galleryBox: {},
+        slide: {},
+        slideImg: {},
         arrowLeft: {},
         arrowRight: {},
         arrowIconSize: undefined,
@@ -220,8 +222,20 @@ class PackenUiModal extends Component {
 
   renderGallerySlide = ({ item, index }) => {
     return (
-      <View key={index} style={this.getStyles().gallery.slide}>
-        <Image source={item} resizeMode="cover" style={this.getGalleryBoxDimensions()} />
+      <View key={index} style={{
+        ...this.getStyles().gallery.slide,
+        ...this.getGalleryBoxDimensions(),
+        ...this.state.styling.slide
+      }}>
+        <Image
+          source={item}
+          resizeMode="cover"
+          style={{
+            ...this.getStyles().gallery.img,
+            ...this.getGalleryBoxDimensions(),
+            ...this.state.styling.slideImg
+          }}
+        />
       </View>
     );
   }
@@ -271,7 +285,7 @@ class PackenUiModal extends Component {
   getGalleryBoxDimensions = () => {
     return {
       height: Dimensions.get("screen").height / 3.5,
-      width: (Dimensions.get("screen").width * .85)
+      width: (Dimensions.get("screen").width * .85) - 36
     };
   }
 
@@ -670,9 +684,9 @@ class PackenUiModal extends Component {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 8,
           backgroundColor: Colors.basic.black.dft
-        }
+        },
+        img: {}
       }
     };
   }
