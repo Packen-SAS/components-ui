@@ -76,7 +76,9 @@ class PackenUiModal extends Component {
       onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
       onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false,
       styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
         backdrop: {},
+        main: {},
         wrapper: {},
         box: {},
         header: {},
@@ -269,7 +271,7 @@ class PackenUiModal extends Component {
   getGalleryBoxDimensions = () => {
     return {
       height: Dimensions.get("screen").height / 3.5,
-      width: (Dimensions.get("screen").width * .85) - 40
+      width: (Dimensions.get("screen").width * .85)
     };
   }
 
@@ -410,7 +412,7 @@ class PackenUiModal extends Component {
 
   getGalleryContent = () => (
     <View
-      style={{ 
+      style={{
         ...this.getGalleryBoxDimensions(),
         ...this.state.styling.galleryBox
       }}
@@ -479,29 +481,40 @@ class PackenUiModal extends Component {
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
-        <TouchableWithoutFeedback onPress={this.closeModal}>
-          <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}>
-            <View style={{ ...this.getStyles().wrapper[this.state.size], ...this.state.styling.wrapper }}>
-              <TouchableWithoutFeedback>
-                <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
-                  {this.getHeader()}
-                  {this.getContent()}
-                </View>
-              </TouchableWithoutFeedback>
+        <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
+          <TouchableWithoutFeedback onPress={this.closeModal}>
+            <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}></View>
+          </TouchableWithoutFeedback>
+          <View style={{ ...this.getStyles().main.base, ...this.getStyles().main[this.state.size], ...this.state.styling.main }}>
+            <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
+              <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
+                {this.getHeader()}
+                {this.getContent()}
+              </View>
             </View>
           </View>
-        </TouchableWithoutFeedback>
+        </View>
       </Modal>
     );
   }
 
   getStyles = () => {
     return {
+      container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+      },
       backdrop: {
         base: {
           flex: 1,
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%"
         },
         open: {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -510,23 +523,29 @@ class PackenUiModal extends Component {
           backgroundColor: "transparent"
         }
       },
-      wrapper: {
-        default: {
-          padding: 25,
-          width: "100%",
+      main: {
+        base: {
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          alignSelf: "center"
+        },
+        default: {
+          width: "85%"
         },
         small: {
-          paddingVertical: 25,
-          paddingHorizontal: 50
+          width: "75%"
         }
+      },
+      wrapper: {
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center"
       },
       box: {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
-        width: "85%",
+        width: "100%",
         ...Shadows.md
       },
       header: {
