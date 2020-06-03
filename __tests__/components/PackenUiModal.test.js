@@ -280,7 +280,7 @@ describe("<PackenUiModal/>", () => {
         type: "gallery",
         images: []
       });
-      render.props().children.props.children.props.children.props.children[1].props.onLayout(e);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.onLayout(e);
 
       expect(spyGetGalleryBoxDimensions).toHaveBeenCalled();
       spyGetGalleryBoxDimensions.mockRestore();
@@ -299,7 +299,7 @@ describe("<PackenUiModal/>", () => {
         images: ["", "", ""]
       });
       renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
 
       expect(spyGetGalleryArrowsDimensions).toHaveBeenCalled();
       spyGetGalleryArrowsDimensions.mockRestore();
@@ -313,7 +313,7 @@ describe("<PackenUiModal/>", () => {
         images: ["", "", ""]
       });
       renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children.props.children.props.children[1].props.children[1].ref(c);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[1].ref(c);
 
       expect(renderInstance.carouselRef).toBe("ref");
     });
@@ -587,7 +587,9 @@ describe("<PackenUiModal/>", () => {
         onDismiss: false,
         onRequestClose: false,
         styling: {
+          container: {},
           backdrop: {},
+          main: {},
           wrapper: {},
           box: {},
           header: {},
@@ -603,6 +605,8 @@ describe("<PackenUiModal/>", () => {
           text: {},
           btnWrapper: {},
           galleryBox: {},
+          slide: {},
+          slideImg: {},
           arrowLeft: {},
           arrowRight: {},
           arrowIconSize: undefined,
