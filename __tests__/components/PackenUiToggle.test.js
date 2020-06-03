@@ -131,63 +131,67 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("executes onLayout event callback for the shape", () => {
-      const spyGetShapeDimensions = jest.spyOn(renderInstance, "getShapeDimensions");
-      render.props().children.props.children.props.onLayout({
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      const e = {
         nativeEvent: {
           layout: {
             width: 10,
             height: 10
           }
         }
-      });
+      };
+      render.props().children.props.children.props.onLayout(e);
 
-      expect(spyGetShapeDimensions).toHaveBeenCalled();
-      spyGetShapeDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "shape");
+      spyGetElemDimensions.mockRestore();
     });
 
     it("executes onLayout event callback for the dot", () => {
-      const spyGetDotDimensions = jest.spyOn(renderInstance, "getDotDimensions");
-      render.props().children.props.children.props.children[0].props.onLayout({
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      const e = {
         nativeEvent: {
           layout: {
             width: 10,
             height: 10
           }
         }
-      });
+      };
+      render.props().children.props.children.props.children[0].props.onLayout(e);
 
-      expect(spyGetDotDimensions).toHaveBeenCalled();
-      spyGetDotDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "dot");
+      spyGetElemDimensions.mockRestore();
     });
 
     it("executes onLayout event callback for the on label", () => {
-      const spyGetOnDimensions = jest.spyOn(renderInstance, "getOnDimensions");
-      render.props().children.props.children.props.children[1].props.onLayout({
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      const e = {
         nativeEvent: {
           layout: {
             width: 10,
             height: 10
           }
         }
-      });
+      };
+      render.props().children.props.children.props.children[1].props.onLayout(e);
 
-      expect(spyGetOnDimensions).toHaveBeenCalled();
-      spyGetOnDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "on");
+      spyGetElemDimensions.mockRestore();
     });
 
-    it("executes onLayout event callback for the on label", () => {
-      const spyGetOffDimensions = jest.spyOn(renderInstance, "getOffDimensions");
-      render.props().children.props.children.props.children[2].props.onLayout({
+    it("executes onLayout event callback for the off label", () => {
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      const e = {
         nativeEvent: {
           layout: {
             width: 10,
             height: 10
           }
         }
-      });
+      };
+      render.props().children.props.children.props.children[2].props.onLayout(e);
 
-      expect(spyGetOffDimensions).toHaveBeenCalled();
-      spyGetOffDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "off");
+      spyGetElemDimensions.mockRestore();
     });
   });
 
@@ -250,69 +254,19 @@ describe("<PackenUiToggle/>", () => {
       expect(spySetDisabledStyles).toHaveBeenCalled();
     });
 
-    it("sets shape dimensions", () => {
-      renderInstance.getShapeDimensions({
+    it("sets a given element's dimensions", () => {
+      const e = {
         nativeEvent: {
           layout: {
             height: 10,
             width: 10
           }
         }
-      });
+      };
+      renderInstance.getElemDimensions(e, "shape");
 
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets dot dimensions", () => {
-      renderInstance.getDotDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.dot).toEqual({
-        ...renderInstance.state.dot,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets on dimensions", () => {
-      renderInstance.getOnDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.on).toEqual({
-        ...renderInstance.state.on,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets off dimensions", () => {
-      renderInstance.getOffDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.off).toEqual({
-        ...renderInstance.state.off,
         height: 10,
         width: 10
       });
