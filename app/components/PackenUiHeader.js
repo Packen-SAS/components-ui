@@ -23,6 +23,7 @@ class PackenUiHeader extends Component {
   setPropsToState = () => {
     return {
       children: this.props.children || "",
+      icon: this.props.icon || "arrow-left",
       onBackPress: this.props.onBackPress || false,
       customStyle: this.props.style || {},
       styling: this.props.styling ? { ...this.props.styling } : {
@@ -61,7 +62,7 @@ class PackenUiHeader extends Component {
       }}>
         <TouchableWithoutFeedback onPress={this.onPressHandler}>
           <Icon
-            name="arrow-left"
+            name={this.state.icon}
             size={this.state.styling.iconSize ? this.state.styling.iconSize : 20}
             color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.brand.primary.drk}
           />

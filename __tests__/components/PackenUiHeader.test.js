@@ -61,6 +61,7 @@ describe("<PackenUiHeader/>", () => {
   describe("state changing", () => {
     it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
+        icon: undefined,
         children: undefined,
         onBackPress: undefined,
         customStyle: undefined,
@@ -70,6 +71,7 @@ describe("<PackenUiHeader/>", () => {
 
       expect(res).toEqual({
         children: "",
+        icon: "arrow-left",
         onBackPress: false,
         customStyle: {},
         styling: {
