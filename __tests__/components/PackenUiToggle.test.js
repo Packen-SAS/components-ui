@@ -7,6 +7,14 @@ import PackenUiToggle from "../../app/components/PackenUiToggle";
 describe("<PackenUiToggle/>", () => {
   let render, renderInactive, renderInstance, renderInactiveInstance;
   const mockFunction = jest.fn();
+  const e = {
+    nativeEvent: {
+      layout: {
+        height: 10,
+        width: 10
+      }
+    }
+  };
 
   beforeAll(() => {
     render = shallow(
@@ -132,14 +140,6 @@ describe("<PackenUiToggle/>", () => {
 
     it("executes onLayout event callback for the shape", () => {
       const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
-      const e = {
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      };
       render.props().children.props.children.props.onLayout(e);
 
       expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "shape");
@@ -148,14 +148,6 @@ describe("<PackenUiToggle/>", () => {
 
     it("executes onLayout event callback for the dot", () => {
       const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
-      const e = {
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      };
       render.props().children.props.children.props.children[0].props.onLayout(e);
 
       expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "dot");
@@ -164,14 +156,6 @@ describe("<PackenUiToggle/>", () => {
 
     it("executes onLayout event callback for the on label", () => {
       const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
-      const e = {
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      };
       render.props().children.props.children.props.children[1].props.onLayout(e);
 
       expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "on");
@@ -180,14 +164,6 @@ describe("<PackenUiToggle/>", () => {
 
     it("executes onLayout event callback for the off label", () => {
       const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
-      const e = {
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      };
       render.props().children.props.children.props.children[2].props.onLayout(e);
 
       expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "off");
@@ -255,14 +231,6 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("sets a given element's dimensions", () => {
-      const e = {
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      };
       renderInstance.getElemDimensions(e, "shape");
 
       expect(renderInstance.state.shape).toEqual({
