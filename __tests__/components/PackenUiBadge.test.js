@@ -1,5 +1,6 @@
 import "react-native";
 import React from "react";
+import { View } from "react-native";
 import { shallow } from "enzyme";
 
 import colors from "../../app/styles/abstracts/colors";
@@ -24,6 +25,15 @@ describe("<PackenUiBadge/>", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+    });
+
+    it("returns the correct content", () => {
+      let res = renderInstance.getContent();
+      expect(res).toBeDefined();
+
+      renderInstance.setState({ children: <View></View> });
+      res = renderInstance.getContent();
+      expect(res).toBeDefined();
     });
   });
 
@@ -54,7 +64,9 @@ describe("<PackenUiBadge/>", () => {
         height: undefined,
         color: undefined,
         backgroundColor: undefined,
-        styling: undefined
+        styling: undefined,
+        fontSize: undefined,
+        children: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -64,15 +76,21 @@ describe("<PackenUiBadge/>", () => {
         height: 16,
         color: colors.basic.white.dft,
         backgroundColor: colors.brand.primary.drk,
-        styling: { wrapper: {}, label: {} }
+        styling: { outer: {}, content: {}, dotWrapper: {}, wrapper: {}, label: {} },
+        fontSize: 12,
+        children: false
       });
     });
 
     it("returns incoming props as the state key-value pairs, if some are provided", () => {
-      render.setProps({ borderRadius: 5, styling: { test: "Test" } });
+      const mockNode = <View></View>;
+      render.setProps({ borderRadius: 5, styling: { test: "Test" }, fontSize: 12, children: mockNode });
       const res = renderInstance.setPropsToState();
+      
       expect(res.borderRadius).toBe(5);
       expect(res.styling).toEqual({ test: "Test" });
+      expect(res.fontSize).toBe(12);
+      expect(res.children).toBe(mockNode);
     });
   });
 });
