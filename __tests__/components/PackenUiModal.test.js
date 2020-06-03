@@ -94,9 +94,14 @@ describe("<PackenUiModal/>", () => {
           icon: "check"
         }
       });
-      const returnedElement = renderInstance.getBanner();
-
+      let returnedElement = renderInstance.getBanner();
       expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ styling: { bannerIconSize: 15, bannerIconColor: "#FFFFFF" } });
+      returnedElement = renderInstance.getBanner();
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.children.props.size).toBe(15);
+      expect(returnedElement.props.children.props.color).toBe("#FFFFFF");
     });
 
     it("renders null if a banner is not provided", () => {
@@ -142,7 +147,23 @@ describe("<PackenUiModal/>", () => {
     });
 
     it("returns a header element correctly", () => {
-      const res = renderInstance.getHeader();
+      let res = renderInstance.getHeader();
+      expect(res).toBeDefined();
+
+      renderInstance.setState({ styling: { closeIconSize: 15, closeIconColor: "#FFFFFF" } });
+      res = renderInstance.getHeader();
+      expect(res).toBeDefined();
+      expect(res.props.children.props.children.props.children.props.size).toBe(15);
+      expect(res.props.children.props.children.props.children.props.color).toBe("#FFFFFF");
+    });
+
+    it("returns the gallery arrows", () => {
+      renderInstance.setState({
+        images: [{}, {}, {}],
+        has: { prev: true, next: true },
+        styling: { arrowIconColor: "#FFFFFF", arrowIconSize: 15 }
+      });
+      const res = renderInstance.getGalleryArrows();
       expect(res).toBeDefined();
     });
   });
@@ -595,7 +616,8 @@ describe("<PackenUiModal/>", () => {
         content: <View></View>,
         modalClose: mockCallback,
         onDismiss: mockCallback,
-        onRequestClose: mockCallback
+        onRequestClose: mockCallback,
+        styling: { test: "Test" }
       });
       const res = renderInstance.setPropsToState();
 
@@ -603,6 +625,7 @@ describe("<PackenUiModal/>", () => {
       expect(res.modalClose).toBe(mockCallback);
       expect(res.onDismiss).toBe(mockCallback);
       expect(res.onRequestClose).toBe(mockCallback);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

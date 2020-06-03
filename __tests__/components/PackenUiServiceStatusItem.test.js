@@ -91,92 +91,6 @@ describe("<PackenUiServiceStatusItem/>", () => {
     });
   });
 
-  describe("rendering", () => {
-    it("renders correctly", () => {
-      expect(render).toBeDefined();
-    });
-
-    it("renders the initial time if provided", () => {
-      render.setProps({
-        data: {
-          time: steps[2].time
-        }
-      });
-      const returnedElement = renderInstance.getInitialTime();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders null if no initial time is provided", () => {
-      render.setProps({
-        data: {
-          time: undefined
-        }
-      });
-      const returnedElement = renderInstance.getInitialTime();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("renders a subtitle if provided", () => {
-      render.setProps({
-        data: {
-          subtitle: steps[2].subtitle
-        }
-      });
-      const returnedElement = renderInstance.getSubtitle();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders null if no subtitle is provided", () => {
-      render.setProps({
-        data: {
-          subtitle: undefined
-        }
-      });
-      const returnedElement = renderInstance.getSubtitle();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("renders a line if it's not the first step", () => {
-      render.setProps({
-        index: 2
-      });
-      const returnedElement = renderInstance.getLine();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("returns null as a line if it's the first step", () => {
-      render.setProps({
-        index: 0
-      });
-      const returnedElement = renderInstance.getLine();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("returns an icon for the dot if the step is completed", () => {
-      renderInstance.setState({
-        state: "completed"
-      });
-      const returnedElement = renderInstance.getDotIcon();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("returns null as an icon for the dot if the step is not completed", () => {
-      renderInstance.setState({
-        state: "default"
-      });
-      const returnedElement = renderInstance.getDotIcon();
-
-      expect(returnedElement).toBe(null);
-    });
-  });
-
   describe("styling", () => {
     it("returns the step's line positioning styles", () => {
       renderInstance.setState({
@@ -459,7 +373,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
         currentStepIndex: undefined,
         styling: undefined
       });
-      const res = renderInstance.setPropsToState();
+      let res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
         data: {
@@ -485,6 +399,103 @@ describe("<PackenUiServiceStatusItem/>", () => {
           subtitle: {}
         }
       });
+
+      render.setProps({ styling: { test: "Test" } });
+      res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders correctly", () => {
+      expect(render).toBeDefined();
+    });
+
+    it("renders null if no initial time is provided", () => {
+      render.setProps({
+        data: {
+          time: undefined
+        }
+      });
+      const returnedElement = renderInstance.getInitialTime();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders a subtitle if provided", () => {
+      render.setProps({
+        data: {
+          subtitle: steps[2].subtitle
+        }
+      });
+      const returnedElement = renderInstance.getSubtitle();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders null if no subtitle is provided", () => {
+      render.setProps({
+        data: {
+          subtitle: undefined
+        }
+      });
+      const returnedElement = renderInstance.getSubtitle();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders a line if it's not the first step", () => {
+      render.setProps({
+        index: 2
+      });
+      const returnedElement = renderInstance.getLine();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns null as a line if it's the first step", () => {
+      render.setProps({
+        index: 0
+      });
+      const returnedElement = renderInstance.getLine();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("returns an icon for the dot if the step is completed", () => {
+      renderInstance.setState({
+        state: "completed"
+      });
+      let returnedElement = renderInstance.getDotIcon();
+      expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ styling: { dotIconColor: "#FFFFFF", dotIconSize: 15 } });
+      returnedElement = renderInstance.getDotIcon();
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns null as an icon for the dot if the step is not completed", () => {
+      renderInstance.setState({
+        state: "default"
+      });
+      const returnedElement = renderInstance.getDotIcon();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders the initial time if provided", () => {
+      render.setProps({
+        data: {
+          time: steps[2].time
+        }
+      });
+      let returnedElement = renderInstance.getInitialTime();
+      expect(returnedElement).toBeDefined();
+
+      render.setProps({ styling: { time: { test: "Test" }, box: {} } });
+      renderInstance.setState({ styling: false });
+      returnedElement = renderInstance.getInitialTime();
+      expect(returnedElement.props.style).toEqual({ ...renderInstance.getStyles().time, test: "Test" });
     });
   });
 });

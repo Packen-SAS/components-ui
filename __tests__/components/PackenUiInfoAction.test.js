@@ -32,6 +32,9 @@ describe("<PackenUiInfoAction/>", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+
+      renderInstance.setState({ styling: { svgWidth: 15, svgHeight: 15, iconSize: 15, iconColor: "#FFFFFF" } });
+      expect(render).toBeDefined();
     });
 
     it("returns a caption if provided", () => {
@@ -64,9 +67,13 @@ describe("<PackenUiInfoAction/>", () => {
 
     it("returns a subtitle with a success icon if provided and set so", () => {
       render.setProps({ subtitle: "Test", theme: "success" });
-      const returnedElement = renderInstance.getSubtitle();
-
+      let returnedElement = renderInstance.getSubtitle();
       expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ styling: { subtitleIconColor: "#FFFFFF", subtitleIconSize: 15 } });
+      returnedElement = renderInstance.getSubtitle();
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.icon).toEqual({ name: "check-circle", position: "right", color: "#FFFFFF", size: 15 });
     });
 
     it("returns a subtitle with an error icon if provided and set so", () => {
@@ -164,6 +171,13 @@ describe("<PackenUiInfoAction/>", () => {
       const res = renderInstance.setPropsToState();
 
       expect(res.boxStyle).toEqual({ test: "Test" });
+    });
+
+    it("returns incoming props as the state key-value pairs if a styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });
