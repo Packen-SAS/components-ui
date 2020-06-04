@@ -74,8 +74,12 @@ describe("<PackenUiButton/>", () => {
     it("changes styles while onPressIn", () => {
       const prevStyles = renderRegularInstance.state.styles;
       renderRegularInstance.pressInHandler();
-
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
+
+      renderRegularInstance.setState({ type: "icon", level: "primary", icon: {}, isOutline: true });
+      const res = renderRegularInstance.pressInHandler();
+      expect(res.icon.color).toBe(Colors.basic.white.dft);
+      expect(res.shape.borderColor).toBe(Colors.primary.focus);
     });
 
     it("changes styles while onPressIn and 'level' is 'secondary'", () => {
@@ -90,8 +94,15 @@ describe("<PackenUiButton/>", () => {
     it("changes styles while onPressOut", () => {
       const prevStyles = renderRegularInstance.state.styles;
       renderRegularInstance.pressOutHandler();
-
       expect(renderRegularInstance.state.styles).not.toBe(prevStyles);
+
+      renderRegularInstance.setState({ type: "icon", level: "primary", icon: {}, isOutline: true });
+      let res = renderRegularInstance.pressOutHandler();
+      expect(res.shape).toEqual({ ...renderRegularInstance.getStyles().shape, ...renderRegularInstance.createStyles().shape.outline.primary });
+
+      renderRegularInstance.setState({ type: "regular", level: "primary", icon: undefined, isOutline: false });
+      res = renderRegularInstance.pressOutHandler();
+      expect(res.label.color).toBe(Colors.basic.white.dft);
     });
 
     it("executes correct code on componentDidUpdate", () => {
@@ -219,6 +230,17 @@ describe("<PackenUiButton/>", () => {
 
       expect(renderRegular.props().pointerEvents).toBe("auto");
     });
+
+    it("returns the correct outline styles", () => {
+      const styles = { test: "Test" };
+      const res = renderRegularInstance.getOutlineStyles(styles, true, "primary");
+      expect(res).toEqual({
+        test: "Test",
+        shape: { ...styles.shape, ...renderRegularInstance.createStyles().shape.outline.primary },
+        label: { ...styles.label, ...renderRegularInstance.createStyles().label.outline.primary },
+        icon: { ...styles.icon, ...renderRegularInstance.createStyles().icon.outline.primary }
+      });
+    });
   });
 
   describe("rendering", () => {
@@ -306,6 +328,7 @@ describe("<PackenUiButton/>", () => {
         size: undefined,
         icon: undefined,
         callback: undefined,
+        isOutline: undefined,
         isDisabled: undefined,
         nonTouchable: undefined,
         children: undefined,
@@ -319,6 +342,7 @@ describe("<PackenUiButton/>", () => {
         size: "medium",
         icon: undefined,
         callback: false,
+        isOutline: false,
         isDisabled: false,
         nonTouchable: false,
         children: undefined,
@@ -334,9 +358,10 @@ describe("<PackenUiButton/>", () => {
     });
 
     it("returns incoming props as the state key-value pairs, if some are provided", () => {
-      renderRegular.setProps({ nonTouchable: true, styling: { test: "Test" } });
+      renderRegular.setProps({ isOutline: true, nonTouchable: true, styling: { test: "Test" } });
       const res = renderRegularInstance.setPropsToState();
 
+      expect(res.isOutline).toBe(true);
       expect(res.nonTouchable).toBe(true);
       expect(res.styling).toEqual({ test: "Test" });
     });

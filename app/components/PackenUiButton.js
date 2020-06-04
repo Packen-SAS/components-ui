@@ -31,6 +31,7 @@ class PackenUiButton extends Component {
       size: this.props.size ? this.props.size : "medium",
       icon: this.props.icon ? this.props.icon : undefined,
       callback: this.props.callback ? this.props.callback : false,
+      isOutline: this.props.isOutline ? this.props.isOutline : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
       children: this.props.children ? this.props.children : undefined,
@@ -97,6 +98,18 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  getOutlineStyles = (styles, isOutline, level) => {
+    if (isOutline) {
+      styles = {
+        ...styles,
+        shape: { ...styles.shape, ...this.createStyles().shape.outline[level] },
+        label: { ...styles.label, ...this.createStyles().label.outline[level] },
+        icon: { ...styles.icon, ...this.createStyles().icon.outline[level] }
+      }
+    }
+    return styles;
+  }
+
   getDisabledStyles = (styles, isDisabled, level) => {
     if (isDisabled) {
       styles.shape.backgroundColor = Color.ghost.focus;
@@ -123,10 +136,11 @@ class PackenUiButton extends Component {
   }
 
   getStyles = () => {
-    const { type, size, level, isDisabled } = this.state ? this.state : this.setPropsToState();
+    const { type, size, level, isOutline, isDisabled } = this.state ? this.state : this.setPropsToState();
     let styles = this.getBaseStyles(type, size, level);
     styles = this.getTypeStyles(styles, type, size, level);
     styles = this.getLevelStyles(styles, level);
+    styles = this.getOutlineStyles(styles, isOutline, level);
     styles = this.getDisabledStyles(styles, isDisabled, level);
     return styles;
   }
@@ -174,6 +188,17 @@ class PackenUiButton extends Component {
   pressInHandler = () => {
     let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
+    if (this.state.level !== "ghost" && this.state.level !== "secondary") {
+      if (this.state.type === "regular") {
+        newStyles.label.color = Color.basic.white.dft;
+      }
+      if (this.state.icon) {
+        newStyles.icon.color = Color.basic.white.dft;
+      }
+      if (this.state.isOutline) {
+        newStyles.shape.borderColor = Color[this.state.level].focus;
+      }
+    }
 
     /* Custom focus styles */
     switch (this.state.level) {
@@ -185,14 +210,30 @@ class PackenUiButton extends Component {
     this.setState({
       styles: newStyles
     });
+
+    return newStyles;
   }
 
   pressOutHandler = () => {
-    const newStyles = { ...this.getStyles() }
+    let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].default;
+    if (this.state.level !== "ghost" && this.state.level !== "secondary") {
+      if (this.state.type === "regular") {
+        newStyles.label.color = Color.basic.white.dft;
+      }
+      if (this.state.icon) {
+        newStyles.icon.color = Color.basic.white.dft;
+      }
+      if (this.state.isOutline) {
+        newStyles = this.getOutlineStyles(newStyles, true, this.state.level);
+      }
+    }
+
     this.setState({
       styles: newStyles
     });
+
+    return newStyles;
   }
 
   getIcon = () => {
@@ -335,6 +376,38 @@ class PackenUiButton extends Component {
               paddingHorizontal: 74
             }
           }
+        },
+        outline: {
+          primary: {
+            backgroundColor: Color.brand.primary.snw,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderColor: Color.brand.primary.drk
+          },
+          secondary: {
+            backgroundColor: Color.basic.white.drk,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderColor: Color.basic.independence.dft
+          },
+          tertiary: {
+            backgroundColor: Color.basic.independence.lgt,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderColor: Color.basic.independence.drk
+          },
+          ghost: {
+            backgroundColor: Color.ghost.default,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderColor: Color.basic.independence.dft
+          },
+          danger: {
+            backgroundColor: Color.danger.lgt,
+            borderWidth: 1,
+            borderStyle: "solid",
+            borderColor: Color.danger.default
+          }
         }
       },
       shapeContent: {
@@ -394,6 +467,23 @@ class PackenUiButton extends Component {
           danger: {
             color: Color.basic.white.dft
           }
+        },
+        outline: {
+          primary: {
+            color: Color.brand.primary.drk
+          },
+          secondary: {
+            color: Color.basic.independence.dft
+          },
+          tertiary: {
+            color: Color.basic.independence.drk
+          },
+          ghost: {
+            color: Color.basic.independence.dft
+          },
+          danger: {
+            color: Color.danger.default
+          }
         }
       },
       icon: {
@@ -430,6 +520,23 @@ class PackenUiButton extends Component {
           danger: {
             color: Color.basic.white.dft
           }
+        },
+        outline: {
+          primary: {
+            color: Color.brand.primary.drk
+          },
+          secondary: {
+            color: Color.basic.independence.dft
+          },
+          tertiary: {
+            color: Color.basic.independence.drk
+          },
+          ghost: {
+            color: Color.basic.independence.dft
+          },
+          danger: {
+            color: Color.danger.default
+          }
         }
       }
     };
@@ -442,9 +549,11 @@ PackenUiButton.propTypes = {
   size: PropTypes.string.isRequired,
   icon: PropTypes.object,
   callback: PropTypes.func,
+  isOutline: PropTypes.bool,
   isDisabled: PropTypes.bool,
   nonTouchable: PropTypes.bool,
   children: PropTypes.node,
+  style: PropTypes.object,
   styling: PropTypes.object
 };
 
