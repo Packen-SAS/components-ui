@@ -9,6 +9,7 @@ import PackenWhatsAppInverted from "../../assets/icons/whatsapp_logo_inverted.sv
 import PackenBackHandler from "../../assets/icons/back_arrow.svg";
 import PackenDocumentBack from "../../assets/icons/document_back_icon.svg";
 import PackenDocumentFile from "../../assets/icons/document_file_icon.svg";
+import PackenSwipe from "../../assets/icons/swipe.svg";
 import PackenDocumentFront from "../../assets/icons/document_front_icon.svg";
 import PackenNavigation from "../../assets/icons/navigation.svg";
 import PackenNavigationBlur from "../../assets/icons/navigation_blur.svg";
@@ -34,6 +35,7 @@ export const Icon = ({ width, height, name }) => {
     "document_back": <PackenDocumentBack width={width} height={height} />,
     "document_front": <PackenDocumentFront width={width} height={height} />,
     "document_file": <PackenDocumentFile width={width} height={height} />,
+    "swipe": <PackenSwipe width={width} height={height} />,
     /* Toolbar icons */
     "navigation": <PackenNavigation width={width} height={height} />,
     "navigation_blur": <PackenNavigationBlur width={width} height={height} />,

@@ -1,26 +1,41 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TouchableWithoutFeedback, View, Animated } from "react-native"
+import { TouchableWithoutFeedback, View, Animated, PanResponder, Image } from "react-native"
 
 import Icon from "react-native-vector-icons/dist/Feather";
-
 import Color from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
+
+import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
 
 class PackenUiButton extends Component {
   constructor(props) {
     super(props);
 
+    this.anim = {};
+    this.animating = false;
+    this.panned = false;
+
     this.state = {
       ...this.setPropsToState(),
-      styles: this.getStyles()
+      styles: this.getStyles(),
+      fade: new Animated.Value(1),
+      translateX: new Animated.Value(5),
+      swipeOpacity: new Animated.Value(1),
+      swipeAnimation: new Animated.Value(0),
+      called: false,
+      swt: 0,
+      swo: 1
     }
   }
 
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
+    }
+    if (this.state.panned) {
+      this.animateHandler();
     }
   }
 
@@ -35,6 +50,7 @@ class PackenUiButton extends Component {
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
       children: this.props.children ? this.props.children : undefined,
+      panned: this.props.panned ? this.props.panned : false,
       styling: this.props.styling ? { ...this.props.styling } : {
         shape: {},
         shapeContent: {},
@@ -44,6 +60,65 @@ class PackenUiButton extends Component {
         iconColor: undefined
       }
     };
+  }
+
+  animateHandler = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(this.state.translateX, {
+          toValue: 19,
+          duration: 600
+        }),
+        Animated.timing(this.state.fade, {
+          toValue: 0,
+          duration: 600
+        })
+      ])
+    ).start();
+  }
+
+  createPanResponder = () => (
+    PanResponder.create({
+      onMoveShouldSetResponderCapture: this.onMoveShouldSetResponder,
+      onMoveShouldSetPanResponderCapture: this.onMoveShouldPanResponder,
+      onPanResponderGrant: this.onPanResponderGrant,
+      onShouldBlockNativeResponder: this.onShouldNativeResponder,
+      onPanResponderTerminationRequest: this.onPanResponderRequest,
+      onPanResponderMove: this.onPanResponderMove,
+      onPanResponderRelease: this.onPanResponderRelease,
+    }));
+
+  onMoveShouldSetResponder = () => true;
+
+  onMoveShouldPanResponder = () => true;
+
+  onPanResponderGrant = (evt, gestureState) => null;
+
+  onShouldNativeResponder = (evt, gestureState) => true;
+
+  onPanResponderRequest = (evt, gestureState) => true;
+
+  onPanResponderMove = (evt, mov) => {
+    const { swipeAnimation, swipeOpacity, swt, swo, called } = this.state;
+    if (mov.dx <= 0) { return 0; }
+    if (swt >= 85) {
+      if (called === false) {
+        return this.setState({ called: true }, this.executeCallback);
+      }
+    } else {
+      const _swt = (((mov.moveX - 85) - mov.dx));
+      const _swo = swo - (mov.vx - 0.020)
+      swipeAnimation.setValue(_swt);
+      swipeOpacity.setValue(_swo);
+      return this.setState({ swt: _swt, swo: _swo })
+    }
+  }
+
+  onPanResponderRelease = (evt, gestureState) => {
+    const { swipeAnimation, swipeOpacity } = this.state;
+    swipeAnimation.setValue(0);
+    swipeOpacity.setValue(1);
+    return this.setState({ called: false, swt: 0, swo: 1 });
   }
 
   getBaseStyles = (type, size, level) => {
@@ -272,16 +347,51 @@ class PackenUiButton extends Component {
     return content;
   }
 
+  getStaticButton = () => (
+    <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
+      <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
+        <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
+          {this.getContent()}
+        </View>
+      </View>
+    </TouchableWithoutFeedback>
+  )
+
+  getPannedButton = () => (
+    <View
+      {...this.createPanResponder().panHandlers}
+      style={{
+        ...this.state.styles.shape,
+        ...this.props.style,
+        paddingLeft: 25,
+        paddingRight: 0,
+        borderRadius: this.createStyles().shape.size[this.state.size].minHeight,
+        ...this.state.styling.shape
+      }}
+    >
+      <Animated.View style={{
+        opacity: this.state.fade,
+        transform: [{ translateX: this.state.translateX }]
+      }}>
+        <PackenUiSvgIcon name="swipe" width={32} height={24} />
+      </Animated.View>
+      <Animated.View style={{
+        ...this.state.styles.shapeContent,
+        ...this.state.styling.shapeContent,
+        opacity: this.state.swipeOpacity,
+        transform: [{ translateX: this.state.swipeAnimation }],
+      }}>
+        <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
+          {this.getContent()}
+        </View>
+      </Animated.View>
+    </View>
+  )
+
   render() {
     return (
       <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
-        <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
-          <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
-            <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
-              {this.getContent()}
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
+        {this.state.panned && this.state.type !== "icon" ? this.getPannedButton() : this.getStaticButton()}
       </View>
     );
   }
@@ -295,7 +405,8 @@ class PackenUiButton extends Component {
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
-          width: "100%"
+          width: "100%",
+          overflow: "hidden"
         },
         size: {
           tiny: {
@@ -554,7 +665,8 @@ PackenUiButton.propTypes = {
   nonTouchable: PropTypes.bool,
   children: PropTypes.node,
   style: PropTypes.object,
-  styling: PropTypes.object
+  styling: PropTypes.object,
+  panned: PropTypes.bool
 };
 
 export default PackenUiButton;

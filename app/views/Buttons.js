@@ -11,13 +11,37 @@ class Buttons extends Component {
     super(props);
   }
 
-  mockCallback = () => { return true; }
+  mockCallback = () => true;
 
   render() {
     return (
       <PageView>
         <Section title="Buttons Primary">
           <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="tertiary"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Llamar al cliente</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="primary"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Arribo a origen</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="danger"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Rechazar servicio</PackenUiButton>
+            </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
