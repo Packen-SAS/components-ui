@@ -16,7 +16,7 @@ class Buttons extends Component {
   render() {
     return (
       <PageView>
-        <Section title="Buttons Primary">
+        <Section title="Panned Buttons">
           <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -42,6 +42,10 @@ class Buttons extends Component {
                 callback={this.mockCallback}
                 panned>Rechazar servicio</PackenUiButton>
             </View>
+          </View>
+        </Section>
+        <Section title="Buttons Primary">
+          <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}

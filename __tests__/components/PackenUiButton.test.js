@@ -122,6 +122,15 @@ describe("<PackenUiButton/>", () => {
       expect(renderRegularInstance.props.instance).toHaveBeenCalled();
     });
 
+    it("executes the animation handler on componentDidMount if it's panned", () => {
+      renderRegularInstance.setState({ panned: true });
+      const spyAnimateHandler = jest.spyOn(renderRegularInstance, "animateHandler");
+      renderRegularInstance.componentDidMount();
+
+      expect(spyAnimateHandler).toHaveBeenCalled();
+      spyAnimateHandler.mockRestore();
+    });
+
     it("starts the icon animation while checking its state", () => {
       renderRegularInstance.setState({
         icon: {
@@ -154,6 +163,58 @@ describe("<PackenUiButton/>", () => {
       renderRegularInstance.checkIconAnimState();
 
       expect(renderRegularInstance.state.icon.anim.controller.stop).toHaveBeenCalled();
+    });
+
+    it("executes the onMoveShouldSetResponder callback", () => {
+      const res = renderRegularInstance.onMoveShouldSetResponder();
+      expect(res).toBe(true);
+    });
+
+    it("executes the onMoveShouldPanResponder callback", () => {
+      const res = renderRegularInstance.onMoveShouldPanResponder();
+      expect(res).toBe(true);
+    });
+
+    it("executes the onPanResponderGrant callback", () => {
+      const res = renderRegularInstance.onPanResponderGrant({}, {});
+      expect(res).toBe(null);
+    });
+
+    it("executes the onShouldNativeResponder callback", () => {
+      const res = renderRegularInstance.onShouldNativeResponder({}, {});
+      expect(res).toBe(true);
+    });
+
+    it("executes the onPanResponderRequest callback", () => {
+      const res = renderRegularInstance.onPanResponderRequest({}, {});
+      expect(res).toBe(true);
+    });
+
+    it("executes the onPanResponderMove callback", () => {
+      let res = renderRegularInstance.onPanResponderMove({}, { dx: 0 });
+      expect(res).toBe(0);
+
+      renderRegularInstance.setState({ swt: 85, called: false });
+      renderRegularInstance.onPanResponderMove({}, { dx: 85, moveX: 12 });
+      expect(renderRegularInstance.state.called).toBe(true);
+
+      renderRegularInstance.setState({ swt: 85, called: true });
+      const spySetState = jest.spyOn(renderRegularInstance, "setState");
+      renderRegularInstance.onPanResponderMove({}, { dx: 85, moveX: 12 });
+      expect(spySetState).not.toHaveBeenCalled();
+      spySetState.mockRestore();
+
+      renderRegularInstance.setState({ swt: 80, swo: 1 });
+      renderRegularInstance.onPanResponderMove({}, { dx: 15, moveX: 85, vx: .5 });
+      expect(renderRegularInstance.state.swt).toBe(-15);
+      expect(renderRegularInstance.state.swo).toBe(.52);
+    });
+
+    it("executes the onPanResponderRelease callback", () => {
+      renderRegularInstance.onPanResponderRelease({}, {});
+      expect(renderRegularInstance.state.called).toBe(false);
+      expect(renderRegularInstance.state.swt).toBe(0);
+      expect(renderRegularInstance.state.swo).toBe(1);
     });
   });
 
@@ -332,7 +393,8 @@ describe("<PackenUiButton/>", () => {
         isDisabled: undefined,
         nonTouchable: undefined,
         children: undefined,
-        styling: undefined
+        styling: undefined,
+        panned: undefined
       });
       const res = renderRegularInstance.setPropsToState();
 
@@ -346,6 +408,7 @@ describe("<PackenUiButton/>", () => {
         isDisabled: false,
         nonTouchable: false,
         children: undefined,
+        panned: false,
         styling: {
           shape: {},
           shapeContent: {},
@@ -358,9 +421,10 @@ describe("<PackenUiButton/>", () => {
     });
 
     it("returns incoming props as the state key-value pairs, if some are provided", () => {
-      renderRegular.setProps({ isOutline: true, nonTouchable: true, styling: { test: "Test" } });
+      renderRegular.setProps({ panned: true, isOutline: true, nonTouchable: true, styling: { test: "Test" } });
       const res = renderRegularInstance.setPropsToState();
 
+      expect(res.panned).toBe(true);
       expect(res.isOutline).toBe(true);
       expect(res.nonTouchable).toBe(true);
       expect(res.styling).toEqual({ test: "Test" });
