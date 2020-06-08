@@ -6,19 +6,43 @@ import Icon from "react-native-vector-icons/dist/Feather";
 
 import Colors from "../styles/abstracts/colors";
 
+/**
+ * Component for displaying an avatar or images contained within a circle in general
+ */
 class PackenUiAvatar extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string|object} [src=false] The "source" attribute for RN's Image component
+   * @property {string} [size="medium"] The size for the component styles - "xtiny"; "tiny"; "small"; "medium", "medium_alt"; "large"; "giant"
+   * @property {function} [callback=false] A callback function to be triggered when pressing over the component
+   * @property {object} [styling={ container: {}, image: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       src: this.props.src ? this.props.src : false,
@@ -33,6 +57,11 @@ class PackenUiAvatar extends Component {
     };
   }
 
+  /**
+   * Returns the inner content
+   * @type {function}
+   * @return {node} JSX for the inner content
+   */
   getInner = () => {
     let inner = null;
 
@@ -62,6 +91,11 @@ class PackenUiAvatar extends Component {
     return inner;
   }
 
+  /**
+   * Returns the outer content
+   * @type {function}
+   * @return {node} JSX for the main, outer content
+   */
   getContent = () => {
     let content = null;
 
@@ -89,16 +123,30 @@ class PackenUiAvatar extends Component {
     return content;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={[
@@ -111,6 +159,11 @@ class PackenUiAvatar extends Component {
     );
   }
 
+  /**
+   * Returns the styles for the component
+   * @type {function}
+   * @return {object} The styles object
+   */
   getStyles = () => {
     return {
       container: {

@@ -9,14 +9,29 @@ import Typography from "../styles/abstracts/typography";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for displaying all types of buttons
+ */
 class PackenUiButton extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   */
   constructor(props) {
     super(props);
 
-    this.anim = {};
-    this.animating = false;
-    this.panned = false;
-
+    /**
+     * Variable that stores the state
+     * @type {function}
+     * @property {object} styles The currently applied styles object
+     * @property {object} fade The Animated.Value instance for controlling the opacity for panned buttons
+     * @property {object} translateX The Animated.Value instance for controlling the translateX for panned buttons
+     * @property {object} swipeOpacity The Animated.Value instance for controlling the swipeOpacity for panned buttons
+     * @property {object} swipeAnimation The Animated.Value instance for controlling the swipeAnimation for panned buttons
+     * @property {boolean} called Flag to determine whether the callback has already been called for panned buttons
+     * @property {number} swt The current swipe transform for panned buttons
+     * @property {number} swo The current swipe opacity for panned buttons
+     */
     this.state = {
       ...this.setPropsToState(),
       styles: this.getStyles(),
@@ -30,6 +45,10 @@ class PackenUiButton extends Component {
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props, and initializes the panned animations if set so
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
@@ -39,6 +58,13 @@ class PackenUiButton extends Component {
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [type="regular"] The type of button - "regular" for buttons with a label and optional icon; "icon" for squared buttons with just an icon
+   * @property {string} [level="primary"] The theme for the styles - "primary"; "secondary"; "tertiary"; "ghost"; "danger"
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       type: this.props.type ? this.props.type : "regular",
@@ -62,6 +88,10 @@ class PackenUiButton extends Component {
     };
   }
 
+  /**
+   * Initializes the panned animations
+   * @type {function}
+   */
   animateHandler = () => {
     Animated.loop(
       Animated.sequence([
@@ -77,6 +107,11 @@ class PackenUiButton extends Component {
     ).start();
   }
 
+  /**
+   * Creates the special props to be passed for panned buttons
+   * @type {function}
+   * @return {object} The new PanResponder instance
+   */
   createPanResponder = () => (
     PanResponder.create({
       onMoveShouldSetResponderCapture: this.onMoveShouldSetResponder,
@@ -86,18 +121,51 @@ class PackenUiButton extends Component {
       onPanResponderTerminationRequest: this.onPanResponderRequest,
       onPanResponderMove: this.onPanResponderMove,
       onPanResponderRelease: this.onPanResponderRelease,
-    }));
+    })
+  );
 
+  /**
+   * onMoveShouldSetResponder event handler for panned buttons
+   * @type {function}
+   */
   onMoveShouldSetResponder = () => true;
 
+  /**
+   * onMoveShouldPanResponder event handler for panned buttons
+   * @type {function}
+   */
   onMoveShouldPanResponder = () => true;
 
+  /**
+   * onPanResponderGrant event handler for panned buttons
+   * @type {function}
+   * @param {object} evt The event data object
+   * @param {object} gestureState The gesture data object
+   */
   onPanResponderGrant = (evt, gestureState) => null;
 
+  /**
+   * onShouldNativeResponder event handler for panned buttons
+   * @type {function}
+   * @param {object} evt The event data object
+   * @param {object} gestureState The gesture data object
+   */
   onShouldNativeResponder = (evt, gestureState) => true;
 
+  /**
+   * onPanResponderRequest event handler for panned buttons
+   * @type {function}
+   * @param {object} evt The event data object
+   * @param {object} gestureState The gesture data object
+   */
   onPanResponderRequest = (evt, gestureState) => true;
 
+  /**
+   * onPanResponderMove event handler for panned buttons
+   * @type {function}
+   * @param {object} evt The event data object
+   * @param {object} mov The movement data object
+   */
   onPanResponderMove = (evt, mov) => {
     const { swipeAnimation, swipeOpacity, swt, swo, called } = this.state;
     if (mov.dx <= 0) { return 0; }
@@ -114,6 +182,12 @@ class PackenUiButton extends Component {
     }
   }
 
+  /**
+   * onPanResponderRelease event handler for panned buttons
+   * @type {function}
+   * @param {object} evt The event data object
+   * @param {object} gestureState The gesture data object
+   */
   onPanResponderRelease = (evt, gestureState) => {
     const { swipeAnimation, swipeOpacity } = this.state;
     swipeAnimation.setValue(0);
@@ -121,6 +195,14 @@ class PackenUiButton extends Component {
     return this.setState({ called: false, swt: 0, swo: 1 });
   }
 
+  /**
+   * Returns the correct base styles
+   * @type {function}
+   * @param {string} type The button's type for styling
+   * @param {string} size The button's size for styling
+   * @param {string} level The button's level for styling
+   * @return {object} The base styles object
+   */
   getBaseStyles = (type, size, level) => {
     return {
       shape: {
@@ -138,6 +220,15 @@ class PackenUiButton extends Component {
     };
   }
 
+  /**
+   * Returns the correct type styles
+   * @type {function}
+   * @param {object} styles The current styles object to update
+   * @param {string} type The button's type for styling
+   * @param {string} size The button's size for styling
+   * @param {string} level The button's level for styling
+   * @return {object} The type styles object
+   */
   getTypeStyles = (styles, type, size, level) => {
     switch (type) {
       case "icon":
@@ -159,6 +250,13 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  /**
+   * Returns the correct level styles
+   * @type {function}
+   * @param {object} styles The current styles object to update
+   * @param {string} level The button's level for styling
+   * @return {object} The level styles object
+   */
   getLevelStyles = (styles, level) => {
     switch (level) {
       case "secondary":
@@ -173,6 +271,14 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  /**
+   * Returns the correct outline styles
+   * @type {function}
+   * @param {object} styles The current styles object to update
+   * @param {boolean} isOutline Flag that determines whether the buttons is outline
+   * @param {string} level The button's level for styling
+   * @return {object} The outline styles object
+   */
   getOutlineStyles = (styles, isOutline, level) => {
     if (isOutline) {
       styles = {
@@ -185,6 +291,14 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  /**
+   * Returns the correct disabled styles
+   * @type {function}
+   * @param {object} styles The current styles object to update
+   * @param {boolean} isDisabled Flag that determines whether the buttons is disabled
+   * @param {string} level The button's level for styling
+   * @return {object} The disabled styles object
+   */
   getDisabledStyles = (styles, isDisabled, level) => {
     if (isDisabled) {
       styles.shape.backgroundColor = Color.ghost.focus;
@@ -210,6 +324,11 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     const { type, size, level, isOutline, isDisabled } = this.state ? this.state : this.setPropsToState();
     let styles = this.getBaseStyles(type, size, level);
@@ -220,12 +339,20 @@ class PackenUiButton extends Component {
     return styles;
   }
 
+  /**
+   * Sets the current styles
+   * @type {function}
+   */
   checkStyles = () => {
     this.setState({
       styles: this.getStyles()
     });
   }
 
+  /**
+   * Checks the current icon animation state to start/stop it
+   * @type {function}
+   */
   checkIconAnimState = () => {
     if (this.state.icon && this.state.icon.anim) {
       const { state, controller } = this.state.icon.anim;
@@ -237,6 +364,10 @@ class PackenUiButton extends Component {
     }
   }
 
+  /**
+   * Updates the state with new props, and checks the styles and icon animation state
+   * @type {function}
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -246,12 +377,22 @@ class PackenUiButton extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Triggers the button callback
+   * @type {function}
+   * @return {boolean} Flag used for testing
+   */
   executeCallback = () => {
     if (this.state.callback) {
       this.state.callback();
@@ -260,6 +401,11 @@ class PackenUiButton extends Component {
     }
   }
 
+  /**
+   * Event handler for pressIn, setting the appropriate styles
+   * @type {function}
+   * @return {object} The new styles object
+   */
   pressInHandler = () => {
     let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
@@ -289,6 +435,11 @@ class PackenUiButton extends Component {
     return newStyles;
   }
 
+  /**
+   * Event handler for pressOut, setting the appropriate styles
+   * @type {function}
+   * @return {object} The new styles object
+   */
   pressOutHandler = () => {
     let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].default;
@@ -311,6 +462,11 @@ class PackenUiButton extends Component {
     return newStyles;
   }
 
+  /**
+   * Returns an icon if provided (animated or static)
+   * @type {function}
+   * @return {node} JSX for the icon
+   */
   getIcon = () => {
     let icon = (
       <View style={{ ...this.state.icon.styles, ...this.state.styling.iconWrapper }}>
@@ -329,6 +485,11 @@ class PackenUiButton extends Component {
     return icon;
   }
 
+  /**
+   * Returns the inner content of a button
+   * @type {function}
+   * @return {node} JSX for the inner content
+   */
   getContent = () => {
     let content = null;
 
@@ -347,6 +508,11 @@ class PackenUiButton extends Component {
     return content;
   }
 
+  /**
+   * Returns a static button content
+   * @type {function}
+   * @return {node} JSX for a static button
+   */
   getStaticButton = () => (
     <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
       <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
@@ -357,6 +523,11 @@ class PackenUiButton extends Component {
     </TouchableWithoutFeedback>
   )
 
+  /**
+   * Returns a panned button content
+   * @type {function}
+   * @return {node} JSX for a panned button
+   */
   getPannedButton = () => (
     <View
       {...this.createPanResponder().panHandlers}
@@ -388,6 +559,11 @@ class PackenUiButton extends Component {
     </View>
   )
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
@@ -396,6 +572,11 @@ class PackenUiButton extends Component {
     );
   }
 
+  /**
+   * Returns the styles for the component
+   * @type {function}
+   * @return {object} The styles object
+   */
   createStyles = () => {
     const iconSizeMultiplier = 1.5;
     return {
