@@ -36,6 +36,8 @@ class PackenUiDropdown extends Component {
 
   closeMenu = () => this.setState({ isOpen: false });
 
+  toggleMenu = () => this.setState({ isOpen: !this.state.isOpen });
+
   componentDidMount = () => {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);

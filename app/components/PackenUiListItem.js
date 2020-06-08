@@ -12,7 +12,7 @@ import PackenUiText from "./PackenUiText";
 class PackenUiListItem extends Component {
   constructor(props) {
     super(props);
-
+    this.dropdownRef = null;
     this.state = { ...this.setPropsToState() }
   }
 
@@ -130,12 +130,21 @@ class PackenUiListItem extends Component {
     return config;
   }
 
+  getDropdownRef = ref => { this.dropdownRef = ref; }
+
+  toggleDropdown = () => {
+    if (this.dropdownRef) {
+      this.dropdownRef.toggleMenu();
+    }
+  }
+
   determineInputContent = () => {
     let content = null;
     if (this.state.data.input.isDropdown) {
       content = (
         <PackenUiDropdown
           size="medium"
+          ref={this.getDropdownRef}
           name={this.state.data.input.name}
           list={this.state.data.input.list}
           callback={this.inputChangeHandler}
@@ -222,6 +231,16 @@ class PackenUiListItem extends Component {
     )
   }
 
+  getTouchableArea = () => {
+    return (
+      <View style={{ ...this.getStyles().touchable.area }} pointerEvents={this.state.data.input && this.state.data.input.isDropdown ? "auto" : "none"}>
+        <TouchableWithoutFeedback onPress={this.toggleDropdown}>
+          <View style={{ ...this.getStyles().touchable.inner }}></View>
+        </TouchableWithoutFeedback>
+      </View>
+    );
+  }
+
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
@@ -237,15 +256,17 @@ class PackenUiListItem extends Component {
       <TouchableWithoutFeedback
         onPress={this.onPressHandler}
       >
-        <View style={{
-          ...this.getStyles().wrapper.base,
-          ...this.getStyles().wrapper.size[this.state.data.size],
-          ...this.state.data.customWrapperStyle,
-          ...this.state.styling.wrapper
-        }}>
-          {this.getMedia()}
-          {this.getMainContent()}
-          {this.getSubContent()}
+        <View style={{ ...this.state.data.customWrapperStyle }}>
+          {this.getTouchableArea()}
+          <View style={{
+            ...this.getStyles().wrapper.base,
+            ...this.getStyles().wrapper.size[this.state.data.size],
+            ...this.state.styling.wrapper
+          }}>
+            {this.getMedia()}
+            {this.getMainContent()}
+            {this.getSubContent()}
+          </View>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -269,6 +290,24 @@ class PackenUiListItem extends Component {
           large: {
             minHeight: 56
           }
+        }
+      },
+      touchable: {
+        area: {
+          top: 0,
+          left: 0,
+          zIndex: 1,
+          width: "100%",
+          height: "100%",
+          maxHeight: 50,
+          position: "absolute"
+        },
+        inner: {
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          position: "absolute"
         }
       },
       media: {
