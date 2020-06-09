@@ -8,12 +8,38 @@ import Colors from "../styles/abstracts/colors";
 import PackenUiText from "./PackenUiText";
 import PackenUiTag from "./PackenUiTag";
 
+/**
+ * Component for rendering a license preview box
+ */
 class PackenUiLicenseBox extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
+
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [overview=null] The general overview of this license type
+   * @property {string} [category=null] The category type of this license
+   * @property {string} [number=null] The license number
+   * @property {string} [state=null] The license's current status
+   * @property {string} [dueDate=null] The license's due date
+   * @property {function} [callback=null] The license's callback to be called when pressing on the component
+   * @property {object} [labels={ approved: "Aprobado", expired: "Expirado", rejected: "Rechazado", pending: "Pendiente" }] The required i18n labels for the license's status
+   * @property {object} [styling={ box: {}, top: {}, overview: {}, bottom: {} }] The optional custom styling props
+   * @return {object} The props mapped as the state keys
+   */
   setPropsToState = () => {
     return {
       overview: this.props.overview ? this.props.overview : null,
@@ -37,6 +63,11 @@ class PackenUiLicenseBox extends Component {
     };
   }
 
+  /**
+   * Returns the configuration for the license's status tag
+   * @type {function}
+   * @return {object} The configuration object for the status' {@link PackenUiTag}
+   */
   getLicenseState = state => {
     switch (state) {
       case "approved":
@@ -52,6 +83,12 @@ class PackenUiLicenseBox extends Component {
     }
   }
 
+  /**
+   * Returns the background color for the license's due date {@link PackenUiTag}
+   * @type {function}
+   * @param {string} state The received due date
+   * @return {string} The correct background color
+   */
   getDueDateState = state => {
     if (!state) { return Colors.danger.default; }
     const licenseExpired = (UTIL.datetime()
@@ -65,12 +102,22 @@ class PackenUiLicenseBox extends Component {
       : Colors.success.default;
   }
 
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps !== this.props) {
       this.setState({ ...this.setPropsToState() });
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render = () => {
     const state = this.getLicenseState(this.state.state);
     return (
@@ -126,6 +173,11 @@ class PackenUiLicenseBox extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wt: { width: "100%" },

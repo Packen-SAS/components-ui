@@ -7,19 +7,45 @@ import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering header layouts with a touchable icon on the left
+ */
 class PackenUiHeader extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [children=""] The title text
+   * @property {string} [icon="arrow-left"] The icon name to be displayed
+   * @property {function} [onBackPress=false] The callback function to be called when pressing the icon
+   * @property {object} [customStyle={}] Custom styles object to be applied specifically to the wrapping box element
+   * @property {object} [styling={ box: {}, iconSize: undefined, iconColor: undefined, title: {} }] The theme of the divider - "light" or "dark"
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       children: this.props.children || "",
@@ -35,6 +61,10 @@ class PackenUiHeader extends Component {
     };
   }
 
+  /**
+   * Handles the onPress event on the icon
+   * @type {function}
+   */
   onPressHandler = () => {
     if (this.state.onBackPress) {
       this.state.onBackPress();
@@ -43,16 +73,30 @@ class PackenUiHeader extends Component {
     }
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{
@@ -77,6 +121,11 @@ class PackenUiHeader extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {
@@ -98,6 +147,7 @@ class PackenUiHeader extends Component {
 
 PackenUiHeader.propTypes = {
   children: PropTypes.node.isRequired,
+  icon: PropTypes.string,
   onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
   customStyle: PropTypes.object,
   styling: PropTypes.object

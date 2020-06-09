@@ -64,6 +64,15 @@ class PackenUiButton extends Component {
    * @type {function}
    * @property {string} [type="regular"] The type of button - "regular" for buttons with a label and optional icon; "icon" for squared buttons with just an icon
    * @property {string} [level="primary"] The theme for the styles - "primary"; "secondary"; "tertiary"; "ghost"; "danger"
+   * @property {string} [size="medium"] The size for the styles - "tiny"; "small"; "medium"; "large"; "giant"
+   * @property {object} [icon=undefined] The optional icon configuration object
+   * @property {function} [callback=false] The callback to be triggered when pressing the button
+   * @property {boolean} [isOutline=false] Determines if outline styles should be applied
+   * @property {boolean} [isDisabled=false] Determines if disabled styles should be applied
+   * @property {boolean} [nonTouchable=false] Determines if the button should not register any pointer events
+   * @property {node} [children=undefined] The actual text content for the button
+   * @property {boolean} [panned=false] Determines if the panned styles and animations should be applied
+   * @property {object} [styling={ shape: {}, shapeContent: {}, label: {}, iconWrapper: {}, iconSize: undefined, iconColor: undefined }]
    * @return {object} The props mapped to the state keys
    */
   setPropsToState = () => {

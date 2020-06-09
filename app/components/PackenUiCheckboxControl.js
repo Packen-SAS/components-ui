@@ -9,10 +9,23 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering an actual checkbox and label item. This is an inner component of {@link PackenUiCheckbox} and should not be used standalone
+ */
 class PackenUiCheckboxControl extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {object} styles The current styles for the item
+     */
     this.state = {
       ...this.setPropsToState(),
       styles: {
@@ -21,6 +34,17 @@ class PackenUiCheckboxControl extends Component {
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [label=""] The label to be displayed alongside the checkbox
+   * @property {string} [layout="column"] The layout type to arrange the items - "column" or "row"
+   * @property {boolean} [isChecked=false] Determines whether this item is checked
+   * @property {boolean} [isDisabled=false] Determines whether this items is disabled
+   * @property {object[]} [checkedItems=[]] The currently checked items of the group this one belongs to
+   * @property {object} [styling={ inner: {}, iconBox: {}, iconSize: undefined, iconColor: undefined, label: {} }] The optional custom styling props
+   * @return {object} The props mapped as the state keys
+   */
   setPropsToState = () => {
     return {
       label: this.props.label ? this.props.label : "",
@@ -38,6 +62,10 @@ class PackenUiCheckboxControl extends Component {
     };
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props and applies the correct disabled styles if set so
+   * @type {function}
+   */
   componentDidMount = () => {
     this.setDisabledStyles();
 
@@ -46,8 +74,17 @@ class PackenUiCheckboxControl extends Component {
     }
   }
 
+  /**
+   * Compares a group's item's label with this component's label
+   * @type {function}
+   * @param {object} item The item to compare
+   */
   findItemToCheck = item => item.label === this.state.label; 
 
+  /**
+   * Sets the active styles
+   * @type {function}
+   */
   setActiveStyles = () => {
     if (this.state.layout === "dropdown") {
       const newCheckedItems = [...this.state.checkedItems];
@@ -71,6 +108,10 @@ class PackenUiCheckboxControl extends Component {
     }
   }
 
+  /**
+   * Sets the disabled styles
+   * @type {function}
+   */
   setDisabledStyles = () => {
     let disabledStyles = {};
 
@@ -88,6 +129,10 @@ class PackenUiCheckboxControl extends Component {
     return disabledStyles;
   }
 
+  /**
+   * Updates the state with new props and checks for any special styles change
+   * @type {function}
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -97,12 +142,22 @@ class PackenUiCheckboxControl extends Component {
     });
   }
 
-  componentDidUpdate = (prevProps, prevState, snapshot) => {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate = (prevProps) => {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{ ...this.getStyles().inner.base, ...this.state.styling.inner }}>
@@ -135,6 +190,11 @@ class PackenUiCheckboxControl extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       inner: {
