@@ -255,12 +255,13 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if styling, propagateRef, maxLength, minLength, loading and validator are provided", () => {
+    it("returns incoming props as the state key-value pairs if styling, isPassword, propagateRef, maxLength, minLength, loading and validator are provided", () => {
       render.setProps({
         propagateRef: mockCallback,
         maxLength: 10,
         minLength: 5,
         loading: true,
+        isPassword: true,
         validator: "number",
         styling: { test: "Test" }
       });
@@ -270,6 +271,7 @@ describe("<PackenUiInput/>", () => {
       expect(res.maxLength).toBe(10);
       expect(res.minLength).toBe(5);
       expect(res.loading).toBe(true);
+      expect(res.isPassword).toBe(true);
       expect(res.validator).toBe("number");
       expect(res.styling).toEqual({ test: "Test", header: {}, help: {}, message: {} });
     });
@@ -529,20 +531,6 @@ describe("<PackenUiInput/>", () => {
 
       expect(spyBlur).toHaveBeenCalled();
       spyBlur.mockRestore();
-    });
-
-    it("returns the entry security type as true if set so", () => {
-      render.setProps({ isPassword: true });
-      const res = renderInstance.getSecureEntryType();
-
-      expect(res).toBe(true);
-    });
-
-    it("returns the entry security type as false if set so", () => {
-      render.setProps({ isPassword: false });
-      const res = renderInstance.getSecureEntryType();
-
-      expect(res).toBe(false);
     });
 
     it("triggers the help callback", () => {

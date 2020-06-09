@@ -438,10 +438,6 @@ class PackenUiInput extends Component {
     return icon;
   }
 
-  getSecureEntryType = () => {
-    return this.state.isPassword ? true : false;
-  }
-
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -488,7 +484,7 @@ class PackenUiInput extends Component {
               ...this.state.styling.input
             }}
             ref={this.getRef}
-            secureTextEntry={this.getSecureEntryType()}
+            secureTextEntry={this.state.isPassword}
             keyboardType={this.getKeyboardType()}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
