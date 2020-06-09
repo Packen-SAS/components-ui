@@ -16,6 +16,7 @@ class PackenUiAlert extends Component {
   /**
    * Initializes the component
    * @type {function}
+   * @param {object} props Props passed to the component
    */
   constructor(props) {
     super(props);
