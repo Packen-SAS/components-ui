@@ -6,18 +6,46 @@ import colors from "../styles/abstracts/colors";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering a WhatsApp link
+ */
 class PackenUiWhatsAppLink extends Component {
+  /**
+   * Initializes the component
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
+
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() };
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {object} [style={}] The optional custom styles specifically applied to the inner wrapper element
+   * @property {string} [text="¿Necesitas ayuda?"] The label to display alongside the WhatsApp icon
+   * @property {function} [trigger=false] The bacllback function to be called when pressing on the component
+   * @property {boolean} [visible=false] Determines the visibility of the component
+   * @property {boolean} [inverted=false] Determines whether to use the predefined alernative styles
+   * @property {string} [color=Colors.basic.independence.drk_alt] The text color
+   * @property {object} [styling={ box: {}, svgWidth: undefined, svgHeight: undefined, text: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       style: this.props.style ? { ...this.props.style } : {},
@@ -35,12 +63,21 @@ class PackenUiWhatsAppLink extends Component {
     }
   }
 
+  /**
+   * Triggers the provided callback function when pressing the component
+   * @type {function}
+   */
   trigger = () => {
     if (typeof this.state.trigger === "function") {
       this.state.trigger();
     }
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => (
     [
       {
@@ -53,16 +90,30 @@ class PackenUiWhatsAppLink extends Component {
     ]
   )
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render = () => {
     return (
       <React.Fragment>

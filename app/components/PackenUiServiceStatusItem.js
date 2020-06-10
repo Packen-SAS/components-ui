@@ -9,12 +9,31 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering an individual step of a {@link PackenUiServiceStatus} component, and should not be used standalone
+ */
 class PackenUiServiceStatusItem extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable to control the vertical space between each item
+     * @type {number}
+     */
     this.spaceBetweenItems = 25;
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {string} [state="default"] The item's current status
+     * @property {node|null} time JSX for the time element or null if the step is not yet reached
+     * @property {object} dimensions Stores the item's element's dimensions
+     */
     this.state = {
       ...this.setPropsToState(),
       state: this.getInitialState(),
@@ -31,12 +50,27 @@ class PackenUiServiceStatusItem extends Component {
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {object} [data={ isComplete: false, isCurrent: false, time: "00:00" }] The data for this step
+   * @property {number} [index=0] The step's index in the timeline
+   * @property {number[]} [itemsHeights=[]] Stores the height of each {@link PackenUiServiceStatusItem} component of the timeline
+   * @property {function} [setItemsHeights=false] Callback function to be propagate this step's height
+   * @property {number} [currentStepIndex=-1] The currently selected step item
+   * @property {object} [styling={ box: {}, sub: {}, time: {}, spacer: {}, line: {}, dot: {}, dotIconSize: undefined, dotIconColor: undefined, main: {}, title: {}, subtitle: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       data: this.props.data ? { ...this.props.data } : {
@@ -64,6 +98,11 @@ class PackenUiServiceStatusItem extends Component {
     };
   }
 
+  /**
+   * Returns the step's current status
+   * @type {function}
+   * @return {string} The current status
+   */
   getInitialState = () => {
     let initialState = "default";
     const data = this.setPropsToState().data;
@@ -77,6 +116,11 @@ class PackenUiServiceStatusItem extends Component {
     return initialState;
   }
 
+  /**
+   * Returns the time element
+   * @type {function}
+   * @return {node|null} JSX for the time or null
+   */
   getInitialTime = () => {
     let time = null;
     const data = this.setPropsToState().data;
@@ -93,6 +137,11 @@ class PackenUiServiceStatusItem extends Component {
     return time;
   }
 
+  /**
+   * Sets the current time element to the state
+   * @type {function}
+   * @param {date} date The date object to display
+   */
   setCurrentTime = date => {
     let hours = date.getHours();
     let minutes = date.getMinutes();
@@ -112,6 +161,11 @@ class PackenUiServiceStatusItem extends Component {
     });
   }
 
+  /**
+   * Returns the subtitle element
+   * @type {function}
+   * @return {node|null} JSX for the subtitle
+   */
   getSubtitle = () => {
     let subtitle = null;
 
@@ -130,6 +184,11 @@ class PackenUiServiceStatusItem extends Component {
     return subtitle;
   }
 
+  /**
+   * Returns the positioning styles for the step's line element
+   * @type {function}
+   * @return {object} The styles object with "height" and "bottom" defined
+   */
   getLinePositioning = () => {
     return {
       height: this.state.dimensions.line.height,
@@ -137,6 +196,11 @@ class PackenUiServiceStatusItem extends Component {
     };
   }
 
+  /**
+   * Returns the line element
+   * @type {function}
+   * @return {node|null} JSX for the line element or null if it's the first step
+   */
   getLine = () => {
     let line = (
       <View style={{
@@ -154,6 +218,11 @@ class PackenUiServiceStatusItem extends Component {
     return line;
   }
 
+  /**
+   * Returns the styles object for the box element
+   * @type {function}
+   * @return {object} The styles object with "marginTop" and "zIndex" defined
+   */
   getBoxStyles = () => {
     return {
       marginTop: this.state.index === 0 ? 0 : this.spaceBetweenItems,
@@ -161,6 +230,11 @@ class PackenUiServiceStatusItem extends Component {
     };
   }
 
+  /**
+   * Returns the dot element if the step is completed
+   * @type {function}
+   * @return {node|null} JSX for the dot or null
+   */
   getDotIcon = () => {
     let icon = null;
 
@@ -176,6 +250,11 @@ class PackenUiServiceStatusItem extends Component {
     return icon;
   }
 
+  /**
+   * Returns the previous step's height
+   * @type {function}
+   * @return {number} The previous step's height
+   */
   getPreviousBoxHeight = () => {
     if (this.state.index > 0) {
       return this.state.itemsHeights[this.state.index - 1];
@@ -184,6 +263,10 @@ class PackenUiServiceStatusItem extends Component {
     }
   }
 
+  /**
+   * Sets the box dimensions to the state and propagates its height
+   * @type {function}
+   */
   setBoxDimensions = e => {
     const { height } = e.nativeEvent.layout;
 
@@ -206,6 +289,11 @@ class PackenUiServiceStatusItem extends Component {
     }
   }
 
+  /**
+   * Updates the state with new props, and checks if its status changed
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -228,12 +316,22 @@ class PackenUiServiceStatusItem extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View
@@ -270,6 +368,11 @@ class PackenUiServiceStatusItem extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       item: {

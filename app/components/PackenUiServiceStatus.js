@@ -4,22 +4,47 @@ import { View } from "react-native";
 
 import PackenUiServiceStatusItem from "./PackenUiServiceStatusItem";
 
+/**
+ * Component for rendering a vertical timeline for shipments to display their status
+ */
 class PackenUiServiceStatus extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {number[]} [itemsHeights=[]] Stores the height of each inner {@link PackenUiServiceStatusItem} component
+     */
     this.state = {
       ...this.setPropsToState(),
       itemsHeights: []
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {object[]} [steps=[]] The array of configuration objects for each step item
+   * @property {number} [currentStepIndex=-1] The currently selected step item
+   * @property {object} [styling={ wrapper: {}, item: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       steps: this.props.steps ? [...this.props.steps] : [],
@@ -31,6 +56,10 @@ class PackenUiServiceStatus extends Component {
     };
   }
 
+  /**
+   * Updates the currently active step item and styles each accordingly
+   * @type {function}
+   */
   updateCurrentStep = () => {
     if (this.state.steps && this.state.steps.length > 0) {
       for (let i = 0; i < this.state.currentStepIndex; i++) {
@@ -48,6 +77,12 @@ class PackenUiServiceStatus extends Component {
     }
   }
 
+  /**
+   * Adds an item's height to the state array
+   * @type {function}
+   * @param {number} i The item's index of the new height
+   * @param {number} height The new height to be pushed
+   */
   setItemsHeights = (i, height) => {
     const newHeights = [...this.state.itemsHeights];
     newHeights[i] = height;
@@ -57,6 +92,11 @@ class PackenUiServiceStatus extends Component {
     });
   }
 
+  /**
+   * Updates the state with new props, and checks if it's an active item
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
@@ -65,12 +105,24 @@ class PackenUiServiceStatus extends Component {
     });
   }
 
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Returns a {@link PackenUiServiceStatusItem} component for each step item
+   * @type {function}
+   * @param {object} step The step's configuration
+   * @param {number} i The step's index
+   * @return {node} JSX for the new step
+   */
   mapItems = (step, i) => (
     <PackenUiServiceStatusItem
       key={i}
@@ -83,6 +135,11 @@ class PackenUiServiceStatus extends Component {
     />
   )
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
@@ -91,6 +148,11 @@ class PackenUiServiceStatus extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wrapper: {

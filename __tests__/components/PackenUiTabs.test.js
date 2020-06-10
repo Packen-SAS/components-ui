@@ -158,5 +158,11 @@ describe("<PackenUiTabs/>", () => {
       renderInstance.onPageSelected({ nativeEvent: { position: 1 } });
       expect(renderInstance.state.activeTabIndex).toBe(1);
     });
+
+    it("triggers a specific tab callback", () => {
+      renderInstance.setState({ activeTabIndex: 0, items: [{ callback: mockCallback }] });
+      renderInstance.triggerTabCallback();
+      expect(renderInstance.state.items[0].callback).toHaveBeenCalled();
+    });
   });
 });

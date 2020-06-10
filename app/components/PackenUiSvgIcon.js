@@ -24,6 +24,14 @@ import PackenProfileBlur from "../../assets/icons/profile_blur.svg";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Inner, dynamically created, subcomponent for each imported SVG file
+ * @type {function}
+ * @param {number} width The width for the SVG
+ * @param {number} height The height for the SVG
+ * @param {string} name The predefined name of the SVG file to render
+ * @return {node} JSX element for the SVG file
+ */
 export const Icon = ({ width, height, name }) => {
   const icons = {
     "logo-inverted": <PackenLogoInverted width={width} height={height} />,
@@ -51,6 +59,12 @@ export const Icon = ({ width, height, name }) => {
   return icons[name] || <PackenUiText>Icon not found.</PackenUiText>
 }
 
+/**
+ * Component for rendering a predefined SVG icon or image
+ * @type {function}
+ * @param {object} props Props passed to the component
+ * @return {node} JSX for the component
+ */
 const PackenUiSvgIcon = props => {
   return <Icon {...props} />
 }

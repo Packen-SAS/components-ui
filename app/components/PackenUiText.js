@@ -6,19 +6,47 @@ import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
+/**
+ * Component for rendering text with optional style presets, touchable callbacks, and icons
+ */
 class PackenUiText extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [preset=false] The preset styles to apply - "h1"; "h2"; "h3"; "h4"; "h5"; "h6"; "t1"; "t2"; "s1"; "s2"; "p1"; "p2"; "c1"; "c2"; "label"
+   * @property {object} [touchable=false] The configuration object for the touchable
+   * @property {node} [children=null] The actual text to display
+   * @property {object} [icon=false] The configuration object for the icon
+   * @property {object} [presetStyle={}] The styles for the specified preset
+   * @property {object} [touchableStyles={ wrapper: {}, label: {} }]  The optional custom styles for the touchable elements
+   * @property {object} [styling={}] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       preset: this.props.preset ? this.props.preset : false,
@@ -31,6 +59,11 @@ class PackenUiText extends Component {
     };
   }
 
+  /**
+   * Returns the custom touchable styles if provided
+   * @type {function}
+   * @return {object} The styles object
+   */
   getTouchableStyles = () => {
     let styles = {
       wrapper: {},
@@ -47,6 +80,10 @@ class PackenUiText extends Component {
     return styles;
   }
 
+  /**
+   * Triggers the provided touchable callback if set so
+   * @type {function}
+   */
   triggerCallback = () => {
     if (this.state.touchable) {
       this.state.touchable.callback();
@@ -55,6 +92,11 @@ class PackenUiText extends Component {
     }
   }
 
+  /**
+   * Returns the correct elements depending on the provided configuration for touchables and icons
+   * @type {function}
+   * @return {node} JSX for the text element
+   */
   getContent = () => {
     let content = (
       <Text style={{
@@ -95,16 +137,30 @@ class PackenUiText extends Component {
     return content;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return this.getContent();
   }

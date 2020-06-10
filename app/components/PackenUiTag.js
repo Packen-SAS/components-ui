@@ -7,18 +7,46 @@ import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering a small tag element consisting of a label over a background-colored box
+ */
 class PackenUiTag extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
+
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {object} [style={}] The optional styles object to be applied specifically to the inner {@link PackenUiText} component
+   * @property {object} [boxStyles={}] The optional styles object to be applied specifically to the box element
+   * @property {node} [children=null] The actual text to display
+   * @property {string} [backgroundColor=Colors.brand.primary.ulgt] The background color for the box
+   * @property {string} [textColor=Colors.basic.independence.dft] The color for the text
+   * @property {object} [styling={ box: {}, label: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       style: this.props.style ? { ...this.props.style } : {},
@@ -33,16 +61,30 @@ class PackenUiTag extends Component {
     };
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{
@@ -62,6 +104,11 @@ class PackenUiTag extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {
