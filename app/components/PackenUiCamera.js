@@ -198,7 +198,7 @@ export default class PackenUiCamera extends Component {
   /**
    * Returns the overlay elements for "document" and "avatar" camera modes
    * @type {function}
-   * @return {node|null} JSX for the overlayed elements or null
+   * @return {node|null} JSX for the overlaid elements or null
    */
   getCameraLayout = () => {
     const { MODE } = this.props;
@@ -495,7 +495,7 @@ export class CameraBottomTriggers extends Component {
 }
 
 /**
- * Returns the overlayed elements for "document" camera modes
+ * Returns the overlaid elements for "document" camera modes
  * @param {number} width The width for the SVG
  * @param {number} height The height for the SVG
  * @param {string} color The color for the SVG
@@ -519,7 +519,7 @@ export const DocumentLayout = ({ width, height, color }) => (
 );
 
 /**
- * Returns the overlayed elements for "avatar" camera modes
+ * Returns the overlaid elements for "avatar" camera modes
  * @param {number} width The width for the SVG
  * @param {number} height The height for the SVG
  * @param {string} color The color for the SVG

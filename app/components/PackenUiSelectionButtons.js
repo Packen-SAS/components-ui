@@ -4,22 +4,52 @@ import { View } from "react-native";
 
 import PackenUiSelectionButtonsControl from "./PackenUiSelectionButtonsControl";
 
+/**
+ * Component for rendering a group of selectable square buttons laid out horizontally, with a different design than {@link PackenUiButton}'s
+ */
 class PackenUiSelectionButtons extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {function}
+     * @property {string|string[]} selected The selected value(s)
+     */
     this.state = {
       ...this.setPropsToState(),
       selected: this.getInitialSelected()
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {boolean} [altStyle=false] Flag to switch to the alternative styles
+   * @property {string} [name=""] The identifier for this group
+   * @property {string} [type="label"] Determines which type of selection buttons to render - "label" for small, simple text buttons; or "image" for big buttons with an image and text
+   * @property {object[]} [items=[]] The configuration objects for each {@link PackenUiSelectionButtonsControl}
+   * @property {string} [selection="single"] The type of selection - "single" for single selection; or "multiple" for multiple selections
+   * @property {number} [itemsPerRow=2] The number of items to render per row
+   * @property {function} [onNewSelection=false] The callback function to be called when the selection changes
+   * @property {object} [styling={ wrapper: {}, item: {}, control: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       altStyle: this.props.altStyle ? this.props.altStyle : false,
@@ -37,14 +67,31 @@ class PackenUiSelectionButtons extends Component {
     };
   }
 
+  /**
+   * Returns the selected items
+   * @type {function}
+   * @param {object} item The item to check
+   * @return {object} The same item if it's selected
+   */
   filterInitialSelected = item => item.isSelected;
 
+  /**
+   * Adds the preselected items to a common array
+   * @type {function}
+   * @param {object} item The item to check
+   * @param {object[]} preSelected The array to push to
+   */
   pushPreselected = (item, preSelected) => {
     if (item.isSelected) {
       preSelected.push(item.value);
     }
   }
 
+  /**
+   * Checks which items are initially preselected and returns them
+   * @type {function}
+   * @return {string|string[]} The preselected value(s)
+   */
   getInitialSelected = () => {
     const items = this.setPropsToState().items;
     let selected;
@@ -65,8 +112,21 @@ class PackenUiSelectionButtons extends Component {
     return selected;
   }
 
+  /**
+   * Checks whether a given item is the latest selected
+   * @type {function}
+   * @param {object} item The item to check
+   * @param {string} newValue The value to compare against
+   * @return {boolean} Flag that determines if the item is the one that was selected
+   */
   findNewSelectedIndex = (item, newValue) => item === newValue;
 
+  /**
+   * Handles when a new selection is made
+   * @type {function}
+   * @param {string} newValue The latest selected value
+   * @return {string} The processed latest selected value(s)
+   */
   newSelectionHandler = newValue => {
     let newSelected;
 
@@ -98,6 +158,10 @@ class PackenUiSelectionButtons extends Component {
     return newSelected;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState(),
@@ -105,12 +169,24 @@ class PackenUiSelectionButtons extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Returns a {@link PackenUiSelectionButtonsControl} component for each item
+   * @type {function}
+   * @param {object} item The item's configuration data object
+   * @param {number} i The item's index
+   * @return {node} JSX for the item
+   */
   mapItems = (item, i) => (
     <View key={i} style={{
       ...this.getStyles().item.type[this.state.type],
@@ -130,6 +206,11 @@ class PackenUiSelectionButtons extends Component {
     </View>
   )
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{
@@ -143,6 +224,11 @@ class PackenUiSelectionButtons extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wrapper: {
