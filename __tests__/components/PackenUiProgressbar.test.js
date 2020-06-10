@@ -113,9 +113,12 @@ describe("<PackenUiProgressbar/>", () => {
     it("sets the complete animation", () => {
       const spyAnimatedTiming = jest.spyOn(Animated, "timing");
       renderInstance.setCompleteAnim();
-
       expect(spyAnimatedTiming).toHaveBeenCalled();
       spyAnimatedTiming.mockRestore();
+
+      renderInstance.setState({ height: 5 });
+      const res = renderInstance.setCompleteAnim();
+      expect(res).toBe(undefined);
     });
 
     it("sets the progress animation", () => {
@@ -182,7 +185,7 @@ describe("<PackenUiProgressbar/>", () => {
       expect(res).toEqual({
         wrapperStyle: {},
         type: "indeterminate",
-        height: 5,
+        height: new Animated.Value(5),
         radius: 0,
         isComplete: false,
         label: false,
