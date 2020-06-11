@@ -131,48 +131,6 @@ describe("<PackenUiDropdownList/>", () => {
     });
   });
 
-  describe("triggering actions", () => {
-    it("executes correct code on componentDidUpdate", () => {
-      const prevState = { selectedItems: [list.items[0]] };
-      render.setProps({
-        getFinalSelection: mockCallback
-      });
-      renderInstance.setState({ selectedItems: [list.items[0], list.items[1]] });
-      renderInstance.componentDidUpdate(null, prevState, null);
-
-      expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
-      expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
-    });
-
-    it("returns false on componentDidUpdate if no 'getFinalSelection' is passed", () => {
-      const prevState = { selectedItems: [list.items[0]] };
-      render.setProps({
-        getFinalSelection: undefined
-      });
-      const res = renderInstance.componentDidUpdate(null, prevState, null);
-
-      expect(res).toBe(false);
-    });
-
-    it("executes the instance callback on componentDidMount if provided", () => {
-      render.setProps({ instance: jest.fn() });
-      renderInstance.componentDidMount();
-
-      expect(renderInstance.props.instance).toHaveBeenCalled();
-    });
-
-    it("returns the items layout object", () => {
-      renderInstance.setState({ itemHeight: 10 });
-      const res = renderInstance.getItemLayout("Test", 2);
-
-      expect(res).toEqual({
-        length: 10,
-        offset: 20,
-        index: 2
-      });
-    });
-  });
-
   describe("state changing", () => {
     it("sets correct item height if items length is less than declared number of rows via props", () => {
       render.setProps({
@@ -323,7 +281,8 @@ describe("<PackenUiDropdownList/>", () => {
         config: undefined,
         toggleMenu: undefined,
         getFinalSelection: undefined,
-        styling: undefined
+        styling: undefined,
+        theme: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -333,6 +292,7 @@ describe("<PackenUiDropdownList/>", () => {
         config: {},
         toggleMenu: false,
         getFinalSelection: false,
+        theme: "default",
         styling: { wrapper: {}, flatlist: {}, item: {} }
       });
     });
@@ -349,6 +309,55 @@ describe("<PackenUiDropdownList/>", () => {
       render.setProps({ styling: { test: "Test" } });
       const res = renderInstance.setPropsToState();
       expect(res.styling).toEqual({ test: "Test" });
+    });
+  });
+
+  describe("triggering actions", () => {
+    it("executes correct code on componentDidUpdate", () => {
+      const prevState = { selectedItems: [list.items[0]] };
+      render.setProps({
+        getFinalSelection: mockCallback
+      });
+      renderInstance.setState({ selectedItems: [list.items[0], list.items[1]] });
+      renderInstance.componentDidUpdate(null, prevState, null);
+
+      expect(renderInstance.props.getFinalSelection).toHaveBeenCalledWith(renderInstance.state.selectedItems);
+      expect(renderInstance.state.currentCheckboxesState.finalSelectionArray).toEqual([list.items[0], list.items[1]]);
+    });
+
+    it("returns false on componentDidUpdate if no 'getFinalSelection' is passed", () => {
+      const prevState = { selectedItems: [list.items[0]] };
+      render.setProps({
+        getFinalSelection: undefined
+      });
+      const res = renderInstance.componentDidUpdate(null, prevState, null);
+
+      expect(res).toBe(false);
+    });
+
+    it("executes the instance callback on componentDidMount if provided", () => {
+      render.setProps({ instance: jest.fn() });
+      renderInstance.componentDidMount();
+
+      expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
+    it("returns the items layout object", () => {
+      renderInstance.setState({ itemHeight: 10 });
+      const res = renderInstance.getItemLayout("Test", 2);
+
+      expect(res).toEqual({
+        length: 10,
+        offset: 20,
+        index: 2
+      });
+    });
+
+    it("resets the dropdown if an empty array of items is passed", () => {
+      render.setProps({ items: [], resetDropdown: mockCallback });
+      renderInstance.setState({ items: [{}] });
+      renderInstance.checkReset();
+      expect(renderInstance.props.resetDropdown).toHaveBeenCalled();
     });
   });
 });

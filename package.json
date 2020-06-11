@@ -30,6 +30,7 @@
     "@react-native-community/viewpager": "^4.0.0",
     "@react-navigation/drawer": "^5.5.0",
     "@react-navigation/native": "^5.1.6",
+    "deep-equal": "^2.0.3",
     "moment": "^2.26.0",
     "react": "16.9.0",
     "react-native": "0.61.5",

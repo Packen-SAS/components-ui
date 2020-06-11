@@ -149,13 +149,14 @@ class PackenUiDropdown extends Component {
     return finalSelectionString;
   }
 
+  reset = () => { this.getFinalSelection([]); }
+
   updateState = () => {
     const newFlagState = this.state.list.items.length > 0 ? true : !this.state.flag;
-    if (this.state.list.items.length <= 0) { this.getFinalSelection([]); }
     this.setState({ ...this.setPropsToState(), flag: newFlagState });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.updateState();
     }
@@ -277,6 +278,8 @@ class PackenUiDropdown extends Component {
         items={this.state.list.items}
         config={{ size: this.state.size, ...this.state.list.config }}
         numShownRows={4}
+        resetDropdown={this.reset}
+        theme={this.state.input.theme}
         getFinalSelection={this.getFinalSelection}
         finalSelectionArray={this.state.finalSelection}
         toggleMenu={this.toggleMenu}

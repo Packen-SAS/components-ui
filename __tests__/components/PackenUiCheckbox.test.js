@@ -106,6 +106,29 @@ describe("<PackenUiCheckbox/>", () => {
       expect(response).toBe(false);
     });
 
+    it("sets checked state programmatically if searched value matches", () => {
+      renderColumnInstance.setCheckedState("This is checked", false, ["This is checked", "This is both checked and disabled"]);
+
+      expect(renderColumnInstance.state.checkedItems).toEqual([
+        {
+          label: "This is checked",
+          isChecked: false,
+          isDisabled: false
+        },
+        {
+          label: "This is both checked and disabled",
+          isChecked: false,
+          isDisabled: false
+        }
+      ]);
+    });
+
+    it("returns false if searched value doesn't match", () => {
+      const res = renderColumnInstance.setCheckedState("This is checked", false, ["This is both checked and disabled"]);
+
+      expect(res).toBe(false);
+    });
+
     it("returns incoming props as the state key-value pairs", () => {
       renderColumn.setProps({
         layout: undefined,
@@ -144,7 +167,7 @@ describe("<PackenUiCheckbox/>", () => {
       renderColumnInstance.setState({ items: [...items] });
       const spyUpdateCheckedItems = jest.spyOn(renderColumnInstance, "updateCheckedItems");
       renderColumnInstance.pressHandler(0);
-      
+
       expect(renderColumnInstance.state.selectedIndex).toBe(0);
       expect(spyUpdateCheckedItems).toHaveBeenCalled();
       spyUpdateCheckedItems.mockRestore();
@@ -153,7 +176,7 @@ describe("<PackenUiCheckbox/>", () => {
     it("executes onPress code", () => {
       renderColumnInstance.pressHandler = jest.fn();
       renderColumn.props().children[0].props.children.props.onPress();
-      
+
       expect(renderColumnInstance.pressHandler).toHaveBeenCalledWith(0);
     });
 

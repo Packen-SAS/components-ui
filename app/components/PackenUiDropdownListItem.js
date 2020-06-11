@@ -536,9 +536,9 @@ class PackenUiDropdownListItem extends Component {
             }}
           >
             <View style={{ ...this.getStyles().content.wrapper.base, ...this.getDisabledStyles().content.wrapper, ...propStyling.contentWrapper }}>
-              {this.getLeftContent(propStyling)}
+              {this.getLeftContent()}
               {this.state.mainContent}
-              {this.getRightContent(propStyling)}
+              {this.getRightContent()}
               {
                 this.props.mainContent.isSelected && this.props.config.checkedIcon ? (
                   <Icon

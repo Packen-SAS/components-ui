@@ -116,6 +116,46 @@ class PackenUiCheckbox extends Component {
   }
 
   /**
+   * Sets the checked items with the new base configuration before processing them
+   * @type {function}
+   * @param {object} item The item to process
+   * @param {boolean} newState The item's new internal state
+   * @return {object} The same item with the new configuration
+   */
+  mapUpdatedCheckedItems = (item, newState) => ({ label: item, isChecked: newState, isDisabled: false });
+
+  /**
+   * Returns the selected item
+   * @type {function}
+   * @param {object} item The item to check
+   * @param {string} valueToSearch The value to compare agains
+   * @return {object} The item that matches the searched value
+   */
+  findMatchedItemToCheck = (item, valueToSearch) => item.label === valueToSearch;
+
+  /**
+   * Programmatically sets the checked states
+   * @type {function}
+   * @param {string} valueToSearch The selected value to compare against
+   * @param {boolean} newState The new state for the item
+   * @param {string[]} finalSelectionArray The currently selected values
+   */
+  setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
+    let updatedCheckedItems = [...finalSelectionArray];
+    updatedCheckedItems = updatedCheckedItems.map(item => this.mapUpdatedCheckedItems(item, newState));
+
+    const foundItem = updatedCheckedItems.find(item => this.findMatchedItemToCheck(item, valueToSearch));
+    if (foundItem) {
+      foundItem.isChecked = newState;
+      this.setState({
+        checkedItems: updatedCheckedItems
+      });
+    } else {
+      return false;
+    }
+  }
+
+  /**
    * Returns the individual checkbox control items
    * @type {function}
    * @param {object} item The item configuration object

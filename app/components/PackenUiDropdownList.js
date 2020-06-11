@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, FlatList } from "react-native";
+import * as UTIL from "../utils";
 
 import PackenUiDropdownListItem from "./PackenUiDropdownListItem";
 
@@ -29,9 +30,30 @@ class PackenUiDropdownList extends Component {
     }
   }
 
+  checkReset = () => {
+    if (this.state && this.state.items && this.props.items && this.props.items.length <= 0 && this.props.resetDropdown) {
+      this.props.resetDropdown();
+    }
+  }
+
+  getItems = () => {
+    let items = [];
+
+    if (this.props.theme === "list") {
+      items = this.state ? [...this.state.items] : this.props.items ? [...this.props.items] : [];
+    } else {
+      items = this.props.items ? [...this.props.items] : [];
+    }
+
+    return items;
+  }
+
   setPropsToState = () => {
+    this.checkReset();
+
     return {
-      items: this.state ? [...this.state.items] : this.props.items ? [...this.props.items] : [],
+      items: this.getItems(),
+      theme: this.props.theme ? this.props.theme : "default",
       numShownRows: this.props.numShownRows ? this.props.numShownRows : 4,
       config: this.props.config ? { ...this.props.config } : {},
       toggleMenu: this.props.toggleMenu ? this.props.toggleMenu : false,
@@ -165,8 +187,8 @@ class PackenUiDropdownList extends Component {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+  componentDidUpdate(prevProps, prevState) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
     if (prevState.selectedItems !== this.state.selectedItems) {
