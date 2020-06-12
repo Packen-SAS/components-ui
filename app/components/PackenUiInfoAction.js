@@ -10,21 +10,55 @@ import Shadows from "../styles/abstracts/shadows";
 import PackenUiText from "./PackenUiText";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 
+/**
+ * Component for rendering an action's current state and its trigger to change it
+ */
 class PackenUiInfoAction extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Placeholder function that does nothing
+   * @type {function}
+   */
   mockCallback = () => false;
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [theme="primary"] The theme for styles - "primary"; "success"; "danger"
+   * @property {string} [title=""] The main title
+   * @property {string} [caption=false] The small text between parentheses next to the title
+   * @property {string} [subtitle=false] The subtitle text below the main title
+   * @property {function} [callback=() => false] The callbak function to trigger when pressing on the component
+   * @property {object} [boxStyle={}] The optional styles specifically applied to the box element
+   * @property {string} [img=""] The name idenfier for the {@link PackenUiSvgIcon} component
+   * @property {object} [icon={ name: "play", size: 14 }] The configuration object for the component's icon
+   * @property {object} [styling={ box: {}, main: {}, mainTop: {}, title: {}, svgWidth: undefined, svgHeight: undefined, iconSize: undefined, iconColor: undefined, caption: {}, subtitle: {}, subtitleIconColor: undefined, subtitleIconSize: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       theme: this.props.theme ? this.props.theme : "primary",
@@ -55,6 +89,11 @@ class PackenUiInfoAction extends Component {
     };
   }
 
+  /**
+   * Returns the caption element
+   * @type {function}
+   * @return {node|null} JSX for the caption or null
+   */
   getCaption = () => {
     let caption = null;
 
@@ -73,6 +112,11 @@ class PackenUiInfoAction extends Component {
     return caption;
   }
 
+  /**
+   * Returns the subtitle element
+   * @type {function}
+   * @return {node|null} JSX for the subtitle or null
+   */
   getSubtitle = () => {
     let subtitle = null;
 
@@ -109,16 +153,30 @@ class PackenUiInfoAction extends Component {
     return subtitle;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.state.callback}>
@@ -154,6 +212,11 @@ class PackenUiInfoAction extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {
@@ -189,10 +252,6 @@ class PackenUiInfoAction extends Component {
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "flex-start"
-      },
-      img: {
-        width: this.state.img.width,
-        height: this.state.img.height
       },
       title: {
         marginRight: 3,
