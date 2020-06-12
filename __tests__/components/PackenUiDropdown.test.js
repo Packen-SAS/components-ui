@@ -329,6 +329,13 @@ describe("<PackenUiDropdown/>", () => {
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
     });
+
+    it("resets the dropdown selection", () => {
+      const spyGetFinalSelection = jest.spyOn(renderInstance, "getFinalSelection");
+      renderInstance.reset();
+      expect(spyGetFinalSelection).toHaveBeenCalledWith([]);
+      spyGetFinalSelection.mockRestore();
+    });
   });
 
   describe("rendering", () => {

@@ -359,5 +359,30 @@ describe("<PackenUiDropdownList/>", () => {
       renderInstance.checkReset();
       expect(renderInstance.props.resetDropdown).toHaveBeenCalled();
     });
+
+    it("returns the correctly processed items array", () => {
+      render.setProps({ theme: "list" });
+      renderInstance.setState({ items: [{ test: "Test" }] });
+      let res = renderInstance.getItems();
+      expect(res).toEqual([{ test: "Test" }]);
+
+      render.setProps({ theme: "list", items: [{ test: "Test 2" }] });
+      renderInstance.setState({ items: undefined });
+      res = renderInstance.getItems();
+      expect(res).toEqual([{ test: "Test 2" }]);
+
+      render.setProps({ theme: "primary", items: [{ test :"Test 3" }] });
+      res = renderInstance.getItems();
+      expect(res).toEqual([{ test: "Test 3" }]);
+
+      render.setProps({ theme: "list", items: undefined });
+      renderInstance.setState({ items: undefined });
+      res = renderInstance.getItems();
+      expect(res).toEqual([]);
+
+      render.setProps({ theme: "primary", items: undefined });
+      res = renderInstance.getItems();
+      expect(res).toEqual([]);
+    });
   });
 });

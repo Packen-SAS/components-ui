@@ -40,7 +40,7 @@ class PackenUiDropdownList extends Component {
     let items = [];
 
     if (this.props.theme === "list") {
-      items = this.state ? [...this.state.items] : this.props.items ? [...this.props.items] : [];
+      items = this.state && this.state.items ? [...this.state.items] : this.props.items ? [...this.props.items] : [];
     } else {
       items = this.props.items ? [...this.props.items] : [];
     }
