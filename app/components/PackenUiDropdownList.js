@@ -45,7 +45,7 @@ class PackenUiDropdownList extends Component {
       items = this.props.items ? [...this.props.items] : [];
     }
 
-    return items;
+    return [...new Map(items.map(item => [item.value, item])).values()];
   }
 
   setPropsToState = () => {
