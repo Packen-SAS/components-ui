@@ -592,7 +592,7 @@ describe("<PackenUiModal/>", () => {
           text: ""
         },
         modalClose: renderInstance.mockCallback,
-        theme: "primary",
+        theme: "info",
         content: null,
         onDismiss: false,
         onRequestClose: false,

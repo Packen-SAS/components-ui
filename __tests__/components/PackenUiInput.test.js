@@ -255,7 +255,7 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if styling, isPassword, propagateRef, maxLength, minLength, loading and validator are provided", () => {
+    it("returns incoming props as the state key-value pairs if placeholder, styling, isPassword, propagateRef, maxLength, minLength, loading and validator are provided", () => {
       render.setProps({
         propagateRef: mockCallback,
         maxLength: 10,
@@ -263,6 +263,7 @@ describe("<PackenUiInput/>", () => {
         loading: true,
         isPassword: true,
         validator: "number",
+        placeholder: undefined,
         styling: { test: "Test" }
       });
       const res = renderInstance.setPropsToState();
@@ -272,6 +273,7 @@ describe("<PackenUiInput/>", () => {
       expect(res.minLength).toBe(5);
       expect(res.loading).toBe(true);
       expect(res.isPassword).toBe(true);
+      expect(res.placeholder).toBe("");
       expect(res.validator).toBe("number");
       expect(res.styling).toEqual({ test: "Test", header: {}, help: {}, message: {} });
     });
