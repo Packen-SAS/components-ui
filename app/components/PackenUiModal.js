@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Modal, View, TouchableWithoutFeedback, Image, Dimensions, Platform } from "react-native";
+import * as UTIL from "../utils";
 
 import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -276,7 +277,7 @@ class PackenUiModal extends Component {
    * @param {object} prevState Previous state
    */
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps !== this.props) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState(prevProps, prevState);
     }
   }

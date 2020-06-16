@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableNativeFeedback } from "react-native";
+import * as UTIL from "../utils";
 
 import colors from "../styles/abstracts/colors";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
@@ -103,8 +104,8 @@ class PackenUiWhatsAppLink extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+  componentDidUpdate(prevProps) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }

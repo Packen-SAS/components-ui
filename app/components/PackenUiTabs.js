@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import ViewPager from '@react-native-community/viewpager';
+import * as UTIL from "../utils";
 
 import PackenUiTabsItem from "./PackenUiTabsItem";
 
@@ -132,7 +133,7 @@ class PackenUiTabs extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps) {
-    if (prevProps !== this.props) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }
