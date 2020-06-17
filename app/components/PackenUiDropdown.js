@@ -161,7 +161,7 @@ class PackenUiDropdown extends Component {
       };
     } else {
       customStyles = {
-        bottom: -(this.state.dimensions.menu.height + 8)
+        bottom: -(this.state.dimensions.menu.height - 8)
       };
     }
 
