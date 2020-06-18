@@ -165,11 +165,6 @@ describe("<PackenUiButton/>", () => {
       expect(renderRegularInstance.state.icon.anim.controller.stop).toHaveBeenCalled();
     });
 
-    it("executes the onMoveShouldSetResponder callback", () => {
-      const res = renderRegularInstance.onMoveShouldSetResponder();
-      expect(res).toBe(true);
-    });
-
     it("executes the onMoveShouldPanResponder callback", () => {
       const res = renderRegularInstance.onMoveShouldPanResponder();
       expect(res).toBe(true);
@@ -403,7 +398,7 @@ describe("<PackenUiButton/>", () => {
         level: "primary",
         size: "medium",
         icon: undefined,
-        callback: false,
+        callback: renderRegularInstance.mockFunction,
         isOutline: false,
         isDisabled: false,
         nonTouchable: false,

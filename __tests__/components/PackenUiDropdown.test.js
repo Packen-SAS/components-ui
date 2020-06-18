@@ -163,7 +163,7 @@ describe("<PackenUiDropdown/>", () => {
       renderInstance.setState({ dimensions: { menu: { height: 100 } } });
       renderInstance.setCustomStyles();
 
-      expect(renderInstance.state.styles.menu).toEqual({ bottom: -108 });
+      expect(renderInstance.state.styles.menu).toEqual({ bottom: -92 });
     });
 
     it("toggles 'isOpen' state", () => {
