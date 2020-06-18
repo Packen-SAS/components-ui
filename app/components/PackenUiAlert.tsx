@@ -1,25 +1,62 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component, ReactElement } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+interface TextPropShape {
+  title: string;
+  main: string;
+  preset: string|undefined;
+}
+
+interface StylingPropShape {
+  box: object;
+  text: object;
+  iconSize: number|undefined;
+  iconColor: string|undefined;
+  iconWrapper: object;
+}
+
+interface PackenUiAlertProps {
+  type: string;
+  theme: string;
+  text: TextPropShape;
+  onClose: Function|boolean;
+  dismiss?: Function;
+  countdown?: number|boolean;
+  visible?: boolean;
+  position?: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiAlertState {
+  type: string;
+  theme: string;
+  text: TextPropShape,
+  onClose: Function|boolean;
+  countdown: number|boolean;
+  visible: boolean;
+  position: string;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for displaying general alert banners
  */
-class PackenUiAlert extends Component {
+class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiAlertProps) {
     super(props);
 
     /**
@@ -35,14 +72,14 @@ class PackenUiAlert extends Component {
    * @property {string} [type="static"] The type of alert to display - "static" for alerts without a time limit; "timed" for alerts with a countdown
    * @property {string} [theme="default"] The theme to apply the correct styles - "default"; "primary"; "info"; "warning"; "danger"; "success"
    * @property {object} [text={ title: "", main: "", preset: undefined }] The configuration object for the text to display - "title": the initial label in bold; "main": the actual message; "preset": 
-   * @property {boolean} [onClose=false] Optional callback to be triggered when closing the alert
+   * @property {function} [onClose=false] Optional callback to be triggered when closing the alert
    * @property {number} [countdown=false] Number of milliseconds for "timed" alerts
    * @property {boolean} [visible=false] Whether the alert should be visible
    * @property {string} [position="bottom"] The position for the alert
    * @property {object} [styling={ box: {}, text: {}, iconSize: undefined, iconColor: undefined, iconWrapper: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiAlertState => {
     return {
       type: this.props.type ? this.props.type : "static",
       theme: this.props.theme ? this.props.theme : "default",
@@ -80,9 +117,9 @@ class PackenUiAlert extends Component {
   /**
    * Validates whether the alert should have a countdown
    * @type {function}
-   * @return {boolean} Flag used for testing
+   * @return {boolean} Flag used only for testing purposes
    */
-  checkIfTimed = () => {
+  checkIfTimed: Function = (): boolean|void => {
     if (this.state.type === "timed" && this.state.countdown) {
       const timeout = setTimeout(() => {
         this.close();
@@ -98,7 +135,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {boolean} Flag used for testing
    */
-  close = () => {
+  close: Function = (): boolean => {
     let flag = true;
     if (typeof this.state.onClose === "function") {
       this.state.onClose();
@@ -118,7 +155,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {string} The icon name to be used
    */
-  getIconName = () => {
+  getIconName: Function = (): string => {
     let iconName = "info";
 
     switch (this.state.theme) {
@@ -139,7 +176,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {string} The formatted title
    */
-  getTitle = () => {
+  getTitle: Function = (): string => {
     let title = "";
 
     if (this.state.text.title) {
@@ -154,7 +191,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {node} JSX for the icon
    */
-  getIcon = () => (
+  getIcon: Function = (): ReactElement => (
     <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
       <Icon
         name={this.getIconName()}
@@ -169,7 +206,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {node} JSX for the main content
    */
-  getMain = () => (
+  getMain: Function = (): ReactElement => (
     <View style={this.getStyles().main}>
       <PackenUiText
         preset={this.state.text.preset}
@@ -194,8 +231,8 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {node} JSX for the "close" icon
    */
-  getClose = () => (
-    <TouchableWithoutFeedback onPress={this.close}>
+  getClose: Function = (): ReactElement => (
+    <TouchableWithoutFeedback onPress={() => { this.close(); }}>
       <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
         <Icon
           name="x"
@@ -211,7 +248,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {object} The positioning styles
    */
-  getPositionAlert = () => {
+  getPositionAlert: Function = (): object => {
     const position = this.getStyles().box.position[this.state.position];
     if (!position) {
       return this.getStyles().box.position.bottom;
@@ -223,10 +260,10 @@ class PackenUiAlert extends Component {
    * Updates the state with new props and checks if it's now a "timed" alert
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({
       ...this.setPropsToState()
-    }, this.checkIfTimed);
+    }, () => { this.checkIfTimed(); });
   }
 
   /**
@@ -234,7 +271,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiAlertProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -245,7 +282,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement|null {
     return (
       this.state.visible ? (
         <View style={[this.getStyles().box.main, this.getPositionAlert()]}>
@@ -268,7 +305,7 @@ class PackenUiAlert extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         main: {
@@ -379,17 +416,5 @@ class PackenUiAlert extends Component {
     };
   }
 }
-
-PackenUiAlert.propTypes = {
-  type: PropTypes.string.isRequired,
-  theme: PropTypes.string.isRequired,
-  text: PropTypes.object.isRequired,
-  onClose: PropTypes.func.isRequired,
-  dismiss: PropTypes.func,
-  countdown: PropTypes.number,
-  visible: PropTypes.bool,
-  position: PropTypes.string,
-  styling: PropTypes.object
-};
 
 export default PackenUiAlert;
