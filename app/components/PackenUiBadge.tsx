@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import * as UTIL from "../utils";
@@ -6,18 +6,51 @@ import * as UTIL from "../utils";
 import colors from "../styles/abstracts/colors";
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  outer: object,
+  content: object;
+  dotWrapper: object;
+  wrapper: object;
+  label: object;
+}
+
+interface PackenUiBadgeProps {
+  label?: string;
+  children?: ReactElement;
+  width?: number;
+  height?: number;
+  color?: string;
+  fontSize?: number;
+  borderRadius?: number;
+  backgroundColor?: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiBadgeState {
+  label: string,
+  children: ReactElement | boolean,
+  width: number,
+  height: number,
+  color: string,
+  fontSize: number,
+  borderRadius: number | undefined,
+  backgroundColor: string,
+  styling: StylingPropShape
+}
+
 /**
  * Component for displaying notification badges as individual components or as wrappers in the upper right corner of its children
  */
-class PackenUiBadge extends Component {
+class PackenUiBadge extends Component<PackenUiBadgeProps, PackenUiBadgeState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiBadgeProps) {
     super(props);
-    
+
     /**
      * Variable that stores the state
      * @type {object}
@@ -49,7 +82,7 @@ class PackenUiBadge extends Component {
    * @property {object} [styling={ outer: {}, content: {}, dotWrapper: {}, wrapper: {}, label: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiBadgeState => {
     return {
       label: this.props.label ? this.props.label.toString() : "",
       children: this.props.children ? this.props.children : false,
@@ -73,7 +106,7 @@ class PackenUiBadge extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -82,7 +115,7 @@ class PackenUiBadge extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiBadgeProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -93,7 +126,7 @@ class PackenUiBadge extends Component {
    * @type {function}
    * @return {node} JSX for the main content
    */
-  getContent = () => {
+  getContent: Function = (): ReactElement => {
     let content = (
       <View style={{ ...this.getStyle().wrapper, ...this.state.styling.wrapper }}>
         <PackenUiText preset="c2" style={{ ...this.getStyle().label, ...this.state.styling.label }}>{this.state.label}</PackenUiText>
@@ -121,7 +154,7 @@ class PackenUiBadge extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return this.getContent();
   }
 
@@ -130,7 +163,7 @@ class PackenUiBadge extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getStyle = () => {
+  getStyle: Function = (): object => {
     return {
       outer: {
         flexDirection: "row",
@@ -160,18 +193,19 @@ class PackenUiBadge extends Component {
       content: {}
     };
   }
-}
 
-PackenUiBadge.propTypes = {
-  label: PropTypes.string,
-  children: PropTypes.node,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  color: PropTypes.string,
-  fontSize: PropTypes.number,
-  borderRadius: PropTypes.number,
-  backgroundColor: PropTypes.string,
-  styling: PropTypes.object
-};
+  static propTypes: object = {
+    label: PropTypes.string,
+    children: PropTypes.node,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    color: PropTypes.string,
+    fontSize: PropTypes.number,
+    borderRadius: PropTypes.number,
+    backgroundColor: PropTypes.string,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiBadge;

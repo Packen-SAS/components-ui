@@ -1,21 +1,43 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import PropTypes from "prop-types";
-import { View, Image, TouchableWithoutFeedback } from "react-native";
+import { View, Image, TouchableWithoutFeedback, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
+
+interface StylingPropShape {
+  container: object;
+  image: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface PackenUiAvatarProps {
+  src: ImageSourcePropType;
+  size: string;
+  callback?: Function;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiAvatarState {
+  src: ImageSourcePropType | boolean;
+  size: string;
+  callback: Function;
+  styling: StylingPropShape;
+}
 
 /**
  * Component for displaying an avatar or images contained within a circle in general
  */
-class PackenUiAvatar extends Component {
+class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiAvatarProps) {
     super(props);
 
     /**
@@ -38,17 +60,17 @@ class PackenUiAvatar extends Component {
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
-   * @property {string|object} [src=false] The "source" attribute for RN's Image component
+   * @property {number|object} [src=false] The "source" attribute for RN's Image component
    * @property {string} [size="medium"] The size for the component styles - "xtiny"; "tiny"; "small"; "medium", "medium_alt"; "large"; "giant"
    * @property {function} [callback=false] A callback function to be triggered when pressing over the component
    * @property {object} [styling={ container: {}, image: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiAvatarState => {
     return {
       src: this.props.src ? this.props.src : false,
       size: this.props.size ? this.props.size : "medium",
-      callback: this.props.callback ? this.props.callback : false,
+      callback: this.props.callback ? this.props.callback : this.mockFunction,
       styling: this.props.styling ? { ...this.props.styling } : {
         container: {},
         image: {},
@@ -59,14 +81,21 @@ class PackenUiAvatar extends Component {
   }
 
   /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Flag used only for testing purposes
+   */
+  mockFunction: Function = (): Boolean => true;
+
+  /**
    * Returns the inner content
    * @type {function}
    * @return {node} JSX for the inner content
    */
-  getInner = () => {
+  getInner: Function = (): ReactElement | null => {
     let inner = null;
 
-    if (this.state.src) {
+    if (this.state.src && typeof this.state.src !== "boolean") {
       inner = (
         <Image
           source={this.state.src}
@@ -97,19 +126,15 @@ class PackenUiAvatar extends Component {
    * @type {function}
    * @return {node} JSX for the main, outer content
    */
-  getContent = () => {
+  getContent: Function = (): ReactElement | null => {
     let content = null;
 
     if (this.state.callback) {
       content = (
-        <TouchableWithoutFeedback onPress={this.state.callback} >
+        <TouchableWithoutFeedback onPress={() => { this.state.callback(); }}>
           <View
             style={[
               this.getStyles().touchable,
-              {
-                height: this.getStyles().container.size[this.state.size.height],
-                width: this.getStyles().container.size[this.state.size.width]
-              },
               this.state.styling.container
             ]}
           >
@@ -128,7 +153,7 @@ class PackenUiAvatar extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -137,7 +162,7 @@ class PackenUiAvatar extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiAvatarProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -148,7 +173,7 @@ class PackenUiAvatar extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <View style={[
         this.getStyles().container.base,
@@ -165,7 +190,7 @@ class PackenUiAvatar extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       container: {
         base: {
@@ -212,13 +237,32 @@ class PackenUiAvatar extends Component {
       }
     };
   }
-}
 
-PackenUiAvatar.propTypes = {
-  src: Image.propTypes.source,
-  size: PropTypes.string.isRequired,
-  callback: PropTypes.func,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    src: PropTypes.oneOfType([
+      PropTypes.shape({
+        uri: PropTypes.string,
+        headers: PropTypes.objectOf(PropTypes.string)
+      }),
+      PropTypes.number,
+      PropTypes.arrayOf(
+        PropTypes.shape({
+          uri: PropTypes.string,
+          width: PropTypes.number,
+          height: PropTypes.number,
+          headers: PropTypes.objectOf(PropTypes.string)
+        })
+      )
+    ]),
+    size: PropTypes.string.isRequired,
+    callback: PropTypes.func,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiAvatar;

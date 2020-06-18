@@ -1,25 +1,118 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import PropTypes from "prop-types";
-import { TouchableWithoutFeedback, View, Animated, PanResponder } from "react-native"
+import { TouchableWithoutFeedback, View, Animated, PanResponder, PanResponderGestureState, GestureResponderEvent } from "react-native"
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Color from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
 
+interface InnerStylesShape {
+  shape: {
+    backgroundColor: string;
+    borderWidth: number;
+    borderStyle: string;
+    borderColor: string;
+  };
+  shapeContent: object;
+  icon: {
+    color: string;
+  };
+  label: {
+    color: string;
+  };
+}
+
+interface StylingPropShape {
+  shape: object;
+  shapeContent: object;
+  label: object;
+  iconWrapper: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface IconPropShape {
+  anim: {
+    state: string;
+    controller: {
+      stop: Function;
+      start: Function;
+    }
+  };
+  styles: object;
+  name: string;
+  position: string;
+}
+
+interface StylesIconPropShape {
+  fontSize: number;
+  color: string;
+}
+
+interface StylesPropShape {
+  icon: StylesIconPropShape;
+  label: object;
+  shape: object;
+  shapeContent: object;
+}
+
+interface PackenUiButtonProps {
+  type: string;
+  level: string;
+  size: string;
+  icon?: IconPropShape;
+  callback?: Function;
+  isOutline?: boolean;
+  isDisabled?: boolean;
+  nonTouchable?: boolean;
+  children?: string;
+  style?: object;
+  styling?: StylingPropShape;
+  panned?: boolean;
+  instance?: Function;
+}
+
+interface PackenUiButtonState {
+  type: string;
+  level: string;
+  size: string;
+  icon: IconPropShape | undefined;
+  callback: Function;
+  isOutline: boolean;
+  isDisabled: boolean;
+  nonTouchable: boolean;
+  children: string | undefined;
+  panned: boolean;
+  styling: StylingPropShape;
+  styles: StylesPropShape;
+  fade: Animated.AnimatedValue;
+  translateX: Animated.AnimatedValue;
+  swipeOpacity: Animated.AnimatedValue;
+  swipeAnimation: Animated.AnimatedValue;
+  called: boolean;
+  swt: number;
+  swo: number;
+}
+
+type PanResponderFunctionNull = (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => void;
+type PanResponderFunctionBoolean = (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => boolean;
+type GestureResponderFunction = (evt: GestureResponderEvent) => void;
+type VoidFunction = () => void;
+
 /**
  * Component for displaying all types of buttons
  */
-class PackenUiButton extends Component {
+class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiButtonProps) {
     super(props);
 
     /**
@@ -73,16 +166,16 @@ class PackenUiButton extends Component {
    * @property {boolean} [nonTouchable=false] Determines if the button should not register any pointer events
    * @property {node} [children=undefined] The actual text content for the button
    * @property {boolean} [panned=false] Determines if the panned styles and animations should be applied
-   * @property {object} [styling={ shape: {}, shapeContent: {}, label: {}, iconWrapper: {}, iconSize: undefined, iconColor: undefined }]
+   * @property {object} [styling={ shape: {}, shapeContent: {}, label: {}, iconWrapper: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       type: this.props.type ? this.props.type : "regular",
       level: this.props.level ? this.props.level : "primary",
       size: this.props.size ? this.props.size : "medium",
       icon: this.props.icon ? this.props.icon : undefined,
-      callback: this.props.callback ? this.props.callback : false,
+      callback: this.props.callback ? this.props.callback : this.mockFunction,
       isOutline: this.props.isOutline ? this.props.isOutline : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
@@ -100,19 +193,28 @@ class PackenUiButton extends Component {
   }
 
   /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Flag used only for testing purposes
+   */
+  mockFunction: Function = (): boolean => true;
+
+  /**
    * Initializes the panned animations
    * @type {function}
    */
-  animateHandler = () => {
+  animateHandler: Function = () => {
     Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.translateX, {
           toValue: 19,
-          duration: 600
+          duration: 600,
+          useNativeDriver: false
         }),
         Animated.timing(this.state.fade, {
           toValue: 0,
-          duration: 600
+          duration: 600,
+          useNativeDriver: false
         })
       ])
     ).start();
@@ -123,9 +225,8 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {object} The new PanResponder instance
    */
-  createPanResponder = () => (
+  createPanResponder: Function = (): object => (
     PanResponder.create({
-      onMoveShouldSetResponderCapture: this.onMoveShouldSetResponder,
       onMoveShouldSetPanResponderCapture: this.onMoveShouldPanResponder,
       onPanResponderGrant: this.onPanResponderGrant,
       onShouldBlockNativeResponder: this.onShouldNativeResponder,
@@ -136,16 +237,10 @@ class PackenUiButton extends Component {
   );
 
   /**
-   * onMoveShouldSetResponder event handler for panned buttons
-   * @type {function}
-   */
-  onMoveShouldSetResponder = () => true;
-
-  /**
    * onMoveShouldPanResponder event handler for panned buttons
    * @type {function}
    */
-  onMoveShouldPanResponder = () => true;
+  onMoveShouldPanResponder: PanResponderFunctionBoolean = (): boolean => true;
 
   /**
    * onPanResponderGrant event handler for panned buttons
@@ -153,7 +248,7 @@ class PackenUiButton extends Component {
    * @param {object} evt The event data object
    * @param {object} gestureState The gesture data object
    */
-  onPanResponderGrant = (evt, gestureState) => null;
+  onPanResponderGrant: PanResponderFunctionNull = (_evt: object, _gestureState: object) => null;
 
   /**
    * onShouldNativeResponder event handler for panned buttons
@@ -161,7 +256,7 @@ class PackenUiButton extends Component {
    * @param {object} evt The event data object
    * @param {object} gestureState The gesture data object
    */
-  onShouldNativeResponder = (evt, gestureState) => true;
+  onShouldNativeResponder: PanResponderFunctionBoolean = (_evt: object, _gestureState: object) => true;
 
   /**
    * onPanResponderRequest event handler for panned buttons
@@ -169,7 +264,7 @@ class PackenUiButton extends Component {
    * @param {object} evt The event data object
    * @param {object} gestureState The gesture data object
    */
-  onPanResponderRequest = (evt, gestureState) => true;
+  onPanResponderRequest: PanResponderFunctionBoolean = (_evt: object, _gestureState: object) => true;
 
   /**
    * onPanResponderMove event handler for panned buttons
@@ -177,7 +272,7 @@ class PackenUiButton extends Component {
    * @param {object} evt The event data object
    * @param {object} mov The movement data object
    */
-  onPanResponderMove = (evt, mov) => {
+  onPanResponderMove: PanResponderFunctionNull = (_evt: object, mov: PanResponderGestureState) => {
     const { swipeAnimation, swipeOpacity, swt, swo, called } = this.state;
     if (mov.dx <= 0) { return 0; }
     if (swt >= 85) {
@@ -199,7 +294,7 @@ class PackenUiButton extends Component {
    * @param {object} evt The event data object
    * @param {object} gestureState The gesture data object
    */
-  onPanResponderRelease = (evt, gestureState) => {
+  onPanResponderRelease: PanResponderFunctionNull = (_evt: object, _gestureState: object) => {
     const { swipeAnimation, swipeOpacity } = this.state;
     swipeAnimation.setValue(0);
     swipeOpacity.setValue(1);
@@ -214,7 +309,7 @@ class PackenUiButton extends Component {
    * @param {string} level The button's level for styling
    * @return {object} The base styles object
    */
-  getBaseStyles = (type, size, level) => {
+  getBaseStyles: Function = (type: string, size: string, level: string): object => {
     return {
       shape: {
         ...this.createStyles().shape.base,
@@ -240,7 +335,7 @@ class PackenUiButton extends Component {
    * @param {string} level The button's level for styling
    * @return {object} The type styles object
    */
-  getTypeStyles = (styles, type, size, level) => {
+  getTypeStyles: Function = (styles: InnerStylesShape, type: string, size: number, level: string): object => {
     switch (type) {
       case "icon":
         styles = {
@@ -268,7 +363,7 @@ class PackenUiButton extends Component {
    * @param {string} level The button's level for styling
    * @return {object} The level styles object
    */
-  getLevelStyles = (styles, level) => {
+  getLevelStyles: Function = (styles: InnerStylesShape, level: string): object => {
     switch (level) {
       case "secondary":
         styles.shape = {
@@ -290,7 +385,7 @@ class PackenUiButton extends Component {
    * @param {string} level The button's level for styling
    * @return {object} The outline styles object
    */
-  getOutlineStyles = (styles, isOutline, level) => {
+  getOutlineStyles: Function = (styles: InnerStylesShape, isOutline: Boolean, level: string): object => {
     if (isOutline) {
       styles = {
         ...styles,
@@ -310,7 +405,7 @@ class PackenUiButton extends Component {
    * @param {string} level The button's level for styling
    * @return {object} The disabled styles object
    */
-  getDisabledStyles = (styles, isDisabled, level) => {
+  getDisabledStyles: Function = (styles: InnerStylesShape, isDisabled: Boolean, level: string): object => {
     if (isDisabled) {
       styles.shape.backgroundColor = Color.ghost.focus;
       styles.icon.color = Color.basic.white.dft;
@@ -340,7 +435,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     const { type, size, level, isOutline, isDisabled } = this.state ? this.state : this.setPropsToState();
     let styles = this.getBaseStyles(type, size, level);
     styles = this.getTypeStyles(styles, type, size, level);
@@ -354,7 +449,7 @@ class PackenUiButton extends Component {
    * Sets the current styles
    * @type {function}
    */
-  checkStyles = () => {
+  checkStyles: Function = () => {
     this.setState({
       styles: this.getStyles()
     });
@@ -364,7 +459,7 @@ class PackenUiButton extends Component {
    * Checks the current icon animation state to start/stop it
    * @type {function}
    */
-  checkIconAnimState = () => {
+  checkIconAnimState: Function = () => {
     if (this.state.icon && this.state.icon.anim) {
       const { state, controller } = this.state.icon.anim;
       if (state === "done") {
@@ -379,7 +474,7 @@ class PackenUiButton extends Component {
    * Updates the state with new props, and checks the styles and icon animation state
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -393,7 +488,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiButtonProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -404,7 +499,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {boolean} Flag used for testing
    */
-  executeCallback = () => {
+  executeCallback: VoidFunction = (): boolean | void => {
     if (this.state.callback) {
       this.state.callback();
     } else {
@@ -417,7 +512,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {object} The new styles object
    */
-  pressInHandler = () => {
+  pressInHandler: GestureResponderFunction = (): object => {
     let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
     if (this.state.level !== "ghost" && this.state.level !== "secondary") {
@@ -451,7 +546,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {object} The new styles object
    */
-  pressOutHandler = () => {
+  pressOutHandler: GestureResponderFunction = (): object => {
     let newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].default;
     if (this.state.level !== "ghost" && this.state.level !== "secondary") {
@@ -478,19 +573,23 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {node} JSX for the icon
    */
-  getIcon = () => {
-    let icon = (
-      <View style={{ ...this.state.icon.styles, ...this.state.styling.iconWrapper }}>
-        <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
-      </View>
-    );
-
-    if (this.state.icon.anim) {
+  getIcon: Function = (): ReactElement | null => {
+    let icon = null;
+    
+    if (this.state.icon) {
       icon = (
-        <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
+        <View style={{ ...this.state.icon.styles, ...this.state.styling.iconWrapper }}>
           <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
-        </Animated.View>
+        </View>
       );
+  
+      if (this.state.icon.anim) {
+        icon = (
+          <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
+            <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
+          </Animated.View>
+        );
+      }
     }
 
     return icon;
@@ -501,7 +600,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {node} JSX for the inner content
    */
-  getContent = () => {
+  getContent: Function = (): ReactElement => {
     let content = null;
 
     if (this.state.type === "icon") {
@@ -524,7 +623,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {node} JSX for a static button
    */
-  getStaticButton = () => (
+  getStaticButton: Function = (): ReactElement => (
     <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
       <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
         <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
@@ -539,7 +638,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {node} JSX for a panned button
    */
-  getPannedButton = () => (
+  getPannedButton: Function = (): ReactElement => (
     <View
       {...this.createPanResponder().panHandlers}
       style={{
@@ -575,7 +674,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
         {this.state.panned && this.state.type !== "icon" ? this.getPannedButton() : this.getStaticButton()}
@@ -588,7 +687,7 @@ class PackenUiButton extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  createStyles = () => {
+  createStyles: Function = (): object => {
     const iconSizeMultiplier = 1.5;
     return {
       shape: {
@@ -844,21 +943,22 @@ class PackenUiButton extends Component {
       }
     };
   }
-}
 
-PackenUiButton.propTypes = {
-  type: PropTypes.string.isRequired,
-  level: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-  icon: PropTypes.object,
-  callback: PropTypes.func,
-  isOutline: PropTypes.bool,
-  isDisabled: PropTypes.bool,
-  nonTouchable: PropTypes.bool,
-  children: PropTypes.node,
-  style: PropTypes.object,
-  styling: PropTypes.object,
-  panned: PropTypes.bool
-};
+  static propTypes: object = {
+    type: PropTypes.string.isRequired,
+    level: PropTypes.string.isRequired,
+    size: PropTypes.string.isRequired,
+    icon: PropTypes.object,
+    callback: PropTypes.func,
+    isOutline: PropTypes.bool,
+    isDisabled: PropTypes.bool,
+    nonTouchable: PropTypes.bool,
+    children: PropTypes.node,
+    style: PropTypes.object,
+    styling: PropTypes.object,
+    panned: PropTypes.bool,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiButton;
