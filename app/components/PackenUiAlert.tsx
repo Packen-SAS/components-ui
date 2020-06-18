@@ -1,4 +1,5 @@
 import React, { Component, ReactElement } from "react";
+import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
@@ -415,6 +416,23 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
       }
     };
   }
+
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    type: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
+    text: PropTypes.object.isRequired,
+    onClose: PropTypes.func.isRequired,
+    dismiss: PropTypes.func,
+    countdown: PropTypes.number,
+    visible: PropTypes.bool,
+    position: PropTypes.string,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
 }
 
 export default PackenUiAlert;
