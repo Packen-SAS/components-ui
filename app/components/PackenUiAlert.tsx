@@ -48,8 +48,6 @@ interface PackenUiAlertState {
   styling: StylingPropShape;
 }
 
-type VoidFunction = () => void;
-
 /**
  * Component for displaying general alert banners
  */
@@ -76,7 +74,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
    * @property {string} [theme="default"] The theme to apply the correct styles - "default"; "primary"; "info"; "warning"; "danger"; "success"
    * @property {object} [text={ title: "", main: "", preset: undefined }] The configuration object for the text to display - "title": the initial label in bold; "main": the actual message; "preset": 
    * @property {function} [onClose=false] Optional callback to be triggered when closing the alert
-   * @property {number} [countdown=false] number of milliseconds for "timed" alerts
+   * @property {number} [countdown=false] Number of milliseconds for "timed" alerts
    * @property {boolean} [visible=false] Whether the alert should be visible
    * @property {string} [position="bottom"] The position for the alert
    * @property {object} [styling={ box: {}, text: {}, iconSize: undefined, iconColor: undefined, iconWrapper: {} }] The optional custom styling props

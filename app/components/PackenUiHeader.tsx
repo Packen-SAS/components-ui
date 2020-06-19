@@ -1,23 +1,47 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import PropTypes from "prop-types";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  box: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+  title: object;
+}
+
+interface PackenUiHeaderProps {
+  children: string;
+  icon?: string;
+  onBackPress: Function;
+  style?: object;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiHeaderState {
+  children: string;
+  icon: string;
+  onBackPress: Function | boolean;
+  customStyle: object;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering header layouts with a touchable icon on the left
  */
-class PackenUiHeader extends Component {
+class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiHeaderProps) {
     super(props);
 
     /**
@@ -47,7 +71,7 @@ class PackenUiHeader extends Component {
    * @property {object} [styling={ box: {}, iconSize: undefined, iconColor: undefined, title: {} }] The theme of the divider - "light" or "dark"
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiHeaderState => {
     return {
       children: this.props.children || "",
       icon: this.props.icon || "arrow-left",
@@ -65,9 +89,10 @@ class PackenUiHeader extends Component {
   /**
    * Handles the onPress event on the icon
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  onPressHandler = () => {
-    if (this.state.onBackPress) {
+  onPressHandler: VoidFunction = (): boolean | void => {
+    if (typeof this.state.onBackPress === "function") {
       this.state.onBackPress();
     } else {
       return false;
@@ -87,7 +112,7 @@ class PackenUiHeader extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiHeaderProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -98,7 +123,7 @@ class PackenUiHeader extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <View style={{
         ...this.getStyles().box,
@@ -127,7 +152,7 @@ class PackenUiHeader extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         width: "100%",
@@ -144,14 +169,19 @@ class PackenUiHeader extends Component {
       }
     }
   }
-}
 
-PackenUiHeader.propTypes = {
-  children: PropTypes.node.isRequired,
-  icon: PropTypes.string,
-  onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
-  customStyle: PropTypes.object,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    children: PropTypes.node.isRequired,
+    icon: PropTypes.string,
+    onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
+    customStyle: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiHeader;

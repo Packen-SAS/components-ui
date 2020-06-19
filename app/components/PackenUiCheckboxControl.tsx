@@ -1,24 +1,62 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+interface ItemShape {
+  label: string;
+  isChecked: boolean;
+  isDisabled: boolean;
+}
+
+interface StylingPropShape {
+  inner: object,
+  iconBox: object,
+  iconSize: number,
+  iconColor: string,
+  label: object
+}
+
+interface PackenUiCheckboxControlProps {
+  label: string;
+  layout: string;
+  isChecked: boolean;
+  isDisabled: boolean;
+  checkedItems: any[];
+  styling?: StylingPropShape | object;
+  instance?: Function;
+}
+
+interface PackenUiCheckboxControlState {
+  label: string;
+  layout: string;
+  isChecked: boolean;
+  isDisabled: boolean;
+  checkedItems: any[];
+  styling: StylingPropShape;
+  styles: {
+    disabled: object
+  }
+}
+
+type FindItemToCheckType = (item: ItemShape) => boolean;
+
 /**
  * Component for rendering an actual checkbox and label item. This is an inner component of {@link PackenUiCheckbox} and should not be used standalone
  */
-class PackenUiCheckboxControl extends Component {
+class PackenUiCheckboxControl extends Component<PackenUiCheckboxControlProps, PackenUiCheckboxControlState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiCheckboxControlProps) {
     super(props);
 
     /**
@@ -45,7 +83,7 @@ class PackenUiCheckboxControl extends Component {
    * @property {object} [styling={ inner: {}, iconBox: {}, iconSize: undefined, iconColor: undefined, label: {} }] The optional custom styling props
    * @return {object} The props mapped as the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiCheckboxControlProps => {
     return {
       label: this.props.label ? this.props.label : "",
       layout: this.props.layout ? this.props.layout : "column",
@@ -66,7 +104,7 @@ class PackenUiCheckboxControl extends Component {
    * Propagates the component instance if a callback is provided via props and applies the correct disabled styles if set so
    * @type {function}
    */
-  componentDidMount = () => {
+  componentDidMount() {
     this.setDisabledStyles();
 
     if (typeof this.props.instance === "function") {
@@ -79,13 +117,14 @@ class PackenUiCheckboxControl extends Component {
    * @type {function}
    * @param {object} item The item to compare
    */
-  findItemToCheck = item => item.label === this.state.label; 
+  findItemToCheck: FindItemToCheckType = (item: ItemShape): boolean => item.label === this.state.label; 
 
   /**
    * Sets the active styles
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  setActiveStyles = () => {
+  setActiveStyles: Function = (): boolean => {
     if (this.state.layout === "dropdown") {
       const newCheckedItems = [...this.state.checkedItems];
       const foundItem = newCheckedItems.find(this.findItemToCheck);
@@ -94,7 +133,7 @@ class PackenUiCheckboxControl extends Component {
       });
       return foundItem.isChecked;
     } else {
-      if (this.state.checkedItems.includes(this.state.label)) {
+      if (typeof this.state.label === "string" && this.state.checkedItems.includes(this.state.label)) {
         this.setState({
           isChecked: true
         });
@@ -112,7 +151,7 @@ class PackenUiCheckboxControl extends Component {
    * Sets the disabled styles
    * @type {function}
    */
-  setDisabledStyles = () => {
+  setDisabledStyles: Function = (): object => {
     let disabledStyles = {};
 
     if (this.state.isDisabled) {
@@ -133,7 +172,7 @@ class PackenUiCheckboxControl extends Component {
    * Updates the state with new props and checks for any special styles change
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -147,7 +186,7 @@ class PackenUiCheckboxControl extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate = (prevProps) => {
+  componentDidUpdate(prevProps: PackenUiCheckboxControlProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -158,7 +197,7 @@ class PackenUiCheckboxControl extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <View style={{ ...this.getStyles().inner.base, ...this.state.styling.inner }}>
         <View
@@ -195,7 +234,7 @@ class PackenUiCheckboxControl extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       inner: {
         base: {
@@ -258,15 +297,20 @@ class PackenUiCheckboxControl extends Component {
       }
     };
   }
-}
 
-PackenUiCheckboxControl.propTypes = {
-  label: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired,
-  isChecked: PropTypes.bool.isRequired,
-  isDisabled: PropTypes.bool.isRequired,
-  checkedItems: PropTypes.array.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    label: PropTypes.string.isRequired,
+    layout: PropTypes.string.isRequired,
+    isChecked: PropTypes.bool.isRequired,
+    isDisabled: PropTypes.bool.isRequired,
+    checkedItems: PropTypes.array.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiCheckboxControl;

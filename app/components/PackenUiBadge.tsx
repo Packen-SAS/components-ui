@@ -194,6 +194,10 @@ class PackenUiBadge extends Component<PackenUiBadgeProps, PackenUiBadgeState> {
     };
   }
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     label: PropTypes.string,
     children: PropTypes.node,

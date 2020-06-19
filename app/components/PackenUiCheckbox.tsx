@@ -1,20 +1,56 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiCheckboxControl from "./PackenUiCheckboxControl";
 
+interface ItemShape {
+  value: string;
+  label: string;
+  isChecked: boolean;
+  isDisabled: boolean;
+}
+
+interface StylingPropShape {
+  wrapper: object;
+  content: object;
+  control: object;
+}
+
+interface PackenUiCheckboxProps {
+  layout: string;
+  items: ItemShape[];
+  callback: Function;
+  name: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiCheckboxState {
+  layout: string;
+  items: ItemShape[];
+  callback: Function | boolean;
+  name: string;
+  styling: StylingPropShape;
+  checkedItems: string[] | ItemShape[];
+  selectedIndex: number;
+}
+
+type MapRenderedControlsType = (value: ItemShape, index: number, array: ItemShape[]) => {} | null | undefined;
+type FilterUpdatedItems = (value: ItemShape) => boolean;
+type MapNewCheckedItemsType = (value: ItemShape) => string;
+
 /**
  * Component for rendering a list of checkboxes that can be laid out vertically or horizontally
  */
-class PackenUiCheckbox extends Component {
+class PackenUiCheckbox extends Component<PackenUiCheckboxProps, PackenUiCheckboxState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiCheckboxProps) {
     super(props);
 
     /**
@@ -50,7 +86,7 @@ class PackenUiCheckbox extends Component {
    * @property {object} [styling={ wrapper: {}, content: {}, control: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       layout: this.props.layout ? this.props.layout : "column",
       items: this.props.items ? [...this.props.items] : [],
@@ -69,7 +105,7 @@ class PackenUiCheckbox extends Component {
    * @type {function}
    * @param {number} selectedIndex The index of the pressed item
    */
-  pressHandler = selectedIndex => {
+  pressHandler: Function = (selectedIndex: number) => {
     this.setState({
       selectedIndex: selectedIndex
     }, this.updateCheckedItems);
@@ -81,7 +117,7 @@ class PackenUiCheckbox extends Component {
    * @param {object} item The item to validate
    * @return {object} The same item if it's checked
    */
-  filterUpdatedItems = item => item.isChecked;
+  filterUpdatedItems: FilterUpdatedItems = (item: ItemShape): boolean => item.isChecked;
 
   /**
    * Extracts an item's value
@@ -89,23 +125,23 @@ class PackenUiCheckbox extends Component {
    * @param {object} item The item to process
    * @return {string} The item's value
    */
-  mapNewCheckedItems = item => item.value;
+  mapNewCheckedItems: MapNewCheckedItemsType = (item: ItemShape): string => item.value;
 
   /**
    * Updates the checked items array in state and triggers the provided callback
    * @type {function}
    */
-  updateCheckedItems = () => {
+  updateCheckedItems: VoidFunction = (): boolean | void => {
     if (this.state.selectedIndex !== null) {
       const updatedItems = [...this.state.items];
       updatedItems[this.state.selectedIndex].isChecked = !updatedItems[this.state.selectedIndex].isChecked;
-      let newCheckedItems = updatedItems.filter(this.filterUpdatedItems);
-      newCheckedItems = newCheckedItems.map(this.mapNewCheckedItems);
+      const newCheckedItems = updatedItems.filter(this.filterUpdatedItems);
+      const checkedItemsStrings = newCheckedItems.map(this.mapNewCheckedItems);
 
       this.setState({
-        checkedItems: newCheckedItems
-      }, () => {
-        if (this.state.callback) {
+        checkedItems: checkedItemsStrings
+      }, (): boolean | void => {
+        if (typeof this.state.callback === "function") {
           this.state.callback(this.state.name, newCheckedItems);
         } else {
           return false;
@@ -123,16 +159,16 @@ class PackenUiCheckbox extends Component {
    * @param {boolean} newState The item's new internal state
    * @return {object} The same item with the new configuration
    */
-  mapUpdatedCheckedItems = (item, newState) => ({ label: item, isChecked: newState, isDisabled: false });
+  mapUpdatedCheckedItems: Function = (item: string, newState: boolean): object => ({ label: item, isChecked: newState, isDisabled: false });
 
   /**
-   * Returns the selected item
+   * Returns whether the selected item matches the searched value
    * @type {function}
    * @param {object} item The item to check
-   * @param {string} valueToSearch The value to compare agains
-   * @return {object} The item that matches the searched value
+   * @param {string} valueToSearch The value to compare against
+   * @return {boolean} The flag determining if the item matches the searched value
    */
-  findMatchedItemToCheck = (item, valueToSearch) => item.label === valueToSearch;
+  findMatchedItemToCheck: Function = (item: ItemShape, valueToSearch: string): boolean => item.label === valueToSearch;
 
   /**
    * Programmatically sets the checked states
@@ -141,7 +177,7 @@ class PackenUiCheckbox extends Component {
    * @param {boolean} newState The new state for the item
    * @param {string[]} finalSelectionArray The currently selected values
    */
-  setCheckedState = (valueToSearch, newState, finalSelectionArray) => {
+  setCheckedState: Function = (valueToSearch: string, newState: boolean, finalSelectionArray: ItemShape[]): boolean | void => {
     let updatedCheckedItems = [...finalSelectionArray];
     updatedCheckedItems = updatedCheckedItems.map(item => this.mapUpdatedCheckedItems(item, newState));
 
@@ -163,7 +199,7 @@ class PackenUiCheckbox extends Component {
    * @param {number} i The item's index
    * @return {node} JSX for the checkbox control item
    */
-  mapRenderedControls = (item, i) => (
+  mapRenderedControls: MapRenderedControlsType = (item: ItemShape, i: number): ReactElement => (
     <View
       key={i}
       pointerEvents={item.isDisabled ? "none" : "auto"}
@@ -188,7 +224,7 @@ class PackenUiCheckbox extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -197,7 +233,7 @@ class PackenUiCheckbox extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiCheckboxProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -208,7 +244,7 @@ class PackenUiCheckbox extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <View
         style={{ ...this.getStyles().wrapper.layout[this.state.layout], ...this.state.styling.wrapper }}
@@ -224,7 +260,7 @@ class PackenUiCheckbox extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: {
         layout: {
@@ -259,14 +295,19 @@ class PackenUiCheckbox extends Component {
       }
     };
   }
-}
 
-PackenUiCheckbox.propTypes = {
-  layout: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    layout: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    callback: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiCheckbox;

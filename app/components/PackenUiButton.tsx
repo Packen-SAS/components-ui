@@ -101,7 +101,6 @@ interface PackenUiButtonState {
 type PanResponderFunctionNull = (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => void;
 type PanResponderFunctionBoolean = (evt: GestureResponderEvent, gestureState: PanResponderGestureState) => boolean;
 type GestureResponderFunction = (evt: GestureResponderEvent) => void;
-type VoidFunction = () => void;
 
 /**
  * Component for displaying all types of buttons
@@ -944,6 +943,10 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
     };
   }
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     type: PropTypes.string.isRequired,
     level: PropTypes.string.isRequired,

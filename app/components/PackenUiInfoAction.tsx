@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, ReactElement } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils"
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 import Shadows from "../styles/abstracts/shadows";
@@ -11,16 +11,61 @@ import Shadows from "../styles/abstracts/shadows";
 import PackenUiText from "./PackenUiText";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 
+interface IconPropShape {
+  name: string;
+  size: number;
+}
+
+interface StylingPropShape {
+  box: object;
+  main: object;
+  mainTop: object;
+  title: object;
+  svgWidth: number | undefined;
+  svgHeight: number | undefined;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+  caption: object;
+  subtitle: object;
+  subtitleIconSize: number | undefined;
+  subtitleIconColor: string | undefined;
+}
+
+interface PackenUiInfoActionProps {
+  theme: string;
+  title: string;
+  caption?: string;
+  subtitle?: string;
+  callback: VoidFunction;
+  style?: object;
+  img: string;
+  icon?: IconPropShape;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiInfoActionState {
+  theme: string;
+  title: string;
+  caption: string | boolean;
+  subtitle: string | boolean;
+  callback: VoidFunction;
+  boxStyle: object;
+  img: string;
+  icon: IconPropShape;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering an action's current state and its trigger to change it
  */
-class PackenUiInfoAction extends Component {
+class PackenUiInfoAction extends Component<PackenUiInfoActionProps, PackenUiInfoActionState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiInfoActionProps) {
     super(props);
 
     /**
@@ -43,8 +88,9 @@ class PackenUiInfoAction extends Component {
   /**
    * Placeholder function that does nothing
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  mockCallback = () => false;
+  mockCallback: VoidFunction = (): boolean => false;
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
@@ -60,7 +106,7 @@ class PackenUiInfoAction extends Component {
    * @property {object} [styling={ box: {}, main: {}, mainTop: {}, title: {}, svgWidth: undefined, svgHeight: undefined, iconSize: undefined, iconColor: undefined, caption: {}, subtitle: {}, subtitleIconColor: undefined, subtitleIconSize: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiInfoActionState => {
     return {
       theme: this.props.theme ? this.props.theme : "primary",
       title: this.props.title ? this.props.title : "",
@@ -95,7 +141,7 @@ class PackenUiInfoAction extends Component {
    * @type {function}
    * @return {node|null} JSX for the caption or null
    */
-  getCaption = () => {
+  getCaption: Function = (): ReactElement | null => {
     let caption = null;
 
     if (this.state.caption) {
@@ -118,7 +164,7 @@ class PackenUiInfoAction extends Component {
    * @type {function}
    * @return {node|null} JSX for the subtitle or null
    */
-  getSubtitle = () => {
+  getSubtitle: Function = (): ReactElement | null => {
     let subtitle = null;
 
     if (this.state.subtitle) {
@@ -158,7 +204,7 @@ class PackenUiInfoAction extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -167,7 +213,7 @@ class PackenUiInfoAction extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiInfoActionProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -178,7 +224,7 @@ class PackenUiInfoAction extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactElement {
     return (
       <TouchableWithoutFeedback onPress={this.state.callback}>
         <View style={{
@@ -218,7 +264,7 @@ class PackenUiInfoAction extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         base: {
@@ -289,18 +335,23 @@ class PackenUiInfoAction extends Component {
       }
     };
   }
-}
 
-PackenUiInfoAction.propTypes = {
-  theme: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  caption: PropTypes.string,
-  subtitle: PropTypes.string,
-  callback: PropTypes.func.isRequired,
-  style: PropTypes.object,
-  img: PropTypes.string.isRequired,
-  icon: PropTypes.object,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    theme: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    caption: PropTypes.string,
+    subtitle: PropTypes.string,
+    callback: PropTypes.func.isRequired,
+    style: PropTypes.object,
+    img: PropTypes.string.isRequired,
+    icon: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiInfoAction;
