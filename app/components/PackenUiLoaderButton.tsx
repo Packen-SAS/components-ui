@@ -1,20 +1,57 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { Animated } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiButton from "./PackenUiButton";
 
+interface AnimStateShape {
+  start: Function,
+  stop: Function
+}
+
+interface StylingPropShape {
+  shape: object;
+  shapeContent: object;
+  label: object;
+  iconWrapper: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface PackenUiLoaderButtonProps {
+  children?: ReactNode;
+  type: string;
+  level: string;
+  size: string;
+  callback: VoidFunction;
+  isDone: boolean;
+  styling?: StylingPropShape;
+  instance: Function;
+}
+
+interface PackenUiLoaderButtonState {
+  children: ReactNode;
+  type: string;
+  level: string;
+  size: string;
+  callback: VoidFunction;
+  isDone: boolean;
+  styling: StylingPropShape | {};
+  anim: AnimStateShape;
+  rotate: Animated.AnimatedValue;
+}
+
 /**
  * Component that wraps {@link PackenUiButton} for rendering a loader animation in it
  */
-class PackenUiLoaderButton extends Component {
+class PackenUiLoaderButton extends Component<PackenUiLoaderButtonProps, PackenUiLoaderButtonState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiLoaderButtonProps) {
     super(props);
 
     /**
@@ -34,12 +71,12 @@ class PackenUiLoaderButton extends Component {
    * Placeholder function that does nothing
    * @type {function}
    */
-  mockCallback = () => false;
+  mockCallback: VoidFunction = (): boolean => false;
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
-   * @property {string} [children=null] The actual text for the button
+   * @property {node} [children=null] The actual text for the button
    * @property {string} [type="regular"] The type of button - "regular" or "icon"
    * @property {string} [level="primary"] The theme for the styling - "primary"; "secondary"; "tertiary"; "ghost"; "danger"
    * @property {string} [size="medium"] The size for the styling of elements - "tiny"; "small"; "medium"; "large"; "giant"
@@ -48,7 +85,7 @@ class PackenUiLoaderButton extends Component {
    * @property {object} [styling={}] The optional custom styling props to be passed to the {@link PackenUiButton} component
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       children: this.props.children ? this.props.children : null,
       type: this.props.type ? this.props.type : "regular",
@@ -76,12 +113,13 @@ class PackenUiLoaderButton extends Component {
    * Configures the animation and sets it to the state
    * @type {function}
    */
-  setAnim = () => {
+  setAnim: Function = () => {
     const anim = Animated.loop(
       Animated.sequence([
         Animated.timing(this.state.rotate, {
           toValue: 1,
-          duration: 1000
+          duration: 1000,
+          useNativeDriver: false
         })
       ])
     );
@@ -95,7 +133,7 @@ class PackenUiLoaderButton extends Component {
    * @type {function}
    * @return {string} The icon name to be used
    */
-  getIconName = () => {
+  getIconName: Function = (): string => {
     return this.state.isDone ? "check" : "loader";
   }
 
@@ -103,7 +141,7 @@ class PackenUiLoaderButton extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -112,7 +150,7 @@ class PackenUiLoaderButton extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiLoaderButtonProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -123,7 +161,7 @@ class PackenUiLoaderButton extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <PackenUiButton
         icon={{
@@ -150,7 +188,7 @@ class PackenUiLoaderButton extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       done: {},
       loading: {
@@ -163,16 +201,21 @@ class PackenUiLoaderButton extends Component {
       }
     };
   }
-}
 
-PackenUiLoaderButton.propTypes = {
-  children: PropTypes.node,
-  type: PropTypes.string.isRequired,
-  level: PropTypes.string.isRequired,
-  size: PropTypes.string.isRequired,
-  callback: PropTypes.func.isRequired,
-  isDone: PropTypes.bool,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    children: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    level: PropTypes.string.isRequired,
+    size: PropTypes.string.isRequired,
+    callback: PropTypes.func.isRequired,
+    isDone: PropTypes.bool,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiLoaderButton;

@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, Image, TouchableWithoutFeedback, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
@@ -62,7 +62,7 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
    * @type {function}
    * @property {number|object} [src=false] The "source" attribute for RN's Image component
    * @property {string} [size="medium"] The size for the component styles - "xtiny"; "tiny"; "small"; "medium", "medium_alt"; "large"; "giant"
-   * @property {function} [callback=false] A callback function to be triggered when pressing over the component
+   * @property {function} [callback=() => true] A callback function to be triggered when pressing over the component
    * @property {object} [styling={ container: {}, image: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
@@ -85,14 +85,14 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  mockFunction: Function = (): Boolean => true;
+  mockFunction: Function = (): boolean => true;
 
   /**
    * Returns the inner content
    * @type {function}
    * @return {node} JSX for the inner content
    */
-  getInner: Function = (): ReactElement | null => {
+  getInner: Function = (): ReactNode | null => {
     let inner = null;
 
     if (this.state.src && typeof this.state.src !== "boolean") {
@@ -126,7 +126,7 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
    * @type {function}
    * @return {node} JSX for the main, outer content
    */
-  getContent: Function = (): ReactElement | null => {
+  getContent: Function = (): ReactNode | null => {
     let content = null;
 
     if (this.state.callback) {
@@ -173,7 +173,7 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <View style={[
         this.getStyles().container.base,

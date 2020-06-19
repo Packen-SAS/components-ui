@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import { View, TouchableWithoutFeedback } from "react-native";
 import PropTypes from "prop-types";
 import * as UTIL from "../utils";
@@ -16,7 +16,7 @@ interface StylingPropShape {
 }
 
 interface PackenUiHeaderProps {
-  children: string;
+  children: ReactNode;
   icon?: string;
   onBackPress: Function;
   style?: object;
@@ -25,7 +25,7 @@ interface PackenUiHeaderProps {
 }
 
 interface PackenUiHeaderState {
-  children: string;
+  children: ReactNode;
   icon: string;
   onBackPress: Function | boolean;
   customStyle: object;
@@ -64,7 +64,7 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
-   * @property {string} [children=""] The title text
+   * @property {node} [children=null] The title text
    * @property {string} [icon="arrow-left"] The icon name to be displayed
    * @property {function} [onBackPress=false] The callback function to be called when pressing the icon
    * @property {object} [customStyle={}] Custom styles object to be applied specifically to the wrapping box element
@@ -73,7 +73,7 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
    */
   setPropsToState: Function = (): PackenUiHeaderState => {
     return {
-      children: this.props.children || "",
+      children: this.props.children || null,
       icon: this.props.icon || "arrow-left",
       onBackPress: this.props.onBackPress || false,
       customStyle: this.props.style || {},
@@ -123,7 +123,7 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().box,

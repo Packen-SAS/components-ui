@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils"
@@ -141,7 +141,7 @@ class PackenUiInfoAction extends Component<PackenUiInfoActionProps, PackenUiInfo
    * @type {function}
    * @return {node|null} JSX for the caption or null
    */
-  getCaption: Function = (): ReactElement | null => {
+  getCaption: Function = (): ReactNode | null => {
     let caption = null;
 
     if (this.state.caption) {
@@ -164,7 +164,7 @@ class PackenUiInfoAction extends Component<PackenUiInfoActionProps, PackenUiInfo
    * @type {function}
    * @return {node|null} JSX for the subtitle or null
    */
-  getSubtitle: Function = (): ReactElement | null => {
+  getSubtitle: Function = (): ReactNode | null => {
     let subtitle = null;
 
     if (this.state.subtitle) {
@@ -224,7 +224,7 @@ class PackenUiInfoAction extends Component<PackenUiInfoActionProps, PackenUiInfo
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <TouchableWithoutFeedback onPress={this.state.callback}>
         <View style={{

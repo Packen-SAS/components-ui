@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
@@ -199,7 +199,7 @@ class PackenUiCheckbox extends Component<PackenUiCheckboxProps, PackenUiCheckbox
    * @param {number} i The item's index
    * @return {node} JSX for the checkbox control item
    */
-  mapRenderedControls: MapRenderedControlsType = (item: ItemShape, i: number): ReactElement => (
+  mapRenderedControls: MapRenderedControlsType = (item: ItemShape, i: number): ReactNode => (
     <View
       key={i}
       pointerEvents={item.isDisabled ? "none" : "auto"}
@@ -244,7 +244,7 @@ class PackenUiCheckbox extends Component<PackenUiCheckboxProps, PackenUiCheckbox
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <View
         style={{ ...this.getStyles().wrapper.layout[this.state.layout], ...this.state.styling.wrapper }}

@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import * as UTIL from "../utils";
@@ -16,7 +16,7 @@ interface StylingPropShape {
 
 interface PackenUiBadgeProps {
   label?: string;
-  children?: ReactElement;
+  children?: ReactNode;
   width?: number;
   height?: number;
   color?: string;
@@ -29,7 +29,7 @@ interface PackenUiBadgeProps {
 
 interface PackenUiBadgeState {
   label: string,
-  children: ReactElement | boolean,
+  children: ReactNode | boolean,
   width: number,
   height: number,
   color: string,
@@ -126,7 +126,7 @@ class PackenUiBadge extends Component<PackenUiBadgeProps, PackenUiBadgeState> {
    * @type {function}
    * @return {node} JSX for the main content
    */
-  getContent: Function = (): ReactElement => {
+  getContent: Function = (): ReactNode => {
     let content = (
       <View style={{ ...this.getStyle().wrapper, ...this.state.styling.wrapper }}>
         <PackenUiText preset="c2" style={{ ...this.getStyle().label, ...this.state.styling.label }}>{this.state.label}</PackenUiText>
@@ -154,7 +154,7 @@ class PackenUiBadge extends Component<PackenUiBadgeProps, PackenUiBadgeState> {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return this.getContent();
   }
 

@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
@@ -192,7 +192,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
    * @type {function}
    * @return {node} JSX for the icon
    */
-  getIcon: Function = (): ReactElement => (
+  getIcon: Function = (): ReactNode => (
     <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
       <Icon
         name={this.getIconName()}
@@ -207,7 +207,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
    * @type {function}
    * @return {node} JSX for the main content
    */
-  getMain: Function = (): ReactElement => (
+  getMain: Function = (): ReactNode => (
     <View style={this.getStyles().main}>
       <PackenUiText
         preset={this.state.text.preset}
@@ -232,7 +232,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
    * @type {function}
    * @return {node} JSX for the "close" icon
    */
-  getClose: Function = (): ReactElement => (
+  getClose: Function = (): ReactNode => (
     <TouchableWithoutFeedback onPress={this.close}>
       <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
         <Icon
@@ -283,7 +283,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement | null {
+  render(): ReactNode | null {
     return (
       this.state.visible ? (
         <View style={[this.getStyles().box.main, this.getPositionAlert()]}>

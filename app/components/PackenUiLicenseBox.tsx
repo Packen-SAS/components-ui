@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableNativeFeedback } from "react-native";
 
@@ -8,16 +8,58 @@ import Colors from "../styles/abstracts/colors";
 import PackenUiText from "./PackenUiText";
 import PackenUiTag from "./PackenUiTag";
 
+interface LicenseStateShape {
+  label: string;
+  bg: string;
+  text: string;
+}
+
+interface LabelsStateShape {
+  approved: string,
+  expired: string;
+  rejected: string;
+  pending: string;
+}
+
+interface StylingPropShape {
+  box: object,
+  top: object,
+  overview: object,
+  bottom: object
+}
+
+interface PackenUiLicenseBoxProps {
+  overview: string,
+  category: string,
+  number: string,
+  state: string,
+  dueDate?: string,
+  callback?: VoidFunction,
+  labels: LabelsStateShape,
+  styling?: StylingPropShape
+}
+
+interface PackenUiLicenseBoxState {
+  overview: string | null;
+  category: string | null;
+  number: string | null;
+  state: string | null;
+  dueDate: string | null;
+  callback: VoidFunction;
+  labels: LabelsStateShape
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering a license preview box
  */
-class PackenUiLicenseBox extends Component {
+class PackenUiLicenseBox extends Component<PackenUiLicenseBoxProps, PackenUiLicenseBoxState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiLicenseBoxProps) {
     super(props);
 
     /**
@@ -28,6 +70,13 @@ class PackenUiLicenseBox extends Component {
   }
 
   /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Flag used only for testing purposes
+   */
+  mockCallback: VoidFunction = (): boolean => true;
+
+  /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
    * @property {string} [overview=null] The general overview of this license type
@@ -35,19 +84,19 @@ class PackenUiLicenseBox extends Component {
    * @property {string} [number=null] The license number
    * @property {string} [state=null] The license's current status
    * @property {string} [dueDate=null] The license's due date
-   * @property {function} [callback=null] The license's callback to be called when pressing on the component
+   * @property {function} [callback=() => true;] The license's callback to be called when pressing on the component
    * @property {object} [labels={ approved: "Aprobado", expired: "Expirado", rejected: "Rechazado", pending: "Pendiente" }] The required i18n labels for the license's status
    * @property {object} [styling={ box: {}, top: {}, overview: {}, bottom: {} }] The optional custom styling props
    * @return {object} The props mapped as the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiLicenseBoxState => {
     return {
       overview: this.props.overview ? this.props.overview : null,
       category: this.props.category ? this.props.category : null,
       number: this.props.number ? this.props.number : null,
       state: this.props.state ? this.props.state : null,
       dueDate: this.props.dueDate ? this.props.dueDate : null,
-      callback: this.props.callback ? this.props.callback : null,
+      callback: this.props.callback ? this.props.callback : this.mockCallback,
       labels: this.props.labels ? { ...this.props.labels } : {
         approved: "Aprobado",
         expired: "Expirado",
@@ -68,12 +117,12 @@ class PackenUiLicenseBox extends Component {
    * @type {function}
    * @return {object} The configuration object for the status' {@link PackenUiTag}
    */
-  getLicenseState = state => {
+  getLicenseState: Function = (state: string): LicenseStateShape => {
     switch (state) {
       case "approved":
         return { label: this.state.labels.approved, bg: Colors.success.default, text: Colors.white.default };
       case "expired":
-        return { label: this.state.labels.expired, bg: Colors.base.gray, text: Colors.white.default };
+        return { label: this.state.labels.expired, bg: Colors.basic.gray.dft, text: Colors.white.default };
       case "blocked":
       case "rejected":
         return { label: this.state.labels.rejected, bg: Colors.danger.default, text: Colors.white.default };
@@ -89,7 +138,7 @@ class PackenUiLicenseBox extends Component {
    * @param {string} state The received due date
    * @return {string} The correct background color
    */
-  getDueDateState = state => {
+  getDueDateState: Function = (state: string): string => {
     if (!state) { return Colors.danger.default; }
     const licenseExpired = (UTIL.datetime()
       .diff(
@@ -107,7 +156,7 @@ class PackenUiLicenseBox extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps: PackenUiLicenseBoxProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.setState({ ...this.setPropsToState() });
     }
@@ -118,7 +167,7 @@ class PackenUiLicenseBox extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render = () => {
+  render(): ReactNode {
     const state = this.getLicenseState(this.state.state);
     return (
       <TouchableNativeFeedback onPress={this.state.callback}>
@@ -178,7 +227,7 @@ class PackenUiLicenseBox extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wt: { width: "100%" },
       box: {
@@ -208,17 +257,21 @@ class PackenUiLicenseBox extends Component {
       }
     };
   }
-}
 
-PackenUiLicenseBox.propTypes = {
-  overview: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired,
-  dueDate: PropTypes.string,
-  callback: PropTypes.func,
-  labels: PropTypes.object.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    overview: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    dueDate: PropTypes.string,
+    callback: PropTypes.func,
+    labels: PropTypes.object.isRequired,
+    styling: PropTypes.object
+  };
+}
 
 export default PackenUiLicenseBox;

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
@@ -8,16 +8,40 @@ import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  box: object;
+  label: object;
+}
+
+interface PackenUiTagProps {
+  style?: object;
+  boxStyles?: object;
+  children: ReactNode;
+  backgroundColor?: string;
+  textColor?: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiTagState {
+  style: object;
+  boxStyles: object;
+  children: ReactNode;
+  backgroundColor: string;
+  textColor: string;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering a small tag element consisting of a label over a background-colored box
  */
-class PackenUiTag extends Component {
+class PackenUiTag extends Component<PackenUiTagProps, PackenUiTagState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiTagProps) {
     super(props);
 
     /**
@@ -40,18 +64,18 @@ class PackenUiTag extends Component {
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
-   * @property {object} [style={}] The optional styles object to be applied specifically to the inner {@link PackenUiText} component
-   * @property {object} [boxStyles={}] The optional styles object to be applied specifically to the box element
+   * @property {object} [style={}] The optional styles object to be applied specifically to the box element
+   * @property {object} [boxStyles={}] An alias for the optional styles object to be applied specifically to the box element
    * @property {node} [children=null] The actual text to display
    * @property {string} [backgroundColor=Colors.brand.primary.ulgt] The background color for the box
    * @property {string} [textColor=Colors.basic.independence.dft] The color for the text
    * @property {object} [styling={ box: {}, label: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiTagState => {
     return {
       style: this.props.style ? { ...this.props.style } : {},
-      boxStyles: this.props.style ? { ...this.props.style } : {},
+      boxStyles: this.props.boxStyles ? { ...this.props.boxStyles } : {},
       children: this.props.children ? this.props.children : null,
       backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : Colors.brand.primary.ulgt,
       textColor: this.props.textColor ? this.props.textColor : Colors.basic.independence.dft,
@@ -66,7 +90,7 @@ class PackenUiTag extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -75,7 +99,7 @@ class PackenUiTag extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiTagProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -86,18 +110,18 @@ class PackenUiTag extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().box.base,
         ...this.state.boxStyles,
+        ...this.state.style,
         ...this.state.styling.box
       }}>
         <PackenUiText
           preset="c1"
           style={{
             ...this.getStyles().label.base,
-            ...this.state.style,
             ...this.state.styling.label
           }}
         >{this.state.children}</PackenUiText>
@@ -110,7 +134,7 @@ class PackenUiTag extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         base: {
@@ -135,15 +159,20 @@ class PackenUiTag extends Component {
       }
     };
   }
-}
 
-PackenUiTag.propTypes = {
-  style: PropTypes.object,
-  boxStyles: PropTypes.object,
-  children: PropTypes.node.isRequired,
-  backgroundColor: PropTypes.string,
-  textColor: PropTypes.string,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    style: PropTypes.object,
+    boxStyles: PropTypes.object,
+    children: PropTypes.node.isRequired,
+    backgroundColor: PropTypes.string,
+    textColor: PropTypes.string,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiTag;

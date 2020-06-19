@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
@@ -100,7 +100,7 @@ class PackenUiDivider extends Component<PackenUiDividerProps, PackenUiDividerSta
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <View style={{
         height: this.state.size,

@@ -1,19 +1,40 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiListItem from "./PackenUiListItem";
 
+interface StylingPropShape {
+  wrapper: object;
+  inner: object;
+  item: object;
+}
+
+interface PackenUiListProps {
+  items: object[];
+  style?: object;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiListState {
+  items: object[];
+  customWrapperStyles: object;
+  styling: StylingPropShape;
+}
+
+type MapItemsType = (item: object, i: number) => ReactNode;
+
 /**
  * Component for rendering a list (NOT a dropdown list)
  */
-class PackenUiList extends Component {
+class PackenUiList extends Component<PackenUiListProps, PackenUiListState> {
   /**
    * Initializes the component
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiListProps) {
     super(props);
 
     /**
@@ -41,7 +62,7 @@ class PackenUiList extends Component {
     * @property {object} [styling={ wrapper: {}, inner: {}, item: {} }] The optional custom styling props
     * @return {object} The props mapped to the state keys
     */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiListState => {
     return {
       items: this.props.items ? [...this.props.items] : [],
       customWrapperStyles: this.props.style ? { ...this.props.style } : {},
@@ -60,7 +81,7 @@ class PackenUiList extends Component {
    * @param {number} i The index of this item
    * @return {node} JSX for this item
    */
-  mapItems = (item, i) => (
+  mapItems: MapItemsType = (item: object, i: number): ReactNode => (
     <View style={{ zIndex: this.state.items.length - i, ...this.state.styling.inner }}>
       <PackenUiListItem data={item} key={i} styling={this.state.styling.item} />
     </View>
@@ -70,7 +91,7 @@ class PackenUiList extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -79,7 +100,7 @@ class PackenUiList extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiListProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -90,7 +111,7 @@ class PackenUiList extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().wrapper,
@@ -107,7 +128,7 @@ class PackenUiList extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: {
         flex: 1,
@@ -115,12 +136,18 @@ class PackenUiList extends Component {
       }
     };
   }
-}
 
-PackenUiList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  customWrapperStyles: PropTypes.object,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    customWrapperStyles: PropTypes.object,
+    style: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiList;

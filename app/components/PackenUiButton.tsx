@@ -1,4 +1,4 @@
-import React, { Component, ReactElement } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, View, Animated, PanResponder, PanResponderGestureState, GestureResponderEvent } from "react-native"
 import * as UTIL from "../utils";
@@ -69,9 +69,9 @@ interface PackenUiButtonProps {
   isOutline?: boolean;
   isDisabled?: boolean;
   nonTouchable?: boolean;
-  children?: string;
+  children?: ReactNode;
   style?: object;
-  styling?: StylingPropShape;
+  styling?: StylingPropShape | {};
   panned?: boolean;
   instance?: Function;
 }
@@ -85,7 +85,7 @@ interface PackenUiButtonState {
   isOutline: boolean;
   isDisabled: boolean;
   nonTouchable: boolean;
-  children: string | undefined;
+  children: ReactNode | undefined;
   panned: boolean;
   styling: StylingPropShape;
   styles: StylesPropShape;
@@ -159,7 +159,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @property {string} [level="primary"] The theme for the styles - "primary"; "secondary"; "tertiary"; "ghost"; "danger"
    * @property {string} [size="medium"] The size for the styles - "tiny"; "small"; "medium"; "large"; "giant"
    * @property {object} [icon=undefined] The optional icon configuration object
-   * @property {function} [callback=false] The callback to be triggered when pressing the button
+   * @property {function} [callback=() => true] The callback to be triggered when pressing the button
    * @property {boolean} [isOutline=false] Determines if outline styles should be applied
    * @property {boolean} [isDisabled=false] Determines if disabled styles should be applied
    * @property {boolean} [nonTouchable=false] Determines if the button should not register any pointer events
@@ -572,7 +572,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @type {function}
    * @return {node} JSX for the icon
    */
-  getIcon: Function = (): ReactElement | null => {
+  getIcon: Function = (): ReactNode | null => {
     let icon = null;
     
     if (this.state.icon) {
@@ -599,7 +599,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @type {function}
    * @return {node} JSX for the inner content
    */
-  getContent: Function = (): ReactElement => {
+  getContent: Function = (): ReactNode => {
     let content = null;
 
     if (this.state.type === "icon") {
@@ -622,7 +622,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @type {function}
    * @return {node} JSX for a static button
    */
-  getStaticButton: Function = (): ReactElement => (
+  getStaticButton: Function = (): ReactNode => (
     <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
       <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
         <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
@@ -637,7 +637,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @type {function}
    * @return {node} JSX for a panned button
    */
-  getPannedButton: Function = (): ReactElement => (
+  getPannedButton: Function = (): ReactNode => (
     <View
       {...this.createPanResponder().panHandlers}
       style={{
@@ -673,7 +673,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactElement {
+  render(): ReactNode {
     return (
       <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
         {this.state.panned && this.state.type !== "icon" ? this.getPannedButton() : this.getStaticButton()}

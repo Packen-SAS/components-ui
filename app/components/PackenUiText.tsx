@@ -1,22 +1,62 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
+
+interface IconShape {
+  name: string;
+  position: string;
+  color: string;
+  size: number;
+}
+
+interface TouchableStylesShape {
+  wrapper: object;
+  label: object;
+}
+
+interface TouchableShape {
+  callback: Function;
+  style: {
+    wrapper: object;
+    label: object;
+  }
+}
+
+interface PackenUiTextProps {
+  preset?: string;
+  touchable?: TouchableShape;
+  children: ReactNode;
+  icon?: IconShape;
+  style?: object;
+  styling?: object;
+  instance?: Function;
+}
+
+interface PackenUiTextState {
+  preset: string | boolean;
+  touchable: TouchableShape | undefined;
+  children: ReactNode | null;
+  icon: IconShape | undefined;
+  presetStyle: object;
+  touchableStyles: TouchableStylesShape;
+  styling: object;
+}
 
 /**
  * Component for rendering text with optional style presets, touchable callbacks, and icons
  */
-class PackenUiText extends Component {
+class PackenUiText extends Component<PackenUiTextProps, PackenUiTextState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiTextProps) {
     super(props);
 
     /**
@@ -40,20 +80,20 @@ class PackenUiText extends Component {
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
    * @property {string} [preset=false] The preset styles to apply - "h1"; "h2"; "h3"; "h4"; "h5"; "h6"; "t1"; "t2"; "s1"; "s2"; "p1"; "p2"; "c1"; "c2"; "label"
-   * @property {object} [touchable=false] The configuration object for the touchable
+   * @property {object} [touchable=undefined] The configuration object for the touchable
    * @property {node} [children=null] The actual text to display
-   * @property {object} [icon=false] The configuration object for the icon
+   * @property {object} [icon=undefined] The configuration object for the icon
    * @property {object} [presetStyle={}] The styles for the specified preset
    * @property {object} [touchableStyles={ wrapper: {}, label: {} }]  The optional custom styles for the touchable elements
    * @property {object} [styling={}] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiTextState => {
     return {
       preset: this.props.preset ? this.props.preset : false,
-      touchable: this.props.touchable ? { ...this.props.touchable } : false,
+      touchable: this.props.touchable ? { ...this.props.touchable } : undefined,
       children: this.props.children ? this.props.children : null,
-      icon: this.props.icon ? { ...this.props.icon } : false,
+      icon: this.props.icon ? { ...this.props.icon } : undefined,
       presetStyle: this.props.preset ? Typography[this.props.preset] : {},
       touchableStyles: this.getTouchableStyles(),
       styling: this.props.styling ? { ...this.props.styling } : {}
@@ -65,7 +105,7 @@ class PackenUiText extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getTouchableStyles = () => {
+  getTouchableStyles: Function = (): object => {
     let styles = {
       wrapper: {},
       label: {}
@@ -84,8 +124,9 @@ class PackenUiText extends Component {
   /**
    * Triggers the provided touchable callback if set so
    * @type {function}
+   * @return {boolean|undefined} Flag used only for testing purposes
    */
-  triggerCallback = () => {
+  triggerCallback: VoidFunction = (): boolean | void => {
     if (this.state.touchable) {
       this.state.touchable.callback();
     } else {
@@ -98,7 +139,7 @@ class PackenUiText extends Component {
    * @type {function}
    * @return {node} JSX for the text element
    */
-  getContent = () => {
+  getContent: Function = (): ReactNode => {
     let content = (
       <Text style={{
         ...styles.base,
@@ -110,7 +151,7 @@ class PackenUiText extends Component {
       }}>{this.state.children}</Text>
     );
 
-    if (this.props.icon) {
+    if (this.state.icon) {
       const { name, position, color, size } = this.state.icon;
       const icon = <Icon name={name} color={color} size={size} />;
       const marginStyle = position === "left" ? styles.iconLabelLeft : styles.iconLabelRight;
@@ -142,7 +183,7 @@ class PackenUiText extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -151,7 +192,7 @@ class PackenUiText extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiTextProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -162,9 +203,22 @@ class PackenUiText extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return this.getContent();
   }
+
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    preset: PropTypes.string,
+    touchable: PropTypes.object,
+    children: PropTypes.node.isRequired,
+    icon: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
 }
 
 const styles = StyleSheet.create({
@@ -185,13 +239,5 @@ const styles = StyleSheet.create({
     marginRight: 5
   }
 });
-
-PackenUiText.propTypes = {
-  preset: PropTypes.string,
-  touchable: PropTypes.object,
-  children: PropTypes.node.isRequired,
-  icon: PropTypes.object,
-  styling: PropTypes.object
-};
 
 export default PackenUiText;
