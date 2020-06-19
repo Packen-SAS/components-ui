@@ -118,9 +118,9 @@ describe("<PackenUiText/>", () => {
 
       expect(res).toEqual({
         preset: false,
-        touchable: false,
+        touchable: undefined,
         children: null,
-        icon: false,
+        icon: undefined,
         presetStyle: {},
         touchableStyles: {
           label: {},

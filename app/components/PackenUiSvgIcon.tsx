@@ -67,7 +67,7 @@ interface IconState {
  * @param {string} name The predefined name of the SVG file to render
  * @return {node} JSX element for the SVG file
  */
-class Icon extends Component<PackenUiSvgIconProps, IconState> {
+export class Icon extends Component<PackenUiSvgIconProps, IconState> {
   /**
    * Initializes the subcomponent
    * @type {function}

@@ -26,13 +26,13 @@ describe("<PackenUiSvgIcon/>", () => {
     });
 
     it("returns the correct icon", () => {
-      const res = Icon({ width: 150, height: 50, name: "logo-main" });
-      expect(res).toEqual(<PackenLogoMain width={150} height={50} />);
+      const shallowIcon = shallow(<Icon width={150} height={50} name="logo-main" />);
+      expect(shallowIcon.type().testUri).toEqual(expect.stringContaining("packen_logo_main.svg"));
     });
 
-    it("returns an error message if no recognized icon is passed", () => {
-      const res = Icon({ width: 150, height: 50, name: "test" });
-      expect(res).toEqual(<PackenUiText>Icon not found.</PackenUiText>);
+    it("returns an error message if no recognized icon identifier is passed", () => {
+      const shallowIcon = shallow(<Icon width={150} height={50} name="test" />);
+      expect(shallowIcon.props().children).toBe("Icon not found.");
     });
   });
 });

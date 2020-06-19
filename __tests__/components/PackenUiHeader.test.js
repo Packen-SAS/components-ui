@@ -70,7 +70,7 @@ describe("<PackenUiHeader/>", () => {
       const res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
-        children: "",
+        children: null,
         icon: "arrow-left",
         onBackPress: false,
         customStyle: {},

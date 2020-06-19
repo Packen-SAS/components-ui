@@ -50,7 +50,7 @@ describe("<PackenUiWhatsAppLink/>", () => {
     it("returns the styles array", () => {
       renderInstance.setState({ style: null });
       const res = renderInstance.getStyles();
-      expect(res).toEqual([renderInstance.getStyles()[0], null, renderInstance.state.styling.box]);
+      expect(res).toEqual([renderInstance.getStyles()[0], {}, renderInstance.state.styling.box]);
     });
   });
 

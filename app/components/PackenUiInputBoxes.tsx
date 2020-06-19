@@ -74,7 +74,7 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
    * Sets an input's ref to the global variable
    * @type {function}
    * @param {node} input The JSX for the input component
-   * @param {object} ref The {@link PackenUiInput} component's ref/instance
+   * @param {number} ref The {@link PackenUiInput} component's identifier/name
    */
   setInputRef: Function = (input: ReactNode, ref: number) => {
     this.items[ref] = { ref: ref, input: input, text: null };
