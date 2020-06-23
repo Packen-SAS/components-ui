@@ -137,7 +137,7 @@ describe("<PackenUiCamera/>", () => {
       const prevProps = { test: "Test" };
       renderTopTriggers.setProps({ test: "Test 2", image: null });
       renderTopTriggersInstance.componentDidUpdate(prevProps);
-      expect(renderTopTriggersInstance.state.source.uri).toBe(null);
+      expect(renderTopTriggersInstance.state.source.uri).toBe("");
 
       renderTopTriggers.setProps({ test: "Test 2", image: { uri: "test" } });
       expect(renderTopTriggersInstance.state.source.uri).toBe("test");
