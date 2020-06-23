@@ -1,33 +1,140 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 
 import PackenUiInput from "./PackenUiInput";
 import PackenUiDropdown from "./PackenUiDropdown";
 import PackenUiText from "./PackenUiText";
 
+interface DataLabelShape {
+  text: string;
+  color: string;
+}
+
+interface DataIconShape {
+  name: string;
+  color: string;
+}
+
+interface DataInputShape {
+  onChange: Function;
+  isOpen: boolean;
+  dropdownHeight: number;
+  placeholder: string;
+  value: string;
+  nonEditable: boolean;
+  name: string;
+  keyboardType: string;
+  multiline: boolean;
+  maxLength: number;
+  isDropdown: boolean;
+  list: object;
+}
+
+interface DataPropShape {
+  input?: DataInputShape;
+  size?: string;
+  title?: string;
+  subtitle?: string;
+  label?: DataLabelShape;
+  icon?: DataIconShape;
+  media?: ReactNode;
+  callback?: Function;
+  customWrapperStyle?: object;
+}
+
+interface DataStateShape {
+  input?: DataInputShape | boolean;
+  size: string;
+  title?: string;
+  subtitle?: string | boolean;
+  label?: DataLabelShape | boolean;
+  icon?: DataIconShape | boolean;
+  media?: ReactNode;
+  callback?: Function | boolean;
+  customWrapperStyle?: object;
+}
+
+interface InputStylingPropShape {
+  header: {
+    base: object;
+    label: object;
+  };
+  help: {
+    touchable: object;
+    text: object;
+  };
+  box: object;
+  input: object;
+  message: {
+    box: object;
+    icon: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+    text: object;
+  };
+  loader: {
+    shape: object;
+    shapeContent: object;
+    label: object;
+    iconWrapper: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+  };
+  iconWrapper: object;
+  icon: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface StylingPropShape {
+  wrapper: object;
+  media: object;
+  main: object;
+  sub: object;
+  title: object;
+  subtitle: object;
+  dropdown: object;
+  input: InputStylingPropShape;
+  label: object;
+  iconWrapper: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface PackenUiListItemProps {
+  data: DataPropShape;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiListItemState {
+  data: DataStateShape;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering a {@link PackenUiList}'s item, so it should not be used standalone
  */
-class PackenUiListItem extends Component {
+class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItemState> {
+  /**
+   * Variable that stores the {@link PackenUiDropdown}'s ref/instance if configured like so
+   * @type {object}
+   */
+  dropdownRef: PackenUiDropdown | null = null;
+
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiListItemProps) {
     super(props);
-    
-    /**
-     * Variable that stores the {@link PackenUiDropdown}'s ref/instance if configured like so
-     * @type {object}
-     */
-    this.dropdownRef = null;
-    
+
     /**
      * Variable that stores the state
      * @type {object}
@@ -61,7 +168,7 @@ class PackenUiListItem extends Component {
    * @property {object} [styling={ wrapper: {}, media: {}, main: {}, sub: {}, title: {}, subtitle: {}, dropdown: {}, input: {}, label: {}, iconWrapper: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiListItemState => {
     return {
       data: {
         input: this.props.data.input ? { ...this.props.data.input } : false,
@@ -82,7 +189,37 @@ class PackenUiListItem extends Component {
         title: {},
         subtitle: {},
         dropdown: {},
-        input: {},
+        input: {
+          header: {
+            base: {},
+            label: {},
+          },
+          help: {
+            touchable: {},
+            text: {},
+          },
+          box: {},
+          input: {},
+          message: {
+            box: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined,
+            text: {},
+          },
+          loader: {
+            shape: {},
+            shapeContent: {},
+            label: {},
+            iconWrapper: {},
+            iconSize: undefined,
+            iconColor: undefined,
+          },
+          iconWrapper: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined
+        },
         label: {},
         iconWrapper: {},
         iconSize: undefined,
@@ -95,8 +232,8 @@ class PackenUiListItem extends Component {
    * Triggers the callback if provided
    * @type {function}
    */
-  onPressHandler = () => {
-    if (this.state.data.callback) {
+  onPressHandler: VoidFunction = (): boolean | void => {
+    if (typeof this.state.data.callback === "function") {
       this.state.data.callback();
     } else {
       return false;
@@ -109,17 +246,19 @@ class PackenUiListItem extends Component {
    * @param {boolean} newState Determines if the dropdown is open or closed
    * @param {number} height The dropdown height
    */
-  onOpenStateChangeHandler = (newState, height) => {
-    this.setState({
-      data: {
-        ...this.state.data,
-        input: {
-          ...this.state.data.input,
-          isOpen: newState,
-          dropdownHeight: height
+  onOpenStateChangeHandler: Function = (newState: boolean, height: number) => {
+    if (typeof this.state.data.input === "object") {
+      this.setState({
+        data: {
+          ...this.state.data,
+          input: {
+            ...this.state.data.input,
+            isOpen: newState,
+            dropdownHeight: height
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   /**
@@ -127,7 +266,7 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the media
    */
-  getMedia = () => {
+  getMedia: Function = (): ReactNode | null => {
     let media = null;
 
     if (this.state.data.media) {
@@ -147,8 +286,8 @@ class PackenUiListItem extends Component {
    * @param {string} name The identifier for the input
    * @param {string} val The new value
    */
-  inputChangeHandler = (name, val) => {
-    if (this.state.data.input.onChange) {
+  inputChangeHandler: Function = (name: string, val: string): boolean | void => {
+    if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChange === "function") {
       this.state.data.input.onChange(name, val);
     } else {
       return false;
@@ -161,12 +300,12 @@ class PackenUiListItem extends Component {
    * @param {node} children The children elements to wrap
    * @return {node} JSX for the main wrapper and its content
    */
-  getMainWrapper = children => {
+  getMainWrapper: Function = (children: ReactNode): ReactNode => {
     return (
       <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
         {children}
         {
-          this.state.data.subtitle ? (
+          this.state.data.subtitle && typeof this.state.data.input === "object" ? (
             <PackenUiText style={{
               color: "rgba(48, 77, 109, 0.4)",
               transform: [
@@ -185,20 +324,22 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {object} The configuration object
    */
-  getPlaceholder = () => {
-    let config = {
-      val: this.state.data.input.placeholder,
-      color: Colors.basic.gray.dft
-    };
-
-    if (this.state.data.input.value !== "") {
-      config = {
-        val: this.state.data.input.value,
-        color: Colors.basic.independence.drk
+  getPlaceholder: Function = (): object | void => {
+    if (typeof this.state.data.input === "object") {
+      let config = {
+        val: this.state.data.input.placeholder,
+        color: Colors.basic.gray.dft
       };
-    }
 
-    return config;
+      if (this.state.data.input.value !== "") {
+        config = {
+          val: this.state.data.input.value,
+          color: Colors.basic.independence.drk
+        };
+      }
+
+      return config;
+    }
   }
 
   /**
@@ -206,13 +347,13 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @param {object} ref The instance object
    */
-  getDropdownRef = ref => { this.dropdownRef = ref; }
+  getDropdownRef: (ref: PackenUiDropdown) => void = (ref: PackenUiDropdown) => { this.dropdownRef = ref; }
 
   /**
    * Toggles the optional inner {@link PackenUiDropdown} on press
    * @type {function}
    */
-  toggleDropdown = () => {
+  toggleDropdown: VoidFunction = () => {
     if (this.dropdownRef) {
       this.dropdownRef.toggleMenu();
     }
@@ -223,9 +364,9 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the correct input element or null
    */
-  determineInputContent = () => {
+  determineInputContent: Function = (): ReactNode | null => {
     let content = null;
-    if (this.state.data.input.isDropdown) {
+    if (typeof this.state.data.input === "object" && this.state.data.input.isDropdown) {
       content = (
         <PackenUiDropdown
           size="medium"
@@ -253,7 +394,7 @@ class PackenUiListItem extends Component {
           }}
         />
       );
-    } else {
+    } else if (typeof this.state.data.input === "object") {
       content = (
         <PackenUiInput
           theme="list"
@@ -279,7 +420,7 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the wrapped main content or null
    */
-  getMainContent = () => {
+  getMainContent: Function = (): ReactNode | null => {
     let content = null;
 
     if (this.state.data.input) {
@@ -298,11 +439,11 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the secondary content or null
    */
-  getSubContent = () => {
+  getSubContent: Function = (): ReactNode => {
     return (
       <View style={{ ...this.getStyles().sub, ...this.state.styling.sub }}>
         {
-          this.state.data.label ? (
+          typeof this.state.data.label === "object" && this.state.data.label ? (
             <PackenUiText style={{
               color: this.state.data.label.color,
               ...this.state.styling.label
@@ -310,7 +451,7 @@ class PackenUiListItem extends Component {
           ) : null
         }
         {
-          this.state.data.icon ? (
+          typeof this.state.data.icon === "object" && this.state.data.icon ? (
             <View style={{
               ...this.getStyles().icon,
               ...this.state.styling.iconWrapper
@@ -331,9 +472,9 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node} JSX for the touchable area
    */
-  getTouchableArea = () => {
+  getTouchableArea: Function = (): ReactNode => {
     return (
-      <View style={{ ...this.getStyles().touchable.area }} pointerEvents={this.state.data.input && this.state.data.input.isDropdown ? "auto" : "none"}>
+      <View style={{ ...this.getStyles().touchable.area }} pointerEvents={typeof this.state.data.input === "object" && this.state.data.input.isDropdown ? "auto" : "none"}>
         <TouchableWithoutFeedback onPress={this.toggleDropdown}>
           <View style={{ ...this.getStyles().touchable.inner }}></View>
         </TouchableWithoutFeedback>
@@ -345,7 +486,7 @@ class PackenUiListItem extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -354,7 +495,7 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiListItemProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -365,11 +506,9 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
-      <TouchableWithoutFeedback
-        onPress={this.onPressHandler}
-      >
+      <TouchableWithoutFeedback onPress={this.onPressHandler}>
         <View style={{ ...this.state.data.customWrapperStyle }}>
           {this.getTouchableArea()}
           <View style={{
@@ -391,7 +530,7 @@ class PackenUiListItem extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: {
         base: {
@@ -445,27 +584,32 @@ class PackenUiListItem extends Component {
       }
     };
   }
-}
 
-PackenUiListItem.propTypes = {
-  data: PropTypes.shape({
-    input: PropTypes.object,
-    size: PropTypes.string.isRequired,
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
-    label: PropTypes.shape({
-      text: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired
-    }),
-    icon: PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired
-    }),
-    media: PropTypes.node,
-    callback: PropTypes.func,
-    customWrapperStyle: PropTypes.object
-  }).isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    data: PropTypes.shape({
+      input: PropTypes.object,
+      size: PropTypes.string,
+      title: PropTypes.string,
+      subtitle: PropTypes.string,
+      label: PropTypes.shape({
+        text: PropTypes.string.isRequired,
+        color: PropTypes.string.isRequired
+      }),
+      icon: PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        color: PropTypes.string.isRequired
+      }),
+      media: PropTypes.node,
+      callback: PropTypes.func,
+      customWrapperStyle: PropTypes.object
+    }).isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiListItem;

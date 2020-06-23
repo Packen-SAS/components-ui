@@ -93,7 +93,54 @@ describe("<PackenUiList/>", () => {
       expect(res).toEqual({
         items: [],
         customWrapperStyles: {},
-        styling: { wrapper: {}, inner: {}, item: {} }
+        styling: {
+          wrapper: {},
+          inner: {},
+          item: {
+            wrapper: {},
+            media: {},
+            main: {},
+            sub: {},
+            title: {},
+            subtitle: {},
+            dropdown: {},
+            input: {
+              header: {
+                base: {},
+                label: {},
+              },
+              help: {
+                touchable: {},
+                text: {},
+              },
+              box: {},
+              input: {},
+              message: {
+                box: {},
+                icon: {},
+                iconSize: undefined,
+                iconColor: undefined,
+                text: {},
+              },
+              loader: {
+                shape: {},
+                shapeContent: {},
+                label: {},
+                iconWrapper: {},
+                iconSize: undefined,
+                iconColor: undefined,
+              },
+              iconWrapper: {},
+              icon: {},
+              iconSize: undefined,
+              iconColor: undefined
+            },
+            label: {},
+            iconWrapper: {},
+            iconSize: undefined,
+            iconColor: undefined
+          }
+        }
       });
     });
 

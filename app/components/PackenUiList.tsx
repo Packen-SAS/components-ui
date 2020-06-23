@@ -5,10 +5,57 @@ import * as UTIL from "../utils";
 
 import PackenUiListItem from "./PackenUiListItem";
 
+interface InputStylingPropShape {
+  header: {
+    base: object;
+    label: object;
+  };
+  help: {
+    touchable: object;
+    text: object;
+  };
+  box: object;
+  input: object;
+  message: {
+    box: object;
+    icon: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+    text: object;
+  };
+  loader: {
+    shape: object;
+    shapeContent: object;
+    label: object;
+    iconWrapper: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+  };
+  iconWrapper: object;
+  icon: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
+interface ItemStylingPropShape {
+  wrapper: object;
+  media: object;
+  main: object;
+  sub: object;
+  title: object;
+  subtitle: object;
+  dropdown: object;
+  input: InputStylingPropShape;
+  label: object;
+  iconWrapper: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
 interface StylingPropShape {
   wrapper: object;
   inner: object;
-  item: object;
+  item: ItemStylingPropShape;
 }
 
 interface PackenUiListProps {
@@ -69,7 +116,50 @@ class PackenUiList extends Component<PackenUiListProps, PackenUiListState> {
       styling: this.props.styling ? { ...this.props.styling } : {
         wrapper: {},
         inner: {},
-        item: {}
+        item: {
+          wrapper: {},
+          media: {},
+          main: {},
+          sub: {},
+          title: {},
+          subtitle: {},
+          dropdown: {},
+          input: {
+            header: {
+              base: {},
+              label: {},
+            },
+            help: {
+              touchable: {},
+              text: {},
+            },
+            box: {},
+            input: {},
+            message: {
+              box: {},
+              icon: {},
+              iconSize: undefined,
+              iconColor: undefined,
+              text: {},
+            },
+            loader: {
+              shape: {},
+              shapeContent: {},
+              label: {},
+              iconWrapper: {},
+              iconSize: undefined,
+              iconColor: undefined,
+            },
+            iconWrapper: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined
+          },
+          label: {},
+          iconWrapper: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       }
     };
   }

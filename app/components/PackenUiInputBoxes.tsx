@@ -5,6 +5,12 @@ import { StyleSheet, View } from "react-native";
 import * as UTIL from "../utils";
 import PackenUiInput from "./PackenUiInput";
 
+interface EventHandlersShape {
+  onFocus?: Function;
+  onBlur?: Function;
+  onSubmitEditing?: Function;
+}
+
 interface PackenUiInputBoxesProps {
   boxes: number;
   emitCode: Function;
@@ -156,6 +162,15 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
   }
 
   /**
+   * Returns the event handlers to be passed to the inner {@link PackenUiInput} component
+   * @type {function}
+   * @return {object} The formatted event handlers object
+   */
+  getEventHandlers: Function = (): EventHandlersShape => ({
+    onSubmitEditing: this.handleOnSubmit
+  })
+
+  /**
    * Renders each individual {@link PackenUiInput} component
    * @type {function}
    * @param {number} id The identifier for this box
@@ -164,20 +179,21 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
   renderBox: RenderBoxType = (id: number): ReactNode => (
     <View
       key={id}
-      style={{ padding: 5, ...this.getPropStyling().item }}>
+      style={{ padding: 5, ...this.getPropStyling().item }}
+    >
       <PackenUiInput
-        instance={this.setInputRef}
         name={id}
         size="medium"
-        onSubmit={this.handleOnSubmit}
-        placeholder="0"
-        onChangeText={this.handleInputText}
         maxLength={1}
-        alignText="center"
         theme="default"
-        style={{ textAlign: "center", padding: 5 }}
-        styling={this.getPropStyling().input}
+        placeholder="0"
+        textAlign="center"
         keyboardType="numeric"
+        instance={this.setInputRef}
+        onChangeText={this.handleInputText}
+        styling={this.getPropStyling().input}
+        eventHandlers={this.getEventHandlers()}
+        style={{ textAlign: "center", padding: 5 }}
       />
     </View>
   );

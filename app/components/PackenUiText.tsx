@@ -15,15 +15,15 @@ interface IconShape {
 }
 
 interface TouchableStylesShape {
-  wrapper: object;
-  label: object;
+  wrapper?: object;
+  label?: object;
 }
 
 interface TouchableShape {
   callback: Function;
-  style: {
-    wrapper: object;
-    label: object;
+  style?: {
+    wrapper?: object;
+    label?: object;
   }
 }
 

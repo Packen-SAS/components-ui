@@ -102,7 +102,8 @@ describe("<PackenUiInput/>", () => {
         validator: undefined,
         styling: undefined,
         help: undefined,
-        message: undefined
+        message: undefined,
+        textAlign: undefined
       });
       const returnedState = renderInstance.setInitialState();
 
@@ -129,6 +130,7 @@ describe("<PackenUiInput/>", () => {
         style: {},
         onChangeText: mockCallback,
         eventHandlers: false,
+        textAlign: "left",
         propagateRef: false,
         ref: null,
         loading: false,
@@ -423,18 +425,6 @@ describe("<PackenUiInput/>", () => {
       expect(renderInstance.state.propagateRef).toHaveBeenCalledWith(renderInstance, "Test");
     });
 
-    it("executes onLayout event callback for the box", () => {
-      const spyGetBoxDimensions = jest.spyOn(renderInstance, "getBoxDimensions");
-      render.props().children[1].props.onLayout({
-        nativeEvent: {
-          layout: {}
-        }
-      });
-
-      expect(spyGetBoxDimensions).toHaveBeenCalled();
-      spyGetBoxDimensions.mockRestore();
-    });
-
     it("executes onLayout event callback for the icon if provided", () => {
       const spyGetIconWrapperDimensions = jest.spyOn(renderInstance, "getIconWrapperDimensions");
       render.setProps({
@@ -693,7 +683,7 @@ describe("<PackenUiInput/>", () => {
   describe("getting dimensions", () => {
     it("sets box dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getBoxDimensions({ width: 100, height: 100 });
+      renderInstance.getBoxDimensions({ nativeEvent: { layout: { width: 100, height: 100 } } });
 
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
@@ -708,7 +698,7 @@ describe("<PackenUiInput/>", () => {
 
     it("sets icon wrapper dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getIconWrapperDimensions({ width: 10, height: 10 });
+      renderInstance.getIconWrapperDimensions({ nativeEvent: { layout: { width: 10, height: 10 } } });
 
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
