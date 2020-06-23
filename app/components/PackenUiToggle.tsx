@@ -1,33 +1,80 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback, LayoutChangeEvent } from "react-native";
 import * as UTIL from "../utils";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
-import PackenUiText from "../components/PackenUiText";
+import PackenUiText from "./PackenUiText";
+
+interface InnerElementShape {
+  height: number;
+  width: number;
+  positioning: object;
+  disabled: object;
+}
+
+interface StylingPropShape {
+  shape: object;
+  dot: object;
+  onWrapper: object;
+  offWrapper: object;
+  onLabel: object;
+  offLabel: object;
+}
+
+interface PackenUiToggleProps {
+  isActive: boolean;
+  isDisabled?: boolean;
+  toggleHandler: Function;
+  name: string;
+  onLabel: string;
+  offLabel: string;
+  styling?: object;
+  instance?: Function;
+}
+
+interface PackenUiToggleState {
+  isActive: boolean;
+  isDisabled: boolean;
+  toggleHandler: Function | boolean;
+  name: string;
+  onLabel: string;
+  offLabel: string;
+  state: string;
+  styling: StylingPropShape;
+  initialState: string;
+  shape: {
+    height: number;
+    width: number;
+    disabled: object;
+  };
+  dot: InnerElementShape;
+  on: InnerElementShape;
+  off: InnerElementShape;
+}
 
 /**
  * Component for rendering a toggle element for switching two states
  */
-class PackenUiToggle extends Component {
+class PackenUiToggle extends Component<PackenUiToggleProps, PackenUiToggleState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiToggleProps) {
     super(props);
 
     /**
      * Variable that stores the state
      * @type {object}
-     * @property {string} initialState The initial status
-     * @property {object} shape The configuration data for the shape element
-     * @property {object} dot The configuration data for the dot element
-     * @property {object} on The configuration data for the on element
-     * @property {object} off The configuration data for the off element
+     * @property {string} [initialState="inactive"] The initial inner status
+     * @property {object} [shape={ height: 0, width: 0, disabled: {} }] The configuration data for the "shape" element
+     * @property {object} [dot={ height: 0, width: 0, positioning: {}, disabled: {} }] The configuration data for the "dot" element
+     * @property {object} [on={ height: 0, width: 0, positioning: {}, disabled: {} }] The configuration data for the "on" element
+     * @property {object} [off={ height: 0, width: 0, positioning: {}, disabled: {} }] The configuration data for the "off" element
      */
     this.state = {
       ...this.setPropsToState(),
@@ -59,9 +106,19 @@ class PackenUiToggle extends Component {
   }
 
   /**
-   * 
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {boolean} [isActive=false] Determines if the component should be in its 'active' state
+   * @property {boolean} [isDisabled=false] Determines if the component should be disabled
+   * @property {function} [toggleHandler=false] The function to be called when the component's status changes
+   * @property {string} [name=""] The identifier for the component instance
+   * @property {string} [onLabel=""] The label text for the "ON" status
+   * @property {string} [offLabel=""] The label text for the "OFF" status
+   * @property {string} [state="inactive"] The current inner status of the component
+   * @property {object} [styling={ shape: {}, dot: {}, onWrapper: {}, offWrapper: {}, onLabel: {}, offLabel: {} }]
+   * @return {object} The props mapepd to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       isActive: this.props.isActive ? this.props.isActive : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
@@ -86,7 +143,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {string} The current status
    */
-  setInitialState = () => {
+  setInitialState: Function = (): string => {
     return this.props.isActive ? "active" : "inactive";
   }
 
@@ -94,7 +151,7 @@ class PackenUiToggle extends Component {
    * Propagates the component instance if a callback is provided via props, positions all the elements, and checks if it's disabled
    * @type {function}
    */
-  componentDidMount = () => {
+  componentDidMount() {
     this.positionElement();
     this.checkIfDisabled();
 
@@ -107,7 +164,7 @@ class PackenUiToggle extends Component {
    * Sets the disabled styles of all elements to the state
    * @type {function}
    */
-  setDisabledStyles = () => {
+  setDisabledStyles: VoidFunction = () => {
     this.setState({
       shape: {
         ...this.state.shape,
@@ -140,7 +197,7 @@ class PackenUiToggle extends Component {
    * Determines and sets whether the component is disabled, and applies the correct styles
    * @type {function}
    */
-  checkIfDisabled = () => {
+  checkIfDisabled: Function = () => {
     if (this.state.isDisabled) {
       this.setState({
         state: "disabled"
@@ -154,7 +211,7 @@ class PackenUiToggle extends Component {
    * @param {object} e The received onLayout event object
    * @param {string} elem The state key corresponding to the updated element
    */
-  getElemDimensions = (e, elem) => {
+  getElemDimensions: Function = (e: LayoutChangeEvent, elem: string) => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
       [elem]: {
@@ -162,14 +219,14 @@ class PackenUiToggle extends Component {
         height: height,
         width: width
       }
-    }, this.positionElement);
+    } as Pick<PackenUiToggleState, keyof PackenUiToggleState>, this.positionElement);
   }
 
   /**
    * Sets the updated positioning styles for all elements to the state
    * @type {function}
    */
-  positionElement = () => {
+  positionElement: VoidFunction = () => {
     const positionStyles = this.getPositionStyles();
     this.setState({
       dot: {
@@ -192,7 +249,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {object} The positioning styles object
    */
-  getPositionStyles = () => {
+  getPositionStyles: Function = (): object => {
     let positionStyles = {};
     const state = this.state.isDisabled ? this.state.initialState : this.state.state;
 
@@ -239,11 +296,11 @@ class PackenUiToggle extends Component {
    * Toggles the inner status and propagates the change
    * @type {function}
    */
-  toggle = () => {
+  toggle: VoidFunction = () => {
     this.setState({
       state: this.state.state === "active" ? "inactive" : "active"
     }, () => {
-      if (this.state.toggleHandler) {
+      if (typeof this.state.toggleHandler === "function") {
         this.state.toggleHandler(this.state.name, this.state.state === "active" ? true : false);
       }
     });
@@ -254,7 +311,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {node} JSX for the "dot" element
    */
-  getDot = () => (
+  getDot: Function = (): ReactNode => (
     <View style={{
       ...this.getStyles().dot.default,
       ...this.getStyles().dot[this.state.state],
@@ -269,7 +326,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {node} JSX for the "on" element
    */
-  getOnLabel = () => (
+  getOnLabel: Function = (): ReactNode => (
     <View onLayout={e => { this.getElemDimensions(e, "on"); }} style={{ ...this.state.on.positioning, ...this.state.styling.onWrapper }}>
       <PackenUiText style={{
         ...this.getStyles().label.default,
@@ -285,7 +342,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {node} JSX for the "off" element
    */
-  getOffLabel = () => (
+  getOffLabel: Function = (): ReactNode => (
     <View onLayout={e => { this.getElemDimensions(e, "off"); }} style={{ ...this.state.off.positioning, ...this.state.styling.offWrapper }}>
       <PackenUiText style={{
         ...this.getStyles().label.default,
@@ -300,7 +357,7 @@ class PackenUiToggle extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -310,7 +367,7 @@ class PackenUiToggle extends Component {
    * @param {object} prevProps Previous props
    * @param {object} prevState Previous state
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: PackenUiToggleProps, prevState: PackenUiToggleState) {
     if (prevState.state !== this.state.state) {
       this.positionElement();
       this.checkIfDisabled();
@@ -325,7 +382,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.toggle}>
@@ -349,7 +406,7 @@ class PackenUiToggle extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       shape: {
         default: {
@@ -431,16 +488,21 @@ class PackenUiToggle extends Component {
       }
     };
   }
-}
 
-PackenUiToggle.propTypes = {
-  isActive: PropTypes.bool.isRequired,
-  isDisabled: PropTypes.bool,
-  toggleHandler: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  onLabel: PropTypes.string.isRequired,
-  offLabel: PropTypes.string.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    isActive: PropTypes.bool.isRequired,
+    isDisabled: PropTypes.bool,
+    toggleHandler: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    onLabel: PropTypes.string.isRequired,
+    offLabel: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiToggle;

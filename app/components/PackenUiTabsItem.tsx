@@ -1,25 +1,65 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  shape: object;
+  iconWrapper: object;
+  iconCharacter: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+  label: object;
+}
+
+interface ItemStyleShape {
+  shape: object;
+  label: object;
+  icon: {
+    color: string;
+    fontSize: number;
+  };
+}
+
+interface PackenUiTabsItemProps {
+  updateActiveTabIndex: Function;
+  activeTabIndex: number;
+  selfIndex: number;
+  callback: Function;
+  label: string;
+  icon?: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiTabsItemState {
+  updateActiveTabIndex: Function;
+  selfIndex: number;
+  activeTabIndex: number;
+  callback: Function;
+  icon: "»" | string | boolean;
+  label: string;
+  styling: StylingPropShape;
+  itemStyles: ItemStyleShape;
+}
+
 /**
  * Component for rendering a trigger item of a {@link PackenUiTabs} component, and should not be used standalone
  */
-class PackenUiTabsItem extends Component {
+class PackenUiTabsItem extends Component<PackenUiTabsItemProps, PackenUiTabsItemState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiTabsItemProps) {
     super(props);
 
     /**
@@ -40,12 +80,12 @@ class PackenUiTabsItem extends Component {
    * @property {number} [selfIndex=0] The trigger's index
    * @property {number} [activeTabIndex=0] The currently active tab item's index
    * @property {function} [callback=false] The optional callback to be called once this specific trigger is pressed
-   * @property {object} [icon=false] The optional icon configuration
+   * @property {string} [icon=false] The optional icon name to be displayed
    * @property {string} [label=""] The actual text to be displayed for this trigger
    * @property {object} [styling={ shape: {}, iconWrapper: {}, iconCharacter: {}, iconSize: undefined, iconColor: undefined, label: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       updateActiveTabIndex: this.props.updateActiveTabIndex ? this.props.updateActiveTabIndex : false,
       selfIndex: this.props.selfIndex ? this.props.selfIndex : 0,
@@ -81,7 +121,7 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @return The default styles object
    */
-  getItemStyles = () => {
+  getItemStyles: Function = (): ItemStyleShape => {
     const styles = {
       shape: {
         ...this.getStyles().item.base.shape,
@@ -103,12 +143,12 @@ class PackenUiTabsItem extends Component {
    * Handles the onPress event on the component, setting the active styles, propagating the change, and triggering a callback if provided
    * @type {function}
    */
-  setActiveTab = () => {
+  setActiveTab: VoidFunction = () => {
     this.setActiveStyles();
-    if (this.state.updateActiveTabIndex) {
+    if (typeof this.state.updateActiveTabIndex === "function") {
       this.state.updateActiveTabIndex(this.state.selfIndex);
     }
-    if (this.state.callback) {
+    if (typeof this.state.callback === "function") {
       this.state.callback();
     }
   }
@@ -118,7 +158,7 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @return The active styles object
    */
-  setActiveStyles = () => {
+  setActiveStyles: Function = () => {
     let activeStyles = { ...this.state.itemStyles };
     activeStyles.shape = {
       ...activeStyles.shape,
@@ -144,7 +184,7 @@ class PackenUiTabsItem extends Component {
    * Determines whether the item should be active and applies the corresponding styles
    * @type {function}
    */
-  checkIfActive = () => {
+  checkIfActive: Function = () => {
     if (this.state.activeTabIndex === this.state.selfIndex) {
       this.setActiveStyles();
     } else {
@@ -159,7 +199,7 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  updateState = (prevProps) => {
+  updateState: Function = (prevProps: PackenUiTabsItemProps) => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -174,7 +214,7 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiTabsItemProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState(prevProps);
     }
@@ -184,7 +224,7 @@ class PackenUiTabsItem extends Component {
    * Sets the "hover" styles while onPressIn
    * @type {function}
    */
-  pressInHandler = () => {
+  pressInHandler: VoidFunction = () => {
     let newStyles = { ...this.state.itemStyles };
 
     newStyles.shape = {
@@ -209,7 +249,7 @@ class PackenUiTabsItem extends Component {
    * Sets the active styles onPressOut
    * @type {function}
    */
-  pressOutHandler = () => {
+  pressOutHandler: VoidFunction = () => {
     this.setActiveTab();
   }
 
@@ -218,10 +258,10 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the icon or null
    */
-  getIcon = () => {
+  getIcon: Function = (): ReactNode | null => {
     let icon = null;
 
-    if (this.state.icon) {
+    if (typeof this.state.icon !== "boolean") {
       icon = (
         <View style={{
           marginRight: 10,
@@ -253,9 +293,9 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
-      <TouchableWithoutFeedback onPress={() => { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
+      <TouchableWithoutFeedback onPress={this.setActiveTab} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
         <View style={{
           ...this.state.itemStyles.shape,
           ...this.state.styling.shape
@@ -275,7 +315,7 @@ class PackenUiTabsItem extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       item: {
         base: {
@@ -298,7 +338,6 @@ class PackenUiTabsItem extends Component {
           icon: {
             textAlign: "center",
             fontFamily: Typography.family.semibold,
-            fontSize: Typography.size.medium,
             lineHeight: Typography.lineheight.huge,
             fontSize: Typography.size.medium * 1.65
           }
@@ -341,16 +380,21 @@ class PackenUiTabsItem extends Component {
       }
     };
   }
-}
 
-PackenUiTabsItem.propTypes = {
-  updateActiveTabIndex: PropTypes.func.isRequired,
-  activeTabIndex: PropTypes.number.isRequired,
-  selfIndex: PropTypes.number.isRequired,
-  callback: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the subcomponent
+   * @type {object}
+   */
+  static propTypes: object = {
+    updateActiveTabIndex: PropTypes.func.isRequired,
+    activeTabIndex: PropTypes.number.isRequired,
+    selfIndex: PropTypes.number.isRequired,
+    callback: PropTypes.func.isRequired,
+    label: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiTabsItem;

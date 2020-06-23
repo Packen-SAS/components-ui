@@ -1,28 +1,78 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View } from "react-native";
-import ViewPager from '@react-native-community/viewpager';
+import { View, NativeSyntheticEvent } from "react-native";
+import ViewPager, { ViewPagerOnPageSelectedEventData } from '@react-native-community/viewpager';
 import * as UTIL from "../utils";
 
 import PackenUiTabsItem from "./PackenUiTabsItem";
 
+interface ItemShape {
+  view: ReactNode;
+  label: string;
+  icon: string;
+  callback: Function;
+}
+
+interface StylingPropShape {
+  wrapper: object;
+  main: object;
+  triggers: object;
+  item: {
+    shape: object;
+    iconWrapper: object;
+    iconCharacter: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+    label: object;
+  };
+  viewpager: object;
+  view: object;
+}
+
+interface PackenUiTabsProps {
+  items: ItemShape[];
+  name: string;
+  activeIndex: number;
+  orientation: string;
+  onTabChange: Function;
+  styling?: object;
+  instance?: Function;
+  headerComponent: ReactNode;
+  footerComponent: ReactNode;
+}
+
+interface PackenUiTabsState {
+  items: ItemShape[];
+  name: string;
+  activeTabIndex: number;
+  orientation: "vertical" | "horizontal" | undefined;
+  onTabChange: Function | boolean;
+  headerComponent: ReactNode | null;
+  footerComponent: ReactNode | null;
+  styling: StylingPropShape;
+}
+
+type MapItemsType = (item: ItemShape, i: number) => ReactNode;
+type OnPageSelectedType = (event: NativeSyntheticEvent<ViewPagerOnPageSelectedEventData>) => void;
+type GetViewPagerRefType = (instance: ViewPager | null) => void;
+
 /**
  * Component for rendering both tabs triggers and content views with optional static header and footer components
  */
-class PackenUiTabs extends Component {
+class PackenUiTabs extends Component<PackenUiTabsProps, PackenUiTabsState> {
+  /**
+   * Variable that stores the ViewPager's ref/instance
+   * @type {object}
+   */
+  viewPagerRef: ViewPager | null = null;
+
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiTabsProps) {
     super(props);
-
-    /**
-     * Variable that stores the ViewPager's ref/instance
-     * @type {object}
-     */
-    this.viewPagerRef = null;
 
     /**
      * Variable that stores the state
@@ -54,7 +104,7 @@ class PackenUiTabs extends Component {
    * @property {object} [styling={ wrapper: {}, main: {}, triggers: {}, item: {}, viewpager: {}, view: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       items: this.props.items ? [...this.props.items] : [],
       name: this.props.name ? this.props.name : "",
@@ -78,8 +128,8 @@ class PackenUiTabs extends Component {
    * Propagates the new index when changing tabs
    * @type {function}
    */
-  propagateTabChange = () => {
-    if (this.state.onTabChange) {
+  propagateTabChange: Function = () => {
+    if (typeof this.state.onTabChange === "function") {
       this.state.onTabChange(this.state.name, this.state.activeTabIndex);
     }
   }
@@ -88,7 +138,7 @@ class PackenUiTabs extends Component {
    * Triggers the optional callback when a specific tab is displayed if it's provided
    * @type {function}
    */
-  triggerTabCallback = () => {
+  triggerTabCallback: Function = () => {
     if (this.state.items.length > 0 && this.state.items[this.state.activeTabIndex].callback) {
       this.state.items[this.state.activeTabIndex].callback();
     }
@@ -98,7 +148,7 @@ class PackenUiTabs extends Component {
    * Programmatically changes the displayed ViewPager's page to match the currently selected tab index
    * @type {function}
    */
-  updatePagePosition = () => {
+  updatePagePosition: Function = () => {
     if (this.viewPagerRef) {
       this.viewPagerRef.setPage(this.state.activeTabIndex);
     }
@@ -109,7 +159,7 @@ class PackenUiTabs extends Component {
    * @type {function}
    * @param {number} newActiveIndex The newly selected tab index
    */
-  updateActiveIndex = newActiveIndex => {
+  updateActiveIndex: Function = (newActiveIndex: number) => {
     this.setState({
       activeTabIndex: newActiveIndex
     }, () => {
@@ -121,9 +171,8 @@ class PackenUiTabs extends Component {
   /**
    * Updates the state with new props
    * @type {function}
-   * @param {object} prevProps Previous props
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -132,7 +181,7 @@ class PackenUiTabs extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiTabsProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -143,14 +192,14 @@ class PackenUiTabs extends Component {
    * @type {function}
    * @param {object} ref The ViewPager's ref/instance
    */
-  getViewPagerRef = ref => { this.viewPagerRef = ref; }
+  getViewPagerRef: GetViewPagerRefType = (ref: ViewPager | null) => { this.viewPagerRef = ref; }
 
   /**
    * Handles when a new page from the ViewPager is displayed, setting the new position index to the state
    * @type {function}
    * @param {object} e The event object
    */
-  onPageSelected = e => {
+  onPageSelected: OnPageSelectedType = (e: NativeSyntheticEvent<ViewPagerOnPageSelectedEventData>) => {
     const newIndex = e.nativeEvent.position;
     this.setState({ activeTabIndex: newIndex }, () => {
       this.propagateTabChange();
@@ -165,7 +214,7 @@ class PackenUiTabs extends Component {
    * @param {number} i The item's index
    * @return {node} JSX for the item's trigger
    */
-  mapItems = (item, i) => (
+  mapItems: MapItemsType = (item: ItemShape, i: number): ReactNode => (
     <PackenUiTabsItem
       key={`${item.label}-${i}`}
       activeTabIndex={this.state.activeTabIndex}
@@ -185,7 +234,7 @@ class PackenUiTabs extends Component {
    * @param {number} i The item's index
    * @return {node} JSX for the item's view
    */
-  mapViews = (item, i) => (
+  mapViews: MapItemsType = (item: ItemShape, i: number): ReactNode => (
     <View key={i} style={{ ...this.getStyles().view, ...this.state.styling.view }}>
       {item.view}
     </View>
@@ -196,7 +245,7 @@ class PackenUiTabs extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
         {this.state.headerComponent}
@@ -229,7 +278,7 @@ class PackenUiTabs extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: { flex: 1 },
       main: { flex: 1 },
@@ -242,15 +291,22 @@ class PackenUiTabs extends Component {
       view: { flex: 1 }
     };
   }
-}
 
-PackenUiTabs.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  name: PropTypes.string.isRequired,
-  activeIndex: PropTypes.number.isRequired,
-  orientation: PropTypes.string.isRequired,
-  onTabChange: PropTypes.func.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the subcomponent
+   * @type {object}
+   */
+  static propTypes: object = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    name: PropTypes.string.isRequired,
+    activeIndex: PropTypes.number.isRequired,
+    orientation: PropTypes.string.isRequired,
+    onTabChange: PropTypes.func.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func,
+    headerComponent: PropTypes.node,
+    footerComponent: PropTypes.node
+  };
+}
 
 export default PackenUiTabs;

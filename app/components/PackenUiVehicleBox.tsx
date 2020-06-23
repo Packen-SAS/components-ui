@@ -1,24 +1,82 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, Image, TouchableWithoutFeedback } from "react-native";
+import { View, Image, TouchableNativeFeedback, GestureResponderEvent } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 
 import PackenUiText from "./PackenUiText";
 import PackenUiTag from "./PackenUiTag";
 
+interface LabelsStateShape {
+  approved: string;
+  rejected: string;
+  pending: string;
+}
+
+interface StateStateShape {
+  label: string;
+  icon: {
+    name: string;
+    color: string;
+  }
+}
+
+interface StylingPropShape {
+  box: object;
+  imgWrapper: object;
+  image: object;
+  copy: object;
+  type: object;
+  overview: object;
+  year: object;
+  plateWrapper: object;
+  tag: {
+    box: object;
+    label: object;
+  };
+  stateWrapper: object;
+  state: object;
+  stateIconSize: number | undefined;
+  stateIconColor: string | undefined;
+}
+
+interface PackenUiVehicleBoxProps {
+  overview?: string;
+  type: string;
+  year: string;
+  plate: string;
+  state: string;
+  image: string;
+  callback?: VoidFunction;
+  labels?: LabelsStateShape;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiVehicleBoxState {
+  type: string;
+  overview: string;
+  year: string;
+  plate: string;
+  state: string;
+  callback: ((event: GestureResponderEvent) => void) | undefined;
+  image: string;
+  labels: LabelsStateShape;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for displaying a driver's vehicle overview
  */
-class PackenUiVehicleBox extends Component {
+class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehicleBoxState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiVehicleBoxProps) {
     super(props);
 
     /**
@@ -47,12 +105,12 @@ class PackenUiVehicleBox extends Component {
    * @property {string} [plate=""] The plate of the vehicle
    * @property {string} [state=""] The current status of the vehicle - "pending"; "approved"; "rejected"
    * @property {function} [callback=false] The callback function to be called when pressing on the component
-   * @property {string} [image=null] The vehicle's type preview image
+   * @property {string} [image=""] The vehicle's type preview image
    * @property {object} [labels={ approved: "Aprobado", rejected: "Rechazado", pending: "Pendiente" }] The correct i18n labels for the status
    * @property {object} [styling={ box: {}, imgWrapper: {}, image: {}, copy: {}, type: {}, overview: {}, year: {}, plateWrapper: {}, tag: {}, stateWrapper: {}, state: {}, stateIconSize: undefined, stateIconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       type: this.props.type ? this.props.type : "",
       overview: this.props.overview ? this.props.overview : "",
@@ -60,7 +118,7 @@ class PackenUiVehicleBox extends Component {
       plate: this.props.plate ? this.props.plate : "",
       state: this.props.state ? this.props.state : "pending",
       callback: this.props.callback ? this.props.callback : false,
-      image: this.props.image ? this.props.image : null,
+      image: this.props.image ? this.props.image : "",
       labels: this.props.labels ? { ...this.props.labels } : {
         approved: "Aprobado",
         rejected: "Rechazado",
@@ -89,7 +147,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @return {object} The configuration object
    */
-  getState = () => {
+  getState: Function = (): StateStateShape | null => {
     let state = null;
 
     switch (this.state.state) {
@@ -132,7 +190,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getImgStyles = () => {
+  getImgStyles: Function = (): object => {
     let styles = {};
     if (this.state.type !== "moto") {
       styles = { ...this.getStyles().img, width: 206, height: 95 };
@@ -146,7 +204,7 @@ class PackenUiVehicleBox extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -155,7 +213,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @return {node} JSX for the content
    */
-  getContent = () => {
+  getContent: Function = (): ReactNode => {
     let content = (
       <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
         <View style={{ ...this.getStyles().imgWrapper, ...this.state.styling.imgWrapper }}>
@@ -178,9 +236,9 @@ class PackenUiVehicleBox extends Component {
 
     if (this.state.callback) {
       content = (
-        <TouchableWithoutFeedback onPress={this.state.callback}>
+        <TouchableNativeFeedback onPress={this.state.callback}>
           {content}
-        </TouchableWithoutFeedback>
+        </TouchableNativeFeedback>
       );
     }
 
@@ -192,7 +250,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiVehicleBoxProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -203,7 +261,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return this.getContent();
   }
 
@@ -212,7 +270,7 @@ class PackenUiVehicleBox extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         padding: 12,
@@ -252,18 +310,23 @@ class PackenUiVehicleBox extends Component {
       }
     };
   }
-}
 
-PackenUiVehicleBox.propTypes = {
-  overview: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  year: PropTypes.string.isRequired,
-  plate: PropTypes.string.isRequired,
-  state: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  callback: PropTypes.func,
-  labels: PropTypes.object,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    overview: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired,
+    plate: PropTypes.string.isRequired,
+    state: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    callback: PropTypes.func,
+    labels: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiVehicleBox;

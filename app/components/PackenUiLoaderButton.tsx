@@ -27,7 +27,7 @@ interface PackenUiLoaderButtonProps {
   callback: VoidFunction;
   isDone: boolean;
   styling?: StylingPropShape;
-  instance: Function;
+  instance?: Function;
 }
 
 interface PackenUiLoaderButtonState {
