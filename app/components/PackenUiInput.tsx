@@ -821,7 +821,9 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
             onFocus={this.handleFocus}
             editable={this.setEditable()}
             maxLength={this.state.maxLength}
-            textAlign={this.state.textAlign} // Property textAlign is missing from react-native's index.d.ts file but the implementation here is correct
+            // @ts-ignore
+            // Property textAlign is missing from react-native's index.d.ts file but the implementation here is correct
+            textAlign={this.state.textAlign}
             onChangeText={this.handleChangeText}
             keyboardType={this.getKeyboardType()}
             secureTextEntry={this.state.isPassword}
