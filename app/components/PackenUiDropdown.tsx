@@ -54,47 +54,53 @@ interface ListShape {
   config: ConfigShape;
 }
 
+interface InputStylingPropShape {
+  header: {
+    base: object;
+    label: object;
+  };
+  help: {
+    touchable: object;
+    text: object;
+  };
+  box: object;
+  input: object;
+  message: {
+    box: object;
+    icon: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+    text: object;
+  };
+  loader: {
+    shape: object;
+    shapeContent: object;
+    label: object;
+    iconWrapper: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+  };
+  iconWrapper: object;
+  icon: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+}
+
 interface StylingPropShape {
   wrapper: object;
   inputWrapper: object;
   contentSizer: {
     wrapper: object;
     inner: object;
-    text: object;
+    text: object
   };
   menu: object;
-  list: object;
-  input: {
-    header: {
-      base: object;
-      label: object;
-    };
-    help: {
-      touchable: object;
-      text: object;
-    };
-    box: object;
-    input: object;
-    message: {
-      box: object;
-      icon: object;
-      iconSize: number | undefined;
-      iconColor: string | undefined;
-      text: object;
-    };
-    loader: {
-      shape: object;
-      shapeContent: object;
-      label: object;
-      iconWrapper: object;
-      iconSize: number | undefined;
-      iconColor: string | undefined;
-    };
-    iconWrapper: object;
-    icon: object;
-    iconSize: number | undefined;
-    iconColor: string | undefined;
+  list: {
+    wrapper: object;
+    flatlist: object;
+    item: object;
   };
+  input: InputStylingPropShape;
 }
 
 interface InputStateShape {
@@ -542,7 +548,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
       <PackenUiDropdownList
         key={this.state.flag.toString()}
         items={this.state.list.items}
-        config={{ size: this.state.size, ...this.state.list.config }}
+        config={{ ...this.state.list.config }}
         numShownRows={4}
         resetDropdown={this.reset}
         theme={this.state.input.theme}

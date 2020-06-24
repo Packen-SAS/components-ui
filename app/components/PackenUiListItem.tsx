@@ -116,6 +116,23 @@ interface InputStylingPropShape {
   iconColor: string | undefined;
 }
 
+interface DropdownStylingShape {
+  wrapper: object;
+  inputWrapper: object;
+  contentSizer: {
+    wrapper: object;
+    inner: object;
+    text: object
+  };
+  menu: object;
+  list: {
+    wrapper: object;
+    flatlist: object;
+    item: object;
+  };
+  input: InputStylingPropShape;
+}
+
 interface StylingPropShape {
   wrapper: object;
   media: object;
@@ -123,21 +140,7 @@ interface StylingPropShape {
   sub: object;
   title: object;
   subtitle: object;
-  dropdown: {
-    wrapper: object;
-    inputWrapper: object;
-    contentSizer: {
-      wrapper: object;
-      inner: object;
-      text: object;
-    };
-    menu: object;
-    list: ListShape;
-    input: InputStylingPropShape;
-    header: object;
-    help: object;
-    box: object;
-  };
+  dropdown: DropdownStylingShape;
   input: InputStylingPropShape;
   label: object;
   iconWrapper: object;
@@ -236,7 +239,11 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
             text: {},
           },
           menu: {},
-          list: {},
+          list: {
+            wrapper: {},
+            flatlist: {},
+            item: {},
+          },
           input: {
             header: {
               base: {},
@@ -266,11 +273,8 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
             iconWrapper: {},
             icon: {},
             iconSize: undefined,
-            iconColor: undefined
+            iconColor: undefined,
           },
-          header: {},
-          help: {},
-          box: {}
         },
         input: {
           header: {
@@ -301,14 +305,14 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
           iconWrapper: {},
           icon: {},
           iconSize: undefined,
-          iconColor: undefined
+          iconColor: undefined,
         },
         label: {},
         iconWrapper: {},
         iconSize: undefined,
-        iconColor: undefined
+        iconColor: undefined,
       }
-    };
+    }
   }
 
   /**

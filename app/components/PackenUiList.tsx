@@ -46,38 +46,12 @@ interface DropdownStylingPropShape {
     text: object;
   };
   menu: object;
-  list: object;
-  input: {
-    header: {
-      base: object;
-      label: object;
-    };
-    help: {
-      touchable: object;
-      text: object;
-    };
-    box: object;
-    input: object;
-    message: {
-      box: object;
-      icon: object;
-      iconSize: number | undefined;
-      iconColor: string | undefined;
-      text: object;
-    };
-    loader: {
-      shape: object;
-      shapeContent: object;
-      label: object;
-      iconWrapper: object;
-      iconSize: number | undefined;
-      iconColor: string | undefined;
-    };
-    iconWrapper: object;
-    icon: object;
-    iconSize: number | undefined;
-    iconColor: string | undefined;
+  list: {
+    wrapper: object;
+    flatlist: object;
+    item: object;
   };
+  input: InputStylingPropShape;
 }
 
 interface ItemStylingPropShape {
@@ -175,7 +149,11 @@ class PackenUiList extends Component<PackenUiListProps, PackenUiListState> {
               text: {},
             },
             menu: {},
-            list: {},
+            list: {
+              wrapper: {},
+              flatlist: {},
+              item: {},
+            },
             input: {
               header: {
                 base: {},
@@ -237,15 +215,15 @@ class PackenUiList extends Component<PackenUiListProps, PackenUiListState> {
             iconWrapper: {},
             icon: {},
             iconSize: undefined,
-            iconColor: undefined
+            iconColor: undefined,
           },
           label: {},
           iconWrapper: {},
           iconSize: undefined,
-          iconColor: undefined
+          iconColor: undefined,
         }
       }
-    };
+    }
   }
 
   /**
