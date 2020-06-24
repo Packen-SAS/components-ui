@@ -1,20 +1,89 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode, ReactElement } from "react";
 import PropTypes from "prop-types";
-import { View, FlatList } from "react-native";
+import { View, FlatList, ListRenderItem } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiDropdownListItem from "./PackenUiDropdownListItem";
 
+interface SideConfigShape {
+  type: "icon" | "avatar";
+  config: object;
+}
+
+interface ItemShape {
+  key: string | number;
+  left: ReactNode | SideConfigShape | boolean;
+  right: ReactNode | SideConfigShape | boolean;
+  value: string;
+  isSelected: boolean;
+  main: ReactNode;
+}
+
+interface ConfigShape {
+  size: string;
+  checkedIcon?: string;
+  selectionType: "single" | "radio" | "multiple" | "checkbox";
+}
+
+interface PayloadShape {
+  checkedType: string;
+  checkedValue: string;
+}
+
+interface StylingPropShape {
+  wrapper: object;
+  flatlist: object;
+  item: object;
+}
+
+interface PackenUiDropdownListProps {
+  items: (string | ItemShape)[];
+  theme: string;
+  numShownRows: number;
+  config: ConfigShape;
+  toggleMenu: Function;
+  getFinalSelection: Function;
+  finalSelectionArray?: string[];
+  styling?: StylingPropShape;
+  instance?: Function;
+  resetDropdown: Function;
+}
+
+interface PackenUiDropdownListState {
+  items: (string | ItemShape)[];
+  theme: string;
+  numShownRows: number;
+  config: ConfigShape;
+  toggleMenu: Function | boolean;
+  getFinalSelection: Function | boolean;
+  styling: StylingPropShape;
+  height: number | string;
+  itemHeight: number;
+  selectedItems: string[];
+  currentRadiosState: {
+    checkedValue: string;
+  };
+  currentCheckboxesState: {
+    finalSelectionArray: string[] | undefined;
+    checkedValues: string[];
+  }
+}
+
+type FilterNewItemsType = (item: ItemShape | string) => boolean;
+type MapNewItemsType = (item: ItemShape | string) => string;
+type GetItemLayoutReturnType = { length: number; offset: number; index: number; };
+type GetItemLayoutType = (data: ItemShape[] | null | undefined, index: number) => GetItemLayoutReturnType;
+
 /**
  * Component for rendering a {@link PackenUiDropdown} inner menu list and should not be used standalone
  */
-class PackenUiDropdownList extends Component {
+class PackenUiDropdownList extends Component<PackenUiDropdownListProps, PackenUiDropdownListState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the state
    */
-  constructor(props) {
+  constructor(props: PackenUiDropdownListProps) {
     super(props);
 
     /**
@@ -55,7 +124,7 @@ class PackenUiDropdownList extends Component {
    * Determines whether the parent {@link PackenUiDropdown} should reset its currrent selection state
    * @type {function}
    */
-  checkReset = () => {
+  checkReset: Function = () => {
     if (this.state && this.state.items && this.props.items && this.props.items.length <= 0 && this.props.resetDropdown) {
       this.props.resetDropdown();
     }
@@ -66,7 +135,7 @@ class PackenUiDropdownList extends Component {
    * @type {function}
    * @return {object[]} The list items
    */
-  getItems = () => {
+  getItems: Function = (): ItemShape[] => {
     let items = [];
 
     if (this.props.theme === "list") {
@@ -75,8 +144,10 @@ class PackenUiDropdownList extends Component {
       items = this.props.items ? [...this.props.items] : [];
     }
 
-    return [...new Map(items.map(item => [item.value, item])).values()];
+    return [...new Map(this.getItemsAsMappedArrays(items)).values()];
   }
+
+  getItemsAsMappedArrays: Function = (items: ItemShape[]): [string, ItemShape][] => items.map(item => [item.value, item]);
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
@@ -90,7 +161,7 @@ class PackenUiDropdownList extends Component {
    * @property {object} [styling={ wrapper: {}, flatlist: {}, item: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     this.checkReset();
 
     return {
@@ -113,7 +184,7 @@ class PackenUiDropdownList extends Component {
    * @type {function}
    * @param {number} itemHeight The items height
    */
-  getItemHeight = itemHeight => {
+  getItemHeight: Function = (itemHeight: number) => {
     let finalNumShownRows;
     if (this.state.items.length < this.state.numShownRows) {
       finalNumShownRows = this.state.items.length;
@@ -134,7 +205,7 @@ class PackenUiDropdownList extends Component {
    * @param {string} itemValue The value to compare against
    * @return {object} The same item data object if it's the selected one
    */
-  findItemSingleRadio = (item, itemValue) => item.value === itemValue;
+  findItemSingleRadio: Function = (item: ItemShape, itemValue: string): boolean => item.value === itemValue;
 
   /**
    * Handles processing a new selection when it's a "single" or "radio" selection type
@@ -142,14 +213,14 @@ class PackenUiDropdownList extends Component {
    * @param {string} itemValue The newly selected value
    * @param {object} payload The additional data to handle each selection type
    */
-  handleSingleRadioUpdate = (itemValue, payload) => {
+  handleSingleRadioUpdate: Function = (itemValue: string, payload: PayloadShape): boolean | void => {
     const newItems = [...this.state.items];
     newItems.forEach(item => {
-      item.isSelected = false;
+      if (typeof item === "object") { item.isSelected = false; }
     });
 
     const foundItem = newItems.find(item => this.findItemSingleRadio(item, itemValue));
-    foundItem.isSelected = true;
+    if (foundItem && typeof foundItem === "object") { foundItem.isSelected = true; }
 
     this.setState({
       items: newItems,
@@ -164,7 +235,7 @@ class PackenUiDropdownList extends Component {
       });
     }
 
-    if (this.state.toggleMenu) {
+    if (typeof this.state.toggleMenu === "function") {
       this.state.toggleMenu();
     } else {
       return false;
@@ -178,15 +249,15 @@ class PackenUiDropdownList extends Component {
    * @param {string} itemValue The value to compare against
    * @return {object} The same item data object if it's the selected one
    */
-  findItemMultipleCheckbox = (item, itemValue) => item.value === itemValue;
+  findItemMultipleCheckbox: Function = (item: ItemShape, itemValue: string): boolean => item.value === itemValue;
 
   /**
    * Returns only the selected items
    * @type {function}
    * @param {object} item The item to check
-   * @return {object} The same item if it's currently selected
+   * @return {boolean} Whether the item is currently selected
    */
-  filterNewItems = item => item.isSelected;
+  filterNewItems: FilterNewItemsType = (item: ItemShape | string): boolean => typeof item === "object" ? item.isSelected : false;
 
   /**
    * Returns the item's value
@@ -194,7 +265,7 @@ class PackenUiDropdownList extends Component {
    * @param {object} item The item to extract its value from
    * @return {string} The item's value
    */
-  mapNewItems = item => item.value;
+  mapNewItems: MapNewItemsType = (item: ItemShape | string): string => typeof item === "object" ? item.value : "";
 
   /**
    * Handles processing a new selection when it's a "multiple" or "checkbox" selection type
@@ -203,18 +274,18 @@ class PackenUiDropdownList extends Component {
    * @param {boolean} isSelected Flag to determine whether the received item value is selected
    * @param {object} payload The additional data to handle each selection type
    */
-  handleMultipleCheckboxUpdate = (itemValue, isSelected, payload) => {
+  handleMultipleCheckboxUpdate: Function = (itemValue: string, isSelected: boolean, payload: PayloadShape) => {
     const newItems = [...this.state.items];
 
     const foundItem = newItems.find(item => this.findItemMultipleCheckbox(item, itemValue));
-    foundItem.isSelected = isSelected;
+    if (foundItem && typeof foundItem === "object") { foundItem.isSelected = isSelected; }
 
-    let newSelectedItems = newItems.filter(this.filterNewItems);
-    newSelectedItems = newSelectedItems.map(this.mapNewItems);
+    const newSelectedItems = newItems.filter(this.filterNewItems);
+    const newSelectedItemsStrings = newSelectedItems.map(this.mapNewItems);
 
     this.setState({
       items: newItems,
-      selectedItems: newSelectedItems
+      selectedItems: newSelectedItemsStrings
     });
 
     if (payload) {
@@ -240,7 +311,7 @@ class PackenUiDropdownList extends Component {
    * @param {boolean} isSelected The selected value's new state
    * @param {object} payload The optional payload with information on how to handle each selection type case
    */
-  updateSelectedItems = (itemValue, isSelected, payload) => {
+  updateSelectedItems: Function = (itemValue: string, isSelected: boolean, payload: PayloadShape): boolean | void => {
     switch (this.state.config.selectionType) {
       case "single":
       case "radio": {
@@ -259,8 +330,9 @@ class PackenUiDropdownList extends Component {
    * Renders a {@link PackenUiDropdownListItem} component for each item
    * @type {function}
    * @param {object} item The item data object
+   * @return {node} JSX for an item's {@link PackenUiDropdownListItem} component
    */
-  renderItem = ({ item }) => {
+  renderItem: ListRenderItem<ItemShape> = ({ item }: { item: ItemShape }): ReactElement => {
     return (
       <PackenUiDropdownListItem
         mainContent={item}
@@ -280,7 +352,7 @@ class PackenUiDropdownList extends Component {
    * @type {function}
    * @return {object} The layout configuration object for the inner {@link PackenUiDropdownListItem} components
    */
-  getItemLayout = (data, index) => ({
+  getItemLayout: GetItemLayoutType = (_data: ItemShape[] | null | undefined, index: number): GetItemLayoutReturnType => ({
     length: this.state.itemHeight,
     offset: this.state.itemHeight * index,
     index: index
@@ -300,13 +372,13 @@ class PackenUiDropdownList extends Component {
    * @param {object} prevProps Previous props
    * @param {object} prevState Previous state
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: PackenUiDropdownListProps, prevState: PackenUiDropdownListState): boolean | void {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
     if (prevState.selectedItems !== this.state.selectedItems) {
       /* Latest selected items can be used here */
-      if (this.state.getFinalSelection) {
+      if (typeof this.state.getFinalSelection === "function") {
         this.state.getFinalSelection(this.state.selectedItems);
         this.setState({
           currentCheckboxesState: {
@@ -325,7 +397,7 @@ class PackenUiDropdownList extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{ height: this.state.height, ...this.state.styling.wrapper }}>
         <FlatList
@@ -341,16 +413,19 @@ class PackenUiDropdownList extends Component {
       </View>
     );
   }
-}
 
-PackenUiDropdownList.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  numShownRows: PropTypes.number.isRequired,
-  config: PropTypes.object.isRequired,
-  toggleMenu: PropTypes.func.isRequired,
-  getFinalSelection: PropTypes.func.isRequired,
-  finalSelectionArray: PropTypes.array,
-  styling: PropTypes.object
-};
+  static propTypes: object = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    numShownRows: PropTypes.number.isRequired,
+    config: PropTypes.object.isRequired,
+    toggleMenu: PropTypes.func.isRequired,
+    getFinalSelection: PropTypes.func.isRequired,
+    finalSelectionArray: PropTypes.array,
+    styling: PropTypes.object,
+    instance: PropTypes.func,
+    resetDropdown: PropTypes.func.isRequired,
+    theme: PropTypes.string.isRequired
+  };
+}
 
 export default PackenUiDropdownList;

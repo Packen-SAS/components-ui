@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback, LayoutChangeEvent } from "react-native";
 import * as UTIL from "../utils";
 
 import Colors from "../styles/abstracts/colors";
@@ -11,16 +11,154 @@ import PackenUiText from "./PackenUiText";
 import PackenUiInput from "./PackenUiInput";
 import PackenUiDropdownList from "./PackenUiDropdownList";
 
+interface HelpShape {
+  callback: Function;
+  touchable: object;
+  text: string;
+}
+
+interface IconShape {
+  callback: VoidFunction;
+  position: string;
+  name: string;
+  style: object;
+}
+
+interface MessageShape {
+  icon: string;
+  text: string;
+}
+
+interface SideConfigShape {
+  type: "icon" | "avatar";
+  config: object;
+}
+
+interface ItemShape {
+  key: string | number;
+  left: ReactNode | SideConfigShape | boolean;
+  right: ReactNode | SideConfigShape | boolean;
+  value: string;
+  isSelected: boolean;
+  main: ReactNode;
+}
+
+interface ConfigShape {
+  size: string;
+  checkedIcon?: string;
+  selectionType: "single" | "radio" | "multiple" | "checkbox";
+}
+
+interface ListShape {
+  items: ItemShape[];
+  config: ConfigShape;
+}
+
+interface StylingPropShape {
+  wrapper: object;
+  inputWrapper: object;
+  contentSizer: {
+    wrapper: object;
+    inner: object;
+    text: object;
+  };
+  menu: object;
+  list: object;
+  input: {
+    header: {
+      base: object;
+      label: object;
+    };
+    help: {
+      touchable: object;
+      text: object;
+    };
+    box: object;
+    input: object;
+    message: {
+      box: object;
+      icon: object;
+      iconSize: number | undefined;
+      iconColor: string | undefined;
+      text: object;
+    };
+    loader: {
+      shape: object;
+      shapeContent: object;
+      label: object;
+      iconWrapper: object;
+      iconSize: number | undefined;
+      iconColor: string | undefined;
+    };
+    iconWrapper: object;
+    icon: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+  };
+}
+
+interface InputStateShape {
+  placeholder: string;
+  onChangeText: Function;
+  onOpenStateChange: Function;
+  icon: IconShape;
+  message: MessageShape | undefined;
+  label: string;
+  help: HelpShape | undefined;
+  theme: string;
+  isDropdown: boolean;
+  nonEditable: boolean;
+  disabled: boolean;
+  isOpen: boolean;
+  multiline: boolean;
+  name: string;
+  style: object;
+}
+
+interface PackenUiDropdownProps {
+  callback: Function;
+  name: string;
+  isDisabled?: boolean;
+  input: object;
+  list: ListShape;
+  size: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiDropdownState {
+  callback: Function;
+  name: string;
+  isDisabled: boolean;
+  input: InputStateShape;
+  list: ListShape;
+  size: "tiny" | "small" | "medium" | "large" | "giant";
+  styling: StylingPropShape;
+  flag: boolean;
+  contentSizerHeight: number;
+  isOpen: boolean;
+  dimensions: {
+    menu: {
+      height: number;
+    }
+  };
+  styles: {
+    menu: object;
+  };
+  finalSelection: string[];
+  finalSelectionString: string;
+}
+
 /**
- * Component for rendering a dropdown, either as a standlone component or as part of a {@link PackenUiListItem} component
+ * Component for rendering a dropdown, either as a standalone component or as part of a {@link PackenUiListItem} component
  */
-class PackenUiDropdown extends Component {
+class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdownState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiDropdownProps) {
     super(props);
 
     /**
@@ -57,19 +195,19 @@ class PackenUiDropdown extends Component {
    * Programmatically opens the menu
    * @type {function}
    */
-  openMenu = () => { this.setState({ isOpen: true }) };
+  openMenu: Function = () => { this.setState({ isOpen: true }) };
 
   /**
    * Programmatically close the menu
    * @type {function}
    */
-  closeMenu = () => { this.setState({ isOpen: false }) };
+  closeMenu: Function = () => { this.setState({ isOpen: false }) };
 
   /**
    * Propagates the component instance if a callback is provided via props
    * @type {function}
    */
-  componentDidMount = () => {
+  componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
@@ -80,7 +218,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {boolean} Returned false value used for testing purposes
    */
-  mockCallback = () => false;
+  mockCallback: Function = (): boolean => false;
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
@@ -88,13 +226,13 @@ class PackenUiDropdown extends Component {
    * @property {function} [callback=mockCallback] The propagation function to be triggered when a new selection is made
    * @property {string} [name=""] The identifier for this dropdown
    * @property {boolean} [isDisabled=false] Determines if the dropdown should be disabled
-   * @property {object} [input={ placeholder: "", onChangeText: mockCallback, onOpenStateChange: mockCallback, icon: { name: "chevron-down", position: "right" }, message: false, label: "", help: undefined, theme: "default", isDropdown: true, nonEditable: true, disabled: false, isOpen: false, multiline: true, name: "", style: {} }] The configuration for the inner {@link PackenUiInput}
+   * @property {object} [input={ placeholder: "", onChangeText: mockCallback, onOpenStateChange: mockCallback, icon: { name: "chevron-down", position: "right" }, message: undefined, label: "", help: undefined, theme: "default", isDropdown: true, nonEditable: true, disabled: false, isOpen: false, multiline: true, name: "", style: {} }] The configuration for the inner {@link PackenUiInput}
    * @property {object} [list={ items: [], config: {} }] Contains the dropdown items and configuration
    * @property {string} [size="medium"] The size of the component for applying the correct styles - "tiny"; "small"; "medium"; "large"; "giant"
    * @property {object} [styling={ wrapper: {}, inputWrapper: {}, contentSizer: { wrapper: {}, inner: {}, text: {} }, menu: {}, list: {}, input: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
       name: this.props.name ? this.props.name : "",
@@ -104,7 +242,7 @@ class PackenUiDropdown extends Component {
         onChangeText: this.mockCallback,
         onOpenStateChange: this.mockCallback,
         icon: { name: "chevron-down", position: "right" },
-        message: false,
+        message: undefined,
         label: "",
         help: undefined,
         theme: "default",
@@ -138,7 +276,8 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @param {number} height The height of the menu element
    */
-  getMenuDimensions = ({ height }) => {
+  getMenuDimensions: Function = ({ nativeEvent }: LayoutChangeEvent) => {
+    const { height } = nativeEvent.layout;
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -153,7 +292,7 @@ class PackenUiDropdown extends Component {
    * Combines and sets to the state the custom styles for the menu wrapper element
    * @type {function}
    */
-  setCustomStyles = () => {
+  setCustomStyles: VoidFunction = () => {
     let customStyles = {};
     if (this.state.input && this.state.input.theme === "list") {
       customStyles = {
@@ -177,7 +316,7 @@ class PackenUiDropdown extends Component {
    * Event handler for when the menu is toggled
    * @type {function}
    */
-  onOpenStateChange = () => {
+  onOpenStateChange: VoidFunction = () => {
     if (this.state.input.onOpenStateChange) {
       this.state.input.onOpenStateChange(this.state.isOpen, this.state.dimensions.menu.height);
     }
@@ -187,7 +326,7 @@ class PackenUiDropdown extends Component {
    * Programmatically toggles the menu
    * @type {function}
    */
-  toggleMenu = () => {
+  toggleMenu: VoidFunction = () => {
     this.setState({
       isOpen: !this.state.isOpen
     }, this.onOpenStateChange);
@@ -198,7 +337,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @param {string[]} selectedItems The newly selected items
    */
-  getFinalSelection = selectedItems => {
+  getFinalSelection: Function = (selectedItems: string[]) => {
     this.setState({
       finalSelection: selectedItems
     }, this.composeFinalSelectionString);
@@ -213,14 +352,14 @@ class PackenUiDropdown extends Component {
    * @param {string} finalSelectionString The current string
    * @return {string} The updated final selection string
    */
-  concatFinalSelectionString = (item, finalSelectionString) => finalSelectionString += `${item}, `;
+  concatFinalSelectionString: Function = (item: string, finalSelectionString: string): string => finalSelectionString += `${item}, `;
 
   /**
    * Sets the formatted string to be displayed as the current selection to the state
    * @type {function}
    * @return {string} The final selection string
    */
-  composeFinalSelectionString = () => {
+  composeFinalSelectionString: VoidFunction = (): string => {
     let finalSelectionString = "";
 
     this.state.finalSelection.forEach(item => finalSelectionString = this.concatFinalSelectionString(item, finalSelectionString));
@@ -237,13 +376,13 @@ class PackenUiDropdown extends Component {
    * Programmatically resets the current selection
    * @type {function}
    */
-  reset = () => { this.getFinalSelection([]); }
+  reset: Function = () => { this.getFinalSelection([]); }
 
   /**
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     const newFlagState = this.state.list.items.length > 0 ? true : !this.state.flag;
     this.setState({ ...this.setPropsToState(), flag: newFlagState });
   }
@@ -253,7 +392,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiDropdownProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -264,7 +403,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {object} The configuration object
    */
-  getPlaceholderConfig = () => {
+  getPlaceholderConfig: Function = (): object => {
     let config = {
       text: this.state.input.placeholder,
       color: Colors.basic.gray.dft
@@ -285,7 +424,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @param {object} nativeEvent The event data
    */
-  getContentSizerDimensions = ({ nativeEvent }) => {
+  getContentSizerDimensions: (e: LayoutChangeEvent) => void = ({ nativeEvent }: LayoutChangeEvent) => {
     let { height } = nativeEvent.layout;
     const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
 
@@ -303,7 +442,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @returns {object} The styles object containing the appropriate height to update according to the current input value
    */
-  getCustomStyle = () => {
+  getCustomStyle: Function = (): object => {
     let styles = {};
 
     if (this.state.contentSizerHeight !== 0) {
@@ -320,7 +459,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {node} JSX for the input element
    */
-  getInput = () => (
+  getInput: Function = (): ReactNode => (
     <PackenUiInput
       size={this.state.size}
       placeholder={this.getPlaceholderConfig().text}
@@ -351,7 +490,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {node} JSX for the content sizer element
    */
-  getContentSizer = () => (
+  getContentSizer: Function = (): ReactNode => (
     <View
       pointerEvents="none"
       style={{
@@ -388,9 +527,9 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {node} JSX for the {@link PackenUiDropdownList} component
    */
-  getMenu = () => (
+  getMenu: Function = (): ReactNode => (
     <View
-      onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
+      onLayout={e => { this.getMenuDimensions(e.nativeEvent) }}
       style={[
         this.getStyles().menu.base,
         this.getStyles().menu.theme[this.state.input.theme],
@@ -401,7 +540,7 @@ class PackenUiDropdown extends Component {
       pointerEvents={this.state.isOpen ? "auto" : "none"}
     >
       <PackenUiDropdownList
-        key={this.state.flag}
+        key={this.state.flag.toString()}
         items={this.state.list.items}
         config={{ size: this.state.size, ...this.state.list.config }}
         numShownRows={4}
@@ -420,7 +559,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View
         style={{
@@ -446,7 +585,7 @@ class PackenUiDropdown extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: {},
       input: {},
@@ -605,16 +744,21 @@ class PackenUiDropdown extends Component {
       }
     };
   }
-}
 
-PackenUiDropdown.propTypes = {
-  callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  isDisabled: PropTypes.bool,
-  input: PropTypes.object.isRequired,
-  list: PropTypes.object.isRequired,
-  size: PropTypes.string.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    callback: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    isDisabled: PropTypes.bool,
+    input: PropTypes.object.isRequired,
+    list: PropTypes.object.isRequired,
+    size: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiDropdown;

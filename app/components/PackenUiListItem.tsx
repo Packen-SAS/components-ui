@@ -20,6 +20,31 @@ interface DataIconShape {
   color: string;
 }
 
+interface SideConfigShape {
+  type: "icon" | "avatar";
+  config: object;
+}
+
+interface ItemShape {
+  key: string | number;
+  left: ReactNode | SideConfigShape | boolean;
+  right: ReactNode | SideConfigShape | boolean;
+  value: string;
+  isSelected: boolean;
+  main: ReactNode;
+}
+
+interface ConfigShape {
+  size: string;
+  checkedIcon?: string;
+  selectionType: "single" | "radio" | "multiple" | "checkbox";
+}
+
+interface ListShape {
+  items: ItemShape[];
+  config: ConfigShape;
+}
+
 interface DataInputShape {
   onChange: Function;
   isOpen: boolean;
@@ -32,7 +57,7 @@ interface DataInputShape {
   multiline: boolean;
   maxLength: number;
   isDropdown: boolean;
-  list: object;
+  list: ListShape;
 }
 
 interface DataPropShape {
@@ -98,7 +123,21 @@ interface StylingPropShape {
   sub: object;
   title: object;
   subtitle: object;
-  dropdown: object;
+  dropdown: {
+    wrapper: object;
+    inputWrapper: object;
+    contentSizer: {
+      wrapper: object;
+      inner: object;
+      text: object;
+    };
+    menu: object;
+    list: ListShape;
+    input: InputStylingPropShape;
+    header: object;
+    help: object;
+    box: object;
+  };
   input: InputStylingPropShape;
   label: object;
   iconWrapper: object;
@@ -188,7 +227,51 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
         sub: {},
         title: {},
         subtitle: {},
-        dropdown: {},
+        dropdown: {
+          wrapper: {},
+          inputWrapper: {},
+          contentSizer: {
+            wrapper: {},
+            inner: {},
+            text: {},
+          },
+          menu: {},
+          list: {},
+          input: {
+            header: {
+              base: {},
+              label: {},
+            },
+            help: {
+              touchable: {},
+              text: {},
+            },
+            box: {},
+            input: {},
+            message: {
+              box: {},
+              icon: {},
+              iconSize: undefined,
+              iconColor: undefined,
+              text: {},
+            },
+            loader: {
+              shape: {},
+              shapeContent: {},
+              label: {},
+              iconWrapper: {},
+              iconSize: undefined,
+              iconColor: undefined,
+            },
+            iconWrapper: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined
+          },
+          header: {},
+          help: {},
+          box: {}
+        },
         input: {
           header: {
             base: {},
