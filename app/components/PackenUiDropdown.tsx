@@ -155,6 +155,8 @@ interface PackenUiDropdownState {
   finalSelectionString: string;
 }
 
+type LayoutChangeType = (e: LayoutChangeEvent) => void;
+
 /**
  * Component for rendering a dropdown, either as a standalone component or as part of a {@link PackenUiListItem} component
  */
@@ -282,7 +284,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
    * @type {function}
    * @param {number} height The height of the menu element
    */
-  getMenuDimensions: Function = ({ nativeEvent }: LayoutChangeEvent) => {
+  getMenuDimensions: LayoutChangeType = ({ nativeEvent }: LayoutChangeEvent) => {
     const { height } = nativeEvent.layout;
     this.setState({
       dimensions: {
@@ -430,7 +432,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
    * @type {function}
    * @param {object} nativeEvent The event data
    */
-  getContentSizerDimensions: (e: LayoutChangeEvent) => void = ({ nativeEvent }: LayoutChangeEvent) => {
+  getContentSizerDimensions: LayoutChangeType = ({ nativeEvent }: LayoutChangeEvent) => {
     let { height } = nativeEvent.layout;
     const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
 
@@ -535,7 +537,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
    */
   getMenu: Function = (): ReactNode => (
     <View
-      onLayout={e => { this.getMenuDimensions(e.nativeEvent) }}
+      onLayout={this.getMenuDimensions}
       style={[
         this.getStyles().menu.base,
         this.getStyles().menu.theme[this.state.input.theme],
