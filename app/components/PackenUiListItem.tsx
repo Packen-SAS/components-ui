@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/Feather";
@@ -22,21 +22,43 @@ interface DataIconShape {
 
 interface SideConfigShape {
   type: "icon" | "avatar";
-  config: object;
+  config: {
+    name: string;
+    size: string;
+    src: ImageSourcePropType;
+  };
 }
 
 interface ItemShape {
   key: string | number;
-  left: ReactNode | SideConfigShape | boolean;
-  right: ReactNode | SideConfigShape | boolean;
-  value: string;
+  isDisabled: boolean;
   isSelected: boolean;
-  main: ReactNode;
+  value: string;
+  left: SideConfigShape | boolean;
+  right: SideConfigShape | boolean;
+  main: {
+    control: {
+      type: string;
+      label: string;
+      isDisabled: boolean;
+      items: any[];
+      handleNotify: Function;
+    };
+    props: {
+      children: object | object[];
+      style: object;
+    };
+    type: {
+      displayName: string;
+    };
+  };
 }
 
 interface ConfigShape {
   size: string;
+  name: string;
   checkedIcon?: string;
+  src: ImageSourcePropType;
   selectionType: "single" | "radio" | "multiple" | "checkbox";
 }
 

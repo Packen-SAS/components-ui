@@ -1,8 +1,13 @@
-import React, { Component, createRef } from "react";
+import React, { Component, createRef, ReactNode, RefObject } from "react";
 import PropTypes from "prop-types";
-import { TouchableWithoutFeedback, View } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  View,
+  LayoutChangeEvent,
+  GestureResponderEvent,
+  ImageSourcePropType } from "react-native";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
@@ -12,16 +17,138 @@ import PackenUiAvatar from "./PackenUiAvatar";
 import PackenUiRadio from "./PackenUiRadio";
 import PackenUiCheckbox from "./PackenUiCheckbox";
 
+interface MainContentShape {
+  main: {
+    props: {
+      children: object | object[];
+      style: {
+        color: string;
+      };
+    };
+    type: {
+      displayName: string;
+    };
+  };
+}
+
+interface ChildShape {
+  type: {
+    displayName: string;
+  };
+  props: {
+    style: {
+      color: string;
+    };
+  };
+}
+
+interface CurrentCheckboxesStateShape {
+  finalSelectionArray: string[];
+  checkedValues: string[];
+}
+
+interface CurrentRadiosStateShape {
+  checkedValue: string;
+}
+
+interface ConfigShape {
+  size: string;
+  name: string;
+  checkedIcon?: string;
+  src: ImageSourcePropType;
+  selectionType: "single" | "radio" | "multiple" | "checkbox";
+}
+
+interface MainContentSideShape {
+  type: "icon" | "avatar";
+  config: {
+    name: string;
+    size: string;
+    src: ImageSourcePropType;
+  };
+}
+
+interface PackenUiDropdownListItemProps {
+  config: ConfigShape;
+  mainContent: {
+    isDisabled: boolean;
+    isSelected: boolean;
+    value: string;
+    left: MainContentSideShape | boolean;
+    right: MainContentSideShape | boolean;
+    main: {
+      control: {
+        type: string;
+        label: string;
+        isDisabled: boolean;
+        items: any[];
+        handleNotify: Function;
+      };
+      props: {
+        children: object | object[];
+        style: object;
+      };
+      type: {
+        displayName: string;
+      };
+    };
+  };
+  getItemHeight: Function;
+  selectedItems: string[];
+  updateSelectedItems: Function;
+  currentRadiosState?: CurrentRadiosStateShape;
+  currentCheckboxesState?: CurrentCheckboxesStateShape;
+  styling?: object;
+  instance?: Function;
+}
+
+interface PackenUiDropdownListItemState {
+  prevState: string;
+  state: string;
+  originalStyles: {
+    color: string;
+  };
+  mainContent: ReactNode | null;
+  newSelectedState: boolean;
+}
+
+interface PackenUiRadioShape {
+  setCheckedState: Function;
+  setCheckedIndex: Function;
+}
+
+interface PackenUiCheckboxShape {
+  setCheckedState: Function;
+}
+
+type FindSelectedItemsType = (item: string) => boolean;
+type GestureEventType = (event: GestureResponderEvent) => void;
+type LayoutChangeEventType = (event: LayoutChangeEvent) => void;
+type CheckUnselectedChildrenType = (val: string) => boolean | void;
+type ForEachFunctionType = (child: object | ChildShape, i: number, vals: object[]) => boolean | void;
+
 /**
  * Component for rendering a {@link PackenUiDropdownList} item, and should not be used standalone
  */
-class PackenUiDropdownListItem extends Component {
+class PackenUiDropdownListItem extends Component<PackenUiDropdownListItemProps, PackenUiDropdownListItemState> {
+  /**
+   * Variable that stores the optional inner {@link PackenUiRadio} component ref/instance
+   * @type {object|null}
+   */
+  radioRef: PackenUiRadioShape | PackenUiRadio | RefObject<PackenUiRadio> | null = null;
+  
+  /**
+   * Variable that stores the optional inner {@link PackenUiCheckbox} component ref/instance
+   * @type {object|null}
+   */
+  checkboxRef: PackenUiCheckboxShape | PackenUiCheckbox | RefObject<(PackenUiCheckbox)> | null = null;
+
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiDropdownListItemProps) {
     super(props);
 
     /**
@@ -49,7 +176,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The styling object for each element
    */
-  getPropStyling = () => {
+  getPropStyling: Function = (): object => {
     return this.props.styling ? { ...this.props.styling } : {
       wrapper: {},
       box: {},
@@ -70,8 +197,9 @@ class PackenUiDropdownListItem extends Component {
   /**
    * Creates the {@link PackenUiRadio} and {@link PackenUiCheckbox} refs/instances
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  createRefs = () => {
+  createRefs: Function = (): boolean | void => {
     if (this.props.mainContent.main.control) {
       this.radioRef = createRef();
       this.checkboxRef = createRef();
@@ -85,7 +213,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {string} The status of the component
    */
-  setInitialState = () => {
+  setInitialState: Function = (): string => {
     return this.props.mainContent.isDisabled ? "disabled" : this.props.mainContent.isSelected ? "active" : "default";
   }
 
@@ -94,9 +222,8 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {object} child The child element
    * @param {object[]} originalStyles The original styles array to push to
-   * @return {object[]} The styles array
    */
-  getOriginalChildrenStyles = (child, originalStyles) => {
+  getOriginalChildrenStyles: Function = (child: ChildShape, originalStyles: object[]) => {
     if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
       originalStyles.push({ color: child.props.style.color });
     } else {
@@ -109,8 +236,8 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object|object[]} The original styles
    */
-  getOriginalStyles = () => {
-    let originalStyles = [];
+  getOriginalStyles: Function = (): object | object[] => {
+    let originalStyles: object | object[] = [];
 
     if (!this.props.mainContent.main.control) {
       if (Array.isArray(this.props.mainContent.main.props.children)) {
@@ -146,7 +273,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  mockCallback = () => true;
+  mockCallback: Function = (): boolean => true;
 
   /**
    * Returns the selected item
@@ -154,7 +281,7 @@ class PackenUiDropdownListItem extends Component {
    * @param {object} item The item to check
    * @return {object} The same item if it's the selected one
    */
-  findSelectedItem = item => item === this.props.mainContent.value;
+  findSelectedItem: FindSelectedItemsType = (item: string): boolean => item === this.props.mainContent.value;
 
   /**
    * Checks if this item should be selected
@@ -162,7 +289,7 @@ class PackenUiDropdownListItem extends Component {
    * @param {object} prevProps Previous props
    * @return {boolean} Flag used only for testing purposes
    */
-  checkSelectedItems = prevProps => {
+  checkSelectedItems: Function = (prevProps: PackenUiDropdownListItemProps): boolean | void => {
     if (!UTIL.arraysEqual(prevProps.selectedItems, this.props.selectedItems)) {
       if (!this.props.mainContent.isDisabled && Array.isArray(this.props.selectedItems)) {
         const found = this.props.selectedItems.find(this.findSelectedItem);
@@ -187,8 +314,14 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  checkCheckbox = () => {
-    if (this.checkboxRef && this.checkboxRef.setCheckedState) {
+  checkCheckbox: Function = (): boolean | void => {
+    if (
+      this.checkboxRef
+      && typeof this.checkboxRef === "object"
+      && "setCheckedState" in this.checkboxRef
+      && typeof this.checkboxRef.setCheckedState === "function"
+      && this.props.currentCheckboxesState
+    ) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, this.state.newSelectedState, this.props.currentCheckboxesState.finalSelectionArray);
     } else {
       return false;
@@ -200,7 +333,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiDropdownListItemProps) {
     this.checkIfUnselected();
     this.checkSelectedItems(prevProps);
     this.checkCheckbox();
@@ -211,8 +344,15 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  checkUnselectedChildren = checkedValue => {
-    if (checkedValue !== this.props.mainContent.value) {
+  checkUnselectedChildren: CheckUnselectedChildrenType = (checkedValue: string): boolean | void => {
+    if (
+      checkedValue !== this.props.mainContent.value
+      && this.checkboxRef
+      && typeof this.checkboxRef === "object"
+      && "setCheckedState" in this.checkboxRef
+      && typeof this.checkboxRef.setCheckedState === "function"
+      && this.props.currentCheckboxesState
+    ) {
       this.checkboxRef.setCheckedState(this.props.mainContent.value, false, this.props.currentCheckboxesState.finalSelectionArray);
     } else {
       return false;
@@ -224,18 +364,23 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  checkIfUnselected = () => {
+  checkIfUnselected: Function = (): boolean | void => {
     let flag = true;
 
     if (this.props.mainContent.main.control) {
-      if (this.props.config.selectionType === "radio") {
-        if (this.props.currentRadiosState.checkedValue !== this.props.mainContent.value) {
+      if (this.props.config.selectionType === "radio" && this.props.currentRadiosState) {
+        if (
+          this.props.currentRadiosState.checkedValue !== this.props.mainContent.value
+          && this.radioRef
+          && typeof this.radioRef === "object"
+          && "setCheckedIndex" in this.radioRef
+        ) {
           this.radioRef.setCheckedIndex(undefined);
         } else {
           flag = false;
         }
       }
-      if (this.props.config.selectionType === "checkbox") {
+      if (this.props.config.selectionType === "checkbox" && this.props.currentCheckboxesState) {
         this.props.currentCheckboxesState.checkedValues.forEach(this.checkUnselectedChildren);
       }
     }
@@ -247,7 +392,7 @@ class PackenUiDropdownListItem extends Component {
    * Sets the correct "active" or "hover" inner status and applies the styles accordingly
    * @type {function}
    */
-  pressInHandler = () => {
+  pressInHandler: GestureEventType = () => {
     const prevState = this.state.state;
     this.setState({
       prevState: prevState,
@@ -259,7 +404,7 @@ class PackenUiDropdownListItem extends Component {
    * Sets the previous inner status and styles when releasing the component
    * @type {function}
    */
-  pressOutHandler = () => {
+  pressOutHandler: GestureEventType = () => {
     this.setState({
       state: this.state.prevState
     });
@@ -269,12 +414,12 @@ class PackenUiDropdownListItem extends Component {
    * Handles a press event when the selection type is "single" or "radio"
    * @type {function}
    */
-  handleSingleRadioPress = () => {
+  handleSingleRadioPress: Function = () => {
     this.setState({
       prevState: "active",
       state: "active"
     });
-    if (this.radioRef) {
+    if (this.radioRef && "setCheckedIndex" in this.radioRef) {
       this.radioRef.setCheckedIndex(0);
       this.props.updateSelectedItems(this.props.mainContent.value, true, {
         checkedType: "radio",
@@ -289,7 +434,7 @@ class PackenUiDropdownListItem extends Component {
    * Handles a press event when the selection type is "multiple" or "checkbox"
    * @type {function}
    */
-  handleMultipleCheckboxPress = () => {
+  handleMultipleCheckboxPress: Function = () => {
     const newState = this.state.prevState === "default" ? "active" : "default";
     const newSelectedState = newState === "active" ? true : false;
     this.setState({
@@ -310,8 +455,9 @@ class PackenUiDropdownListItem extends Component {
   /**
    * Determines how to process a press event on the component depending on the selection type to apply the correct status and styles
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  pressHandler = () => {
+  pressHandler: GestureEventType = (): boolean | void => {
     switch (this.props.config.selectionType) {
       case "single":
       case "radio":
@@ -331,7 +477,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getActiveStyles = () => {
+  getActiveStyles: Function = (): object => {
     let activeStyles = {};
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
@@ -350,7 +496,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getFocusStyles = () => {
+  getFocusStyles: Function = (): object => {
     let focusStyles = {};
 
     if (this.props.config.selectionType !== "radio" && this.props.config.selectionType !== "checkbox") {
@@ -371,30 +517,32 @@ class PackenUiDropdownListItem extends Component {
    * @param {number} iconSizeMultiplier The multipler value for the icon size
    * @return {node} The updated JSX for the left content
    */
-  getLeftRender = (leftContent, iconSizeMultiplier) => {
+  getLeftRender: Function = (leftContent: ReactNode, iconSizeMultiplier: number): ReactNode | null => {
     let leftRender = leftContent;
-    switch (this.props.mainContent.left.type) {
-      case "icon":
-        leftRender = (
-          <Icon
-            name={this.props.mainContent.left.config.name}
-            color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
-            size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
-          />
-        );
-        break;
-      case "avatar":
-        leftRender = (
-          <PackenUiAvatar
-            size={this.props.mainContent.left.config.size}
-            src={this.props.mainContent.left.config.src}
-            styling={this.getPropStyling().avatar}
-          />
-        );
-        break;
-      default:
-        leftRender = null;
-        break;
+    if (typeof this.props.mainContent.left === "object") {
+      switch (this.props.mainContent.left.type) {
+        case "icon":
+          leftRender = (
+            <Icon
+              name={this.props.mainContent.left.config.name}
+              color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
+              size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
+            />
+          );
+          break;
+        case "avatar":
+          leftRender = (
+            <PackenUiAvatar
+              size={this.props.mainContent.left.config.size}
+              src={this.props.mainContent.left.config.src}
+              styling={this.getPropStyling().avatar}
+            />
+          );
+          break;
+        default:
+          leftRender = null;
+          break;
+      }
     }
     return leftRender;
   }
@@ -406,30 +554,32 @@ class PackenUiDropdownListItem extends Component {
    * @param {number} iconSizeMultiplier The multipler value for the icon size
    * @return {node} The updated JSX for the right content
    */
-  getRightRender = (rightContent, iconSizeMultiplier) => {
+  getRightRender: Function = (rightContent: ReactNode, iconSizeMultiplier: number): ReactNode | null => {
     let rightRender = rightContent;
-    switch (this.props.mainContent.right.type) {
-      case "icon":
-        rightRender = (
-          <Icon
-            name={this.props.mainContent.right.config.name}
-            color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
-            size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
-          />
-        );
-        break;
-      case "avatar":
-        rightRender = (
-          <PackenUiAvatar
-            size={this.props.mainContent.right.config.size}
-            src={this.props.mainContent.right.config.src}
-            styling={this.getPropStyling().avatar}
-          />
-        );
-        break;
-      default:
-        rightRender = null;
-        break;
+    if (typeof this.props.mainContent.right === "object") {
+      switch (this.props.mainContent.right.type) {
+        case "icon":
+          rightRender = (
+            <Icon
+              name={this.props.mainContent.right.config.name}
+              color={this.getPropStyling().sideIconColor ? this.getPropStyling().sideIconColor : this.getStyles().icon.state[this.state.state].color}
+              size={this.getPropStyling().sideIconSize ? this.getPropStyling().sideIconSize : this.getStyles().icon.size[this.props.config.size].size * iconSizeMultiplier}
+            />
+          );
+          break;
+        case "avatar":
+          rightRender = (
+            <PackenUiAvatar
+              size={this.props.mainContent.right.config.size}
+              src={this.props.mainContent.right.config.src}
+              styling={this.getPropStyling().avatar}
+            />
+          );
+          break;
+        default:
+          rightRender = null;
+          break;
+      }
     }
     return rightRender;
   }
@@ -439,7 +589,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The object holding the JSX for each side's content
    */
-  getSidesContent = () => {
+  getSidesContent: Function = (): { left: ReactNode; right: ReactNode } => {
     let leftContent, rightContent;
     const iconSizeMultiplier = 1.5;
 
@@ -482,7 +632,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {node} JSX for the left content
    */
-  getLeftContent = () => {
+  getLeftContent: Function = (): ReactNode => {
     return this.getSidesContent().left;
   }
 
@@ -491,7 +641,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {node} JSX for the right content
    */
-  getRightContent = () => {
+  getRightContent: Function = (): ReactNode => {
     return this.getSidesContent().right;
   }
 
@@ -500,7 +650,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {object} radio The ref/instances
    */
-  setRadioRef = radio => {
+  setRadioRef: (instance: PackenUiRadio | null) => void = (radio: PackenUiRadio | null) => {
     this.radioRef = radio;
   }
 
@@ -509,17 +659,18 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {object} checkbox The ref/instance
    */
-  setCheckboxRef = checkbox => {
+  setCheckboxRef: (instance: PackenUiCheckbox | null) => void = (checkbox: PackenUiCheckbox | null) => {
     this.checkboxRef = checkbox;
   }
 
   /**
    * Returns the correct content if it's a "control" dropdown
    * @type {function}
+   * @param {node} mainContent The
    * @return {node} JSX for the {@link PackenUiRadio} or {@link PackenUiCheckbox}
    */
-  getMainControl = mainContent => {
-    let mainControl = mainContent;
+  getMainControl: Function = (): ReactNode | null => {
+    let mainControl = null;
     switch (this.props.mainContent.main.control.type) {
       case "radio": {
         mainControl = (
@@ -559,7 +710,7 @@ class PackenUiDropdownListItem extends Component {
    * Sets the correct main content to the state
    * @type {function}
    */
-  setMainContent = () => {
+  setMainContent: Function = () => {
     let mainContent;
 
     if (this.props.mainContent.main.control) {
@@ -582,8 +733,8 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {number} height The received item's height
    */
-  getItemHeight = ({ height }) => {
-    this.props.getItemHeight(height);
+  getItemHeight: LayoutChangeEventType = (e: LayoutChangeEvent) => {
+    this.props.getItemHeight(e.nativeEvent.layout.height);
   }
 
   /**
@@ -591,7 +742,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getDisabledStyles = () => {
+  getDisabledStyles: Function = (): object => {
     let disabledStyles = {
       box: {},
       content: { wrapper: {} }
@@ -617,9 +768,14 @@ class PackenUiDropdownListItem extends Component {
    * Sets the disabled styles to the main content elements when appropriate
    * @type {function}
    * @param {object} child The main content's element to update
+   * @return {boolean} Flag used only for testing purposes
    */
-  checkDisabledChildren = child => {
-    if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
+  checkDisabledChildren: ForEachFunctionType = (child: object | ChildShape): boolean | void => {
+    if (
+      "type" in child
+      && child.type.displayName !== "PackenUiRadio"
+      && child.type.displayName !== "PackenUiCheckbox"
+    ) {
       child.props.style.color = Colors.basic.gray.lgt;
     } else {
       return false;
@@ -630,8 +786,9 @@ class PackenUiDropdownListItem extends Component {
    * Sets the disabled styles when appropriate
    * @type {function}
    * @param {object} mainContent The main content data object
+   * @return {boolean} Flag used only for testing purposes
    */
-  checkDisabledStyles = mainContent => {
+  checkDisabledStyles: Function = (mainContent: MainContentShape): boolean | void => {
     if (Array.isArray(mainContent.main.props.children)) {
       mainContent.main.props.children.forEach(this.checkDisabledChildren);
     } else {
@@ -647,9 +804,14 @@ class PackenUiDropdownListItem extends Component {
    * Sets the selected styles to the main content elements when appropriate
    * @type {function}
    * @param {object} child The main content's element to update
+   * @return {boolean} Flag used only for testing purposes
    */
-  checkSelectedChildren = child => {
-    if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
+  checkSelectedChildren: ForEachFunctionType = (child: object | ChildShape): boolean | void => {
+    if (
+      "type" in child
+      && child.type.displayName !== "PackenUiRadio"
+      && child.type.displayName !== "PackenUiCheckbox"
+    ) {
       child.props.style.color = Colors.basic.white.dft;
     } else {
       return false;
@@ -660,8 +822,9 @@ class PackenUiDropdownListItem extends Component {
    * Sets the selected styles when appropriate
    * @type {function}
    * @param {object} mainContent The main content data object
+   * @return {boolean} Flag used only for testing purposes
    */
-  checkSelectedStyles = mainContent => {
+  checkSelectedStyles: Function = (mainContent: MainContentShape): boolean | void => {
     if (Array.isArray(mainContent.main.props.children)) {
       mainContent.main.props.children.forEach(this.checkSelectedChildren);
     } else {
@@ -679,8 +842,12 @@ class PackenUiDropdownListItem extends Component {
    * @param {object} child The main content's element to restore
    * @param {number} i The main content's index
    */
-  checkDefaultChildren = (child, i) => {
-    if (child.type.displayName !== "PackenUiRadio" && child.type.displayName !== "PackenUiCheckbox") {
+  checkDefaultChildren: ForEachFunctionType = (child: object | ChildShape, i: number) => {
+    if (
+      "type" in child
+      && child.type.displayName !== "PackenUiRadio"
+      && child.type.displayName !== "PackenUiCheckbox"
+    ) {
       child.props.style.color = this.state.originalStyles[i].color;
     }
   }
@@ -690,7 +857,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @param {object} mainContent The main content data object
    */
-  checkDefaultStyles = mainContent => {
+  checkDefaultStyles: Function = (mainContent: MainContentShape) => {
     if (Array.isArray(mainContent.main.props.children)) {
       mainContent.main.props.children.forEach(this.checkDefaultChildren);
     } else {
@@ -704,7 +871,7 @@ class PackenUiDropdownListItem extends Component {
    * Checks the main content styles to apply the correct object
    * @type {function}
    */
-  checkMainContentStyles = () => {
+  checkMainContentStyles: Function = () => {
     const mainContent = this.props.mainContent;
 
     if (mainContent.isDisabled) {
@@ -723,7 +890,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     if (!this.props.mainContent.main.control) {
       this.checkMainContentStyles();
     }
@@ -735,7 +902,7 @@ class PackenUiDropdownListItem extends Component {
           onPressIn={this.pressInHandler}
           onPressOut={this.pressOutHandler}
           onPress={this.pressHandler}
-          onLayout={e => { this.getItemHeight(e.nativeEvent.layout); }}
+          onLayout={this.getItemHeight}
         >
           <View
             style={{
@@ -772,7 +939,7 @@ class PackenUiDropdownListItem extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         base: {
@@ -889,17 +1056,22 @@ class PackenUiDropdownListItem extends Component {
       }
     };
   }
-}
 
-PackenUiDropdownListItem.propTypes = {
-  config: PropTypes.object.isRequired,
-  mainContent: PropTypes.object.isRequired,
-  getItemHeight: PropTypes.func.isRequired,
-  selectedItems: PropTypes.array.isRequired,
-  updateSelectedItems: PropTypes.func.isRequired,
-  currentRadiosState: PropTypes.object,
-  currentCheckboxesState: PropTypes.object,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    config: PropTypes.object.isRequired,
+    mainContent: PropTypes.object.isRequired,
+    getItemHeight: PropTypes.func.isRequired,
+    selectedItems: PropTypes.array.isRequired,
+    updateSelectedItems: PropTypes.func.isRequired,
+    currentRadiosState: PropTypes.object,
+    currentCheckboxesState: PropTypes.object,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiDropdownListItem;

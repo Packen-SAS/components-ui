@@ -1,27 +1,48 @@
 import React, { Component, ReactNode, ReactElement } from "react";
 import PropTypes from "prop-types";
-import { View, FlatList, ListRenderItem } from "react-native";
+import { View, FlatList, ListRenderItem, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiDropdownListItem from "./PackenUiDropdownListItem";
 
 interface SideConfigShape {
   type: "icon" | "avatar";
-  config: object;
+  config: {
+    name: string;
+    size: string;
+    src: ImageSourcePropType;
+  };
 }
 
 interface ItemShape {
-  key: string | number;
-  left: ReactNode | SideConfigShape | boolean;
-  right: ReactNode | SideConfigShape | boolean;
-  value: string;
+  isDisabled: boolean;
   isSelected: boolean;
-  main: ReactNode;
+  value: string;
+  left: SideConfigShape | boolean;
+  right: SideConfigShape | boolean;
+  main: {
+    control: {
+      type: string;
+      label: string;
+      isDisabled: boolean;
+      items: any[];
+      handleNotify: Function;
+    };
+    props: {
+      children: object | object[];
+      style: object;
+    };
+    type: {
+      displayName: string;
+    };
+  };
 }
 
 interface ConfigShape {
   size: string;
+  name: string;
   checkedIcon?: string;
+  src: ImageSourcePropType;
   selectionType: "single" | "radio" | "multiple" | "checkbox";
 }
 
@@ -37,7 +58,7 @@ interface StylingPropShape {
 }
 
 interface PackenUiDropdownListProps {
-  items: (string | ItemShape)[];
+  items: ItemShape[];
   theme: string;
   numShownRows: number;
   config: ConfigShape;
@@ -50,7 +71,7 @@ interface PackenUiDropdownListProps {
 }
 
 interface PackenUiDropdownListState {
-  items: (string | ItemShape)[];
+  items: ItemShape[];
   theme: string;
   numShownRows: number;
   config: ConfigShape;
@@ -64,7 +85,7 @@ interface PackenUiDropdownListState {
     checkedValue: string;
   };
   currentCheckboxesState: {
-    finalSelectionArray: string[] | undefined;
+    finalSelectionArray: string[];
     checkedValues: string[];
   }
 }
@@ -73,6 +94,7 @@ type FilterNewItemsType = (item: ItemShape | string) => boolean;
 type MapNewItemsType = (item: ItemShape | string) => string;
 type GetItemLayoutReturnType = { length: number; offset: number; index: number; };
 type GetItemLayoutType = (data: ItemShape[] | null | undefined, index: number) => GetItemLayoutReturnType;
+type MappedItemsArrType = [string, ItemShape][];
 
 /**
  * Component for rendering a {@link PackenUiDropdown} inner menu list and should not be used standalone
@@ -144,10 +166,19 @@ class PackenUiDropdownList extends Component<PackenUiDropdownListProps, PackenUi
       items = this.props.items ? [...this.props.items] : [];
     }
 
-    return [...new Map(this.getItemsAsMappedArrays(items)).values()];
+    const mappedItemsArr: MappedItemsArrType = this.getItemsAsMappedArrays(items);
+    const uniqueItems: ItemShape[] = [...new Map(mappedItemsArr).values()];
+
+    return uniqueItems;
   }
 
-  getItemsAsMappedArrays: Function = (items: ItemShape[]): [string, ItemShape][] => items.map(item => [item.value, item]);
+  /**
+   * Returns each item mapped to an array to be passed for creating a JavaScript Map
+   * @type {function}
+   * @param {object[]} items The items array to be displayed
+   * @return {Array[]} An array containing each item as another array with two elements: a key which is the item's value, and the actual complete item object
+   */
+  getItemsAsMappedArrays: Function = (items: ItemShape[]): MappedItemsArrType => items.map(item => [item.value, item]);
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
@@ -414,6 +445,10 @@ class PackenUiDropdownList extends Component<PackenUiDropdownListProps, PackenUi
     );
   }
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     items: PropTypes.arrayOf(PropTypes.object).isRequired,
     numShownRows: PropTypes.number.isRequired,
