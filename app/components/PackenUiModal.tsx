@@ -7,12 +7,11 @@ import {
   Image,
   Dimensions,
   Platform,
-  ImageSourcePropType, 
-  ScrollViewProps } from "react-native";
+  ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
-import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/Feather";
+import Carousel, { AdditionalParallaxProps } from 'react-native-snap-carousel';
 
 import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
@@ -110,14 +109,10 @@ interface PackenUiModalState {
   styling: StylingPropShape;
 }
 
-interface CarouselRefShape {
-  snapToPrev: Function;
-  snapToNext: Function;
-}
-
-type RenderGallerySlideParamType = { item: object, index: number };
+type HandleBeforeSnapType = (slideIndex: number) => void;
 type GetDimensionsType = { width: number, height: number };
-type SetCarouselRefType = ((c: CarouselRefShape) => void) | string | (string & ((instance: ScrollViewProps | null) => void)) | (string & RefObject<ScrollViewProps>) | (string & ((instance: CarouselStatic<ImageSourcePropType> | null) => void));
+type RenderGallerySlideParamType = { item: ImageSourcePropType, index: number };
+type RenderGallerySlideType = (item: { item: ImageSourcePropType; index: number; }, parallaxProps?: AdditionalParallaxProps | undefined) => ReactNode;
 
 /**
  * Component for rendering a modal popup with fading animation
@@ -127,7 +122,8 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * Variable that stores the carousel ref/instance in case it's a gallery modal
    * @type {object}
    */
-  carouselRef: CarouselRefShape | null = null;
+  /* carouselRef: CarouselRefShape | null = null; */
+  carouselRef: RefObject<any> = React.createRef();
 
   /**
    * Initializes the component
@@ -407,7 +403,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * @type {function}
    */
   prevSlide: VoidFunction = () => {
-    if (this.carouselRef) { this.carouselRef.snapToPrev(); }
+    if (this.carouselRef) { this.carouselRef.current.snapToPrev(); }
   }
 
   /**
@@ -415,7 +411,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * @type {function}
    */
   nextSlide: VoidFunction = () => {
-    if (this.carouselRef) { this.carouselRef.snapToNext(); }
+    if (this.carouselRef) { this.carouselRef.current.snapToNext(); }
   }
 
   /**
@@ -425,7 +421,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * @param {number} index The item's index
    * @return {node} JSX for the slide
    */
-  renderGallerySlide: Function = ({ item, index }: RenderGallerySlideParamType): ReactNode => {
+  renderGallerySlide: RenderGallerySlideType = ({ item, index }: RenderGallerySlideParamType): ReactNode => {
     return (
       <View key={index} style={{
         ...this.getStyles().gallery.slide,
@@ -520,7 +516,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * @type {function}
    * @param {number} slideIndex The current slide index
    */
-  handleBeforeSnap: Function = (slideIndex: number) => {
+  handleBeforeSnap: HandleBeforeSnapType = (slideIndex: number) => {
     this.setState({
       has: {
         next: slideIndex === this.state.images.length - 1 ? false : true,
@@ -690,15 +686,6 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
   )
 
   /**
-   * Sets the Carousel component's ref/instance to the global variable
-   * @type {function}
-   * @param {object} c The Carousel ref/instance
-   */
-  // SetCarouselRefType
-  // string | (string & ((instance: ScrollViewProps | null) => void)) | (string & RefObject<ScrollViewProps>) | (string & ((instance: CarouselStatic<ImageSourcePropType> | null) => void))
-  setCarouselRef: SetCarouselRefType = (c: CarouselRefShape) => { this.carouselRef = c; }
-
-  /**
    * Returns the correct JSX if it's a "gallery" modal
    * @type {function}
    * @return {node} JSX for the content
@@ -713,12 +700,12 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     >
       {this.getGalleryArrows()}
       <Carousel
+        ref={this.carouselRef}
         inactiveSlideScale={1}
         inactiveSlideOpacity={1}
         data={this.state.images}
-        ref={this.setCarouselRef}
-        /* renderItem={this.renderGallerySlide}
-        onBeforeSnapToItem={this.handleBeforeSnap} */
+        renderItem={this.renderGallerySlide}
+        onBeforeSnapToItem={this.handleBeforeSnap}
         itemWidth={this.getGalleryBoxDimensions().width}
         sliderWidth={this.getGalleryBoxDimensions().width}
       />
