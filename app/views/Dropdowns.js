@@ -1343,7 +1343,6 @@ class Dropdowns extends Component {
               main: {
                 control: {
                   type: "radio",
-                  value: "Bogotá",
                   label: "Bogotá, D.C.",
                   isDisabled: false
                 }

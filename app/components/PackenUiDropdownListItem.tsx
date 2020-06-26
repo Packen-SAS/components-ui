@@ -422,10 +422,9 @@ class PackenUiDropdownListItem extends Component<PackenUiDropdownListItemProps, 
     });
     if (this.radioRef && "setCheckedIndex" in this.radioRef) {
       this.radioRef.setCheckedIndex(0);
-      console.log(JSON.stringify(this.props.mainContent, null, 2));
       this.props.updateSelectedItems(this.props.mainContent.value, true, {
         checkedType: "radio",
-        checkedValue: this.props.mainContent.main.control.value
+        checkedValue: this.props.mainContent.value
       });
     } else {
       this.props.updateSelectedItems(this.props.mainContent.value, true);
