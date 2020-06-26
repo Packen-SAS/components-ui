@@ -80,6 +80,7 @@ interface PackenUiDropdownListItemProps {
       control: {
         type: string;
         label: string;
+        value: string;
         isDisabled: boolean;
         items: any[];
         handleNotify: Function;
@@ -421,9 +422,10 @@ class PackenUiDropdownListItem extends Component<PackenUiDropdownListItemProps, 
     });
     if (this.radioRef && "setCheckedIndex" in this.radioRef) {
       this.radioRef.setCheckedIndex(0);
+      console.log(JSON.stringify(this.props.mainContent, null, 2));
       this.props.updateSelectedItems(this.props.mainContent.value, true, {
         checkedType: "radio",
-        checkedValue: this.props.mainContent.value
+        checkedValue: this.props.mainContent.main.control.value
       });
     } else {
       this.props.updateSelectedItems(this.props.mainContent.value, true);
@@ -678,6 +680,7 @@ class PackenUiDropdownListItem extends Component<PackenUiDropdownListItemProps, 
             layout="dropdown"
             items={[{
               label: this.props.mainContent.main.control.label,
+              value: this.props.mainContent.main.control.value,
               isDisabled: this.props.mainContent.main.control.isDisabled
             }]}
             ref={this.setRadioRef}

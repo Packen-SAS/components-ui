@@ -1,30 +1,68 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils"
 
 import PackenUiRadioControl from "./PackenUiRadioControl";
 
+interface ItemShape {
+  label: string;
+  value: string;
+  isDisabled: boolean;
+}
+
+interface StylingPropShape {
+  container: object;
+  item: object;
+  control: {
+    shape: object;
+    control: object;
+    label: object;
+  };
+}
+
+interface PackenUiRadioProps {
+  items: ItemShape[];
+  initialIndex: number;
+  callback: Function;
+  name: string;
+  layout: string;
+  instance?: Function;
+  styling?: StylingPropShape;
+}
+
+interface PackenUiRadioState {
+  items: ItemShape[];
+  checkedIndex: number;
+  callback: Function | boolean;
+  name: string;
+  layout: string;
+  styling: StylingPropShape;
+  currentSelection: ItemShape;
+}
+
+type MapItemsType = (item: ItemShape, i: number) => ReactNode | null;
+
 /**
  * Component for rendering a group of radio buttons that can be laid out vertically or horizontally
  */
-class PackenUiRadio extends Component {
+class PackenUiRadio extends Component<PackenUiRadioProps, PackenUiRadioState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiRadioProps) {
     super(props);
 
     /**
      * Variable that stores the state
      * @type {object}
-     * @property {string} currentSelection The value of the currently selected item
+     * @property {object} currentSelection The currently selected item data object
      */
     this.state = {
       ...this.setPropsToState(),
-      currentSelection: ""
+      currentSelection: {}
     }
   }
 
@@ -49,7 +87,7 @@ class PackenUiRadio extends Component {
    * @property {object} [styling={ container: {}, item: {}, control: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       items: this.props.items ? [...this.props.items] : [],
       checkedIndex: this.props.initialIndex === 0 ? 0 : this.props.initialIndex ? this.props.initialIndex : -1,
@@ -69,16 +107,16 @@ class PackenUiRadio extends Component {
    * @type {function}
    * @return {object} The selected item's data
    */
-  findCurrentSelection = () => {
+  findCurrentSelection: Function = (): ItemShape => {
     return this.state.items[this.state.checkedIndex];
   }
 
   /**
    * Updates the current selected item
    * @type {function}
-   * @param {string} newSelection The newly selected value
+   * @param {object} newSelection The newly selected item
    */
-  updateCurrentSelection = newSelection => {
+  updateCurrentSelection: Function = (newSelection: ItemShape) => {
     this.setState({
       currentSelection: newSelection
     });
@@ -88,7 +126,7 @@ class PackenUiRadio extends Component {
    * Updates the state with new props and checks the animation status
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -97,15 +135,16 @@ class PackenUiRadio extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    * @param {object} prevState Previous state
+   * @return {string} The latest selected value string used only for testing purposes
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: PackenUiRadioProps, prevState: PackenUiRadioState): ItemShape | void {
     if (prevState.checkedIndex !== this.state.checkedIndex) {
       this.updateCurrentSelection(this.findCurrentSelection());
     }
     if (prevState.currentSelection !== this.state.currentSelection) {
       /* New selection can be used here */
       /* console.log(this.state.currentSelection); */
-      if (this.state.callback && this.state.currentSelection) {
+      if (typeof this.state.callback === "function" && typeof this.state.currentSelection === "object") {
         this.state.callback(this.state.name, this.state.currentSelection.value);
       }
       return this.state.currentSelection;
@@ -120,7 +159,7 @@ class PackenUiRadio extends Component {
    * @type {function}
    * @param {number} newCheckedIndex The newly selected item's index
    */
-  setCheckedIndex = newCheckedIndex => {
+  setCheckedIndex: Function = (newCheckedIndex: number) => {
     this.setState({
       checkedIndex: newCheckedIndex
     });
@@ -129,9 +168,11 @@ class PackenUiRadio extends Component {
   /**
    * Returns a {@link PackenUiRadioControl} component for each item
    * @type {function}
+   * @param {object} item The item data object
+   * @param {number} i The item index
    * @return {node} JSX for the item
    */
-  mapItems = (item, i) => (
+  mapItems: MapItemsType = (item: ItemShape, i: number): ReactNode | null => (
     <View
       key={i}
       pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
@@ -152,7 +193,7 @@ class PackenUiRadio extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().container[this.state.layout],
@@ -168,7 +209,7 @@ class PackenUiRadio extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       container: {
         column: {
@@ -202,15 +243,20 @@ class PackenUiRadio extends Component {
       }
     };
   }
-}
 
-PackenUiRadio.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  initialIndex: PropTypes.number.isRequired,
-  callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired,
-  styling: PropTypes.object
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    initialIndex: PropTypes.number.isRequired,
+    callback: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    layout: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  }
 }
 
 export default PackenUiRadio;

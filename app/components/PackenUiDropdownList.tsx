@@ -24,6 +24,7 @@ interface ItemShape {
     control: {
       type: string;
       label: string;
+      value: string;
       isDisabled: boolean;
       items: any[];
       handleNotify: Function;

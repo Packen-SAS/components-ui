@@ -1343,6 +1343,7 @@ class Dropdowns extends Component {
               main: {
                 control: {
                   type: "radio",
+                  value: "Bogotá",
                   label: "Bogotá, D.C.",
                   isDisabled: false
                 }
@@ -1443,7 +1444,7 @@ class Dropdowns extends Component {
 
   changeHandler = (name, newSelection) => {
     /* New selection can be used here */
-    /* console.log(name, newSelection); */
+    console.log(name, newSelection);
     return {
       id: name,
       value: newSelection

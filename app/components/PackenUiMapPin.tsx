@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
@@ -10,16 +10,61 @@ import Shadows from "../styles/abstracts/shadows";
 import PackenUiMapPinSub from "./PackenUiMapPinSub";
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  container: object;
+  inner: object;
+  main: object;
+  label: object;
+  text: object;
+  sub: {
+    box: object;
+    iconSize: number | undefined;
+    iconColor: string | undefined;
+    character: object;
+    dot: object;
+  };
+}
+
+interface MainPropShape {
+  label: string;
+  text: string;
+}
+
+interface SubPropShape {
+  position: string;
+  character: string;
+  icon: string;
+}
+
+interface PackenUiMapPinProps {
+  main?: MainPropShape;
+  sub?: SubPropShape;
+  theme?: string;
+  type: string;
+  dotPosition?: string;
+  instance?: Function;
+  styling?: StylingPropShape;
+}
+
+interface PackenUiMapPinState {
+  main: MainPropShape;
+  sub: SubPropShape | boolean;
+  theme: string;
+  type: string;
+  dotPosition: string | boolean;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering pins to be overlaid on a map
  */
-class PackenUiMapPin extends Component {
+class PackenUiMapPin extends Component<PackenUiMapPinProps, PackenUiMapPinState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiMapPinProps) {
     super(props);
 
     /**
@@ -50,7 +95,7 @@ class PackenUiMapPin extends Component {
    * @property {object} [styling={ container: {}, inner: {}, main: {}, label: {}, text: {}, sub: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiMapPinState => {
     return {
       main: this.props.main ? { ...this.props.main } : {
         label: "",
@@ -66,7 +111,13 @@ class PackenUiMapPin extends Component {
         main: {},
         label: {},
         text: {},
-        sub: {}
+        sub: {
+          box: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          character: {},
+          dot: {}
+        }
       }
     };
   }
@@ -76,7 +127,7 @@ class PackenUiMapPin extends Component {
    * @type {function}
    * @return {node|null} JSX for the label or null
    */
-  getLabel = () => {
+  getLabel: Function = (): ReactNode | null => {
     if (this.state.main.label) {
       return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.state.theme], ...this.state.styling.label }}>{this.state.main.label.toUpperCase() + " "}</PackenUiText>;
     } else {
@@ -89,13 +140,13 @@ class PackenUiMapPin extends Component {
    * @type {function}
    * @return {node} JSX for the main element
    */
-  getInfoRender = () => (
+  getInfoRender: Function = (): ReactNode => (
     <View style={{
       ...this.getStyles().inner,
       ...this.state.styling.inner
     }}>
       {
-        this.state.sub && this.state.sub.position === "left" ? this.getSubRender() : null
+        typeof this.state.sub === "object" && this.state.sub.position === "left" ? this.getSubRender() : null
       }
       <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme], ...this.state.styling.main }}>
         <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme], ...this.state.styling.text }}>
@@ -104,7 +155,7 @@ class PackenUiMapPin extends Component {
         </PackenUiText>
       </View>
       {
-        this.state.sub && this.state.sub.position === "right" ? this.getSubRender() : null
+        typeof this.state.sub === "object" && this.state.sub.position === "right" ? this.getSubRender() : null
       }
     </View>
   )
@@ -112,17 +163,17 @@ class PackenUiMapPin extends Component {
   /**
    * Returns the {@link PackenUiMapPinSub} element for the component if set so
    * @type {function}
-   * @return {node} JSX for the sub element
+   * @return {node|null} JSX for the sub element
    */
-  getSubRender = () => (
-    <PackenUiMapPinSub styling={this.state.styling.sub} type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
+  getSubRender: Function = (): ReactNode | null => (
+    typeof this.state.sub === "object" ? <PackenUiMapPinSub styling={this.state.styling.sub} type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} /> : null
   )
 
   /**
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -131,7 +182,7 @@ class PackenUiMapPin extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiMapPinProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -142,7 +193,7 @@ class PackenUiMapPin extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().container,
@@ -160,7 +211,7 @@ class PackenUiMapPin extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       container: {
         padding: 11
@@ -236,15 +287,20 @@ class PackenUiMapPin extends Component {
       }
     };
   }
-}
 
-PackenUiMapPin.propTypes = {
-  main: PropTypes.object,
-  sub: PropTypes.object,
-  theme: PropTypes.string,
-  type: PropTypes.string.isRequired,
-  dotPosition: PropTypes.string,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    main: PropTypes.object,
+    sub: PropTypes.object,
+    theme: PropTypes.string,
+    type: PropTypes.string.isRequired,
+    dotPosition: PropTypes.string,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiMapPin;

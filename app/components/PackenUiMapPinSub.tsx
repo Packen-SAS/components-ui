@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 
 import Typography from "../styles/abstracts/typography";
 import Colors from "../styles/abstracts/colors";
@@ -11,16 +11,43 @@ import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  box: object;
+  iconSize: number | undefined;
+  iconColor: string | undefined;
+  character: object;
+  dot: object;
+}
+
+interface PackenUiMapPinSubProps {
+  theme: string;
+  icon?: string;
+  label?: string;
+  dotPosition?: string | boolean;
+  type: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiMapPinSubState {
+  theme: string;
+  icon: string | boolean;
+  label: string | boolean;
+  dotPosition: string | boolean;
+  type: string;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering the "sub" element of {@link PackenUiMapPin} components, and should not be used standalone
  */
-class PackenUiMapPinSub extends Component {
+class PackenUiMapPinSub extends Component<PackenUiMapPinSubProps, PackenUiMapPinSubState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiMapPinSubProps) {
     super(props);
 
     /**
@@ -51,7 +78,7 @@ class PackenUiMapPinSub extends Component {
    * @property {object} [styling={ box: {}, iconSize: undefined, iconColor: undefined, character: {}, dot: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       theme: this.props.theme ? this.props.theme : "primary",
       icon: this.props.icon ? this.props.icon : false,
@@ -73,7 +100,7 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {string} The color hex code value
    */
-  getIconColor = () => {
+  getIconColor: Function = (): object => {
     let color = this.getStyles().icon.type.icon.color;
 
     if (this.state.theme) {
@@ -88,10 +115,10 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {node|null} JSX for the icon or null
    */
-  getIcon = () => {
+  getIcon: Function = (): ReactNode | null => {
     let icon = null;
 
-    if (this.state.icon) {
+    if (typeof this.state.icon === "string") {
       icon = (
         <Icon
           name={this.state.icon}
@@ -109,10 +136,10 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {node|null} JSX for the label or null
    */
-  getLabel = () => {
+  getLabel: Function = (): ReactNode | null => {
     let label = null;
 
-    if (this.state.label) {
+    if (typeof this.state.label === "string") {
       label = (
         <PackenUiText
           style={{
@@ -134,7 +161,7 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {node|null} JSX for the dot or null
    */
-  getDot = () => {
+  getDot: Function = (): ReactNode | null => {
     let dot = null;
 
     if (this.state.dotPosition) {
@@ -142,7 +169,7 @@ class PackenUiMapPinSub extends Component {
         <View
           style={{
             ...this.getStyles().dot.base,
-            ...this.getStyles().dot.positioning.type[this.state.type][this.state.dotPosition],
+            ...this.getStyles().dot.positioning.type[this.state.type][this.state.dotPosition.toString()],
             ...this.state.styling.dot
           }}
         ></View>
@@ -156,7 +183,7 @@ class PackenUiMapPinSub extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -165,7 +192,7 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiMapPinSubProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -176,7 +203,7 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View
         style={{
@@ -198,7 +225,7 @@ class PackenUiMapPinSub extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       dot: {
         base: {
@@ -326,15 +353,20 @@ class PackenUiMapPinSub extends Component {
       }
     };
   }
-}
 
-PackenUiMapPinSub.propTypes = {
-  theme: PropTypes.string.isRequired,
-  icon: PropTypes.string,
-  label: PropTypes.string,
-  dotPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-  type: PropTypes.string.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    theme: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    label: PropTypes.string,
+    dotPosition: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    type: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiMapPinSub;
