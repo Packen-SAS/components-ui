@@ -1,33 +1,147 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode, RefObject } from "react";
 import PropTypes from "prop-types";
-import { Modal, View, TouchableWithoutFeedback, Image, Dimensions, Platform } from "react-native";
+import {
+  Modal,
+  View,
+  TouchableWithoutFeedback,
+  Image,
+  Dimensions,
+  Platform,
+  ImageSourcePropType, 
+  ScrollViewProps } from "react-native";
 import * as UTIL from "../utils";
 
-import Carousel from 'react-native-snap-carousel';
-import Icon from "react-native-vector-icons/dist/Feather";
+import Carousel, { CarouselStatic } from 'react-native-snap-carousel';
+import Icon from "react-native-vector-icons/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  container: object;
+  backdrop: object;
+  main: object;
+  wrapper: object;
+  box: object;
+  header: object;
+  headerInner: object;
+  closeIconSize: number | undefined;
+  closeIconColor: string | undefined;
+  info: object;
+  banner: object;
+  bannerIconSize: number | undefined;
+  bannerIconColor: string | undefined;
+  content: object;
+  title: object;
+  text: object;
+  btnWrapper: object;
+  galleryBox: object;
+  slide: object;
+  slideImg: object;
+  arrowLeft: object;
+  arrowRight: object;
+  arrowIconSize: number | undefined;
+  arrowIconColor: string | undefined;
+}
+
+interface BannerStateShape {
+  icon: string;
+}
+
+interface PackenUiModalProps {
+  type: string;
+  banner?: object;
+  size: string;
+  isOpen?: boolean;
+  images?: ImageSourcePropType[];
+  info?: object;
+  modalClose: Function;
+  theme: string;
+  content?: ReactNode;
+  onDismiss?: Function;
+  onRequestClose?: Function;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiModalState {
+  type: string;
+  banner: BannerStateShape | boolean;
+  size: string;
+  isOpen: boolean;
+  images: ImageSourcePropType[];
+  info: {
+    title: string;
+    text: string;
+    btn: ReactNode;
+  };
+  modalClose: Function;
+  theme: string;
+  content: ReactNode | null;
+  onDismiss: Function | boolean;
+  onRequestClose: Function | boolean;
+  backdropStyles: object;
+  dimensions: {
+    gallery: {
+      height: number;
+      width: number;
+    };
+    arrows: {
+      height: number;
+      width: number;
+    }
+  };
+  arrowStyles: {
+    left?: {
+      top: number;
+      left: number;
+    };
+    right?: {
+      top: number;
+      right: number;
+    }
+  };
+  has: {
+    next: boolean;
+    prev: boolean;
+  };
+  styling: StylingPropShape;
+}
+
+interface CarouselRefShape {
+  snapToPrev: Function;
+  snapToNext: Function;
+}
+
+type RenderGallerySlideParamType = { item: object, index: number };
+type GetDimensionsType = { width: number, height: number };
+type SetCarouselRefType = ((c: CarouselRefShape) => void) | string | (string & ((instance: ScrollViewProps | null) => void)) | (string & RefObject<ScrollViewProps>) | (string & ((instance: CarouselStatic<ImageSourcePropType> | null) => void));
+
 /**
  * Component for rendering a modal popup with fading animation
  */
-class PackenUiModal extends Component {
+class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
+  /**
+   * Variable that stores the carousel ref/instance in case it's a gallery modal
+   * @type {object}
+   */
+  carouselRef: CarouselRefShape | null = null;
+
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiModalProps) {
     super(props);
 
     /**
      * Variable that stores the base state for all types of modals
      * @type {object}
      */
-    let initialState = {
+    let initialState: PackenUiModalState = {
       ...this.setPropsToState(),
       backdropStyles: { ...this.getStyles().backdrop.base }
     };
@@ -70,12 +184,6 @@ class PackenUiModal extends Component {
      * @type {object}
      */
     this.state = { ...initialState };
-
-    /**
-     * Variable that stores the carousel ref/instance in case it's a gallery modal
-     * @type {object}
-     */
-    this.carouselRef;
   }
 
   /**
@@ -83,7 +191,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {boolean} Flag used only for testing purposes
    */
-  mockCallback = () => false;
+  mockCallback: Function = (): boolean => false;
 
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
@@ -102,7 +210,7 @@ class PackenUiModal extends Component {
    * @property {object} [styling={ container: {}, backdrop: {}, main: {}, wrapper: {}, box: {}, header: {}, headerInner: {}, closeIconSize: undefined, closeIconColor: undefined, info: {}, banner: {}, bannerIconSize: undefined, bannerIconColor: undefined, content: {}, title: {}, text: {}, btnWrapper: {}, galleryBox: {}, slide: {}, slideImg: {}, arrowLeft: {}, arrowRight: {}, arrowIconSize: undefined, arrowIconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       type: this.props.type ? this.props.type : "info",
       banner: this.props.banner ? this.props.banner : false,
@@ -165,7 +273,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getContentStyles = () => {
+  getContentStyles: Function = (): object => {
     let contentStyles = { ...this.getStyles().content.base };
 
     if (this.state.banner) {
@@ -195,7 +303,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {object} The styles object
    */
-  getTextStyles = () => {
+  getTextStyles: Function = (): object => {
     let textStyles = {};
 
     if (this.state.banner) {
@@ -214,9 +322,8 @@ class PackenUiModal extends Component {
   /**
    * Sets the correct backdrop styles depending on whether the modal is open or closed
    * @type {function}
-   * @return {object} The styles object
    */
-  setBackdropStyles = () => {
+  setBackdropStyles: Function = () => {
     if (this.state.isOpen) {
       this.setState({
         backdropStyles: {
@@ -238,7 +345,7 @@ class PackenUiModal extends Component {
    * Triggers the closing handlers when closing the modal
    * @type {function}
    */
-  checkHandlers = () => {
+  checkHandlers: Function = () => {
     if (!this.state.isOpen) {
       this.onDismissHandler();
       this.onRequestCloseHandler();
@@ -251,7 +358,7 @@ class PackenUiModal extends Component {
    * @param {object} prevProps Previous props
    * @param {object} prevState Previous state
    */
-  updateState = (prevProps, prevState) => {
+  updateState: Function = (prevProps: PackenUiModalProps, prevState: PackenUiModalState) => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -276,7 +383,7 @@ class PackenUiModal extends Component {
    * @param {object} prevProps Previous props
    * @param {object} prevState Previous state
    */
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: PackenUiModalProps, prevState: PackenUiModalState) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState(prevProps, prevState);
     }
@@ -286,7 +393,7 @@ class PackenUiModal extends Component {
    * Reinitializes the gallery arrows state, which doesn't automatically change when closing the modal
    * @type {function}
    */
-  reinitGallery = () => {
+  reinitGallery: Function = () => {
     this.setState({
       has: {
         next: true,
@@ -299,16 +406,16 @@ class PackenUiModal extends Component {
    * Programmatically goes to the previous slide
    * @type {function}
    */
-  prevSlide = () => {
-    this.carouselRef.snapToPrev();
+  prevSlide: VoidFunction = () => {
+    if (this.carouselRef) { this.carouselRef.snapToPrev(); }
   }
 
   /**
    * Programmatically goes to the next slide
    * @type {function}
    */
-  nextSlide = () => {
-    this.carouselRef.snapToNext();
+  nextSlide: VoidFunction = () => {
+    if (this.carouselRef) { this.carouselRef.snapToNext(); }
   }
 
   /**
@@ -318,7 +425,7 @@ class PackenUiModal extends Component {
    * @param {number} index The item's index
    * @return {node} JSX for the slide
    */
-  renderGallerySlide = ({ item, index }) => {
+  renderGallerySlide: Function = ({ item, index }: RenderGallerySlideParamType): ReactNode => {
     return (
       <View key={index} style={{
         ...this.getStyles().gallery.slide,
@@ -344,7 +451,7 @@ class PackenUiModal extends Component {
    * @param {number} width The width of the wrapper
    * @param {number} height The height of the wrapper
    */
-  getGalleryDimensions = ({ width, height }) => {
+  getGalleryDimensions: Function = ({ width, height }: GetDimensionsType) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -362,7 +469,7 @@ class PackenUiModal extends Component {
    * @param {number} width The width of the wrapper
    * @param {number} height The height of the wrapper
    */
-  getGalleryArrowsDimensions = ({ width, height }) => {
+  getGalleryArrowsDimensions: Function = ({ width, height }: GetDimensionsType) => {
     this.setState({
       dimensions: {
         ...this.state.dimensions,
@@ -378,8 +485,8 @@ class PackenUiModal extends Component {
    * Sets the gallery arrows position styles to the state
    * @type {function}
    */
-  setGalleryArrowsPosition = () => {
-    const verticalOffset = this.state.dimensions.gallery.height / 2.25;
+  setGalleryArrowsPosition: VoidFunction = () => {
+    const verticalOffset = this.state.dimensions?.gallery?.height ? this.state.dimensions.gallery.height / 2.25 : 0;
     const horizontalOffset = 20;
 
     this.setState({
@@ -401,7 +508,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {object} The dimensions object
    */
-  getGalleryBoxDimensions = () => {
+  getGalleryBoxDimensions: Function = (): GetDimensionsType => {
     return {
       height: Dimensions.get("screen").height / 3.5,
       width: (Dimensions.get("screen").width * .85) - 36
@@ -413,7 +520,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @param {number} slideIndex The current slide index
    */
-  handleBeforeSnap = slideIndex => {
+  handleBeforeSnap: Function = (slideIndex: number) => {
     this.setState({
       has: {
         next: slideIndex === this.state.images.length - 1 ? false : true,
@@ -427,10 +534,10 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node|null} The JSX for the banner
    */
-  getBanner = () => {
+  getBanner: Function = (): ReactNode | null => {
     let banner = null;
 
-    if (this.state.banner) {
+    if (typeof this.state.banner === "object") {
       banner = (
         <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.state.theme], ...this.state.styling.banner }}>
           <Icon
@@ -449,7 +556,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node|null} The JSX for the button
    */
-  getInfoButton = () => {
+  getInfoButton: Function = (): ReactNode | null => {
     let btn = null;
 
     if (this.state.info.btn) {
@@ -467,7 +574,7 @@ class PackenUiModal extends Component {
    * Triggers the platform-specific handlers when closing the modal when pressing the "X" icon on the header
    * @type {function}
    */
-  headerCallDismiss = () => {
+  headerCallDismiss: VoidFunction = () => {
     if (Platform.OS === "ios") {
       this.onRequestCloseHandler();
       this.state.modalClose();
@@ -482,7 +589,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node|null} JSX for the header or null
    */
-  getHeader = () => {
+  getHeader: Function = (): ReactNode | null => {
     let header = null;
 
     if (this.state.type !== "custom") {
@@ -509,7 +616,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node} JSX for the content
    */
-  getCustomContent = () => (
+  getCustomContent: Function = (): ReactNode => (
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
         {this.state.content}
@@ -522,7 +629,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node} JSX for the content
    */
-  getInfoContent = () => (
+  getInfoContent: Function = (): ReactNode => (
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       {this.getBanner()}
       <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
@@ -534,15 +641,15 @@ class PackenUiModal extends Component {
   )
 
   /**
-   * Returns the JSX for the arrows if it's a "gallery" modal
+   * Returns the JSX for the arrows if it's a "gallery" modal and there's more than one slide
    * @type {function}
-   * @return {node} JSX for the arrows
+   * @return {node|null} JSX for the arrows
    */
-  getGalleryArrows = () => (
+  getGalleryArrows: Function = (): ReactNode | null => (
     this.state.images.length > 1 ? (
       <React.Fragment>
         {
-          this.state.has.prev ? (
+          this.state.has && this.state.has.prev ? (
             <TouchableWithoutFeedback onPress={this.prevSlide}>
               <View
                 onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }}
@@ -561,7 +668,7 @@ class PackenUiModal extends Component {
           ) : null
         }
         {
-          this.state.has.next ? (
+          this.state.has && this.state.has.next ? (
             <TouchableWithoutFeedback onPress={this.nextSlide}>
               <View
                 style={{
@@ -583,11 +690,20 @@ class PackenUiModal extends Component {
   )
 
   /**
+   * Sets the Carousel component's ref/instance to the global variable
+   * @type {function}
+   * @param {object} c The Carousel ref/instance
+   */
+  // SetCarouselRefType
+  // string | (string & ((instance: ScrollViewProps | null) => void)) | (string & RefObject<ScrollViewProps>) | (string & ((instance: CarouselStatic<ImageSourcePropType> | null) => void))
+  setCarouselRef: SetCarouselRefType = (c: CarouselRefShape) => { this.carouselRef = c; }
+
+  /**
    * Returns the correct JSX if it's a "gallery" modal
    * @type {function}
    * @return {node} JSX for the content
    */
-  getGalleryContent = () => (
+  getGalleryContent: Function = (): ReactNode => (
     <View
       style={{
         ...this.getGalleryBoxDimensions(),
@@ -597,14 +713,14 @@ class PackenUiModal extends Component {
     >
       {this.getGalleryArrows()}
       <Carousel
-        ref={c => { this.carouselRef = c; }}
-        onBeforeSnapToItem={this.handleBeforeSnap}
+        inactiveSlideScale={1}
+        inactiveSlideOpacity={1}
         data={this.state.images}
-        renderItem={this.renderGallerySlide}
+        ref={this.setCarouselRef}
+        /* renderItem={this.renderGallerySlide}
+        onBeforeSnapToItem={this.handleBeforeSnap} */
         itemWidth={this.getGalleryBoxDimensions().width}
         sliderWidth={this.getGalleryBoxDimensions().width}
-        inactiveSlideOpacity={1}
-        inactiveSlideScale={1}
       />
     </View>
   )
@@ -614,7 +730,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node|null} JSX for the modal content or null
    */
-  getContent = () => {
+  getContent: Function = (): ReactNode | null => {
     let content = null;
 
     switch (this.state.type) {
@@ -635,9 +751,10 @@ class PackenUiModal extends Component {
   /**
    * Handles the onDismissHandler event on the native Modal component
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  onDismissHandler = () => {
-    if (this.state.onDismiss) {
+  onDismissHandler: VoidFunction = (): boolean | void => {
+    if (typeof this.state.onDismiss === "function") {
       this.state.onDismiss();
     } else {
       return false;
@@ -647,9 +764,10 @@ class PackenUiModal extends Component {
   /**
    * Handles the onRequestCloseHandler event on the native Modal component
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  onRequestCloseHandler = () => {
-    if (this.state.onRequestClose) {
+  onRequestCloseHandler: VoidFunction = (): boolean | void => {
+    if (typeof this.state.onRequestClose === "function") {
       this.state.onRequestClose();
     } else {
       return false;
@@ -659,8 +777,9 @@ class PackenUiModal extends Component {
   /**
    * Closes the modal with the passed function via props
    * @property {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  closeModal = () => {
+  closeModal: VoidFunction = (): boolean | void => {
     if (this.state.modalClose) {
       this.state.modalClose();
     } else {
@@ -673,12 +792,12 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <Modal
-        visible={this.state.isOpen}
+        transparent={true}  
         animationType="fade"
-        transparent={true}
+        visible={this.state.isOpen}
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
@@ -704,7 +823,7 @@ class PackenUiModal extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       container: {
         flex: 1,
@@ -882,21 +1001,26 @@ class PackenUiModal extends Component {
       }
     };
   }
-}
 
-PackenUiModal.propTypes = {
-  type: PropTypes.string.isRequired,
-  banner: PropTypes.object,
-  size: PropTypes.string.isRequired,
-  isOpen: PropTypes.bool,
-  images: PropTypes.array,
-  info: PropTypes.object,
-  modalClose: PropTypes.func.isRequired,
-  theme: PropTypes.string.isRequired,
-  content: PropTypes.node,
-  onDismiss: PropTypes.func,
-  onRequestClose: PropTypes.func,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    type: PropTypes.string.isRequired,
+    banner: PropTypes.object,
+    size: PropTypes.string.isRequired,
+    isOpen: PropTypes.bool,
+    images: PropTypes.array,
+    info: PropTypes.object,
+    modalClose: PropTypes.func.isRequired,
+    theme: PropTypes.string.isRequired,
+    content: PropTypes.node,
+    onDismiss: PropTypes.func,
+    onRequestClose: PropTypes.func,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiModal;

@@ -1,25 +1,51 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
 import { View, Image } from "react-native"
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  box: object;
+  title: object;
+  logo: object;
+  icon: object;
+  iconSize: undefined;
+  iconColor: undefined;
+}
+
+interface PackenUiNotificationBannerProps {
+  title: string;
+  theme: string;
+  type: string;
+  icon: string;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiNotificationBannerState {
+  title: string;
+  theme: string;
+  type: string;
+  icon: string;
+  styling: StylingPropShape;
+}
+
 /**
  * Component for rendering running shipments' notification banners
  */
-class PackenUiNotificationBanner extends Component {
+class PackenUiNotificationBanner extends Component<PackenUiNotificationBannerProps, PackenUiNotificationBannerState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiNotificationBannerProps) {
     super(props);
 
     /**
@@ -49,7 +75,7 @@ class PackenUiNotificationBanner extends Component {
    * @property {object} [styling={ box: {}, title: {}, logo: {}, icon: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiNotificationBannerState => {
     return {
       title: this.props.title ? this.props.title : "",
       theme: this.props.title ? this.props.theme : "primary",
@@ -71,7 +97,7 @@ class PackenUiNotificationBanner extends Component {
    * @type {function}
    * @return {node|number} The JSX for the icon, or the number identifier for the local "packen" image source
    */
-  getIcon = () => {
+  getIcon: Function = (): ReactNode | null => {
     let icon = null;
 
     if (this.state.icon) {
@@ -120,7 +146,7 @@ class PackenUiNotificationBanner extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -129,7 +155,7 @@ class PackenUiNotificationBanner extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiNotificationBannerProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -140,7 +166,7 @@ class PackenUiNotificationBanner extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().box.base,
@@ -163,7 +189,7 @@ class PackenUiNotificationBanner extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       box: {
         base: {
@@ -353,14 +379,19 @@ class PackenUiNotificationBanner extends Component {
       }
     };
   }
-}
 
-PackenUiNotificationBanner.propTypes = {
-  title: PropTypes.string.isRequired,
-  theme: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    title: PropTypes.string.isRequired,
+    theme: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiNotificationBanner;
