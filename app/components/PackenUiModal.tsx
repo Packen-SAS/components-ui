@@ -122,7 +122,6 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * Variable that stores the carousel ref/instance in case it's a gallery modal
    * @type {object}
    */
-  /* carouselRef: CarouselRefShape | null = null; */
   carouselRef: RefObject<any> = React.createRef();
 
   /**
