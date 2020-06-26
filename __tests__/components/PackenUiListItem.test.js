@@ -78,7 +78,52 @@ describe("<PackenUiListItem/>", () => {
           sub: {},
           title: {},
           subtitle: {},
-          dropdown: {},
+          dropdown: {
+            contentSizer: {
+              inner: {},
+              text: {},
+              wrapper: {},
+            },
+            input: {
+              box: {},
+              header: {
+                base: {},
+                label: {},
+              },
+              help: {
+                text: {},
+                touchable: {},
+              },
+              icon: {},
+              iconColor: undefined,
+              iconSize: undefined,
+              iconWrapper: {},
+              input: {},
+              loader: {
+                iconColor: undefined,
+                iconSize: undefined,
+                iconWrapper: {},
+                label: {},
+                shape: {},
+                shapeContent: {},
+              },
+              message: {
+                box: {},
+                icon: {},
+                iconColor: undefined,
+                iconSize: undefined,
+                text: {},
+              },
+            },
+            inputWrapper: {},
+            list: {
+              flatlist: {},
+              item: {},
+              wrapper: {},
+            },
+            menu: {},
+            wrapper: {},
+          },
           input: {
             header: {
               base: {},
