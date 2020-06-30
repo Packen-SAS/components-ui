@@ -284,6 +284,10 @@ class PackenUiRadioControl extends Component<PackenUiRadioControlProps, PackenUi
     };
   }
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     updateCheckedIndex: PropTypes.func.isRequired,
     selfIndex: PropTypes.number.isRequired,

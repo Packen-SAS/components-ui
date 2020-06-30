@@ -330,6 +330,10 @@ class PackenUiSelectionButtons extends Component<PackenUiSelectionButtonsProps, 
     };
   }
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,

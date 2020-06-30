@@ -1,31 +1,94 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View } from "react-native";
+import { View, LayoutChangeEvent } from "react-native";
 import * as UTIL from "../utils";
 
-import Icon from "react-native-vector-icons/dist/Feather";
+import Icon from "react-native-vector-icons/Feather";
 import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+interface StylingPropShape {
+  box: object;
+  sub: object;
+  time: object;
+  spacer: object;
+  line: object;
+  dot: object;
+  dotIconSize: number | undefined;
+  dotIconColor: string | undefined;
+  main: object;
+  title: object;
+  subtitle: object;
+}
+
+interface DataShape {
+  time?: string;
+  title: string;
+  subtitle?: string;
+  isCurrent: boolean;
+  isComplete: boolean;
+  callback?: VoidFunction;
+}
+
+interface LinePositioningShape {
+  height: number;
+  bottom: number;
+}
+
+interface BoxStylesShape {
+  marginTop: number;
+  zIndex: number;
+}
+
+interface PackenUiServiceStatusItemProps {
+  data: DataShape;
+  index: number;
+  itemsHeights: number[];
+  setItemsHeights: Function;
+  currentStepIndex: number;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiServiceStatusItemState {
+  data: DataShape;
+  index: number;
+  itemsHeights: number[];
+  setItemsHeights: Function | boolean;
+  currentStepIndex: number;
+  styling: StylingPropShape;
+  state: string;
+  time: ReactNode | null;
+  dimensions: {
+    box: {
+      height: number;
+    };
+    line: {
+      height: number;
+      bottom: number;
+    };
+  }
+}
+
 /**
  * Component for rendering an individual step of a {@link PackenUiServiceStatus} component, and should not be used standalone
  */
-class PackenUiServiceStatusItem extends Component {
+class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps, PackenUiServiceStatusItemState> {
+  /**
+   * Variable to control the vertical whitespace between each item
+   * @type {number}
+   */
+  spaceBetweenItems: number = 25;
+  
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiServiceStatusItemProps) {
     super(props);
-
-    /**
-     * Variable to control the vertical space between each item
-     * @type {number}
-     */
-    this.spaceBetweenItems = 25;
 
     /**
      * Variable that stores the state
@@ -71,7 +134,7 @@ class PackenUiServiceStatusItem extends Component {
    * @property {object} [styling={ box: {}, sub: {}, time: {}, spacer: {}, line: {}, dot: {}, dotIconSize: undefined, dotIconColor: undefined, main: {}, title: {}, subtitle: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       data: this.props.data ? { ...this.props.data } : {
         isComplete: false,
@@ -103,7 +166,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {string} The current status
    */
-  getInitialState = () => {
+  getInitialState: Function = (): string => {
     let initialState = "default";
     const data = this.setPropsToState().data;
 
@@ -121,11 +184,11 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the time or null
    */
-  getInitialTime = () => {
+  getInitialTime: Function = (): ReactNode | null => {
     let time = null;
     const data = this.setPropsToState().data;
     const customStyles = this.state && this.state.styling ? { ...this.state.styling.time } : this.props.styling ? { ...this.props.styling.time } : {};
-    
+
     if (data.time) {
       time = (
         <PackenUiText
@@ -142,9 +205,9 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @param {date} date The date object to display
    */
-  setCurrentTime = date => {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
+  setCurrentTime: Function = (date: Date) => {
+    let hours: number | string = date.getHours();
+    let minutes: number | string = date.getMinutes();
     const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12;
@@ -155,7 +218,7 @@ class PackenUiServiceStatusItem extends Component {
     this.setState({
       time: (
         <PackenUiText
-        style={{ ...this.getStyles().time, ...this.state.styling.time }}
+          style={{ ...this.getStyles().time, ...this.state.styling.time }}
         >{strTime}</PackenUiText>
       )
     });
@@ -166,7 +229,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the subtitle
    */
-  getSubtitle = () => {
+  getSubtitle: Function = (): ReactNode | null => {
     let subtitle = null;
 
     if (this.state.data.subtitle) {
@@ -189,7 +252,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {object} The styles object with "height" and "bottom" defined
    */
-  getLinePositioning = () => {
+  getLinePositioning: Function = (): LinePositioningShape => {
     return {
       height: this.state.dimensions.line.height,
       bottom: this.state.dimensions.line.bottom
@@ -201,8 +264,8 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the line element or null if it's the first step
    */
-  getLine = () => {
-    let line = (
+  getLine: Function = (): ReactNode | null => {
+    let line: ReactNode | null = (
       <View style={{
         ...this.getStyles().line.base,
         ...this.getStyles().line.state[this.state.state],
@@ -223,7 +286,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {object} The styles object with "marginTop" and "zIndex" defined
    */
-  getBoxStyles = () => {
+  getBoxStyles: Function = (): BoxStylesShape => {
     return {
       marginTop: this.state.index === 0 ? 0 : this.spaceBetweenItems,
       zIndex: this.state.itemsHeights.length - this.state.index
@@ -235,7 +298,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {node|null} JSX for the dot or null
    */
-  getDotIcon = () => {
+  getDotIcon: Function = (): ReactNode | null => {
     let icon = null;
 
     if (this.state.state === "completed") {
@@ -255,7 +318,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {number} The previous step's height
    */
-  getPreviousBoxHeight = () => {
+  getPreviousBoxHeight: Function = (): number => {
     if (this.state.index > 0) {
       return this.state.itemsHeights[this.state.index - 1];
     } else {
@@ -266,8 +329,9 @@ class PackenUiServiceStatusItem extends Component {
   /**
    * Sets the box dimensions to the state and propagates its height
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  setBoxDimensions = e => {
+  setBoxDimensions: Function = (e: LayoutChangeEvent): boolean | void => {
     const { height } = e.nativeEvent.layout;
 
     this.setState({
@@ -282,7 +346,7 @@ class PackenUiServiceStatusItem extends Component {
       }
     });
 
-    if (this.state.setItemsHeights) {
+    if (typeof this.state.setItemsHeights === "function") {
       this.state.setItemsHeights(this.state.index, height);
     } else {
       return false;
@@ -294,7 +358,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -321,7 +385,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiServiceStatusItemProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -332,7 +396,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View
         style={{
@@ -373,7 +437,7 @@ class PackenUiServiceStatusItem extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       item: {
         flexDirection: "row",
@@ -500,15 +564,20 @@ class PackenUiServiceStatusItem extends Component {
       }
     };
   }
-}
 
-PackenUiServiceStatusItem.propTypes = {
-  data: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  itemsHeights: PropTypes.arrayOf(PropTypes.number).isRequired,
-  setItemsHeights: PropTypes.func.isRequired,
-  currentStepIndex: PropTypes.number.isRequired,
-  styling: PropTypes.object
-};
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    data: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    itemsHeights: PropTypes.arrayOf(PropTypes.number).isRequired,
+    setItemsHeights: PropTypes.func.isRequired,
+    currentStepIndex: PropTypes.number.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiServiceStatusItem;
