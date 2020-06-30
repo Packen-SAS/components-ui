@@ -84,6 +84,7 @@
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
+    "esdoc-typescript-plugin": "^1.0.1",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "^0.56.0",
     "prop-types": "^15.7.2",
