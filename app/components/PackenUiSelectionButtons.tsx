@@ -1,20 +1,72 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View } from "react-native";
+import { View, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiSelectionButtonsControl from "./PackenUiSelectionButtonsControl";
 
+interface StylingPropShape {
+  wrapper: object;
+  item: object;
+  control: {
+    box: object;
+    image: object;
+    label: object;
+  };
+}
+
+interface ItemImageShape {
+  src: ImageSourcePropType;
+  width: number;
+  height: number;
+}
+
+interface ItemShape {
+  value: string;
+  label: string;
+  isSelected: boolean;
+  image: {
+    default: ItemImageShape;
+    active: ItemImageShape;
+  };
+}
+
+interface PackenUiSelectionButtonsProps {
+  name: string;
+  type: string;
+  items: ItemShape[];
+  selection: string;
+  itemsPerRow: number;
+  onNewSelection: Function;
+  altStyle?: boolean;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiSelectionButtonsState {
+  altStyle: boolean,
+  name: string,
+  type: string,
+  items: ItemShape[],
+  selection: string,
+  itemsPerRow: number,
+  onNewSelection: Function | boolean,
+  styling: StylingPropShape;
+  selected: string | string[];
+}
+
+type MapItemsType = (item: ItemShape, i: number) => ReactNode;
+
 /**
  * Component for rendering a group of selectable square buttons laid out horizontally, with a different design than {@link PackenUiButton}'s
  */
-class PackenUiSelectionButtons extends Component {
+class PackenUiSelectionButtons extends Component<PackenUiSelectionButtonsProps, PackenUiSelectionButtonsState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiSelectionButtonsProps) {
     super(props);
 
     /**
@@ -51,7 +103,7 @@ class PackenUiSelectionButtons extends Component {
    * @property {object} [styling={ wrapper: {}, item: {}, control: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       altStyle: this.props.altStyle ? this.props.altStyle : false,
       name: this.props.name ? this.props.name : "",
@@ -72,17 +124,17 @@ class PackenUiSelectionButtons extends Component {
    * Returns the selected items
    * @type {function}
    * @param {object} item The item to check
-   * @return {object} The same item if it's selected
+   * @return {boolean} Flag determining if the item is selected
    */
-  filterInitialSelected = item => item.isSelected;
+  filterInitialSelected: Function = (item: ItemShape): boolean => item.isSelected;
 
   /**
    * Adds the preselected items to a common array
    * @type {function}
    * @param {object} item The item to check
-   * @param {object[]} preSelected The array to push to
+   * @param {string[]} preSelected The array of values to push to
    */
-  pushPreselected = (item, preSelected) => {
+  pushPreselected: Function = (item: ItemShape, preSelected: string[]) => {
     if (item.isSelected) {
       preSelected.push(item.value);
     }
@@ -93,7 +145,7 @@ class PackenUiSelectionButtons extends Component {
    * @type {function}
    * @return {string|string[]} The preselected value(s)
    */
-  getInitialSelected = () => {
+  getInitialSelected: Function = (): string | string[] => {
     const items = this.setPropsToState().items;
     let selected;
 
@@ -105,8 +157,8 @@ class PackenUiSelectionButtons extends Component {
         selected = "";
       }
     } else {
-      const preSelected = [];
-      items.forEach(item => this.pushPreselected(item, preSelected));
+      const preSelected: string[] = [];
+      items.forEach((item: string) => this.pushPreselected(item, preSelected));
       selected = [...preSelected];
     }
 
@@ -116,11 +168,11 @@ class PackenUiSelectionButtons extends Component {
   /**
    * Checks whether a given item is the latest selected
    * @type {function}
-   * @param {object} item The item to check
+   * @param {string} item The item value to check
    * @param {string} newValue The value to compare against
    * @return {boolean} Flag that determines if the item is the one that was selected
    */
-  findNewSelectedIndex = (item, newValue) => item === newValue;
+  findNewSelectedIndex: Function = (item: string, newValue: string): boolean => item === newValue;
 
   /**
    * Handles when a new selection is made
@@ -128,7 +180,7 @@ class PackenUiSelectionButtons extends Component {
    * @param {string} newValue The latest selected value
    * @return {string} The processed latest selected value(s)
    */
-  newSelectionHandler = newValue => {
+  newSelectionHandler: Function = (newValue: string): string | string[] => {
     let newSelected;
 
     if (this.state.selection === "single") {
@@ -152,7 +204,7 @@ class PackenUiSelectionButtons extends Component {
       selected: newSelected
     });
 
-    if (this.state.onNewSelection) {
+    if (typeof this.state.onNewSelection === "function") {
       this.state.onNewSelection(this.state.name, newSelected);
     }
 
@@ -163,7 +215,7 @@ class PackenUiSelectionButtons extends Component {
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({
       ...this.setPropsToState(),
       selected: this.getInitialSelected()
@@ -175,7 +227,7 @@ class PackenUiSelectionButtons extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiSelectionButtonsProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
@@ -188,10 +240,10 @@ class PackenUiSelectionButtons extends Component {
    * @param {number} i The item's index
    * @return {node} JSX for the item
    */
-  mapItems = (item, i) => (
+  mapItems: MapItemsType = (item: ItemShape, i: number): ReactNode => (
     <View key={i} style={{
       ...this.getStyles().item.type[this.state.type],
-      ...this.getStyles().item.altStyle[this.state.altStyle],
+      ...this.getStyles().item.altStyle[this.state.altStyle.toString()],
       width: `${100 / this.state.itemsPerRow}%`,
       ...this.state.styling.item,
     }}>
@@ -212,12 +264,12 @@ class PackenUiSelectionButtons extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().wrapper.base,
         ...this.getStyles().wrapper.type[this.state.type],
-        ...this.getStyles().wrapper.altStyle[this.state.altStyle],
+        ...this.getStyles().wrapper.altStyle[this.state.altStyle.toString()],
         ...this.state.styling.wrapper
       }}>
         {this.state.items.map(this.mapItems)}
@@ -230,7 +282,7 @@ class PackenUiSelectionButtons extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): object => {
     return {
       wrapper: {
         base: {
@@ -277,16 +329,18 @@ class PackenUiSelectionButtons extends Component {
       }
     };
   }
-}
 
-PackenUiSelectionButtons.propTypes = {
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selection: PropTypes.string.isRequired,
-  itemsPerRow: PropTypes.number.isRequired,
-  onNewSelection: PropTypes.func.isRequired,
-  styling: PropTypes.object
-};
+  static propTypes: object = {
+    name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    items: PropTypes.arrayOf(PropTypes.object).isRequired,
+    selection: PropTypes.string.isRequired,
+    itemsPerRow: PropTypes.number.isRequired,
+    onNewSelection: PropTypes.func.isRequired,
+    altStyle: PropTypes.bool,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiSelectionButtons;

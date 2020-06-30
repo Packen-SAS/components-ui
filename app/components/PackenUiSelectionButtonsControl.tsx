@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback, Image } from "react-native";
+import { View, TouchableWithoutFeedback, Image, ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
 import PackenUiText from "./PackenUiText";
@@ -8,16 +8,69 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 import Shadows from "../styles/abstracts/shadows";
 
+interface StylingPropShape {
+  box: object;
+  image: object;
+  label: object;
+}
+
+interface ItemImageShape {
+  src: ImageSourcePropType;
+  width: number;
+  height: number;
+}
+
+interface DataShape {
+  value: string;
+  label: string;
+  isSelected: boolean;
+  image: {
+    default: ItemImageShape;
+    active: ItemImageShape;
+  };
+}
+
+interface ConfigShape {
+  label?: {
+    preset?: string;
+  };
+  image?: ImageSourcePropType;
+}
+
+interface PackenUiSelectionButtonsControlProps {
+  type: string;
+  data: DataShape;
+  selected: string | boolean | any[];
+  selection: string;
+  onNewSelection: Function;
+  altStyle: boolean;
+  styling?: StylingPropShape;
+  instance?: Function;
+}
+
+interface PackenUiSelectionButtonsControlState {
+  altStyle: boolean,
+  type: string,
+  data: DataShape,
+  selected: string | string[],
+  selection: string,
+  onNewSelection: Function | boolean,
+  styling: StylingPropShape;
+  state: string;
+  config: ConfigShape;
+  labelPreset: string;
+}
+
 /**
  * Component for rendering an individual selectable button for a {@link PackenUiSelectionButtons} component, and should not be used standalone
  */
-class PackenUiSelectionButtonsControl extends Component {
+class PackenUiSelectionButtonsControl extends Component<PackenUiSelectionButtonsControlProps, PackenUiSelectionButtonsControlState> {
   /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
-  constructor(props) {
+  constructor(props: PackenUiSelectionButtonsControlProps) {
     super(props);
 
     /**
@@ -40,7 +93,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    */
   componentDidMount() {
-    if (this.state.type === "label") {
+    if (this.state.type === "label" && this.state.config.label && typeof this.state.config.label.preset === "string") {
       this.setState({
         labelPreset: this.state.config.label.preset
       });
@@ -55,14 +108,14 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @property {boolean} [altStyle="false"] Flag to switch to the alternative styles
    * @property {string} [type="label"] Determines which type of selection buttons to render - "label" for small, simple text buttons; or "image" for big buttons with an image and text
-   * @property {object} [data={ value: "", label: "", image: { src: "", width: 0, height: 0 } }] The data for this item
+   * @property {object} [data={ value: string, label: string, isSelected: boolean, image: { default: { src: "", width: 0, height: 0 }, active: { src: "", width: 0, height: 0 } } }] The data for this item
    * @property {string[]} [selected=[]] The array of currently selected items' values
    * @property {string} [selection="single"] The type of selection - "single" for single selection; or "multiple" for multiple selections
    * @property {function} [onNewSelection=false] The callback function to be called when this item is selected
    * @property {object} [styling={ box: {}, image: {}, label: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): object => {
     return {
       altStyle: this.props.altStyle ? this.props.altStyle : false,
       type: this.props.type ? this.props.type : "label",
@@ -91,7 +144,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {object} The configuration object
    */
-  getConfig = () => {
+  getConfig: Function = (): ConfigShape => {
     let config = {};
     const { data, altStyle } = this.setPropsToState();
 
@@ -115,7 +168,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {string} The current status
    */
-  getInitialState = () => {
+  getInitialState: Function = (): string => {
     let state;
     const data = this.setPropsToState().data;
     const selection = this.setPropsToState().selection;
@@ -133,9 +186,10 @@ class PackenUiSelectionButtonsControl extends Component {
   /**
    * Handles a press on this item to propagate the new selection
    * @type {function}
+   * @return {boolean} Flag used only for testing purposes
    */
-  newSelection = () => {
-    if (this.state.onNewSelection) {
+  newSelection: VoidFunction = (): boolean | void => {
+    if (typeof this.state.onNewSelection === "function") {
       this.state.onNewSelection(this.state.data.value);
     } else {
       return false;
@@ -147,10 +201,10 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {node|null} JSX for the image or null
    */
-  getImage = () => {
+  getImage: Function = (): ReactNode | null => {
     let image = null;
 
-    if (this.state.type === "image") {
+    if (this.state.type === "image" && this.state.config.image) {
       image = (
         <Image
           source={this.state.config.image[this.state.state].src}
@@ -173,7 +227,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {object} The new state for this item
    */
-  checkIfActive = () => {
+  checkIfActive: Function = (): object => {
     let newState = { ...this.state };
 
     if (this.state.selection === "single") {
@@ -217,7 +271,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  updateState = prevProps => {
+  updateState: Function = (prevProps: PackenUiSelectionButtonsControlProps) => {
     this.setState({
       ...this.setPropsToState()
     }, () => {
@@ -232,7 +286,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: PackenUiSelectionButtonsControlProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState(prevProps);
     }
@@ -243,14 +297,14 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {node} JSX for the component
    */
-  render() {
+  render(): ReactNode {
     return (
       <TouchableWithoutFeedback onPress={this.newSelection}>
         <View style={{
           ...this.getStyles().box.type[this.state.type],
           ...this.getStyles().box.state[this.state.state].type[this.state.type],
-          ...this.getStyles().box.altStyle[this.state.altStyle].base,
-          ...this.getStyles().box.altStyle[this.state.altStyle].state[this.state.state],
+          ...this.getStyles().box.altStyle[this.state.altStyle.toString()].base,
+          ...this.getStyles().box.altStyle[this.state.altStyle.toString()].state[this.state.state],
           ...this.state.styling.box
         }}>
           {this.getImage()}
@@ -259,7 +313,7 @@ class PackenUiSelectionButtonsControl extends Component {
             style={{
               ...this.getStyles().label.type[this.state.type],
               ...this.getStyles().label.state[this.state.state].type[this.state.type],
-              ...this.getStyles().label.altStyle[this.state.altStyle].state[this.state.state],
+              ...this.getStyles().label.altStyle[this.state.altStyle.toString()].state[this.state.state],
               ...this.state.styling.label
             }}>{this.state.data.label}</PackenUiText>
         </View>
@@ -272,7 +326,7 @@ class PackenUiSelectionButtonsControl extends Component {
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles = () => {
+  getStyles: Function = (): Object => {
     return {
       box: {
         type: {
@@ -388,15 +442,16 @@ class PackenUiSelectionButtonsControl extends Component {
       }
     };
   }
-}
 
-PackenUiSelectionButtonsControl.propTypes = {
-  type: PropTypes.string.isRequired,
-  data: PropTypes.object.isRequired,
-  selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.bool]).isRequired,
-  selection: PropTypes.string.isRequired,
-  onNewSelection: PropTypes.func.isRequired,
-  styling: PropTypes.object
-};
+  static propTypes: object = {
+    type: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
+    selected: PropTypes.oneOfType([PropTypes.array, PropTypes.string, PropTypes.bool]).isRequired,
+    selection: PropTypes.string.isRequired,
+    onNewSelection: PropTypes.func.isRequired,
+    styling: PropTypes.object,
+    instance: PropTypes.func
+  };
+}
 
 export default PackenUiSelectionButtonsControl;
