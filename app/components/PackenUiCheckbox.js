@@ -26,7 +26,12 @@ class PackenUiCheckbox extends Component {
       layout: this.props.layout ? this.props.layout : "column",
       items: this.props.items ? [...this.props.items] : [],
       callback: this.props.callback ? this.props.callback : false,
-      name: this.props.name ? this.props.name : ""
+      name: this.props.name ? this.props.name : "",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        content: {},
+        control: {}
+      }
     };
   }
 
@@ -84,7 +89,7 @@ class PackenUiCheckbox extends Component {
     <View
       key={i}
       pointerEvents={item.isDisabled ? "none" : "auto"}
-      style={this.getStyles().content.layout[this.state.layout]}
+      style={{ ...this.getStyles().content.layout[this.state.layout], ...this.state.styling.content }}
     >
       <TouchableWithoutFeedback onPress={() => { this.pressHandler(i); }} >
         <View style={{ alignSelf: "flex-start" }}>
@@ -94,6 +99,7 @@ class PackenUiCheckbox extends Component {
             isChecked={item.isChecked}
             isDisabled={item.isDisabled}
             checkedItems={this.state.checkedItems}
+            styling={this.state.styling.control}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -113,7 +119,7 @@ class PackenUiCheckbox extends Component {
   render() {
     return (
       <View
-        style={this.getStyles().wrapper.layout[this.state.layout]}
+        style={{ ...this.getStyles().wrapper.layout[this.state.layout], ...this.state.styling.wrapper }}
         pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
       >
         {
@@ -164,7 +170,8 @@ PackenUiCheckbox.propTypes = {
   layout: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   callback: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiCheckbox;

@@ -28,7 +28,14 @@ class PackenUiAlert extends Component {
       onClose: this.props.onClose ? this.props.onClose : false,
       countdown: this.props.countdown ? this.props.countdown : false,
       visible: this.props.visible ? this.props.visible : false,
-      position: this.props.position ? this.props.position : "bottom"
+      position: this.props.position ? this.props.position : "bottom",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        text: {},
+        iconSize: undefined,
+        iconColor: undefined,
+        iconWrapper: {}
+      }
     };
   }
 
@@ -93,11 +100,11 @@ class PackenUiAlert extends Component {
   }
 
   getIcon = () => (
-    <View style={this.getStyles().iconWrapper}>
+    <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
       <Icon
         name={this.getIconName()}
-        size={this.getStyles().icon.base.size}
-        color={this.getStyles().icon.theme[this.state.theme].color}
+        size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.base.size}
+        color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.theme[this.state.theme].color}
       />
     </View>
   )
@@ -106,12 +113,16 @@ class PackenUiAlert extends Component {
     <View style={this.getStyles().main}>
       <PackenUiText
         preset={this.state.text.preset}
-        style={this.getStyles().text.theme[this.state.theme]}
+        style={{
+          ...this.getStyles().text.theme[this.state.theme],
+          ...this.state.styling.text
+        }}
       >
         <PackenUiText
           preset={this.state.text.preset}
           style={{
             ...this.getStyles().text.theme[this.state.theme],
+            ...this.state.styling.text,
             fontFamily: Typography.family.bold
           }}
         >{this.getTitle()}</PackenUiText>{this.state.text.main}</PackenUiText>
@@ -120,11 +131,11 @@ class PackenUiAlert extends Component {
 
   getClose = () => (
     <TouchableWithoutFeedback onPress={this.close}>
-      <View style={this.getStyles().iconWrapper}>
+      <View style={[this.getStyles().iconWrapper, this.state.styling.iconWrapper]}>
         <Icon
           name="x"
-          size={this.getStyles().icon.base.size}
-          color={this.getStyles().icon.theme[this.state.theme].color}
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.base.size}
+          color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.theme[this.state.theme].color}
         />
       </View>
     </TouchableWithoutFeedback>
@@ -156,7 +167,8 @@ class PackenUiAlert extends Component {
         <View style={[this.getStyles().box.main, this.getPositionAlert()]}>
           <View style={[
             this.getStyles().box.base,
-            this.getStyles().box.theme[this.state.theme]
+            this.getStyles().box.theme[this.state.theme],
+            this.state.styling.box
           ]}>
             {this.getIcon()}
             {this.getMain()}
@@ -287,7 +299,8 @@ PackenUiAlert.propTypes = {
   dismiss: PropTypes.func,
   countdown: PropTypes.number,
   visible: PropTypes.bool,
-  position: PropTypes.string
+  position: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiAlert;

@@ -34,6 +34,20 @@ class PackenUiListItem extends Component {
         media: this.props.data.media ? this.props.data.media : false,
         callback: this.props.data.callback ? this.props.data.callback : false,
         customWrapperStyle: this.props.data.customWrapperStyle ? this.props.data.customWrapperStyle : {}
+      },
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        media: {},
+        main: {},
+        sub: {},
+        title: {},
+        subtitle: {},
+        dropdown: {},
+        input: {},
+        label: {},
+        iconWrapper: {},
+        iconSize: undefined,
+        iconColor: undefined
       }
     };
   }
@@ -64,7 +78,7 @@ class PackenUiListItem extends Component {
 
     if (this.state.data.media) {
       media = (
-        <View style={this.getStyles().media}>
+        <View style={{ ...this.getStyles().media, ...this.state.styling.media }}>
           {this.state.data.media}
         </View>
       );
@@ -83,7 +97,7 @@ class PackenUiListItem extends Component {
 
   getMainWrapper = children => {
     return (
-      <View style={[this.getStyles().main]}>
+      <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
         {children}
         {
           this.state.data.subtitle ? (
@@ -91,7 +105,8 @@ class PackenUiListItem extends Component {
               color: "rgba(48, 77, 109, 0.4)",
               transform: [
                 { translateY: this.state.data.input && this.state.data.input.isOpen ? -this.state.data.input.dropdownHeight : 0 }
-              ]
+              ],
+              ...this.state.styling.subtitle
             }} preset="c1">{this.state.data.subtitle}</PackenUiText>
           ) : null
         }
@@ -124,6 +139,7 @@ class PackenUiListItem extends Component {
           name={this.state.data.input.name}
           list={this.state.data.input.list}
           callback={this.inputChangeHandler}
+          styling={this.state.styling.dropdown}
           input={{
             theme: "list",
             size: "medium",
@@ -157,6 +173,7 @@ class PackenUiListItem extends Component {
           nonEditable={this.state.data.input.nonEditable}
           multiline={this.state.data.input.multiline}
           maxLength={this.state.data.input.maxLength}
+          styling={this.state.styling.input}
         />
       )
     }
@@ -170,7 +187,7 @@ class PackenUiListItem extends Component {
       content = this.determineInputContent();
     } else {
       content = (
-        <PackenUiText preset="p1">{this.state.data.title}</PackenUiText>
+        <PackenUiText preset="p1" styling={this.state.styling.title}>{this.state.data.title}</PackenUiText>
       );
     }
 
@@ -179,16 +196,25 @@ class PackenUiListItem extends Component {
 
   getSubContent = () => {
     return (
-      <View style={this.getStyles().sub}>
+      <View style={{ ...this.getStyles().sub, ...this.state.styling.sub }}>
         {
           this.state.data.label ? (
-            <PackenUiText style={{ color: this.state.data.label.color }} preset="c1">{this.state.data.label.text}</PackenUiText>
+            <PackenUiText style={{
+              color: this.state.data.label.color,
+              ...this.state.styling.label
+            }} preset="c1">{this.state.data.label.text}</PackenUiText>
           ) : null
         }
         {
           this.state.data.icon ? (
-            <View style={this.getStyles().icon}>
-              <Icon name={this.state.data.icon.name} color={this.state.data.icon.color} size={14} />
+            <View style={{
+              ...this.getStyles().icon,
+              ...this.state.styling.iconWrapper
+            }}>
+              <Icon
+                name={this.state.data.icon.name}
+                size={this.state.styling.iconSize ? this.state.styling.iconSize : 14}
+                color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.data.icon.color} />
             </View>
           ) : null
         }
@@ -211,11 +237,12 @@ class PackenUiListItem extends Component {
       <TouchableWithoutFeedback
         onPress={this.onPressHandler}
       >
-        <View style={[
-          this.getStyles().wrapper.base,
-          this.getStyles().wrapper.size[this.state.data.size],
-          { ...this.state.data.customWrapperStyle }
-        ]}>
+        <View style={{
+          ...this.getStyles().wrapper.base,
+          ...this.getStyles().wrapper.size[this.state.data.size],
+          ...this.state.data.customWrapperStyle,
+          ...this.state.styling.wrapper
+        }}>
           {this.getMedia()}
           {this.getMainContent()}
           {this.getSubContent()}
@@ -279,7 +306,8 @@ PackenUiListItem.propTypes = {
     media: PropTypes.node,
     callback: PropTypes.func,
     customWrapperStyle: PropTypes.object
-  }).isRequired
+  }).isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiListItem;

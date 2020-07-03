@@ -24,7 +24,13 @@ class PackenUiHeader extends Component {
     return {
       children: this.props.children || "",
       onBackPress: this.props.onBackPress || false,
-      customStyle: this.props.style || {}
+      customStyle: this.props.style || {},
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        iconSize: undefined,
+        iconColor: undefined,
+        title: {}
+      }
     };
   }
 
@@ -48,11 +54,22 @@ class PackenUiHeader extends Component {
 
   render() {
     return (
-      <View style={[this.getStyles().box, this.state.customStyle]}>
+      <View style={{
+        ...this.getStyles().box,
+        ...this.state.customStyle,
+        ...this.state.styling.box
+      }}>
         <TouchableWithoutFeedback onPress={this.onPressHandler}>
-          <Icon name="arrow-left" size={20} color={Colors.brand.primary.drk} />
+          <Icon
+            name="arrow-left"
+            size={this.state.styling.iconSize ? this.state.styling.iconSize : 20}
+            color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.brand.primary.drk}
+          />
         </TouchableWithoutFeedback>
-        <PackenUiText preset="h6" style={this.getStyles().title}>
+        <PackenUiText preset="h6" style={{
+          ...this.getStyles().title,
+          ...this.state.styling.title
+        }}>
           {this.state.children}
         </PackenUiText>
       </View>
@@ -80,7 +97,9 @@ class PackenUiHeader extends Component {
 
 PackenUiHeader.propTypes = {
   children: PropTypes.node.isRequired,
-  onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired
+  onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
+  customStyle: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiHeader;

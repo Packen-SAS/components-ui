@@ -33,7 +33,15 @@ class PackenUiButton extends Component {
       callback: this.props.callback ? this.props.callback : false,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       nonTouchable: this.props.nonTouchable ? this.props.nonTouchable : false,
-      children: this.props.children ? this.props.children : undefined
+      children: this.props.children ? this.props.children : undefined,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        shape: {},
+        shapeContent: {},
+        label: {},
+        iconWrapper: {},
+        iconSize: undefined,
+        iconColor: undefined
+      }
     };
   }
 
@@ -189,15 +197,15 @@ class PackenUiButton extends Component {
 
   getIcon = () => {
     let icon = (
-      <View style={this.state.icon.styles}>
-        <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
+      <View style={{ ...this.state.icon.styles, ...this.state.styling.iconWrapper }}>
+        <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
       </View>
     );
 
     if (this.state.icon.anim) {
       icon = (
-        <Animated.View style={this.state.icon.styles[this.state.icon.anim.state]}>
-          <Icon name={this.state.icon.name} size={this.state.styles.icon.fontSize} color={this.state.styles.icon.color} />
+        <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
+          <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
         </Animated.View>
       );
     }
@@ -212,11 +220,11 @@ class PackenUiButton extends Component {
       content = this.getIcon();
     } else if (this.state.type === "regular") {
       content = (
-        <>
+        <React.Fragment>
           {this.state.icon && this.state.icon.position === "left" ? this.getIcon() : null}
-          <PackenUiText style={this.state.styles.label}>{this.state.children}</PackenUiText>
+          <PackenUiText style={{ ...this.state.styles.label, ...this.state.styling.label }}>{this.state.children}</PackenUiText>
           {this.state.icon && this.state.icon.position === "right" ? this.getIcon() : null}
-        </>
+        </React.Fragment>
       );
     }
 
@@ -227,8 +235,8 @@ class PackenUiButton extends Component {
     return (
       <View pointerEvents={this.state.isDisabled || this.state.nonTouchable ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.executeCallback} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
-          <View style={{ ...this.state.styles.shape, ...this.props.style }}>
-            <View style={this.state.styles.shapeContent}>
+          <View style={{ ...this.state.styles.shape, ...this.props.style, ...this.state.styling.shape }}>
+            <View style={{ ...this.state.styles.shapeContent, ...this.state.styling.shapeContent }}>
               {this.getContent()}
             </View>
           </View>
@@ -436,7 +444,8 @@ PackenUiButton.propTypes = {
   callback: PropTypes.func,
   isDisabled: PropTypes.bool,
   nonTouchable: PropTypes.bool,
-  children: PropTypes.node
+  children: PropTypes.node,
+  styling: PropTypes.object
 };
 
 export default PackenUiButton;

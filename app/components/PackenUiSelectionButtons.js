@@ -28,7 +28,12 @@ class PackenUiSelectionButtons extends Component {
       items: this.props.items ? [...this.props.items] : [],
       selection: this.props.selection ? this.props.selection : "single",
       itemsPerRow: this.props.itemsPerRow ? this.props.itemsPerRow : 2,
-      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false
+      onNewSelection: this.props.onNewSelection ? this.props.onNewSelection : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        item: {},
+        control: {}
+      }
     };
   }
 
@@ -107,11 +112,12 @@ class PackenUiSelectionButtons extends Component {
   }
 
   mapItems = (item, i) => (
-    <View key={i} style={[
-      this.getStyles().item.type[this.state.type],
-      this.getStyles().item.altStyle[this.state.altStyle],
-      { width: `${100 / this.state.itemsPerRow}%` }
-    ]}>
+    <View key={i} style={{
+      ...this.getStyles().item.type[this.state.type],
+      ...this.getStyles().item.altStyle[this.state.altStyle],
+      width: `${100 / this.state.itemsPerRow}%`,
+      ...this.state.styling.item,
+    }}>
       <PackenUiSelectionButtonsControl
         data={item}
         altStyle={this.state.altStyle}
@@ -119,17 +125,19 @@ class PackenUiSelectionButtons extends Component {
         selected={this.state.selected}
         selection={this.state.selection}
         onNewSelection={this.newSelectionHandler}
+        styling={this.state.styling.control}
       />
     </View>
   )
 
   render() {
     return (
-      <View style={[
-        this.getStyles().wrapper.base,
-        this.getStyles().wrapper.type[this.state.type],
-        this.getStyles().wrapper.altStyle[this.state.altStyle]
-      ]}>
+      <View style={{
+        ...this.getStyles().wrapper.base,
+        ...this.getStyles().wrapper.type[this.state.type],
+        ...this.getStyles().wrapper.altStyle[this.state.altStyle],
+        ...this.state.styling.wrapper
+      }}>
         {this.state.items.map(this.mapItems)}
       </View>
     );
@@ -190,7 +198,8 @@ PackenUiSelectionButtons.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
   selection: PropTypes.string.isRequired,
   itemsPerRow: PropTypes.number.isRequired,
-  onNewSelection: PropTypes.func.isRequired
+  onNewSelection: PropTypes.func.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiSelectionButtons;

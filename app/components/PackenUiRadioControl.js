@@ -23,7 +23,12 @@ class PackenUiRadioControl extends Component {
       selfIndex: this.props.selfIndex ? this.props.selfIndex : 0,
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
       checkedIndex: this.props.checkedIndex === 0 ? 0 : (typeof this.props.checkedIndex === "number") && (this.props.checkedIndex > 0) ? this.props.checkedIndex : -1,
-      label: this.props.label ? this.props.label : ""
+      label: this.props.label ? this.props.label : "",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        shape: {},
+        control: {},
+        label: {}
+      }
     };
   }
 
@@ -100,7 +105,12 @@ class PackenUiRadioControl extends Component {
 
     if (this.state.label) {
       label = (
-        <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label[this.state.state] }}>{this.state.label}</PackenUiText>
+        <PackenUiText
+          style={{
+            ...this.getStyles().label.base,
+            ...this.getStyles().label[this.state.state],
+            ...this.state.styling.label
+          }}>{this.state.label}</PackenUiText>
       );
     }
 
@@ -111,8 +121,15 @@ class PackenUiRadioControl extends Component {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
         <TouchableWithoutFeedback onPress={this.onPressHandler}>
-          <View style={this.getStyles().shape.base}>
-            <View style={{ ...this.getStyles().control.base, ...this.getStyles().control[this.state.state] }}></View>
+          <View style={{
+            ...this.getStyles().shape.base,
+            ...this.state.styling.shape
+            }}>
+            <View style={{
+              ...this.getStyles().control.base,
+              ...this.getStyles().control[this.state.state],
+              ...this.state.styling.control
+            }}></View>
             {this.getLabel()}
           </View>
         </TouchableWithoutFeedback>
@@ -175,7 +192,8 @@ PackenUiRadioControl.propTypes = {
   selfIndex: PropTypes.number.isRequired,
   isDisabled: PropTypes.bool,
   checkedIndex: PropTypes.number,
-  label: PropTypes.string.isRequired
+  label: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiRadioControl;

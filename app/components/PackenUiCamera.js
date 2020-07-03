@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image } from "react-native";
 
 import { RNCamera } from "react-native-camera";
@@ -172,6 +173,14 @@ export default class PackenUiCamera extends Component {
     );
   }
 }
+
+PackenUiCamera.propTypes = {
+  labels: PropTypes.object.isRequired,
+  EMIT_TRIGGER: PropTypes.func.isRequired,
+  dismiss: PropTypes.func.isRequired,
+  MODE: PropTypes.string,
+  VISIBLE: PropTypes.bool.isRequired
+};
 
 export const CameraImagePreviewTriggers = props => {
   return (

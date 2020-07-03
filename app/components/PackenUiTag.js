@@ -25,7 +25,11 @@ class PackenUiTag extends Component {
       boxStyles: this.props.style ? { ...this.props.style } : {},
       children: this.props.children ? this.props.children : null,
       backgroundColor: this.props.backgroundColor ? this.props.backgroundColor : Colors.brand.primary.snw,
-      textColor: this.props.textColor ? this.props.textColor : Colors.basic.independence.dft
+      textColor: this.props.textColor ? this.props.textColor : Colors.basic.independence.dft,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        label: {}
+      }
     };
   }
 
@@ -43,9 +47,17 @@ class PackenUiTag extends Component {
     return (
       <View style={{
         ...this.getStyles().box.base,
-        ...this.state.boxStyles
+        ...this.state.boxStyles,
+        ...this.state.styling.box
       }}>
-        <PackenUiText preset="c1" style={{ ...this.getStyles().label.base, ...this.state.style }}>{this.state.children}</PackenUiText>
+        <PackenUiText
+          preset="c1"
+          style={{
+            ...this.getStyles().label.base,
+            ...this.state.style,
+            ...this.state.styling.label
+          }}
+        >{this.state.children}</PackenUiText>
       </View>
     );
   }
@@ -79,7 +91,11 @@ class PackenUiTag extends Component {
 
 PackenUiTag.propTypes = {
   style: PropTypes.object,
-  children: PropTypes.node.isRequired
+  boxStyles: PropTypes.object,
+  children: PropTypes.node.isRequired,
+  backgroundColor: PropTypes.string,
+  textColor: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiTag;

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { StyleSheet, View } from "react-native";
 
 import * as UTIL from "../utils";
@@ -22,6 +23,14 @@ class PackenUiInputBoxes extends Component {
       this.items.push(i + 1);
     }
     this.setState({ boxes: this.items.map(this.renderBox) });
+  }
+
+  getPropStyling = () => {
+    return this.props.styling ? { ...this.props.styling } : {
+      container: {},
+      item: {},
+      input: {}
+    }
   }
 
   setInputRef = (input, ref) => {
@@ -86,7 +95,7 @@ class PackenUiInputBoxes extends Component {
   renderBox = id => (
     <View
       key={id}
-      style={{ padding: 5 }}>
+      style={{ padding: 5, ...this.getPropStyling().item }}>
       <PackenUiInput
         instance={this.setInputRef}
         name={id}
@@ -98,6 +107,7 @@ class PackenUiInputBoxes extends Component {
         alignText="center"
         theme="default"
         style={{ textAlign: "center", padding: 5 }}
+        styling={this.getPropStyling().input}
         keyboardType="numeric"
       />
     </View>
@@ -105,7 +115,10 @@ class PackenUiInputBoxes extends Component {
 
   render = () => {
     return (
-      <View style={PackenInputBoxesStyles.box_container}>
+      <View style={{
+        ...PackenInputBoxesStyles.box_container,
+        ...this.getPropStyling().container
+      }}>
         {this.state.boxes}
       </View>
     );
@@ -121,5 +134,11 @@ const PackenInputBoxesStyles = StyleSheet.create({
     marginBottom: 15
   }
 });
+
+PackenUiInputBoxes.propTypes = {
+  boxes: PropTypes.number.isRequired,
+  emitCode: PropTypes.func.isRequired,
+  styling: PropTypes.object
+};
 
 export default PackenUiInputBoxes;

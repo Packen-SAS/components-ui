@@ -31,25 +31,36 @@ class PackenUiMapPin extends Component {
       sub: this.props.sub ? { ...this.props.sub } : false,
       theme: this.props.theme ? this.props.theme : "primary",
       type: this.props.type ? this.props.type : "info",
-      dotPosition: this.props.dotPosition ? this.props.dotPosition : false
+      dotPosition: this.props.dotPosition ? this.props.dotPosition : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
+        inner: {},
+        main: {},
+        label: {},
+        text: {},
+        sub: {}
+      }
     };
   }
 
   getLabel = () => {
     if (this.state.main.label) {
-      return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.state.theme] }}>{this.state.main.label.toUpperCase() + " "}</PackenUiText>;
+      return <PackenUiText style={{ ...this.getStyles().label.base, ...this.getStyles().label.theme[this.state.theme], ...this.state.styling.label }}>{this.state.main.label.toUpperCase() + " "}</PackenUiText>;
     } else {
       return null;
     }
   }
 
   getInfoRender = () => (
-    <View style={this.getStyles().inner}>
+    <View style={{
+      ...this.getStyles().inner,
+      ...this.state.styling.inner
+    }}>
       {
         this.state.sub && this.state.sub.position === "left" ? this.getSubRender() : null
       }
-      <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme] }}>
-        <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme] }}>
+      <View style={{ ...this.getStyles().main.base, ...this.getStyles().main.theme[this.state.theme], ...this.state.styling.main }}>
+        <PackenUiText style={{ ...this.getStyles().text.base, ...this.getStyles().text.theme[this.state.theme], ...this.state.styling.text }}>
           {this.getLabel()}
           {this.state.main.text}
         </PackenUiText>
@@ -61,7 +72,7 @@ class PackenUiMapPin extends Component {
   )
 
   getSubRender = () => (
-    <PackenUiMapPinSub type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
+    <PackenUiMapPinSub styling={this.state.styling.sub} type={this.state.type} theme={this.state.theme} label={this.state.sub.character} icon={this.state.sub.icon} dotPosition={this.state.dotPosition} />
   )
 
   updateState = () => {
@@ -76,7 +87,10 @@ class PackenUiMapPin extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().container}>
+      <View style={{
+        ...this.getStyles().container,
+        ...this.state.styling.container
+      }}>
         {
           this.state.type === "info" ? this.getInfoRender() : this.getSubRender()
         }
@@ -167,7 +181,8 @@ PackenUiMapPin.propTypes = {
   sub: PropTypes.object,
   theme: PropTypes.string,
   type: PropTypes.string.isRequired,
-  dotPosition: PropTypes.string
+  dotPosition: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiMapPin;

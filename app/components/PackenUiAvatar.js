@@ -23,7 +23,13 @@ class PackenUiAvatar extends Component {
     return {
       src: this.props.src ? this.props.src : false,
       size: this.props.size ? this.props.size : "medium",
-      callback: this.props.callback ? this.props.callback : false
+      callback: this.props.callback ? this.props.callback : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
+        image: {},
+        iconSize: undefined,
+        iconColor: undefined
+      }
     };
   }
 
@@ -38,7 +44,8 @@ class PackenUiAvatar extends Component {
           style={{
             height: "100%",
             width: "100%",
-            borderRadius: 100
+            borderRadius: 100,
+            ...this.state.styling.image
           }}
         />
       );
@@ -46,8 +53,8 @@ class PackenUiAvatar extends Component {
       inner = (
         <Icon
           name="user"
-          size={this.getStyles().container.size[this.state.size].width / 1.5}
-          color={Colors.basic.white.dft}
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().container.size[this.state.size].width / 1.5}
+          color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.basic.white.dft}
         />
       );
     }
@@ -67,7 +74,8 @@ class PackenUiAvatar extends Component {
               {
                 height: this.getStyles().container.size[this.state.size.height],
                 width: this.getStyles().container.size[this.state.size.width]
-              }
+              },
+              this.state.styling.container
             ]}
           >
             {this.getInner()}
@@ -95,7 +103,8 @@ class PackenUiAvatar extends Component {
     return (
       <View style={[
         this.getStyles().container.base,
-        this.getStyles().container.size[this.state.size]
+        this.getStyles().container.size[this.state.size],
+        this.state.styling.container
       ]}>
         {this.getContent()}
       </View>
@@ -154,7 +163,8 @@ class PackenUiAvatar extends Component {
 PackenUiAvatar.propTypes = {
   src: Image.propTypes.source,
   size: PropTypes.string.isRequired,
-  callback: PropTypes.func
+  callback: PropTypes.func,
+  styling: PropTypes.object
 };
 
 export default PackenUiAvatar;

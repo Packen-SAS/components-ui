@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { View, Image, TouchableWithoutFeedback } from "react-native";
+import { View, TouchableWithoutFeedback } from "react-native";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
@@ -37,6 +37,20 @@ class PackenUiInfoAction extends Component {
       icon: this.props.icon ? { ...this.props.icon } : {
         name: "play",
         size: 14
+      },
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        main: {},
+        mainTop: {},
+        title: {},
+        svgWidth: undefined,
+        svgHeight: undefined,
+        iconSize: undefined,
+        iconColor: undefined,
+        caption: {},
+        subtitle: {},
+        subtitleIconSize: undefined,
+        subtitleIconColor: undefined
       }
     };
   }
@@ -48,7 +62,10 @@ class PackenUiInfoAction extends Component {
       caption = (
         <PackenUiText
           preset="c1"
-          style={this.getStyles().caption}
+          style={{
+            ...this.getStyles().caption,
+            ...this.state.styling.caption
+          }}
         >{this.state.caption}</PackenUiText>
       );
     }
@@ -72,8 +89,8 @@ class PackenUiInfoAction extends Component {
         icon = {
           name: name,
           position: "right",
-          color: Colors[this.state.theme].default,
-          size: Typography.c1.fontSize
+          color: this.state.styling.subtitleIconColor ? this.state.styling.subtitleIconColor : Colors[this.state.theme].default,
+          size: this.state.styling.subtitleIconSize ? this.state.styling.subtitleIconSize : Typography.c1.fontSize
         }
       }
 
@@ -81,7 +98,10 @@ class PackenUiInfoAction extends Component {
         <PackenUiText
           preset="c1"
           icon={icon}
-          style={this.getStyles().subtitle.theme[this.state.theme]}
+          style={{
+            ...this.getStyles().subtitle.theme[this.state.theme],
+            ...this.state.styling.subtitle
+          }}
         >{this.state.subtitle}</PackenUiText>
       );
     }
@@ -102,16 +122,33 @@ class PackenUiInfoAction extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.state.callback}>
-        <View style={[this.getStyles().box.base, this.getStyles().box.theme[this.state.theme], this.state.boxStyle]}>
-          <PackenUiSvgIcon name={this.state.img} width={20} height={20} />
-          <View style={this.getStyles().main}>
-            <View style={this.getStyles().mainTop}>
-              <PackenUiText preset="p1" style={this.getStyles().title}>{this.state.title}</PackenUiText>
+        <View style={{
+          ...this.getStyles().box.base,
+          ...this.getStyles().box.theme[this.state.theme],
+          ...this.state.boxStyle,
+          ...this.state.styling.box
+        }}>
+          <PackenUiSvgIcon name={this.state.img} width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 20} height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 20} />
+          <View style={{
+            ...this.getStyles().main,
+            ...this.state.styling.main
+          }}>
+            <View style={{
+              ...this.getStyles().mainTop,
+              ...this.state.styling.mainTop
+            }}>
+              <PackenUiText preset="p1" style={{
+                ...this.getStyles().title,
+                ...this.state.styling.title
+              }}>{this.state.title}</PackenUiText>
               {this.getCaption()}
             </View>
             {this.getSubtitle()}
           </View>
-          <Icon name={this.state.icon.name} size={this.state.icon.size} color={this.getStyles().icon.theme[this.state.theme].color} />
+          <Icon
+            name={this.state.icon.name}
+            size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.icon.size}
+            color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.theme[this.state.theme].color} />
         </View>
       </TouchableWithoutFeedback>
     );
@@ -202,7 +239,8 @@ PackenUiInfoAction.propTypes = {
   callback: PropTypes.func.isRequired,
   style: PropTypes.object,
   img: PropTypes.string.isRequired,
-  icon: PropTypes.object
+  icon: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiInfoAction;

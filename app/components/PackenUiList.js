@@ -20,13 +20,18 @@ class PackenUiList extends Component {
   setPropsToState = () => {
     return {
       items: this.props.items ? [...this.props.items] : [],
-      customWrapperStyles: this.props.style ? { ...this.props.style } : {}
+      customWrapperStyles: this.props.style ? { ...this.props.style } : {},
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        inner: {},
+        item: {}
+      }
     };
   }
 
   mapItems = (item, i) => (
-    <View style={{ zIndex: this.state.items.length - i }}>
-      <PackenUiListItem data={item} key={i} />
+    <View style={{ zIndex: this.state.items.length - i, ...this.state.styling.inner }}>
+      <PackenUiListItem data={item} key={i} styling={this.state.styling.item} />
     </View>
   )
 
@@ -42,7 +47,11 @@ class PackenUiList extends Component {
 
   render() {
     return (
-      <View style={[this.getStyles().wrapper, { ...this.state.customWrapperStyles }]}>
+      <View style={{
+        ...this.getStyles().wrapper,
+        ...this.state.customWrapperStyles,
+        ...this.state.styling.wrapper
+      }}>
         {this.state.items.map(this.mapItems)}
       </View>
     );
@@ -60,7 +69,8 @@ class PackenUiList extends Component {
 
 PackenUiList.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  customWrapperStyles: PropTypes.object
+  customWrapperStyles: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiList;

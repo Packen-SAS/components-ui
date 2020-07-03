@@ -26,7 +26,12 @@ class PackenUiRadio extends Component {
       checkedIndex: this.props.initialIndex === 0 ? 0 : this.props.initialIndex ? this.props.initialIndex : -1,
       callback: this.props.callback ? this.props.callback : false,
       name: this.props.name ? this.props.name : "",
-      layout: this.props.layout ? this.props.layout : "column"
+      layout: this.props.layout ? this.props.layout : "column",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
+        item: {},
+        control: {}
+      }
     };
   }
 
@@ -70,21 +75,25 @@ class PackenUiRadio extends Component {
   mapItems = (item, i) => (
     <View
       key={i}
-      style={this.getStyles().item[this.state.layout]}
       pointerEvents={this.state.layout === "dropdown" ? "none" : "auto"}
+      style={{ ...this.getStyles().item[this.state.layout], ...this.state.styling.item }}
     >
       <PackenUiRadioControl
         checkedIndex={this.state.checkedIndex}
         selfIndex={i}
         label={item.label}
         isDisabled={item.isDisabled}
-        updateCheckedIndex={this.setCheckedIndex} />
+        updateCheckedIndex={this.setCheckedIndex}
+        styling={this.state.styling.control} />
     </View>
   )
 
   render() {
     return (
-      <View style={this.getStyles().container[this.state.layout]}>
+      <View style={{
+        ...this.getStyles().container[this.state.layout],
+        ...this.state.styling.container
+      }}>
         {this.state.items.map(this.mapItems)}
       </View>
     );
@@ -131,7 +140,8 @@ PackenUiRadio.propTypes = {
   initialIndex: PropTypes.number.isRequired,
   callback: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  layout: PropTypes.string.isRequired
+  layout: PropTypes.string.isRequired,
+  styling: PropTypes.object
 }
 
 export default PackenUiRadio;

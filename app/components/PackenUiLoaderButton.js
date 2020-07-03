@@ -24,7 +24,8 @@ class PackenUiLoaderButton extends Component {
       level: this.props.level ? this.props.level : "primary",
       size: this.props.size ? this.props.size : "medium",
       callback: this.props.callback ? this.props.callback : this.mockCallback,
-      isDone: this.props.isDone ? this.props.isDone : false
+      isDone: this.props.isDone ? this.props.isDone : false,
+      styling: this.props.styling ? { ...this.props.styling } : {}
     };
   }
 
@@ -80,6 +81,7 @@ class PackenUiLoaderButton extends Component {
         level={this.state.level}
         size={this.state.size}
         callback={this.state.callback}
+        styling={this.state.styling}
         nonTouchable={this.state.isDone ? false : true}
       >{this.state.children}</PackenUiButton>
     );
@@ -106,7 +108,8 @@ PackenUiLoaderButton.propTypes = {
   level: PropTypes.string.isRequired,
   size: PropTypes.string.isRequired,
   callback: PropTypes.func.isRequired,
-  isDone: PropTypes.bool
+  isDone: PropTypes.bool,
+  styling: PropTypes.object
 };
 
 export default PackenUiLoaderButton;

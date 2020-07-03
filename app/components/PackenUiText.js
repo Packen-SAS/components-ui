@@ -26,7 +26,8 @@ class PackenUiText extends Component {
       children: this.props.children ? this.props.children : null,
       icon: this.props.icon ? { ...this.props.icon } : false,
       presetStyle: this.props.preset ? Typography[this.props.preset] : {},
-      touchableStyles: this.getTouchableStyles()
+      touchableStyles: this.getTouchableStyles(),
+      styling: this.props.styling ? { ...this.props.styling } : {}
     };
   }
 
@@ -60,7 +61,9 @@ class PackenUiText extends Component {
         ...styles.base,
         ...this.state.presetStyle,
         ...this.props.style,
-        ...this.state.touchableStyles.label
+        ...this.props.styling,
+        ...this.state.touchableStyles.label,
+        ...this.state.styling
       }}>{this.state.children}</Text>
     );
 
@@ -130,7 +133,8 @@ PackenUiText.propTypes = {
   preset: PropTypes.string,
   touchable: PropTypes.object,
   children: PropTypes.node.isRequired,
-  icon: PropTypes.object
+  icon: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiText;

@@ -50,7 +50,36 @@ class PackenUiInput extends Component {
       eventHandlers: this.props.eventHandlers ? this.props.eventHandlers : false,
       propagateRef: this.props.propagateRef ? this.props.propagateRef : false,
       loading: this.props.loading ? this.props.loading : false,
-      validator: this.props.validator ? this.props.validator : false
+      validator: this.props.validator ? this.props.validator : false,
+      styling: this.props.styling ? {
+        ...this.props.styling,
+        header: { ...this.props.styling.header },
+        help: { ...this.props.styling.help },
+        message: { ...this.props.styling.message }
+      } : {
+        header: {
+          base: {},
+          label: {}
+        },
+        help: {
+          touchable: {},
+          text: {}
+        },
+        box: {},
+        input: {},
+        message: {
+          box: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          text: {}
+        },
+        loader: {},
+        iconWrapper: {},
+        icon: {},
+        iconSize: undefined,
+        iconColor: undefined
+      }
     };
   }
 
@@ -245,7 +274,8 @@ class PackenUiInput extends Component {
           <PackenUiText
             style={{
               ...this.getStyles().help.base,
-              ...this.getStyles().help.size[this.state.size]
+              ...this.getStyles().help.size[this.state.size],
+              ...this.state.styling.help.text
             }}
           >{this.state.help}</PackenUiText>
         );
@@ -253,13 +283,19 @@ class PackenUiInput extends Component {
         help = (
           <PackenUiText
             touchable={{
-              color: Colors.brand.secondary.dft,
-              underline: true,
-              callback: this.triggerHelpCallback
+              style: {
+                label: {
+                  color: Colors.brand.secondary.dft,
+                  textDecorationLine: "underline"
+                }
+              },
+              callback: this.triggerHelpCallback,
+              ...this.state.styling.help.touchable
             }}
             style={{
               ...this.getStyles().help.base,
-              ...this.getStyles().help.size[this.state.size]
+              ...this.getStyles().help.size[this.state.size],
+              ...this.state.styling.help.text
             }}
           >{this.state.help.text}</PackenUiText>
         );
@@ -276,11 +312,12 @@ class PackenUiInput extends Component {
       icon = (
         <Icon
           name={this.state.message.icon}
-          size={this.getStyles().message.icon.size[this.state.size].size}
-          color={this.getStyles().message.icon.theme[this.state.theme].color}
+          size={this.state.styling.message.iconSize ? this.state.styling.message.iconSize : this.getStyles().message.icon.size[this.state.size].size}
+          color={this.state.styling.message.iconColor ? this.state.styling.message.iconColor : this.getStyles().message.icon.theme[this.state.theme].color}
           style={{
             ...this.getStyles().message.icon.base,
-            ...this.getStyles().message.icon.state[this.state.state]
+            ...this.getStyles().message.icon.state[this.state.state],
+            ...this.state.styling.message.icon
           }}
         />
       );
@@ -294,12 +331,13 @@ class PackenUiInput extends Component {
 
     if (this.state.message) {
       message = (
-        <View style={this.getStyles().message.box}>
+        <View style={{ ...this.getStyles().message.box, ...this.state.styling.message.box }}>
           {this.getMessageIcon()}
           <PackenUiText style={{
             ...this.getStyles().message.text.size[this.state.size],
             ...this.getStyles().message.text.theme[this.state.theme],
-            ...this.getStyles().message.text.state[this.state.state]
+            ...this.getStyles().message.text.state[this.state.state],
+            ...this.state.styling.message.text
           }}>{this.state.message.text}</PackenUiText>
         </View>
       );
@@ -351,7 +389,7 @@ class PackenUiInput extends Component {
   getIconWrapper = child => {
     return (
       <View
-        style={{ ...this.getStyles().icon_wrapper.base, ...this.setIconPositionStyles() }}
+        style={{ ...this.getStyles().icon_wrapper.base, ...this.setIconPositionStyles(), ...this.state.styling.iconWrapper }}
         onLayout={e => { this.getIconWrapperDimensions(e.nativeEvent.layout); }}
       >
         {child}
@@ -366,12 +404,13 @@ class PackenUiInput extends Component {
       const inner = !this.state.loading ? (
         <Icon
           name={this.getIconName()}
-          size={this.getStyles().icon.size[this.state.size].size}
-          color={this.getStyles().icon.base.color}
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.size[this.state.size].size}
+          color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.base.color}
           style={{
             ...this.getStyles().icon.theme[this.state.theme],
             ...this.getStyles().icon.state[this.state.state],
-            ...this.state.icon.style
+            ...this.state.icon.style,
+            ...this.state.styling.icon
           }}
         />
       ) : (
@@ -381,6 +420,7 @@ class PackenUiInput extends Component {
           size="tiny"
           isDone={false}
           callback={this.mockCallback}
+          styling={this.state.styling.loader}
         />
       );
 
@@ -417,21 +457,24 @@ class PackenUiInput extends Component {
   render() {
     return (
       <View style={this.getStyles().container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}>
-        <View style={[
-          this.getStyles().header.base,
-          this.getStyles().header.theme[this.state.theme]
-        ]}>
+        <View style={{
+          ...this.getStyles().header.base,
+          ...this.getStyles().header.theme[this.state.theme],
+          ...this.state.styling.header.base
+        }}>
           <PackenUiText style={{
             ...this.getStyles().label.base,
             ...this.getStyles().label.size[this.state.size],
-            ...this.getStyles().label.state[this.state.state]
+            ...this.getStyles().label.state[this.state.state],
+            ...this.state.styling.header.label
           }}>{this.state.label.toUpperCase()}</PackenUiText>
           {this.getHelp()}
         </View>
-        <View style={[
-          this.getStyles().box.base,
-          this.getStyles().box.theme[this.state.theme]
-        ]} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
+        <View style={{
+          ...this.getStyles().box.base,
+          ...this.getStyles().box.theme[this.state.theme],
+          ...this.state.styling.box
+        }} onLayout={e => { this.getBoxDimensions(e.nativeEvent.layout); }}>
           {this.getMainIcon()}
           <TextInput
             style={{
@@ -441,7 +484,8 @@ class PackenUiInput extends Component {
               ...this.getStyles().input.state[this.state.state],
               ...this.getPaddingStyles(),
               ...this.getMultilineStyles(),
-              ...this.state.style
+              ...this.state.style,
+              ...this.state.styling.input
             }}
             ref={this.getRef}
             secureTextEntry={this.getSecureEntryType()}
@@ -938,7 +982,8 @@ PackenUiInput.propTypes = {
   eventHandlers: PropTypes.object,
   propagateRef: PropTypes.func,
   loading: PropTypes.bool,
-  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+  validator: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  styling: PropTypes.object
 };
 
 export default PackenUiInput;

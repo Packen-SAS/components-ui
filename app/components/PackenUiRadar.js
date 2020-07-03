@@ -24,7 +24,12 @@ class PackenUiRadar extends Component {
     return {
       theme: this.props.theme ? this.props.theme : "wait",
       animated: this.props.animated ? this.props.animated : false,
-      isAnimating: this.props.animated ? this.props.isAnimating ? this.props.isAnimating : false : false
+      isAnimating: this.props.animated ? this.props.isAnimating ? this.props.isAnimating : false : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        wrapper: {},
+        shadow: {},
+        dot: {}
+      }
     };
   }
 
@@ -102,15 +107,17 @@ class PackenUiRadar extends Component {
 
   render() {
     return (
-      <View style={this.getStyles().wrapper}>
+      <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
         <Animated.View style={{
           ...this.getStyles().shadow.base,
           ...this.getStyles().shadow.theme[this.state.theme],
-          ...this.state.transforms.shadow
+          ...this.state.transforms.shadow,
+          ...this.state.styling.shadow
         }}></Animated.View>
         <View style={{
           ...this.getStyles().dot.base,
-          ...this.getStyles().dot.theme[this.state.theme]
+          ...this.getStyles().dot.theme[this.state.theme],
+          ...this.state.styling.dot
         }}></View>
       </View>
     );
@@ -174,7 +181,8 @@ class PackenUiRadar extends Component {
 PackenUiRadar.propTypes = {
   theme: PropTypes.string.isRequired,
   animated: PropTypes.bool.isRequired,
-  isAnimating: PropTypes.bool
+  isAnimating: PropTypes.bool,
+  styling: PropTypes.object
 };
 
 export default PackenUiRadar;

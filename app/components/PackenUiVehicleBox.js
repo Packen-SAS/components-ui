@@ -34,6 +34,21 @@ class PackenUiVehicleBox extends Component {
         approved: "Aprobado",
         rejected: "Rechazado",
         pending: "Pendiente"
+      },
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        imgWrapper: {},
+        image: {},
+        copy: {},
+        type: {},
+        overview: {},
+        year: {},
+        plateWrapper: {},
+        tag: {},
+        stateWrapper: {},
+        state: {},
+        stateIconSize: undefined,
+        stateIconColor: undefined
       }
     };
   }
@@ -92,20 +107,20 @@ class PackenUiVehicleBox extends Component {
 
   getContent = () => {
     let content = (
-      <View style={this.getStyles().box}>
-        <View style={this.getStyles().imgWrapper}>
-          <Image source={{ uri: this.state.image }} style={{ ...this.getImgStyles() }} />
+      <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
+        <View style={{ ...this.getStyles().imgWrapper, ...this.state.styling.imgWrapper }}>
+          <Image source={{ uri: this.state.image }} style={{ ...this.getImgStyles(), ...this.state.styling.image }} />
         </View>
-        <View style={this.getStyles().copy}>
-          <PackenUiText preset="t1" style={this.getStyles().type}>{this.state.type.charAt(0).toUpperCase() + this.state.type.substring(1)}</PackenUiText>
-          <PackenUiText preset="c1" style={this.getStyles().subtitle}>{this.state.overview}</PackenUiText>
-          <PackenUiText preset="c1" style={this.getStyles().subtitle}>{this.state.year}</PackenUiText>
-          <View style={{ marginVertical: 5 }}>
-            <PackenUiTag>{this.state.plate.toUpperCase()}</PackenUiTag>
+        <View style={{ ...this.getStyles().copy, ...this.state.styling.copy }}>
+          <PackenUiText preset="t1" style={{ ...this.getStyles().type, ...this.state.styling.type }}>{this.state.type.charAt(0).toUpperCase() + this.state.type.substring(1)}</PackenUiText>
+          <PackenUiText preset="c1" style={{ ...this.getStyles().subtitle, ...this.state.styling.overview }}>{this.state.overview}</PackenUiText>
+          <PackenUiText preset="c1" style={{ ...this.getStyles().subtitle, ...this.state.styling.year }}>{this.state.year}</PackenUiText>
+          <View style={{ marginVertical: 5, ...this.state.styling.plateWrapper }}>
+            <PackenUiTag styling={this.state.styling.tag}>{this.state.plate.toUpperCase()}</PackenUiTag>
           </View>
-          <View style={this.getStyles().state}>
-            <PackenUiText preset="c1" style={{ color: this.getState().icon.color, marginRight: 10 }}>{this.getState().label}</PackenUiText>
-            <Icon name={this.getState().icon.name} color={this.getState().icon.color} size={14} />
+          <View style={{ ...this.getStyles().state, ...this.state.styling.stateWrapper }}>
+            <PackenUiText preset="c1" style={{ color: this.getState().icon.color, marginRight: 10, ...this.state.styling.state }}>{this.getState().label}</PackenUiText>
+            <Icon name={this.getState().icon.name} color={this.state.styling.stateIconColor ? this.state.styling.stateIconColor : this.getState().icon.color} size={this.state.styling.stateIconSize ? this.state.styling.stateIconSize : 14} />
           </View>
         </View>
       </View>
@@ -175,12 +190,15 @@ class PackenUiVehicleBox extends Component {
 }
 
 PackenUiVehicleBox.propTypes = {
-  type: PropTypes.string.isRequired,
   overview: PropTypes.string,
+  type: PropTypes.string.isRequired,
   year: PropTypes.string.isRequired,
   plate: PropTypes.string.isRequired,
   state: PropTypes.string.isRequired,
-  callback: PropTypes.func
+  image: PropTypes.string.isRequired,
+  callback: PropTypes.func,
+  labels: PropTypes.object,
+  styling: PropTypes.object
 };
 
 export default PackenUiVehicleBox;

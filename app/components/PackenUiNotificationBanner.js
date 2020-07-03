@@ -27,7 +27,15 @@ class PackenUiNotificationBanner extends Component {
       title: this.props.title ? this.props.title : "",
       theme: this.props.title ? this.props.theme : "primary",
       type: this.props.title ? this.props.type : "accent",
-      icon: this.props.title ? this.props.icon : "packen"
+      icon: this.props.title ? this.props.icon : "packen",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        box: {},
+        title: {},
+        logo: {},
+        icon: {},
+        iconSize: undefined,
+        iconColor: undefined
+      }
     };
   }
 
@@ -56,17 +64,18 @@ class PackenUiNotificationBanner extends Component {
         };
 
         icon = (
-          <Image
-            style={this.getStyles().logo}
-            source={src} />
+          <Image style={{
+              ...this.getStyles().logo,
+              ...this.state.styling.logo
+            }} source={src} />
         );
       } else {
         icon = (
           <Icon
             name={this.state.icon}
-            size={this.getStyles().icon.base.size}
-            style={{ marginRight: this.getStyles().icon.base.marginRight }}
-            color={this.getStyles().icon.theme[this.state.theme].type[this.state.type].color}
+            size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().icon.base.size}
+            color={this.state.styling.iconColor ? this.state.styling.iconColor : this.getStyles().icon.theme[this.state.theme].type[this.state.type].color}
+            style={{ marginRight: this.getStyles().icon.base.marginRight, ...this.state.styling.icon }}
           />
         )
       }
@@ -89,13 +98,15 @@ class PackenUiNotificationBanner extends Component {
     return (
       <View style={{
         ...this.getStyles().box.base,
-        ...this.getStyles().box.theme[this.state.theme].type[this.state.type]
+        ...this.getStyles().box.theme[this.state.theme].type[this.state.type],
+        ...this.state.styling.box
       }}>
         {this.getIcon()}
         <PackenUiText
           style={{
             ...this.getStyles().title.base,
-            ...this.getStyles().title.theme[this.state.theme].type[this.state.type]
+            ...this.getStyles().title.theme[this.state.theme].type[this.state.type],
+            ...this.state.styling.title
           }}>{this.state.title}</PackenUiText>
       </View>
     );
@@ -297,7 +308,8 @@ PackenUiNotificationBanner.propTypes = {
   title: PropTypes.string.isRequired,
   theme: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired
+  icon: PropTypes.string.isRequired,
+  styling: PropTypes.object
 };
 
 export default PackenUiNotificationBanner;

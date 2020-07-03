@@ -74,7 +74,29 @@ class PackenUiModal extends Component {
       theme: this.props.theme ? this.props.theme : "primary",
       content: this.props.content ? this.props.content : null,
       onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
-      onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false
+      onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false,
+      styling: this.props.styling ? { ...this.props.styling } : {
+        backdrop: {},
+        wrapper: {},
+        box: {},
+        header: {},
+        headerInner: {},
+        closeIconSize: undefined,
+        closeIconColor: undefined,
+        info: {},
+        banner: {},
+        bannerIconSize: undefined,
+        bannerIconColor: undefined,
+        content: {},
+        title: {},
+        text: {},
+        btnWrapper: {},
+        galleryBox: {},
+        arrowLeft: {},
+        arrowRight: {},
+        arrowIconSize: undefined,
+        arrowIconColor: undefined
+      }
     };
   }
 
@@ -265,8 +287,11 @@ class PackenUiModal extends Component {
 
     if (this.state.banner) {
       banner = (
-        <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.state.theme] }}>
-          <Icon name={this.state.banner.icon} size={40} color={Colors[this.state.theme].default} />
+        <View style={{ ...this.getStyles().banner.base, ...this.getStyles().banner[this.state.theme], ...this.state.styling.banner }}>
+          <Icon
+            name={this.state.banner.icon}
+            size={this.state.styling.bannerIconSize ? this.state.styling.bannerIconSize : 40}
+            color={this.state.styling.bannerIconColor ? this.state.styling.bannerIconColor : Colors[this.state.theme].default} />
         </View>
       );
     }
@@ -279,7 +304,7 @@ class PackenUiModal extends Component {
 
     if (this.state.info.btn) {
       btn = (
-        <View style={this.getStyles().btn}>
+        <View style={{ ...this.getStyles().btn, ...this.state.styling.btnWrapper }}>
           {this.state.info.btn}
         </View>
       );
@@ -303,10 +328,14 @@ class PackenUiModal extends Component {
 
     if (this.state.type !== "custom") {
       header = (
-        <View style={this.getStyles().header}>
-          <View style={this.getStyles().header__inner}>
+        <View style={{ ...this.getStyles().header, ...this.state.styling.header }}>
+          <View style={{ ...this.getStyles().header__inner, ...this.state.styling.headerInner }}>
             <TouchableWithoutFeedback onPress={this.headerCallDismiss}>
-              <Icon name="x" size={20} color={Colors[this.state.theme].default} style={this.state.type === "gallery" ? this.getStyles().header__close_icon : null} />
+              <Icon
+                name="x"
+                size={this.state.styling.closeIconSize ? this.state.styling.closeIconSize : 20}
+                color={this.state.styling.closeIconColor ? this.state.styling.closeIconColor : Colors[this.state.theme].default}
+                style={this.state.type === "gallery" ? this.getStyles().header__close_icon : null} />
             </TouchableWithoutFeedback>
           </View>
         </View>
@@ -317,17 +346,17 @@ class PackenUiModal extends Component {
   }
 
   getCustomContent = () => (
-    <View style={this.getStyles().info}>
-      <View style={this.getContentStyles()}>
+    <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
+      <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
         {this.state.content}
       </View>
     </View>
   )
 
   getInfoContent = () => (
-    <View style={this.getStyles().info}>
+    <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       {this.getBanner()}
-      <View style={this.getContentStyles()}>
+      <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
         <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
         <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
         {this.getInfoButton()}
@@ -337,12 +366,22 @@ class PackenUiModal extends Component {
 
   getGalleryArrows = () => (
     this.state.images.length > 1 ? (
-      <>
+      <React.Fragment>
         {
           this.state.has.prev ? (
             <TouchableWithoutFeedback onPress={this.prevSlide}>
-              <View onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }} style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.left]}>
-                <Icon name="arrow-left-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
+              <View
+                onLayout={e => { this.getGalleryArrowsDimensions(e.nativeEvent.layout); }}
+                style={{
+                  ...this.getStyles().gallery.arrows.base,
+                  ...this.state.arrowStyles.left,
+                  ...this.state.styling.arrowLeft
+                }}>
+                <Icon
+                  name="arrow-left-circle"
+                  size={this.state.styling.arrowIconSize ? this.state.styling.arrowIconSize : 30}
+                  color={this.state.styling.arrowIconColor ? this.state.styling.arrowIconColor : Colors.basic.white.dft}
+                  style={this.getStyles().gallery.arrows.icon} />
               </View>
             </TouchableWithoutFeedback>
           ) : null
@@ -350,18 +389,33 @@ class PackenUiModal extends Component {
         {
           this.state.has.next ? (
             <TouchableWithoutFeedback onPress={this.nextSlide}>
-              <View style={[this.getStyles().gallery.arrows.base, this.state.arrowStyles.right]}>
-                <Icon name="arrow-right-circle" size={30} color={Colors.basic.white.dft} style={this.getStyles().gallery.arrows.icon} />
+              <View
+                style={{
+                  ...this.getStyles().gallery.arrows.base,
+                  ...this.state.arrowStyles.right,
+                  ...this.state.styling.arrowRight
+                }}>
+                <Icon
+                  name="arrow-right-circle"
+                  size={this.state.styling.arrowIconSize ? this.state.styling.arrowIconSize : 30}
+                  color={this.state.styling.arrowIconColor ? this.state.styling.arrowIconColor : Colors.basic.white.dft}
+                  style={this.getStyles().gallery.arrows.icon} />
               </View>
             </TouchableWithoutFeedback>
           ) : null
         }
-      </>
+      </React.Fragment>
     ) : null
   )
 
   getGalleryContent = () => (
-    <View style={this.getGalleryBoxDimensions()} onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}>
+    <View
+      style={{ 
+        ...this.getGalleryBoxDimensions(),
+        ...this.state.styling.galleryBox
+      }}
+      onLayout={e => { this.getGalleryDimensions(e.nativeEvent.layout); }}
+    >
       {this.getGalleryArrows()}
       <Carousel
         ref={c => { this.carouselRef = c; }}
@@ -419,9 +473,9 @@ class PackenUiModal extends Component {
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
-        <View style={this.state.backdropStyles}>
-          <View style={this.getStyles().wrapper[this.state.size]}>
-            <View style={this.getStyles().box}>
+        <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}>
+          <View style={{ ...this.getStyles().wrapper[this.state.size], ...this.state.styling.wrapper }}>
+            <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
               {this.getHeader()}
               {this.getContent()}
             </View>
@@ -599,7 +653,8 @@ PackenUiModal.propTypes = {
   theme: PropTypes.string.isRequired,
   content: PropTypes.node,
   onDismiss: PropTypes.func,
-  onRequestClose: PropTypes.func
+  onRequestClose: PropTypes.func,
+  styling: PropTypes.object
 };
 
 export default PackenUiModal;

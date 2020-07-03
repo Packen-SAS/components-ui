@@ -8,7 +8,7 @@ import PackenUiLoaderButton from "../components/PackenUiLoaderButton";
 import PackenUiButton from "../components/PackenUiButton";
 import PackenUiDivider from "../components/PackenUiDivider";
 
-class Avatars extends Component {
+class LoaderButtons extends Component {
   constructor(props) {
     super(props);
 
@@ -119,4 +119,4 @@ class Avatars extends Component {
   }
 }
 
-export default Avatars;
+export default LoaderButtons;

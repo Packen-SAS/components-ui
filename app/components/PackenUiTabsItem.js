@@ -26,7 +26,15 @@ class PackenUiTabsItem extends Component {
       activeTabIndex: this.props.activeTabIndex ? this.props.activeTabIndex : 0,
       callback: this.props.callback ? this.props.callback : false,
       icon: this.props.icon ? this.props.icon : false,
-      label: this.props.label ? this.props.label : ""
+      label: this.props.label ? this.props.label : "",
+      styling: this.props.styling ? { ...this.props.styling } : {
+        shape: {},
+        iconWrapper: {},
+        iconCharacter: {},
+        iconSize: {},
+        iconColor: {},
+        label: {}
+      }
     };
   }
 
@@ -144,12 +152,22 @@ class PackenUiTabsItem extends Component {
 
     if (this.state.icon) {
       icon = (
-        <View style={{ marginRight: 10 }}>
+        <View style={{
+          marginRight: 10,
+          ...this.state.styling.iconWrapper
+        }}>
           {
             this.state.icon === "»" ? (
-              <PackenUiText style={this.state.itemStyles.icon}>»</PackenUiText>
+              <PackenUiText style={{
+                ...this.state.itemStyles.icon,
+                ...this.state.styling.iconCharacter
+              }}>»</PackenUiText>
             ) : (
-                <Icon name={this.state.icon} color={this.state.itemStyles.icon.color} size={this.state.itemStyles.icon.fontSize * 0.6} />
+                <Icon
+                  name={this.state.icon}
+                  color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.itemStyles.icon.color}
+                  size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.itemStyles.icon.fontSize * 0.6}
+                />
               )
           }
         </View>
@@ -162,9 +180,15 @@ class PackenUiTabsItem extends Component {
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => { this.setActiveTab(); }} onPressIn={this.pressInHandler} onPressOut={this.pressOutHandler}>
-        <View style={this.state.itemStyles.shape}>
+        <View style={{
+          ...this.state.itemStyles.shape,
+          ...this.state.styling.shape
+        }}>
           {this.getIcon()}
-          <PackenUiText style={this.state.itemStyles.label}>{this.state.label}</PackenUiText>
+          <PackenUiText style={{
+            ...this.state.itemStyles.label,
+            ...this.state.styling.label
+          }}>{this.state.label}</PackenUiText>
         </View>
       </TouchableWithoutFeedback>
     );
@@ -245,6 +269,7 @@ PackenUiTabsItem.propTypes = {
   callback: PropTypes.func.isRequired,
   label: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  styling: PropTypes.object
 };
 
 export default PackenUiTabsItem;
