@@ -85,14 +85,22 @@ describe("<PackenUiList/>", () => {
     it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
         items: undefined,
-        style: undefined
+        style: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
       
       expect(res).toEqual({
         items: [],
-        customWrapperStyles: {}
+        customWrapperStyles: {},
+        styling: { wrapper: {}, inner: {}, item: {} }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

@@ -191,7 +191,8 @@ describe("<PackenUiTabsItem/>", () => {
         activeTabIndex: undefined,
         callback: undefined,
         icon: undefined,
-        label: undefined
+        label: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -201,15 +202,24 @@ describe("<PackenUiTabsItem/>", () => {
         activeTabIndex: 0,
         callback: false,
         icon: false,
-        label: ""
+        label: "",
+        styling: {
+          shape: {},
+          iconWrapper: {},
+          iconCharacter: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          label: {}
+        }
       });
     });
 
     it("returns incoming props as the state key-value pairs if activeTabIndex is provided", () => {
-      render.setProps({ activeTabIndex: 1 });
+      render.setProps({ activeTabIndex: 1, styling: { test: "Test" } });
       const res = renderInstance.setPropsToState();
 
       expect(res.activeTabIndex).toBe(1);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 
@@ -226,22 +236,19 @@ describe("<PackenUiTabsItem/>", () => {
           }
         }
       };
-      const returnedElement = renderInstance.getIcon();
-
+      let returnedElement = renderInstance.getIcon();
       expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ icon: "check", styling: { iconColor: "#FFFFFF", iconSize: 15 } });
+      returnedElement = renderInstance.getIcon();
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.children.props.size).toBe(15);
+      expect(returnedElement.props.children.props.color).toBe("#FFFFFF");
     });
 
     it("renders an icon if provided, and is a '»'", () => {
-      render.setProps({
-        icon: "»"
-      });
-      renderInstance.setState({
-        itemStyles: {
-          icon: {}
-        }
-      });
+      renderInstance.setState({ icon: "»" });
       const returnedElement = renderInstance.getIcon();
-
       expect(returnedElement).toBeDefined();
     });
   });

@@ -213,7 +213,8 @@ describe("<PackenUiRadio/>", () => {
         initialIndex: undefined,
         callback: undefined,
         name: undefined,
-        layout: undefined
+        layout: undefined,
+        styling: undefined
       });
       const res = renderColumnInstance.setPropsToState();
 
@@ -222,7 +223,8 @@ describe("<PackenUiRadio/>", () => {
         checkedIndex: -1,
         callback: false,
         name: "",
-        layout: "column"
+        layout: "column",
+        styling: { container: {}, item: {}, control: {} }
       });
     });
 
@@ -238,6 +240,12 @@ describe("<PackenUiRadio/>", () => {
       const res = renderColumnInstance.setPropsToState();
 
       expect(res.checkedIndex).toBe(0);
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      renderColumn.setProps({ styling: { test: "Test" } });
+      const res = renderColumnInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

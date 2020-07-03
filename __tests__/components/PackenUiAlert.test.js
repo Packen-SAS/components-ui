@@ -41,6 +41,18 @@ describe("<PackenUiAlert/>", () => {
       
       expect(returnedTitle).toBe("");
     });
+
+    it("returns the icon node", () => {
+      renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      const res = renderInstance.getIcon();
+      expect(res).toBeDefined();
+    });
+
+    it("returns the close icon node", () => {
+      renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      const res = renderInstance.getClose();
+      expect(res).toBeDefined();
+    });
   });
 
   describe("triggering actions", () => {
@@ -141,7 +153,8 @@ describe("<PackenUiAlert/>", () => {
         onClose: undefined,
         countdown: undefined,
         visible: undefined,
-        position: undefined
+        position: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -156,22 +169,25 @@ describe("<PackenUiAlert/>", () => {
         onClose: false,
         countdown: false,
         visible: false,
-        position: "bottom"
+        position: "bottom",
+        styling: { box: {}, text: {}, iconSize: undefined, iconColor: undefined, iconWrapper: {} }
       });
     });
 
-    it("returns incoming props as the state key-value pairs if a countdown, visible and position are provided", () => {
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
       render.setProps({
         type: "timed",
         countdown: 5000,
         visible: true,
-        position: "top"
+        position: "top",
+        styling: { test: "Test" }
       });
       const res = renderInstance.setPropsToState();
 
       expect(res.countdown).toBe(5000);
       expect(res.visible).toBe(true);
       expect(res.position).toBe("top")
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

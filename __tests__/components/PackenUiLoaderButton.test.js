@@ -54,7 +54,8 @@ describe("<PackenUiLoaderButton/>", () => {
         level: undefined,
         size: undefined,
         callback: undefined,
-        isDone: undefined
+        isDone: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -64,15 +65,17 @@ describe("<PackenUiLoaderButton/>", () => {
         level: "primary",
         size: "medium",
         callback: renderInstance.mockCallback,
-        isDone: false
+        isDone: false,
+        styling: {}
       });
     });
 
-    it("returns incoming props as the state key-value pairs if isDone is provided", () => {
-      render.setProps({ isDone: true });
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ isDone: true, styling: { test: "Test" } });
       const res = renderInstance.setPropsToState();
 
       expect(res.isDone).toBe(true);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

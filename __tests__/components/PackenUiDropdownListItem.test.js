@@ -106,147 +106,6 @@ describe("<PackenUiDropdownListItem/>", () => {
     });
   });
 
-  describe("rendering", () => {
-    it("renders correctly", () => {
-      expect(render).toBeDefined();
-    });
-
-    it("renders nothing if there's no left or right defined", () => {
-      renderInstance.props = {
-        mainContent: {
-          main: {
-            props: {
-              style: {
-                color: ""
-              }
-            },
-            type: {}
-          },
-          left: undefined,
-          right: undefined
-        }
-      };
-      const renderedSidesContent = renderInstance.getSidesContent();
-
-      expect(renderedSidesContent.left).toBe(null);
-      expect(renderedSidesContent.right).toBe(null);
-    });
-
-    it("renders correct content if left and right are defined with Avatar and Icon", () => {
-      renderInstance.props = {
-        config: {
-          size: "small"
-        },
-        mainContent: {
-          main: {
-            props: {
-              children: {},
-              style: {
-                color: ""
-              }
-            },
-            type: {
-              displayName: "PackenUiText"
-            }
-          },
-          left: {
-            type: "avatar",
-            config: {
-              size: "small",
-              src: require("../../assets/images/avatar.jpg")
-            }
-          },
-          right: {
-            type: "icon",
-            config: {
-              name: "arrow-up"
-            }
-          }
-        }
-      };
-      const renderedSidesContent = renderInstance.getSidesContent();
-
-      expect(renderedSidesContent.left).toBeDefined();
-      expect(renderedSidesContent.right).toBeDefined();
-    });
-
-    it("renders correct content if left and right are defined with Icon and Avatar", () => {
-      renderInstance.props = {
-        config: {
-          size: "small"
-        },
-        mainContent: {
-          main: {
-            props: {
-              children: {},
-              style: {
-                color: ""
-              }
-            },
-            type: {
-              displayName: "PackenUiText"
-            }
-          },
-          left: {
-            type: "icon",
-            config: {
-              name: "arrow-up"
-            }
-          },
-          right: {
-            type: "avatar",
-            config: {
-              size: "small",
-              src: require("../../assets/images/avatar.jpg")
-            }
-          }
-        }
-      };
-      const renderedSidesContent = renderInstance.getSidesContent();
-
-      expect(renderedSidesContent.left).toBeDefined();
-      expect(renderedSidesContent.right).toBeDefined();
-    });
-
-    it("returns left content", () => {
-      renderInstance.props = {
-        config: {
-          size: "small"
-        },
-        mainContent: {
-          left: {},
-          right: {},
-          main: {}
-        }
-      };
-      const returnedContent = renderInstance.getLeftContent();
-
-      expect(returnedContent).not.toBe(undefined);
-    });
-
-    it("returns right content", () => {
-      renderInstance.props = {
-        config: {
-          size: "small"
-        },
-        mainContent: {
-          left: {},
-          right: {},
-          main: {}
-        }
-      };
-      const returnedContent = renderInstance.getRightContent();
-
-      expect(returnedContent).not.toBe(undefined);
-    });
-
-    it("returns false when getting the main content if it's a control but no case is matched", () => {
-      render.setProps({ mainContent: { main: { control: { type: "Test" } } } });
-      const res = renderInstance.getMainControl();
-      expect(res).toBe(false);
-    });
-  });
-
   describe("state changing", () => {
     it("sets correct initial state if it's disabled", () => {
       render.setProps({
@@ -777,6 +636,12 @@ describe("<PackenUiDropdownListItem/>", () => {
 
       expect(returnedStyles).toEqual({});
     });
+
+    it("returns the prop styling object", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.getPropStyling();
+      expect(res).toEqual({ test: "Test" });
+    });
   });
 
   describe("triggering actions", () => {
@@ -1222,6 +1087,171 @@ describe("<PackenUiDropdownListItem/>", () => {
       const res = renderInstance.checkSelectedStyles(mainContent);
 
       expect(res).toBe(false);
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders nothing if there's no left or right defined", () => {
+      renderInstance.props = {
+        mainContent: {
+          main: {
+            props: {
+              style: {
+                color: ""
+              }
+            },
+            type: {}
+          },
+          left: undefined,
+          right: undefined
+        }
+      };
+      const renderedSidesContent = renderInstance.getSidesContent();
+
+      expect(renderedSidesContent.left).toBe(null);
+      expect(renderedSidesContent.right).toBe(null);
+    });
+
+    it("renders correct content if left and right are defined with Avatar and Icon", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          main: {
+            props: {
+              children: {},
+              style: {
+                color: ""
+              }
+            },
+            type: {
+              displayName: "PackenUiText"
+            }
+          },
+          left: {
+            type: "avatar",
+            config: {
+              size: "small",
+              src: require("../../assets/images/avatar.jpg")
+            }
+          },
+          right: {
+            type: "icon",
+            config: {
+              name: "arrow-up"
+            }
+          }
+        }
+      };
+      const renderedSidesContent = renderInstance.getSidesContent();
+
+      expect(renderedSidesContent.left).toBeDefined();
+      expect(renderedSidesContent.right).toBeDefined();
+    });
+
+    it("renders correct content if left and right are defined with Icon and Avatar", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          main: {
+            props: {
+              children: {},
+              style: {
+                color: ""
+              }
+            },
+            type: {
+              displayName: "PackenUiText"
+            }
+          },
+          left: {
+            type: "icon",
+            config: {
+              name: "arrow-up"
+            }
+          },
+          right: {
+            type: "avatar",
+            config: {
+              size: "small",
+              src: require("../../assets/images/avatar.jpg")
+            }
+          }
+        }
+      };
+      const renderedSidesContent = renderInstance.getSidesContent();
+
+      expect(renderedSidesContent.left).toBeDefined();
+      expect(renderedSidesContent.right).toBeDefined();
+    });
+
+    it("returns left content", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          left: {},
+          right: {},
+          main: {}
+        }
+      };
+      const returnedContent = renderInstance.getLeftContent();
+
+      expect(returnedContent).not.toBe(undefined);
+    });
+
+    it("returns each sides render", () => {
+      renderInstance.props = {
+        config: { size: "small" },
+        mainContent: {
+          left: { type: "icon", config: { name: "check" } },
+          right: { type: "icon", config: { name: "check" } },
+          main: {}
+        },
+        styling: { sideIconColor: "#FFFFFF", sideIconSize: 15 }
+      }
+      const resLeft = renderInstance.getLeftRender({}, 1);
+      const resRight = renderInstance.getRightRender({}, 1);
+      expect(resLeft).toBeDefined();
+      expect(resRight).toBeDefined();
+    });
+
+    it("returns right content", () => {
+      renderInstance.props = {
+        config: {
+          size: "small"
+        },
+        mainContent: {
+          left: {},
+          right: {},
+          main: {}
+        }
+      };
+      const returnedContent = renderInstance.getRightContent();
+
+      expect(returnedContent).not.toBe(undefined);
+    });
+
+    it("returns false when getting the main content if it's a control but no case is matched", () => {
+      render.setProps({ mainContent: { main: { control: { type: "Test" } } } });
+      const res = renderInstance.getMainControl();
+      expect(res).toBe(false);
+    });
+
+    it("renders correctly", () => {
+      render.setProps({
+        config: { checkedIcon: "check", size: "medium" },
+        mainContent: { isSelected: true, main: { control: {} } },
+        styling: { checkIconSize: undefined, checkIconColor: undefined }
+      });
+      expect(render).toBeDefined();
+
+      render.setProps({ styling: { checkIconSize: 15, checkIconColor: "#FFFFFF" } });
+      expect(render).toBeDefined();
     });
   });
 });

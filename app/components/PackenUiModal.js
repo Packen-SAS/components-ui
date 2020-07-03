@@ -76,7 +76,9 @@ class PackenUiModal extends Component {
       onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
       onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false,
       styling: this.props.styling ? { ...this.props.styling } : {
+        container: {},
         backdrop: {},
+        main: {},
         wrapper: {},
         box: {},
         header: {},
@@ -92,6 +94,8 @@ class PackenUiModal extends Component {
         text: {},
         btnWrapper: {},
         galleryBox: {},
+        slide: {},
+        slideImg: {},
         arrowLeft: {},
         arrowRight: {},
         arrowIconSize: undefined,
@@ -218,8 +222,20 @@ class PackenUiModal extends Component {
 
   renderGallerySlide = ({ item, index }) => {
     return (
-      <View key={index} style={this.getStyles().gallery.slide}>
-        <Image source={item} resizeMode="cover" style={this.getGalleryBoxDimensions()} />
+      <View key={index} style={{
+        ...this.getStyles().gallery.slide,
+        ...this.getGalleryBoxDimensions(),
+        ...this.state.styling.slide
+      }}>
+        <Image
+          source={item}
+          resizeMode="cover"
+          style={{
+            ...this.getStyles().gallery.img,
+            ...this.getGalleryBoxDimensions(),
+            ...this.state.styling.slideImg
+          }}
+        />
       </View>
     );
   }
@@ -268,8 +284,8 @@ class PackenUiModal extends Component {
 
   getGalleryBoxDimensions = () => {
     return {
-      height: Dimensions.get("screen").height / 3,
-      width: Dimensions.get("screen").width - 50
+      height: Dimensions.get("screen").height / 3.5,
+      width: (Dimensions.get("screen").width * .85) - 36
     };
   }
 
@@ -328,7 +344,7 @@ class PackenUiModal extends Component {
 
     if (this.state.type !== "custom") {
       header = (
-        <View style={{ ...this.getStyles().header, ...this.state.styling.header }}>
+        <View style={{ ...(this.state.type === "gallery" ? this.getStyles().header__gallery : this.getStyles().header), ...this.state.styling.header }}>
           <View style={{ ...this.getStyles().header__inner, ...this.state.styling.headerInner }}>
             <TouchableWithoutFeedback onPress={this.headerCallDismiss}>
               <Icon
@@ -357,8 +373,8 @@ class PackenUiModal extends Component {
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       {this.getBanner()}
       <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
-        <PackenUiText preset="h3" style={this.getStyles().title}>{this.state.info.title}</PackenUiText>
-        <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles() }}>{this.state.info.text}</PackenUiText>
+        <PackenUiText preset="h3" style={{ ...this.getStyles().title, ...this.state.styling.title }}>{this.state.info.title}</PackenUiText>
+        <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles(), ...this.state.styling.text }}>{this.state.info.text}</PackenUiText>
         {this.getInfoButton()}
       </View>
     </View>
@@ -410,7 +426,7 @@ class PackenUiModal extends Component {
 
   getGalleryContent = () => (
     <View
-      style={{ 
+      style={{
         ...this.getGalleryBoxDimensions(),
         ...this.state.styling.galleryBox
       }}
@@ -464,6 +480,14 @@ class PackenUiModal extends Component {
     }
   }
 
+  closeModal = () => {
+    if (this.state.modalClose) {
+      this.state.modalClose();
+    } else {
+      return false;
+    }
+  }
+
   render() {
     return (
       <Modal
@@ -473,11 +497,16 @@ class PackenUiModal extends Component {
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
-        <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}>
-          <View style={{ ...this.getStyles().wrapper[this.state.size], ...this.state.styling.wrapper }}>
-            <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
-              {this.getHeader()}
-              {this.getContent()}
+        <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
+          <TouchableWithoutFeedback onPress={this.closeModal}>
+            <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}></View>
+          </TouchableWithoutFeedback>
+          <View style={{ ...this.getStyles().main.base, ...this.getStyles().main[this.state.size], ...this.state.styling.main }}>
+            <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
+              <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
+                {this.getHeader()}
+                {this.getContent()}
+              </View>
             </View>
           </View>
         </View>
@@ -487,11 +516,21 @@ class PackenUiModal extends Component {
 
   getStyles = () => {
     return {
+      container: {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+      },
       backdrop: {
         base: {
           flex: 1,
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%"
         },
         open: {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -500,23 +539,29 @@ class PackenUiModal extends Component {
           backgroundColor: "transparent"
         }
       },
-      wrapper: {
-        default: {
-          padding: 25,
-          width: "100%",
+      main: {
+        base: {
           alignItems: "center",
-          justifyContent: "center"
+          justifyContent: "center",
+          alignSelf: "center"
+        },
+        default: {
+          width: "85%"
         },
         small: {
-          paddingVertical: 25,
-          paddingHorizontal: 50
+          width: "75%"
         }
+      },
+      wrapper: {
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "center"
       },
       box: {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
-        width: "85%",
+        width: "100%",
         ...Shadows.md
       },
       header: {
@@ -525,6 +570,13 @@ class PackenUiModal extends Component {
         zIndex: 1,
         top: 0,
         left: 0
+      },
+      header__gallery: {
+        width: "100%",
+        position: "absolute",
+        zIndex: 1,
+        top: 0,
+        right: 0
       },
       header__inner: {
         padding: 20,
@@ -634,9 +686,9 @@ class PackenUiModal extends Component {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: 8,
           backgroundColor: Colors.basic.black.dft
-        }
+        },
+        img: {}
       }
     };
   }

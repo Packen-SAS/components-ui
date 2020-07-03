@@ -34,7 +34,7 @@ describe("<PackenUiMapPin/>", () => {
       />
     );
     renderInfoInstance = renderInfo.instance();
-    
+
     renderInfoInstance.setState({
       main: {
         label: "DE",
@@ -87,6 +87,12 @@ describe("<PackenUiMapPin/>", () => {
       expect(returnedElement).toBeDefined();
     });
 
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      renderInfo.setProps({ styling: { test: "Test" } });
+      const res = renderInfoInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
+    });
+
     it("doesn't render a label if none is passed via props", () => {
       renderInfoInstance.setState({ main: { label: undefined } });
       const returnedElement = renderInfoInstance.getLabel();
@@ -102,7 +108,8 @@ describe("<PackenUiMapPin/>", () => {
         sub: undefined,
         theme: undefined,
         type: undefined,
-        dotPosition: undefined
+        dotPosition: undefined,
+        styling: undefined
       });
       const res = renderInfoInstance.setPropsToState();
 
@@ -114,7 +121,15 @@ describe("<PackenUiMapPin/>", () => {
         sub: false,
         theme: "primary",
         type: "info",
-        dotPosition: false
+        dotPosition: false,
+        styling: {
+          container: {},
+          inner: {},
+          main: {},
+          label: {},
+          text: {},
+          sub: {}
+        }
       });
     });
   });

@@ -120,7 +120,8 @@ describe("<PackenUiRadioControl/>", () => {
         selfIndex: undefined,
         isDisabled: undefined,
         checkedIndex: undefined,
-        label: undefined
+        label: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -129,8 +130,15 @@ describe("<PackenUiRadioControl/>", () => {
         selfIndex: 0,
         isDisabled: false,
         checkedIndex: -1,
-        label: ""
+        label: "",
+        styling: { shape: {}, control: {}, label: {} }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

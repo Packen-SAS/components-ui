@@ -19,6 +19,9 @@ describe("<PackenUiHeader/>", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+
+      renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      expect(render).toBeDefined();
     });
   });
 
@@ -58,17 +61,32 @@ describe("<PackenUiHeader/>", () => {
   describe("state changing", () => {
     it("returns incoming props as the state key-value pairs", () => {
       render.setProps({
+        icon: undefined,
         children: undefined,
         onBackPress: undefined,
-        customStyle: undefined
+        customStyle: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
       expect(res).toEqual({
         children: "",
+        icon: "arrow-left",
         onBackPress: false,
-        customStyle: {}
+        customStyle: {},
+        styling: {
+          box: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          title: {}
+        }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

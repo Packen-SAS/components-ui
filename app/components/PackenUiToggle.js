@@ -110,44 +110,11 @@ class PackenUiToggle extends Component {
     }
   }
 
-  getShapeDimensions = e => {
+  getElemDimensions = (e, elem) => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
-      shape: {
-        ...this.state.shape,
-        height: height,
-        width: width
-      }
-    }, this.positionElement);
-  }
-
-  getDotDimensions = e => {
-    const { height, width } = e.nativeEvent.layout;
-    this.setState({
-      dot: {
-        ...this.state.dot,
-        height: height,
-        width: width
-      }
-    }, this.positionElement);
-  }
-
-  getOnDimensions = e => {
-    const { height, width } = e.nativeEvent.layout;
-    this.setState({
-      on: {
-        ...this.state.on,
-        height: height,
-        width: width
-      }
-    }, this.positionElement);
-  }
-
-  getOffDimensions = e => {
-    const { height, width } = e.nativeEvent.layout;
-    this.setState({
-      off: {
-        ...this.state.off,
+      [elem]: {
+        ...this.state[elem],
         height: height,
         width: width
       }
@@ -225,6 +192,38 @@ class PackenUiToggle extends Component {
     });
   }
 
+  getDot = () => (
+    <View style={{
+      ...this.getStyles().dot.default,
+      ...this.getStyles().dot[this.state.state],
+      ...this.state.dot.positioning,
+      ...this.state.dot.disabled,
+      ...this.state.styling.dot
+    }} onLayout={e => { this.getElemDimensions(e, "dot"); }}></View>
+  )
+
+  getOnLabel = () => (
+    <View onLayout={e => { this.getElemDimensions(e, "on"); }} style={{ ...this.state.on.positioning, ...this.state.styling.onWrapper }}>
+      <PackenUiText style={{
+        ...this.getStyles().label.default,
+        ...this.getStyles().label.on[this.state.state],
+        ...this.state.on.disabled,
+        ...this.state.styling.onLabel
+      }}>{this.state.onLabel}</PackenUiText>
+    </View>
+  )
+
+  getOffLabel = () => (
+    <View onLayout={e => { this.getElemDimensions(e, "off"); }} style={{ ...this.state.off.positioning, ...this.state.styling.offWrapper }}>
+      <PackenUiText style={{
+        ...this.getStyles().label.default,
+        ...this.getStyles().label.off[this.state.state],
+        ...this.state.off.disabled,
+        ...this.state.styling.offLabel
+      }}>{this.state.offLabel}</PackenUiText>
+    </View>
+  )
+
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
@@ -248,30 +247,10 @@ class PackenUiToggle extends Component {
             ...this.getStyles().shape[this.state.state],
             ...this.state.shape.disabled,
             ...this.state.styling.shape
-          }} onLayout={e => { this.getShapeDimensions(e); }}>
-            <View style={{
-              ...this.getStyles().dot.default,
-              ...this.getStyles().dot[this.state.state],
-              ...this.state.dot.positioning,
-              ...this.state.dot.disabled,
-              ...this.state.styling.dot
-            }} onLayout={e => { this.getDotDimensions(e); }}></View>
-            <View onLayout={e => { this.getOnDimensions(e); }} style={{ ...this.state.on.positioning, ...this.state.styling.onWrapper }}>
-              <PackenUiText style={{
-                ...this.getStyles().label.default,
-                ...this.getStyles().label.on[this.state.state],
-                ...this.state.on.disabled,
-                ...this.state.styling.onLabel
-              }}>{this.state.onLabel}</PackenUiText>
-            </View>
-            <View onLayout={e => { this.getOffDimensions(e); }} style={{ ...this.state.off.positioning, ...this.state.styling.offWrapper }}>
-              <PackenUiText style={{
-                ...this.getStyles().label.default,
-                ...this.getStyles().label.off[this.state.state],
-                ...this.state.off.disabled,
-                ...this.state.styling.offLabel
-              }}>{this.state.offLabel}</PackenUiText>
-            </View>
+          }} onLayout={e => { this.getElemDimensions(e, "shape"); }}>
+            {this.getDot()}
+            {this.getOnLabel()}
+            {this.getOffLabel()}
           </View>
         </TouchableWithoutFeedback>
       </View>

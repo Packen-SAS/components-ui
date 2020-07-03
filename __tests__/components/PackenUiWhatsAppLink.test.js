@@ -21,6 +21,9 @@ describe("<PackenUiWhatsAppLink/>", () => {
 
       renderInstance.setState({ inverted: true });
       expect(render).toBeDefined();
+
+      renderInstance.setState({ styling: { svgWidth: 10, svgHeight: 10 } });
+      expect(render).toBeDefined();
     });
   });
 
@@ -47,7 +50,7 @@ describe("<PackenUiWhatsAppLink/>", () => {
     it("returns the styles array", () => {
       renderInstance.setState({ style: null });
       const res = renderInstance.getStyles();
-      expect(res).toEqual([renderInstance.getStyles()[0], null]);
+      expect(res).toEqual([renderInstance.getStyles()[0], null, renderInstance.state.styling.box]);
     });
   });
 
@@ -75,7 +78,8 @@ describe("<PackenUiWhatsAppLink/>", () => {
         trigger: undefined,
         visible: undefined,
         inverted: undefined,
-        color: undefined
+        color: undefined,
+        styling: undefined
       });
       let res = renderInstance.setPropsToState();
 
@@ -85,7 +89,13 @@ describe("<PackenUiWhatsAppLink/>", () => {
         trigger: false,
         visible: false,
         inverted: false,
-        color: Colors.basic.independence.drk_alt
+        color: Colors.basic.independence.drk_alt,
+        styling: {
+          box: {},
+          svgWidth: undefined,
+          svgHeight: undefined,
+          text: {}
+        }
       });
 
       const mockCallback = jest.fn();
@@ -98,6 +108,10 @@ describe("<PackenUiWhatsAppLink/>", () => {
       expect(res.trigger).toBe(mockCallback);
       expect(res.inverted).toBe(true);
       expect(res.color).toBe("#FFFFFF");
+
+      render.setProps({ styling: { test: "Test" } });
+      res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   })
 });

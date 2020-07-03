@@ -134,7 +134,8 @@ describe("<PackenUiCheckbox/>", () => {
         layout: undefined,
         items: undefined,
         callback: undefined,
-        name: undefined
+        name: undefined,
+        styling: undefined
       });
       const res = renderColumnInstance.setPropsToState();
 
@@ -142,8 +143,15 @@ describe("<PackenUiCheckbox/>", () => {
         layout: "column",
         items: [],
         callback: false,
-        name: ""
+        name: "",
+        styling: { wrapper: {}, content: {}, control: {} }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      renderColumn.setProps({ styling: { test: "Test" } });
+      const res = renderColumnInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
 
     it("returns false after updating checked items if selectedIndex is defined but no callback is provided", () => {

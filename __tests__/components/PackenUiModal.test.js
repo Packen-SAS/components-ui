@@ -94,9 +94,14 @@ describe("<PackenUiModal/>", () => {
           icon: "check"
         }
       });
-      const returnedElement = renderInstance.getBanner();
-
+      let returnedElement = renderInstance.getBanner();
       expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ styling: { bannerIconSize: 15, bannerIconColor: "#FFFFFF" } });
+      returnedElement = renderInstance.getBanner();
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.children.props.size).toBe(15);
+      expect(returnedElement.props.children.props.color).toBe("#FFFFFF");
     });
 
     it("renders null if a banner is not provided", () => {
@@ -142,7 +147,23 @@ describe("<PackenUiModal/>", () => {
     });
 
     it("returns a header element correctly", () => {
-      const res = renderInstance.getHeader();
+      let res = renderInstance.getHeader();
+      expect(res).toBeDefined();
+
+      renderInstance.setState({ styling: { closeIconSize: 15, closeIconColor: "#FFFFFF" } });
+      res = renderInstance.getHeader();
+      expect(res).toBeDefined();
+      expect(res.props.children.props.children.props.children.props.size).toBe(15);
+      expect(res.props.children.props.children.props.children.props.color).toBe("#FFFFFF");
+    });
+
+    it("returns the gallery arrows", () => {
+      renderInstance.setState({
+        images: [{}, {}, {}],
+        has: { prev: true, next: true },
+        styling: { arrowIconColor: "#FFFFFF", arrowIconSize: 15 }
+      });
+      const res = renderInstance.getGalleryArrows();
       expect(res).toBeDefined();
     });
   });
@@ -224,7 +245,7 @@ describe("<PackenUiModal/>", () => {
   describe("triggering actions", () => {
     it("executes the mockCallback", () => {
       const res = renderInstance.mockCallback();
-      
+
       expect(res).toBe(false);
     });
 
@@ -259,7 +280,7 @@ describe("<PackenUiModal/>", () => {
         type: "gallery",
         images: []
       });
-      render.props().children.props.children.props.children.props.children[1].props.onLayout(e);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.onLayout(e);
 
       expect(spyGetGalleryBoxDimensions).toHaveBeenCalled();
       spyGetGalleryBoxDimensions.mockRestore();
@@ -278,7 +299,7 @@ describe("<PackenUiModal/>", () => {
         images: ["", "", ""]
       });
       renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
 
       expect(spyGetGalleryArrowsDimensions).toHaveBeenCalled();
       spyGetGalleryArrowsDimensions.mockRestore();
@@ -292,7 +313,7 @@ describe("<PackenUiModal/>", () => {
         images: ["", "", ""]
       });
       renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children.props.children.props.children[1].props.children[1].ref(c);
+      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[1].ref(c);
 
       expect(renderInstance.carouselRef).toBe("ref");
     });
@@ -380,28 +401,28 @@ describe("<PackenUiModal/>", () => {
     it("triggers the onDismissHandler", () => {
       renderInstance.setState({ onDismiss: jest.fn() });
       renderInstance.onDismissHandler();
-      
+
       expect(renderInstance.state.onDismiss).toHaveBeenCalled();
     });
 
     it("returns false while triggering the onDismissHandler if none is passed", () => {
       renderInstance.setState({ onDismiss: undefined });
       const res = renderInstance.onDismissHandler();
-      
+
       expect(res).toBe(false);
     });
 
     it("triggers the onRequestCloseHandler", () => {
       renderInstance.setState({ onRequestClose: jest.fn() });
       renderInstance.onRequestCloseHandler();
-      
+
       expect(renderInstance.state.onRequestClose).toHaveBeenCalled();
     });
 
     it("returns false while triggering the onDismissHandler if none is passed", () => {
       renderInstance.setState({ onRequestClose: undefined });
       const res = renderInstance.onRequestCloseHandler();
-      
+
       expect(res).toBe(false);
     });
 
@@ -425,6 +446,16 @@ describe("<PackenUiModal/>", () => {
       expect(renderInstance.state.modalClose).toHaveBeenCalled();
       expect(spyOnDismissHandler).toHaveBeenCalled();
       spyOnDismissHandler.mockRestore();
+    });
+
+    it("closes the modal", () => {
+      renderInstance.setState({ modalClose: mockCallback });
+      renderInstance.closeModal();
+      expect(renderInstance.state.modalClose).toHaveBeenCalled();
+
+      renderInstance.setState({ modalClose: undefined });
+      const res = renderInstance.closeModal();
+      expect(res).toBe(false);
     });
   });
 
@@ -545,7 +576,8 @@ describe("<PackenUiModal/>", () => {
         theme: undefined,
         content: undefined,
         onDismiss: undefined,
-        onRequestClose: undefined
+        onRequestClose: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -563,7 +595,33 @@ describe("<PackenUiModal/>", () => {
         theme: "primary",
         content: null,
         onDismiss: false,
-        onRequestClose: false
+        onRequestClose: false,
+        styling: {
+          container: {},
+          backdrop: {},
+          main: {},
+          wrapper: {},
+          box: {},
+          header: {},
+          headerInner: {},
+          closeIconSize: undefined,
+          closeIconColor: undefined,
+          info: {},
+          banner: {},
+          bannerIconSize: undefined,
+          bannerIconColor: undefined,
+          content: {},
+          title: {},
+          text: {},
+          btnWrapper: {},
+          galleryBox: {},
+          slide: {},
+          slideImg: {},
+          arrowLeft: {},
+          arrowRight: {},
+          arrowIconSize: undefined,
+          arrowIconColor: undefined
+        }
       });
     });
 
@@ -572,7 +630,8 @@ describe("<PackenUiModal/>", () => {
         content: <View></View>,
         modalClose: mockCallback,
         onDismiss: mockCallback,
-        onRequestClose: mockCallback
+        onRequestClose: mockCallback,
+        styling: { test: "Test" }
       });
       const res = renderInstance.setPropsToState();
 
@@ -580,6 +639,7 @@ describe("<PackenUiModal/>", () => {
       expect(res.modalClose).toBe(mockCallback);
       expect(res.onDismiss).toBe(mockCallback);
       expect(res.onRequestClose).toBe(mockCallback);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

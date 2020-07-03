@@ -7,6 +7,14 @@ import PackenUiToggle from "../../app/components/PackenUiToggle";
 describe("<PackenUiToggle/>", () => {
   let render, renderInactive, renderInstance, renderInactiveInstance;
   const mockFunction = jest.fn();
+  const e = {
+    nativeEvent: {
+      layout: {
+        height: 10,
+        width: 10
+      }
+    }
+  };
 
   beforeAll(() => {
     render = shallow(
@@ -92,7 +100,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'active'", () => {
-      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
+      render.setProps({ name: "toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "active" });
       renderInstance.toggle();
 
@@ -101,7 +109,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'active' and no callback is provided", () => {
-      render.setProps({ name:"toggle1", toggleHandler: undefined });
+      render.setProps({ name: "toggle1", toggleHandler: undefined });
       renderInstance.setState({ state: "active", toggleHandler: false });
       renderInstance.toggle();
 
@@ -109,7 +117,7 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("toggles inner state if 'state' is 'inactive'", () => {
-      render.setProps({ name:"toggle1", toggleHandler: mockFunction });
+      render.setProps({ name: "toggle1", toggleHandler: mockFunction });
       renderInstance.setState({ state: "inactive", toggleHandler: mockFunction });
       renderInstance.toggle();
 
@@ -131,63 +139,35 @@ describe("<PackenUiToggle/>", () => {
     });
 
     it("executes onLayout event callback for the shape", () => {
-      const spyGetShapeDimensions = jest.spyOn(renderInstance, "getShapeDimensions");
-      render.props().children.props.children.props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      render.props().children.props.children.props.onLayout(e);
 
-      expect(spyGetShapeDimensions).toHaveBeenCalled();
-      spyGetShapeDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "shape");
+      spyGetElemDimensions.mockRestore();
     });
 
     it("executes onLayout event callback for the dot", () => {
-      const spyGetDotDimensions = jest.spyOn(renderInstance, "getDotDimensions");
-      render.props().children.props.children.props.children[0].props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      render.props().children.props.children.props.children[0].props.onLayout(e);
 
-      expect(spyGetDotDimensions).toHaveBeenCalled();
-      spyGetDotDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "dot");
+      spyGetElemDimensions.mockRestore();
     });
 
     it("executes onLayout event callback for the on label", () => {
-      const spyGetOnDimensions = jest.spyOn(renderInstance, "getOnDimensions");
-      render.props().children.props.children.props.children[1].props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      render.props().children.props.children.props.children[1].props.onLayout(e);
 
-      expect(spyGetOnDimensions).toHaveBeenCalled();
-      spyGetOnDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "on");
+      spyGetElemDimensions.mockRestore();
     });
 
-    it("executes onLayout event callback for the on label", () => {
-      const spyGetOffDimensions = jest.spyOn(renderInstance, "getOffDimensions");
-      render.props().children.props.children.props.children[2].props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
+    it("executes onLayout event callback for the off label", () => {
+      const spyGetElemDimensions = jest.spyOn(renderInstance, "getElemDimensions");
+      render.props().children.props.children.props.children[2].props.onLayout(e);
 
-      expect(spyGetOffDimensions).toHaveBeenCalled();
-      spyGetOffDimensions.mockRestore();
+      expect(spyGetElemDimensions).toHaveBeenCalledWith(e, "off");
+      spyGetElemDimensions.mockRestore();
     });
   });
 
@@ -250,69 +230,11 @@ describe("<PackenUiToggle/>", () => {
       expect(spySetDisabledStyles).toHaveBeenCalled();
     });
 
-    it("sets shape dimensions", () => {
-      renderInstance.getShapeDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-      
+    it("sets a given element's dimensions", () => {
+      renderInstance.getElemDimensions(e, "shape");
+
       expect(renderInstance.state.shape).toEqual({
         ...renderInstance.state.shape,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets dot dimensions", () => {
-      renderInstance.getDotDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.dot).toEqual({
-        ...renderInstance.state.dot,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets on dimensions", () => {
-      renderInstance.getOnDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.on).toEqual({
-        ...renderInstance.state.on,
-        height: 10,
-        width: 10
-      });
-    });
-
-    it("sets off dimensions", () => {
-      renderInstance.getOffDimensions({
-        nativeEvent: {
-          layout: {
-            height: 10,
-            width: 10
-          }
-        }
-      });
-
-      expect(renderInstance.state.off).toEqual({
-        ...renderInstance.state.off,
         height: 10,
         width: 10
       });
@@ -355,10 +277,11 @@ describe("<PackenUiToggle/>", () => {
         toggleHandler: undefined,
         name: undefined,
         onLabel: undefined,
-        offLabel: undefined
+        offLabel: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res).toEqual({
         isActive: false,
         isDisabled: false,
@@ -366,8 +289,22 @@ describe("<PackenUiToggle/>", () => {
         name: "",
         onLabel: "",
         offLabel: "",
-        state: "inactive"
+        state: "inactive",
+        styling: {
+          shape: {},
+          dot: {},
+          onWrapper: {},
+          offWrapper: {},
+          onLabel: {},
+          offLabel: {}
+        }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 
@@ -441,7 +378,7 @@ describe("<PackenUiToggle/>", () => {
         }
       });
     });
-    
+
     it("returns correct position styles if 'initialState' is 'inactive' and is disabled", () => {
       renderInactiveInstance.setState({
         isDisabled: true,

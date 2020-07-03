@@ -92,129 +92,6 @@ describe("<PackenUiInput/>", () => {
     });
   });
 
-  describe("rendering", () => {
-    it("renders correctly", () => {
-      expect(render).toBeDefined();
-    });
-
-    it("renders the alternative version correctly", () => {
-      expect(renderAlt).toBeDefined();
-    });
-
-    it("renders help content if provided", () => {
-      render.setProps({
-        help: "Test"
-      });
-      const returnedElement = renderInstance.getHelp();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders a clickable help content if provided", () => {
-      render.setProps({
-        help: {
-          text: "Test",
-          touchable: true,
-          callback: mockCallback
-        }
-      });
-      const returnedElement = renderInstance.getHelp();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders null if no help is provided", () => {
-      render.setProps({
-        help: undefined
-      });
-      const returnedElement = renderInstance.getHelp();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("renders a message without an icon", () => {
-      render.setProps({
-        message: {
-          text: "Test",
-          icon: false
-        }
-      });
-      const spyGetMessageIcon = jest.spyOn(renderInstance, "getMessageIcon");
-      const returnedElement = renderInstance.getMessage();
-
-      expect(returnedElement).toBeDefined();
-      expect(spyGetMessageIcon).toHaveBeenCalled();
-      spyGetMessageIcon.mockRestore();
-    });
-
-    it("renders a message with an icon", () => {
-      render.setProps({
-        message: {
-          text: "Test",
-          icon: "check"
-        }
-      });
-      const spyGetMessageIcon = jest.spyOn(renderInstance, "getMessageIcon");
-      const returnedElement = renderInstance.getMessage();
-
-      expect(returnedElement).toBeDefined();
-      expect(spyGetMessageIcon).toHaveBeenCalled();
-      spyGetMessageIcon.mockRestore();
-    });
-
-    it("renders null if a message is not defined", () => {
-      render.setProps({
-        message: false
-      });
-      const returnedElement = renderInstance.getMessage();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("renders a message icon if provided", () => {
-      render.setProps({
-        message: {
-          text: "Test",
-          icon: "check"
-        }
-      });
-      const returnedElement = renderInstance.getMessageIcon();
-
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("renders a null if no message icon is provided", () => {
-      render.setProps({
-        message: {
-          text: "Test",
-          icon: false
-        }
-      });
-      const returnedElement = renderInstance.getMessageIcon();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("renders the icon wrapper", () => {
-      const returnedElement = renderInstance.getIconWrapper((""));
-      expect(returnedElement).toBeDefined();
-    });
-
-    it("returns null as the main icon if not provided", () => {
-      render.setProps({ icon: false });
-      const returnedElement = renderInstance.getMainIcon();
-
-      expect(returnedElement).toBe(null);
-    });
-
-    it("returns a clickable as the main icon if provided", () => {
-      render.setProps({ icon: { name: "user", position: "right", callback: mockCallback } });
-      const returnedElement = renderInstance.getMainIcon();
-
-      expect(returnedElement).toBeDefined();
-    });
-  });
-
   describe("state changing", () => {
     it("sets initial state if it's not disabled, has no icon, it's not a loader, doesn't have a minimum length, and no validator", () => {
       render.setProps({
@@ -222,7 +99,10 @@ describe("<PackenUiInput/>", () => {
         icon: false,
         loading: undefined,
         minLength: undefined,
-        validator: undefined
+        validator: undefined,
+        styling: undefined,
+        help: undefined,
+        message: undefined
       });
       const returnedState = renderInstance.setInitialState();
 
@@ -238,10 +118,7 @@ describe("<PackenUiInput/>", () => {
         isDropdown: false,
         isOpen: false,
         help: undefined,
-        message: {
-          text: "Test",
-          icon: false
-        },
+        message: false,
         keyboardType: "default",
         isFocused: false,
         isPassword: false,
@@ -256,7 +133,31 @@ describe("<PackenUiInput/>", () => {
         ref: null,
         loading: false,
         validator: false,
-        minLength: 0
+        minLength: 0,
+        styling: {
+          header: {
+            base: {},
+            label: {}
+          },
+          help: {
+            touchable: {},
+            text: {}
+          },
+          box: {},
+          input: {},
+          message: {
+            box: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined,
+            text: {}
+          },
+          loader: {},
+          iconWrapper: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
     });
 
@@ -338,7 +239,7 @@ describe("<PackenUiInput/>", () => {
           touchable: true,
           callback: this.mockCallback
         },
-        
+
         state: "disabled",
         ref: null,
         dimensions: {
@@ -354,13 +255,14 @@ describe("<PackenUiInput/>", () => {
       });
     });
 
-    it("returns incoming props as the state key-value pairs if propagateRef, maxLength, minLength, loading and validator are provided", () => {
+    it("returns incoming props as the state key-value pairs if styling, propagateRef, maxLength, minLength, loading and validator are provided", () => {
       render.setProps({
         propagateRef: mockCallback,
         maxLength: 10,
         minLength: 5,
         loading: true,
-        validator: "number"
+        validator: "number",
+        styling: { test: "Test" }
       });
       const res = renderInstance.setPropsToState();
 
@@ -369,13 +271,14 @@ describe("<PackenUiInput/>", () => {
       expect(res.minLength).toBe(5);
       expect(res.loading).toBe(true);
       expect(res.validator).toBe("number");
+      expect(res.styling).toEqual({ test: "Test", header: {}, help: {}, message: {} });
     });
   });
 
   describe("triggering actions", () => {
     it("triggers the mock callback", () => {
       const res = renderInstance.mockCallback();
-      
+
       expect(res).toBe(false);
     });
 
@@ -562,7 +465,7 @@ describe("<PackenUiInput/>", () => {
     it("returns the ref", () => {
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
-      
+
       expect(renderInstance.state.ref).toEqual(ref);
     });
 
@@ -571,7 +474,7 @@ describe("<PackenUiInput/>", () => {
       renderInstance.setState({ name: "Test" });
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
-      
+
       expect(renderInstance.props.instance).toHaveBeenCalledWith(ref, "Test");
     });
 
@@ -631,14 +534,14 @@ describe("<PackenUiInput/>", () => {
     it("returns the entry security type as true if set so", () => {
       render.setProps({ isPassword: true });
       const res = renderInstance.getSecureEntryType();
-      
+
       expect(res).toBe(true);
     });
 
     it("returns the entry security type as false if set so", () => {
       render.setProps({ isPassword: false });
       const res = renderInstance.getSecureEntryType();
-      
+
       expect(res).toBe(false);
     });
 
@@ -660,13 +563,13 @@ describe("<PackenUiInput/>", () => {
   describe("styling", () => {
     it("disables pointer events if its state is 'disabled'", () => {
       renderInstance.setState({ state: "disabled" });
-      
+
       expect(render.props().pointerEvents).toBe("none");
     });
 
     it("enables pointer events if its state is no 'disabled'", () => {
       renderInstance.setState({ state: "default" });
-      
+
       expect(render.props().pointerEvents).toBe("auto");
     });
 
@@ -688,7 +591,7 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedStyles = renderInstance.setIconPositionStyles();
-      
+
       expect(returnedStyles).toEqual({
         top: 2,
         left: renderInstance.getStyles().icon_wrapper.offset.small
@@ -713,7 +616,7 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedStyles = renderInstance.setIconPositionStyles();
-      
+
       expect(returnedStyles).toEqual({
         top: 2,
         right: renderInstance.getStyles().icon_wrapper.offset.small
@@ -735,14 +638,14 @@ describe("<PackenUiInput/>", () => {
         size: "tiny"
       });
       const returnedStyles = renderInstance.getPaddingStyles();
-      
+
       expect(returnedStyles).toBeDefined();
     });
 
     it("returns empty padding styles if there's no icon", () => {
       render.setProps({ icon: false });
       const returnedStyles = renderInstance.getPaddingStyles();
-      
+
       expect(returnedStyles).toEqual({});
     });
 
@@ -752,7 +655,7 @@ describe("<PackenUiInput/>", () => {
         size: "tiny"
       });
       const returnedStyles = renderInstance.getMultilineStyles();
-      
+
       expect(returnedStyles).toBeDefined();
     });
 
@@ -800,8 +703,8 @@ describe("<PackenUiInput/>", () => {
   describe("getting dimensions", () => {
     it("sets box dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getBoxDimensions({width: 100, height: 100});
-      
+      renderInstance.getBoxDimensions({ width: 100, height: 100 });
+
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
         box: {
@@ -815,8 +718,8 @@ describe("<PackenUiInput/>", () => {
 
     it("sets icon wrapper dimensions", () => {
       const spySetIconPositionStyles = jest.spyOn(renderInstance, "setIconPositionStyles");
-      renderInstance.getIconWrapperDimensions({width: 10, height: 10});
-      
+      renderInstance.getIconWrapperDimensions({ width: 10, height: 10 });
+
       expect(renderInstance.state.dimensions).toEqual({
         ...renderInstance.state.dimensions,
         iconWrapper: {
@@ -826,6 +729,137 @@ describe("<PackenUiInput/>", () => {
       });
       expect(spySetIconPositionStyles).toHaveBeenCalled();
       spySetIconPositionStyles.mockRestore();
+    });
+  });
+
+  describe("rendering", () => {
+    it("renders correctly", () => {
+      expect(render).toBeDefined();
+    });
+
+    it("renders the alternative version correctly", () => {
+      expect(renderAlt).toBeDefined();
+    });
+
+    it("renders help content if provided", () => {
+      render.setProps({
+        help: "Test"
+      });
+      const returnedElement = renderInstance.getHelp();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders a clickable help content if provided", () => {
+      render.setProps({
+        help: {
+          text: "Test",
+          touchable: true,
+          callback: mockCallback
+        }
+      });
+      const returnedElement = renderInstance.getHelp();
+
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("renders null if no help is provided", () => {
+      render.setProps({
+        help: undefined
+      });
+      const returnedElement = renderInstance.getHelp();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders a message without an icon", () => {
+      render.setProps({
+        message: {
+          text: "Test",
+          icon: false
+        }
+      });
+      const spyGetMessageIcon = jest.spyOn(renderInstance, "getMessageIcon");
+      const returnedElement = renderInstance.getMessage();
+
+      expect(returnedElement).toBeDefined();
+      expect(spyGetMessageIcon).toHaveBeenCalled();
+      spyGetMessageIcon.mockRestore();
+    });
+
+    it("renders a message with an icon", () => {
+      render.setProps({
+        message: {
+          text: "Test",
+          icon: "check"
+        }
+      });
+      const spyGetMessageIcon = jest.spyOn(renderInstance, "getMessageIcon");
+      const returnedElement = renderInstance.getMessage();
+
+      expect(returnedElement).toBeDefined();
+      expect(spyGetMessageIcon).toHaveBeenCalled();
+      spyGetMessageIcon.mockRestore();
+    });
+
+    it("renders null if a message is not defined", () => {
+      render.setProps({
+        message: false
+      });
+      const returnedElement = renderInstance.getMessage();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders a null if no message icon is provided", () => {
+      render.setProps({
+        message: {
+          text: "Test",
+          icon: false
+        }
+      });
+      const returnedElement = renderInstance.getMessageIcon();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("renders the icon wrapper", () => {
+      const returnedElement = renderInstance.getIconWrapper((""));
+      expect(returnedElement).toBeDefined();
+    });
+
+    it("returns null as the main icon if not provided", () => {
+      render.setProps({ icon: false });
+      const returnedElement = renderInstance.getMainIcon();
+
+      expect(returnedElement).toBe(null);
+    });
+
+    it("returns a touchable as the main icon if provided", () => {
+      render.setProps({ icon: { name: "user", position: "right", callback: mockCallback } });
+      let returnedElement = renderInstance.getMainIcon();
+      expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ loading: false, styling: { message: { box: {} }, header: { base: {} }, iconSize: 15, iconColor: "#FFFFFF" } });
+      returnedElement = renderInstance.getMainIcon();
+      expect(returnedElement).toBeDefined();
+      expect(returnedElement.props.children.props.children.props.size).toBe(15);
+      expect(returnedElement.props.children.props.children.props.color).toBe("#FFFFFF");
+    });
+
+    it("renders a message icon if provided", () => {
+      render.setProps({
+        message: {
+          text: "Test",
+          icon: "check"
+        }
+      });
+      let returnedElement = renderInstance.getMessageIcon();
+      expect(returnedElement).toBeDefined();
+
+      renderInstance.setState({ styling: { message: { iconSize: 15, iconColor: "#FFFFFF" }, header: {}, help: {} } });
+      returnedElement = renderInstance.getMessageIcon();
+      expect(returnedElement).toBeDefined();
     });
   });
 });

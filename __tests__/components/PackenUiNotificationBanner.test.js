@@ -17,7 +17,7 @@ describe("<PackenUiNotificationBanner/>", () => {
       />
     );
     renderInstance = render.instance();
-    
+
     renderInstance.setState({
       theme: "success",
       type: "default"
@@ -31,9 +31,13 @@ describe("<PackenUiNotificationBanner/>", () => {
 
     it("returns an icon if provided via props", () => {
       renderInstance.setState({ icon: "check" });
-      const returnedElement = renderInstance.getIcon();
-
+      let returnedElement = renderInstance.getIcon();
       expect(returnedElement.props.name).toBe("check");
+
+      renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      returnedElement = renderInstance.getIcon();
+      expect(returnedElement.props.size).toBe(15);
+      expect(returnedElement.props.color).toBe("#FFFFFF");
     });
 
     it("returns a Packen logo image if set so via props", () => {
@@ -50,7 +54,7 @@ describe("<PackenUiNotificationBanner/>", () => {
       themes.forEach((theme, i) => {
         renderInstance.setState({ theme: theme });
         const returnedElement = renderInstance.getIcon();
-  
+
         expect(returnedElement.props.source).toBe(srcs[i]);
       });
     });
@@ -95,7 +99,8 @@ describe("<PackenUiNotificationBanner/>", () => {
         title: undefined,
         theme: undefined,
         type: undefined,
-        icon: undefined
+        icon: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -103,8 +108,22 @@ describe("<PackenUiNotificationBanner/>", () => {
         title: "",
         theme: "primary",
         type: "accent",
-        icon: "packen"
+        icon: "packen",
+        styling: {
+          box: {},
+          title: {},
+          logo: {},
+          icon: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

@@ -270,7 +270,8 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         selected: undefined,
         selection: undefined,
         onNewSelection: undefined,
-        altStyle: undefined
+        altStyle: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -288,7 +289,8 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
         selected: [],
         selection: "single",
         onNewSelection: false,
-        altStyle: false
+        altStyle: false,
+        styling: { box: {}, image: {}, label: {} }
       });
     });
 
@@ -297,6 +299,12 @@ describe("<PackenUiSelectionButtonsControl/>", () => {
       const res = renderInstance.setPropsToState();
   
       expect(res.selected).toBe(false);
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

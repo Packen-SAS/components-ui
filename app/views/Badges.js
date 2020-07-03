@@ -5,6 +5,7 @@ import Section from "../components/Section";
 import PageView from "./PageView";
 
 import colors from "../styles/abstracts/colors";
+import PackenUiAvatar from "../components/PackenUiAvatar";
 import PackenUiBadge from "../components/PackenUiBadge";
 
 class Badges extends Component {
@@ -27,6 +28,11 @@ class Badges extends Component {
           </View>
           <View style={{ marginTop: 10 }}>
             <PackenUiBadge label="10" width={25} height={25} backgroundColor={colors.warning.default} color={colors.warning.drk} />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <PackenUiBadge width={8} height={8} backgroundColor={colors.brand.primary.drk}>
+              <PackenUiAvatar size="tiny" src={require("../../assets/images/avatar.jpg")} />
+            </PackenUiBadge>
           </View>
         </Section>
       </PageView>

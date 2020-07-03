@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image } from "react-native";
 
 import { RNCamera } from "react-native-camera";
-import Svg, { Line, Ellipse } from "react-native-svg";
+import Svg, { Line, Path } from "react-native-svg";
 import TurnOnOffFlash from "react-native-vector-icons/Ionicons";
 import ConfirmPicture from "react-native-vector-icons/Feather";
 import CameraReverse from "react-native-vector-icons/Ionicons";
@@ -131,8 +131,8 @@ export default class PackenUiCamera extends Component {
         );
       case "avatar":
         return (
-          <View style={PackenCameraStyles.layout}>
-            <AvatarLayout width={100} height={200} color={Color.success.drk} />
+          <View style={PackenCameraStyles.layout_avatar}>
+            <AvatarLayout width={400} height={500} color={Color.success.drk} />
           </View>
         );
       default:
@@ -364,9 +364,17 @@ export const DocumentLayout = ({ width, height, color }) => (
 );
 
 export const AvatarLayout = ({ width, height, color }) => (
-  <Svg height={height} width={width} fill="transparent">
+  <Svg height={height} width={width} fill="transparent" viewBox="0 0 200 200">
     {/* Frame para encuadrar rostro del conductor */}
-    <Ellipse cx={(width / 2)} cy={(height / 2)} rx={(width / 2)} ry={(height / 2)} stroke={color} strokeWidth="8" />
+    <Path fill="none" stroke={Color.success.default} strokeWidth="2"
+      d="M 141.50,89.50
+        C 143.20,77.08 143.00,64.00 143.00,64.00
+        135.00,10.00 69.50,-8.50 52.00,64.00
+        52.49,64.49 51.66,78.29 53.50,90.50
+        55.42,103.29 60.00,114.50 60.00,114.50
+        74.94,156.29 112.08,172.48 136.00,115.00
+        136.00,115.00 139.71,102.56 141.50,89.50 Z"
+    />
   </Svg>
 );
 
@@ -424,6 +432,16 @@ const PackenCameraStyles = StyleSheet.create({
   },
   layout: {
     position: "relative",
+    zIndex: 2,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  layout_avatar: {
+    position: "absolute",
+    left: 0,
+    top: -5,
     zIndex: 2,
     width: "100%",
     display: "flex",

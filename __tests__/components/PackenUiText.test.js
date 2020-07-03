@@ -111,7 +111,8 @@ describe("<PackenUiText/>", () => {
         preset: undefined,
         touchable: undefined,
         children: undefined,
-        icon: undefined
+        icon: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -124,8 +125,15 @@ describe("<PackenUiText/>", () => {
         touchableStyles: {
           label: {},
           wrapper: {}
-        }
+        },
+        styling: {}
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 

@@ -105,7 +105,8 @@ describe("<PackenUiMapPinSub/>", () => {
         icon: undefined,
         label: undefined,
         dotPosition: undefined,
-        type: undefined
+        type: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
 
@@ -114,7 +115,14 @@ describe("<PackenUiMapPinSub/>", () => {
         icon: false,
         label: false,
         dotPosition: false,
-        type: "info"
+        type: "info",
+        styling: {
+          box: {},
+          iconSize: undefined,
+          iconColor: undefined,
+          character: {},
+          dot: {}
+        }
       });
     });
 
@@ -124,7 +132,14 @@ describe("<PackenUiMapPinSub/>", () => {
         icon: "box",
         label: "A",
         dotPosition: "bottom",
-        type: "info"
+        type: "info",
+        styling: {
+          box: { test: "test" },
+          iconSize: 12,
+          iconColor: "#FFFFFF",
+          character: { test: "test" },
+          dot: { test: "test" }
+        }
       });
       const res = renderInstance.setPropsToState();
 
@@ -133,7 +148,14 @@ describe("<PackenUiMapPinSub/>", () => {
         icon: "box",
         label: "A",
         dotPosition: "bottom",
-        type: "info"
+        type: "info",
+        styling: {
+          box: { test: "test" },
+          iconSize: 12,
+          iconColor: "#FFFFFF",
+          character: { test: "test" },
+          dot: { test: "test" }
+        }
       });
     });
   });

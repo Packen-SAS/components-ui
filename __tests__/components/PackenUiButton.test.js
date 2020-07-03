@@ -250,8 +250,23 @@ describe("<PackenUiButton/>", () => {
           color: "#FFFFFF"
         }
       });
-      const returnedElement = renderRegularInstance.getIcon();
+      let returnedElement = renderRegularInstance.getIcon();
+      expect(returnedElement).toBeDefined();
 
+      renderRegularInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
+      returnedElement = renderRegularInstance.getIcon();
+      expect(returnedElement).toBeDefined();
+
+      renderRegularInstance.setState({
+        icon: {
+          name: "check",
+          anim: {},
+          styles: {},
+          state: "done"
+        },
+        styling: { iconSize: 15, iconColor: "#FFFFFF" }
+      });
+      returnedElement = renderRegularInstance.getIcon();
       expect(returnedElement).toBeDefined();
     });
 
@@ -293,7 +308,8 @@ describe("<PackenUiButton/>", () => {
         callback: undefined,
         isDisabled: undefined,
         nonTouchable: undefined,
-        children: undefined
+        children: undefined,
+        styling: undefined
       });
       const res = renderRegularInstance.setPropsToState();
 
@@ -305,15 +321,24 @@ describe("<PackenUiButton/>", () => {
         callback: false,
         isDisabled: false,
         nonTouchable: false,
-        children: undefined
+        children: undefined,
+        styling: {
+          shape: {},
+          shapeContent: {},
+          label: {},
+          iconWrapper: {},
+          iconSize: undefined,
+          iconColor: undefined
+        }
       });
     });
 
-    it("returns incoming props as the state key-value pairs if nonTouchable is provided", () => {
-      renderRegular.setProps({ nonTouchable: true });
+    it("returns incoming props as the state key-value pairs, if some are provided", () => {
+      renderRegular.setProps({ nonTouchable: true, styling: { test: "Test" } });
       const res = renderRegularInstance.setPropsToState();
 
       expect(res.nonTouchable).toBe(true);
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });

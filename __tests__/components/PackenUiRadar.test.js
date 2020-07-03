@@ -207,15 +207,23 @@ describe("<PackenUiRadar/>", () => {
       render.setProps({
         theme: undefined,
         animated: undefined,
-        isAnimating: undefined
+        isAnimating: undefined,
+        styling: undefined
       });
       const res = renderInstance.setPropsToState();
       
       expect(res).toEqual({
         theme: "wait",
         animated: false,
-        isAnimating: false
+        isAnimating: false,
+        styling: { wrapper: {}, shadow: {}, dot: {} }
       });
+    });
+
+    it("returns incoming props as the state key-value pairs if styling is provided", () => {
+      render.setProps({ styling: { test: "Test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.styling).toEqual({ test: "Test" });
     });
   });
 });
