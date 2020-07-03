@@ -11,11 +11,39 @@ class Buttons extends Component {
     super(props);
   }
 
-  mockCallback = () => { return true; }
+  mockCallback = () => true;
 
   render() {
     return (
       <PageView>
+        <Section title="Panned Buttons">
+          <View style={{ marginTop: 20 }}>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="tertiary"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Llamar al cliente</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="primary"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Arribo a origen</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                type="regular"
+                level="danger"
+                size="medium"
+                callback={this.mockCallback}
+                panned>Rechazar servicio</PackenUiButton>
+            </View>
+          </View>
+        </Section>
         <Section title="Buttons Primary">
           <View style={{ marginTop: 20 }}>
             <View style={{ marginBottom: 10 }}>
@@ -49,6 +77,15 @@ class Buttons extends Component {
                 level="primary"
                 size="large"
                 callback={this.mockCallback} />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info" }}
+                type="icon"
+                level="primary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline />
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -90,6 +127,15 @@ class Buttons extends Component {
                 level="primary"
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info", position: "left" }}
+                type="regular"
+                level="primary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline>Outline</PackenUiButton>
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -138,6 +184,15 @@ class Buttons extends Component {
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
+                icon={{ name: "info" }}
+                type="icon"
+                level="secondary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
                 level="secondary"
@@ -176,6 +231,15 @@ class Buttons extends Component {
                 level="secondary"
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info", position: "left" }}
+                type="regular"
+                level="secondary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline>Outline</PackenUiButton>
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -224,6 +288,15 @@ class Buttons extends Component {
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
+                icon={{ name: "info" }}
+                type="icon"
+                level="tertiary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
                 level="tertiary"
@@ -262,6 +335,15 @@ class Buttons extends Component {
                 level="tertiary"
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info", position: "left" }}
+                type="regular"
+                level="tertiary"
+                size="large"
+                callback={this.mockCallback}
+                isOutline>Outline</PackenUiButton>
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -310,6 +392,15 @@ class Buttons extends Component {
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
+                icon={{ name: "info" }}
+                type="icon"
+                level="ghost"
+                size="large"
+                callback={this.mockCallback}
+                isOutline />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
                 level="ghost"
@@ -348,6 +439,15 @@ class Buttons extends Component {
                 level="ghost"
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info", position: "left" }}
+                type="regular"
+                level="ghost"
+                size="large"
+                callback={this.mockCallback}
+                isOutline>Outline</PackenUiButton>
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
@@ -396,6 +496,15 @@ class Buttons extends Component {
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
+                icon={{ name: "info" }}
+                type="icon"
+                level="danger"
+                size="large"
+                callback={this.mockCallback}
+                isOutline />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
                 icon={{ name: "arrow-right-circle" }}
                 type="icon"
                 level="danger"
@@ -434,6 +543,15 @@ class Buttons extends Component {
                 level="danger"
                 size="large"
                 callback={this.mockCallback}>Large</PackenUiButton>
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <PackenUiButton
+                icon={{ name: "info", position: "left" }}
+                type="regular"
+                level="danger"
+                size="large"
+                callback={this.mockCallback}
+                isOutline>Outline</PackenUiButton>
             </View>
             <View style={{ marginBottom: 10 }}>
               <PackenUiButton
