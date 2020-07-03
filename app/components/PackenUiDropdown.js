@@ -32,9 +32,9 @@ class PackenUiDropdown extends Component {
     }
   }
 
-  openMenu = () => this.setState({ isOpen: true });
+  openMenu = () => { this.setState({ isOpen: true }) };
 
-  closeMenu = () => this.setState({ isOpen: false });
+  closeMenu = () => { this.setState({ isOpen: false }) };
 
   componentDidMount = () => {
     if (typeof this.props.instance === "function") {

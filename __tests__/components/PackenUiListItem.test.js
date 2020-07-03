@@ -255,5 +255,20 @@ describe("<PackenUiListItem/>", () => {
       expect(returnedElement).toBeDefined();
       expect(returnedElement.props.children[1].props.style.transform[0].translateY).toBe(-10);
     });
+
+    it("sets the dropdoen ref", () => {
+      renderInstance.getDropdownRef({ test: "Test" });
+      expect(renderInstance.dropdownRef).toEqual({ test: "Test" });
+    });
+
+    it("programmatically toggles the dropdown", () => {
+      renderInstance.dropdownRef = { toggleMenu: jest.fn() };
+      renderInstance.toggleDropdown();
+      expect(renderInstance.dropdownRef.toggleMenu).toHaveBeenCalled();
+
+      renderInstance.dropdownRef = undefined;
+      const res = renderInstance.toggleDropdown();
+      expect(res).toBe(undefined);
+    });
   });
 });
