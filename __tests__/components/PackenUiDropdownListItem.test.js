@@ -1027,7 +1027,7 @@ describe("<PackenUiDropdownListItem/>", () => {
 
     it("gets item height", () => {
       renderInstance.props.getItemHeight = mockCallback;
-      renderInstance.getItemHeight({ height: 10 });
+      renderInstance.getItemHeight({ nativeEvent: { layout: { height: 10 } } });
 
       expect(renderInstance.props.getItemHeight).toHaveBeenCalledWith(10);
     });

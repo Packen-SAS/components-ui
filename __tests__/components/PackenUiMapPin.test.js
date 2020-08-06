@@ -128,7 +128,13 @@ describe("<PackenUiMapPin/>", () => {
           main: {},
           label: {},
           text: {},
-          sub: {}
+          sub: {
+            box: {},
+            iconSize: undefined,
+            iconColor: undefined,
+            character: {},
+            dot: {}
+          }
         }
       });
     });

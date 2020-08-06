@@ -82,14 +82,6 @@ describe("<PackenUiTabsItem/>", () => {
       expect(spySetActiveTab).toHaveBeenCalled();
       spySetActiveTab.mockRestore();
     });
-
-    it("executes onPress event callback for the touchable", () => {
-      const spySetActiveTab = jest.spyOn(renderInstance, "setActiveTab");
-      render.props().onPress();
-
-      expect(spySetActiveTab).toHaveBeenCalled();
-      spySetActiveTab.mockRestore();
-    });
   });
 
   describe("styling", () => {
@@ -229,6 +221,7 @@ describe("<PackenUiTabsItem/>", () => {
         icon: "check"
       });
       renderInstance.state = {
+        styling: {},
         itemStyles: {
           icon: {
             color: "#000000",
@@ -247,7 +240,7 @@ describe("<PackenUiTabsItem/>", () => {
     });
 
     it("renders an icon if provided, and is a '»'", () => {
-      renderInstance.setState({ icon: "»" });
+      renderInstance.setState({ icon: "»", styling: {} });
       const returnedElement = renderInstance.getIcon();
       expect(returnedElement).toBeDefined();
     });

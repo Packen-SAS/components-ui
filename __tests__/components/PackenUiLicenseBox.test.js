@@ -38,7 +38,7 @@ describe("<PackenUiLicenseBox/>", () => {
       expect(res).toEqual({ label: "Approved", bg: Colors.success.default, text: Colors.white.default });
 
       res = renderInstance.getLicenseState("expired");
-      expect(res).toEqual({ label: "Expired", bg: Colors.base.gray, text: Colors.white.default });
+      expect(res).toEqual({ label: "Expired", bg: Colors.basic.gray.dft, text: Colors.white.default });
 
       res = renderInstance.getLicenseState("blocked");
       expect(res).toEqual({ label: "Rejected", bg: Colors.danger.default, text: Colors.white.default });
@@ -83,7 +83,7 @@ describe("<PackenUiLicenseBox/>", () => {
         number: null,
         state: null,
         dueDate: null,
-        callback: null,
+        callback: renderInstance.mockCallback,
         labels: {
           approved: "Aprobado",
           expired: "Expirado",

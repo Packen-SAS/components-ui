@@ -154,7 +154,7 @@ describe("<PackenUiDropdown/>", () => {
 
   describe("state changing", () => {
     it("sets menu height", () => {
-      renderInstance.getMenuDimensions({ height: 100 });
+      renderInstance.getMenuDimensions({ nativeEvent: { layout: { height: 100 } } });
 
       expect(renderInstance.state.dimensions.menu.height).toBe(100);
     });
@@ -163,7 +163,7 @@ describe("<PackenUiDropdown/>", () => {
       renderInstance.setState({ dimensions: { menu: { height: 100 } } });
       renderInstance.setCustomStyles();
 
-      expect(renderInstance.state.styles.menu).toEqual({ bottom: -108 });
+      expect(renderInstance.state.styles.menu).toEqual({ bottom: -92 });
     });
 
     it("toggles 'isOpen' state", () => {
@@ -225,7 +225,7 @@ describe("<PackenUiDropdown/>", () => {
           onChangeText: renderInstance.mockCallback,
           onOpenStateChange: renderInstance.mockCallback,
           icon: { name: "chevron-down", position: "right" },
-          message: false,
+          message: undefined,
           label: "",
           help: undefined,
           theme: "default",
@@ -285,20 +285,6 @@ describe("<PackenUiDropdown/>", () => {
     it("executes the closeMenu method", () => {
       renderInstance.closeMenu();
       expect(renderInstance.state.isOpen).toBe(false);
-    });
-
-    it("executes onLayout code for menu", () => {
-      renderInstance.getMenuDimensions = jest.fn();
-      render.props().children[1].props.onLayout({
-        nativeEvent: {
-          layout: {
-            width: 10,
-            height: 10
-          }
-        }
-      });
-
-      expect(renderInstance.getMenuDimensions).toHaveBeenCalledWith({ width: 10, height: 10 });
     });
 
     it("executes the mockCallback", () => {

@@ -1443,7 +1443,7 @@ class Dropdowns extends Component {
 
   changeHandler = (name, newSelection) => {
     /* New selection can be used here */
-    /* console.log(name, newSelection); */
+    console.log(name, newSelection);
     return {
       id: name,
       value: newSelection

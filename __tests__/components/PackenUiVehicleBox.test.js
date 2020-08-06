@@ -76,7 +76,7 @@ describe("<PackenUiVehicleBox/>", () => {
         plate: "",
         state: "pending",
         callback: false,
-        image: null,
+        image: "",
         labels: {
           approved: "Aprobado",
           rejected: "Rechazado",

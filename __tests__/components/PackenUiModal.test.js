@@ -305,19 +305,6 @@ describe("<PackenUiModal/>", () => {
       spyGetGalleryArrowsDimensions.mockRestore();
     });
 
-    it("executes ref event callback for the carousel", () => {
-      const c = "ref";
-      render.setProps({
-        isOpen: false,
-        type: "gallery",
-        images: ["", "", ""]
-      });
-      renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[1].ref(c);
-
-      expect(renderInstance.carouselRef).toBe("ref");
-    });
-
     it("sets gallery arrows position on componentDidUpdate", () => {
       const spySetGalleryArrowsPosition = jest.spyOn(renderInstance, "setGalleryArrowsPosition");
       const prevState = {
@@ -382,20 +369,24 @@ describe("<PackenUiModal/>", () => {
 
     it("goes to the previous slide if type is gallery", () => {
       renderInstance.carouselRef = {
-        snapToPrev: jest.fn()
+        current: {
+          snapToPrev: jest.fn()
+        }
       };
       renderInstance.prevSlide();
 
-      expect(renderInstance.carouselRef.snapToPrev).toHaveBeenCalled();
+      expect(renderInstance.carouselRef.current.snapToPrev).toHaveBeenCalled();
     });
 
     it("goes to the next slide if type is gallery", () => {
       renderInstance.carouselRef = {
-        snapToNext: jest.fn()
+        current: {
+          snapToNext: jest.fn()
+        }
       };
       renderInstance.nextSlide();
 
-      expect(renderInstance.carouselRef.snapToNext).toHaveBeenCalled();
+      expect(renderInstance.carouselRef.current.snapToNext).toHaveBeenCalled();
     });
 
     it("triggers the onDismissHandler", () => {
