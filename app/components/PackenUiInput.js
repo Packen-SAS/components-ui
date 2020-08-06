@@ -10,19 +10,67 @@ import Typography from "../styles/abstracts/typography";
 import PackenUiText from "./PackenUiText";
 import PackenUiLoaderButton from "./PackenUiLoaderButton";
 
+/**
+ * Component for rendering an input with optional label, help and message elements
+ */
 class PackenUiInput extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setInitialState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (this.state.propagateRef) {
       this.state.propagateRef(this, this.state.name);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [state="default"] The current inner status of the component
+   * @property {object} [icon={}] The configuration object for the icon element
+   * @property {string} [size="medium"] The size of the component for applying correct styles - "tiny"; "small"; "medium"; "large"; "giant"
+   * @property {string} [theme="default"] The theme of the component for applying correct styles - "default"; "danger"; "success"; "primary"; "list"
+   * @property {boolean} [multiline=false] Determines whether the input should actually be rendered, styled and processed as a textarea element
+   * @property {string} [name=""] The identifier for this input
+   * @property {boolean} [disabled=false] Determines if the input should be disabled and applies corresponding styles
+   * @property {boolean} [nonEditable=false] Determines if the input should be disabled but doesn't apply any particular styles
+   * @property {boolean} [isDropdown=false] Determines if the input is used as part of a {@link PackenUiDropdown} component
+   * @property {boolean} [isOpen=false] When used as part of a {@link PackenUiDropdown} component, this determines if it's open or closed
+   * @property {string|object} [help=undefined] The text to be used as a help label, or the configuration object if it's also a touchable text
+   * @property {object} [message={}] The configuration object for the optional message element
+   * @property {string} [keyboardType="default"] The keyboard type for the input
+   * @property {boolean} [isFocused=false] Determiens if the input should be focused
+   * @property {boolean} [isPassword=false] Determines if the input should apply the native blurring functionality for passwords
+   * @property {string} [label=""] The label text to display
+   * @property {string} [placeholder=""] The placeholder text for the input
+   * @property {string} [placeholderTextColor=Colors.basic.gray.dft] The color for the placeholder text
+   * @property {number} [maxLength=undefined] The maximum character length allowed when typing
+   * @property {number} [minLength=0] The minimum character length allowed, to propagate a positive validation check
+   * @property {object} [style={}] The optional styles to be applied specifically to the native TextInput component
+   * @property {function} [onChangeText=mockCallback] Function to be called when the input's value changes
+   * @property {object} [eventHandlers=false] Object containing the callback functions for the onSubmitEditing, onBlur and onFocus events
+   * @property {function} [propagateRef=false] Function that propagates the component's instance to the parent component
+   * @property {boolean} [loading=false] Determines if the input should render a {@link PackenUiLoaderButton} as the icon element
+   * @property {string} [validator=false] The type of validation to use when typing to propagate the check
+   * @property {object} [styling={ header: { base: {}, label: {} }, help: { touchable: {}, text: {} }, box: {}, input: {}, message: { box: {}, icon: {}, iconSize: undefined, iconColor: undefined, text: {} }, loader: {}, iconWrapper: {}, icon: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       state: this.props.disabled ? "disabled" : "default",
@@ -41,7 +89,7 @@ class PackenUiInput extends Component {
       isFocused: this.props.isFocused ? this.props.isFocused : false,
       isPassword: this.props.isPassword ? this.props.isPassword : false,
       label: this.props.label ? this.props.label : "",
-      placeholder: this.props.placeholder,
+      placeholder: this.props.placeholder ? this.props.placeholder : "",
       placeholderTextColor: this.props.placeholderTextColor ? this.props.placeholderTextColor : this.getStyles().placeholder.color,
       maxLength: this.props.maxLength ? parseInt(this.props.maxLength) : undefined,
       minLength: this.props.minLength ? parseInt(this.props.minLength) : 0,
@@ -57,32 +105,37 @@ class PackenUiInput extends Component {
         help: { ...this.props.styling.help },
         message: { ...this.props.styling.message }
       } : {
-        header: {
-          base: {},
-          label: {}
-        },
-        help: {
-          touchable: {},
-          text: {}
-        },
-        box: {},
-        input: {},
-        message: {
+          header: {
+            base: {},
+            label: {}
+          },
+          help: {
+            touchable: {},
+            text: {}
+          },
           box: {},
+          input: {},
+          message: {
+            box: {},
+            icon: {},
+            iconSize: undefined,
+            iconColor: undefined,
+            text: {}
+          },
+          loader: {},
+          iconWrapper: {},
           icon: {},
           iconSize: undefined,
-          iconColor: undefined,
-          text: {}
-        },
-        loader: {},
-        iconWrapper: {},
-        icon: {},
-        iconSize: undefined,
-        iconColor: undefined
-      }
+          iconColor: undefined
+        }
     };
   }
 
+  /**
+   * Returns the initial component state
+   * @type {function}
+   * @return {object} The initial state object
+   */
   setInitialState = () => {
     let initialState = {
       ...this.setPropsToState(),
@@ -108,6 +161,11 @@ class PackenUiInput extends Component {
     return initialState;
   }
 
+  /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Flag used only for testing purposes
+   */
   mockCallback = () => false;
 
   setIconPositionStyles = () => {
@@ -133,6 +191,12 @@ class PackenUiInput extends Component {
     return positionStyles;
   }
 
+  /**
+   * Sets the box dimensions to the state
+   * @type {function}
+   * @param {number} width The width of the box
+   * @param {number} height The height of the box
+   */
   getBoxDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
@@ -145,6 +209,12 @@ class PackenUiInput extends Component {
     }, this.setIconPositionStyles);
   }
 
+  /**
+   * Sets the icon wrapper dimensions to the state
+   * @type {function}
+   * @param {number} width The width of the icon wrapper
+   * @param {number} height The height of the icon wrapper
+   */
   getIconWrapperDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
@@ -157,6 +227,11 @@ class PackenUiInput extends Component {
     }, this.setIconPositionStyles);
   }
 
+  /**
+   * Returns the correct padding styles if an icon is provided
+   * @type {function}
+   * @return {object} The styles object
+   */
   getPaddingStyles = () => {
     let paddingStyles = {};
 
@@ -167,6 +242,11 @@ class PackenUiInput extends Component {
     return paddingStyles;
   }
 
+  /**
+   * Returns the multiline styles if set like so
+   * @type {function}
+   * @return {object} The styles object
+   */
   getMultilineStyles = () => {
     let multilineStyles = {};
 
@@ -182,6 +262,10 @@ class PackenUiInput extends Component {
     return multilineStyles;
   }
 
+  /**
+   * Sets the new status to the state and triggers the corresponding callbacks on focus
+   * @type {function}
+   */
   handleFocus = () => {
     if (this.state.theme !== "list") {
       this.setState({
@@ -195,6 +279,10 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Sets the new status to the state and triggers the corresponding callbacks on blur
+   * @type {function}
+   */
   handleBlur = () => {
     this.setState({
       state: "default"
@@ -204,6 +292,10 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Triggers the corresponding callbacks on submit editing
+   * @type {function}
+   */
   handleSubmitEditing = () => {
     this.blur();
     if (this.state.eventHandlers && this.state.eventHandlers.onSubmitEditing) {
@@ -211,6 +303,11 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Handles the text change event on the input and propagates the value
+   * @type {function}
+   * @param {string} text The current input value
+   */
   handleChangeText = text => {
     let isValid = true;
 
@@ -221,16 +318,29 @@ class PackenUiInput extends Component {
     this.state.onChangeText(this.state.name, text ? text : null, isValid);
   }
 
+  /**
+   * Sets the keyboard event listeners
+   * @type {function}
+   */
   addKeyboardEvents = () => {
     Keyboard.addListener("keyboardDidShow", this.focus);
     Keyboard.addListener("keyboardDidHide", this.blur);
   }
 
+  /**
+   * Destroys the keyboard event listeners
+   * @type {function}
+   */
   removeKeyboardEvents = () => {
     Keyboard.removeAllListeners("keyboardDidShow");
     Keyboard.removeAllListeners("keyboardDidHide");
   }
 
+  /**
+   * Returns if the components pointer events should be disabled
+   * @type {function}
+   * @return {boolean} The flag determining the editable state
+   */
   setEditable = () => {
     let isEditable = true;
 
@@ -241,6 +351,11 @@ class PackenUiInput extends Component {
     return isEditable;
   }
 
+  /**
+   * Returns the correct icon name
+   * @type {function}
+   * @return {string} The icon name
+   */
   getIconName = () => {
     let name = "";
 
@@ -257,6 +372,10 @@ class PackenUiInput extends Component {
     return name;
   }
 
+  /**
+   * Triggers the provided callback when pressing on the help element
+   * @type {function}
+   */
   triggerHelpCallback = () => {
     if (this.state.help && this.state.help.callback) {
       this.state.help.callback();
@@ -265,6 +384,11 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Returns the help element
+   * @type {function}
+   * @return {node|null} JSX for the help or null
+   */
   getHelp = () => {
     let help = null;
 
@@ -305,6 +429,11 @@ class PackenUiInput extends Component {
     return help;
   }
 
+  /**
+   * Returns the message icon element
+   * @type {function}
+   * @return {node|null} JSX for the message icon or null
+   */
   getMessageIcon = () => {
     let icon = null;
 
@@ -326,6 +455,11 @@ class PackenUiInput extends Component {
     return icon;
   }
 
+  /**
+   * Returns the message element
+   * @type {function}
+   * @return {node|null} JSX for the message or null
+   */
   getMessage = () => {
     let message = null;
 
@@ -346,10 +480,20 @@ class PackenUiInput extends Component {
     return message;
   }
 
+  /**
+   * Returns the provided keyboard type
+   * @type {function}
+   * @return {string} The keyboard type
+   */
   getKeyboardType = () => {
     return this.state.keyboardType ? this.state.keyboardType : "default";
   }
 
+  /**
+   * Sets the native TextInput ref/instance to the state
+   * @type {function}
+   * @param {object} input The received ref/instance
+   */
   getRef = input => {
     this.setState({
       ref: input
@@ -362,6 +506,10 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Focuses the input
+   * @type {function}
+   */
   focus = () => {
     if (this.state.ref) {
       this.state.ref.focus();
@@ -370,6 +518,10 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Blurs the input
+   * @type {function}
+   */
   blur = () => {
     if (this.state.ref) {
       this.state.ref.blur();
@@ -378,6 +530,10 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Determines if the input should be focused or blurred
+   * @type {function}
+   */
   checkFocus = () => {
     if (this.state.isFocused) {
       this.focus();
@@ -386,6 +542,12 @@ class PackenUiInput extends Component {
     }
   }
 
+  /**
+   * Returns the icon wrapper element
+   * @type {function}
+   * @param {node} child The child element to wrap around
+   * @return {node} JSX for the icon wrapper
+   */
   getIconWrapper = child => {
     return (
       <View
@@ -397,6 +559,11 @@ class PackenUiInput extends Component {
     );
   }
 
+  /**
+   * Returns the main icon element
+   * @type {function}
+   * @return {node} JSX for the main icon
+   */
   getMainIcon = () => {
     let icon = null;
 
@@ -438,22 +605,32 @@ class PackenUiInput extends Component {
     return icon;
   }
 
-  getSecureEntryType = () => {
-    return this.state.isPassword ? true : false;
-  }
-
+  /**
+   * Updates the state with new props and checks if it's now focused
+   * @type {function}
+   */
   updateState = () => {
     this.setState({
       ...this.setPropsToState()
     }, this.checkFocus);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={this.getStyles().container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}>
@@ -488,7 +665,7 @@ class PackenUiInput extends Component {
               ...this.state.styling.input
             }}
             ref={this.getRef}
-            secureTextEntry={this.getSecureEntryType()}
+            secureTextEntry={this.state.isPassword}
             keyboardType={this.getKeyboardType()}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
@@ -506,6 +683,11 @@ class PackenUiInput extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     const heights = {
       tiny: 32,

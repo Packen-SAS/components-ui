@@ -5,18 +5,49 @@ import PropTypes from "prop-types";
 import colors from "../styles/abstracts/colors";
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for displaying notification badges as individual components or as wrappers in the upper right corner of its children
+ */
 class PackenUiBadge extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
+    
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [label=""] The label to display inside the badge
+   * @property {node} [children=false] The optional children to wrap the badge dot around
+   * @property {number} [width=16] The width of the dot
+   * @property {number} [height=16] The height of the dot
+   * @property {string} [color=Colors.basic.white.dft] The color for the label
+   * @property {number} [fontSize=12] The font size for the label
+   * @property {number} [borderRadius=16] The border radius for the dot
+   * @property {string} [backgroundColor=Colors.brand.primary.drk] The background color for the dot
+   * @property {object} [styling={ outer: {}, content: {}, dotWrapper: {}, wrapper: {}, label: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       label: this.props.label ? this.props.label.toString() : "",
@@ -37,16 +68,30 @@ class PackenUiBadge extends Component {
     };
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Returns the main content depending on whether it's a standalone or wrapper component
+   * @type {function}
+   * @return {node} JSX for the main content
+   */
   getContent = () => {
     let content = (
       <View style={{ ...this.getStyle().wrapper, ...this.state.styling.wrapper }}>
@@ -70,10 +115,20 @@ class PackenUiBadge extends Component {
     return content;
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return this.getContent();
   }
 
+  /**
+   * Returns the styles for the component
+   * @type {function}
+   * @return {object} The styles object
+   */
   getStyle = () => {
     return {
       outer: {

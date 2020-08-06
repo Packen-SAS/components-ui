@@ -8,19 +8,49 @@ import Colors from "../styles/abstracts/colors";
 import PackenUiText from "./PackenUiText";
 import PackenUiTag from "./PackenUiTag";
 
+/**
+ * Component for displaying a driver's vehicle overview
+ */
 class PackenUiVehicleBox extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [type=""] The type of vehicle
+   * @property {string} [overview=""] The overview of the vehicle
+   * @property {string} [year=""] The year of the vehicle model
+   * @property {string} [plate=""] The plate of the vehicle
+   * @property {string} [state=""] The current status of the vehicle - "pending"; "approved"; "rejected"
+   * @property {function} [callback=false] The callback function to be called when pressing on the component
+   * @property {string} [image=null] The vehicle's type preview image
+   * @property {object} [labels={ approved: "Aprobado", rejected: "Rechazado", pending: "Pendiente" }] The correct i18n labels for the status
+   * @property {object} [styling={ box: {}, imgWrapper: {}, image: {}, copy: {}, type: {}, overview: {}, year: {}, plateWrapper: {}, tag: {}, stateWrapper: {}, state: {}, stateIconSize: undefined, stateIconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       type: this.props.type ? this.props.type : "",
@@ -53,6 +83,11 @@ class PackenUiVehicleBox extends Component {
     };
   }
 
+  /**
+   * Returns the correct configuration object for the status element
+   * @type {function}
+   * @return {object} The configuration object
+   */
   getState = () => {
     let state = null;
 
@@ -91,6 +126,11 @@ class PackenUiVehicleBox extends Component {
     return state;
   }
 
+  /**
+   * Returns the correct image styles depending on the type of vehicle
+   * @type {function}
+   * @return {object} The styles object
+   */
   getImgStyles = () => {
     let styles = {};
     if (this.state.type !== "moto") {
@@ -101,10 +141,19 @@ class PackenUiVehicleBox extends Component {
     return styles;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
+  /**
+   * Returns the correct content depending on whether it's touchable
+   * @type {function}
+   * @return {node} JSX for the content
+   */
   getContent = () => {
     let content = (
       <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
@@ -137,16 +186,31 @@ class PackenUiVehicleBox extends Component {
     return content;
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return this.getContent();
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {

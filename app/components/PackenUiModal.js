@@ -10,10 +10,22 @@ import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering a modal popup with fading animation
+ */
 class PackenUiModal extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the base state for all types of modals
+     * @type {object}
+     */
     let initialState = {
       ...this.setPropsToState(),
       backdropStyles: { ...this.getStyles().backdrop.base }
@@ -52,13 +64,43 @@ class PackenUiModal extends Component {
       }
     }
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...initialState };
 
+    /**
+     * Variable that stores the carousel ref/instance in case it's a gallery modal
+     * @type {object}
+     */
     this.carouselRef;
   }
 
+  /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Flag used only for testing purposes
+   */
   mockCallback = () => false;
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [type="info"] The type of modal - "info"; "custom"; "gallery"
+   * @property {object} [banner=false] The configuration for the optional banner element
+   * @property {string} [size="default"] The size for applying correct styles - "default" or "small"
+   * @property {boolean} [isOpen=false] Determines whether the modal should be open
+   * @property {array} [images=[]] The images to be rendered in a "gallery" modal
+   * @property {object} [info={ title: "", text: "" }] The text labels to render for "info" modals
+   * @property {function} [modalClose=mockCallback] The passed function to close the modal from inside the component
+   * @property {string} [theme="info"] The theme to apply correct styles - "info"; "warning"; "danger"; "success"
+   * @property {node} [content=null] The JSX content for "custom" modals
+   * @property {function} [onDismiss=false] Callback function to be triggered when onDismiss is called
+   * @property {function} [onRequestClose=false] Callback function to be triggered when onRequestClose is called
+   * @property {object} [styling={ container: {}, backdrop: {}, main: {}, wrapper: {}, box: {}, header: {}, headerInner: {}, closeIconSize: undefined, closeIconColor: undefined, info: {}, banner: {}, bannerIconSize: undefined, bannerIconColor: undefined, content: {}, title: {}, text: {}, btnWrapper: {}, galleryBox: {}, slide: {}, slideImg: {}, arrowLeft: {}, arrowRight: {}, arrowIconSize: undefined, arrowIconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       type: this.props.type ? this.props.type : "info",
@@ -71,7 +113,7 @@ class PackenUiModal extends Component {
         text: ""
       },
       modalClose: this.props.modalClose ? this.props.modalClose : this.mockCallback,
-      theme: this.props.theme ? this.props.theme : "primary",
+      theme: this.props.theme ? this.props.theme : "info",
       content: this.props.content ? this.props.content : null,
       onDismiss: this.props.onDismiss ? this.props.onDismiss : false,
       onRequestClose: this.props.onRequestClose ? this.props.onRequestClose : false,
@@ -104,6 +146,10 @@ class PackenUiModal extends Component {
     };
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props, and sets the gallery arrows positioning styles
+   * @type {function}
+   */
   componentDidMount() {
     if (this.state.type === "gallery") {
       this.setGalleryArrowsPosition();
@@ -113,6 +159,11 @@ class PackenUiModal extends Component {
     }
   }
 
+  /**
+   * Returns the correct content styles depending on the type of modal
+   * @type {function}
+   * @return {object} The styles object
+   */
   getContentStyles = () => {
     let contentStyles = { ...this.getStyles().content.base };
 
@@ -138,6 +189,11 @@ class PackenUiModal extends Component {
     return contentStyles;
   }
 
+  /**
+   * Returns the correct text styles
+   * @type {function}
+   * @return {object} The styles object
+   */
   getTextStyles = () => {
     let textStyles = {};
 
@@ -154,6 +210,11 @@ class PackenUiModal extends Component {
     return textStyles;
   }
 
+  /**
+   * Sets the correct backdrop styles depending on whether the modal is open or closed
+   * @type {function}
+   * @return {object} The styles object
+   */
   setBackdropStyles = () => {
     if (this.state.isOpen) {
       this.setState({
@@ -172,12 +233,23 @@ class PackenUiModal extends Component {
     }
   }
 
+  /**
+   * Triggers the closing handlers when closing the modal
+   * @type {function}
+   */
   checkHandlers = () => {
     if (!this.state.isOpen) {
       this.onDismissHandler();
+      this.onRequestCloseHandler();
     }
   }
 
+  /**
+   * Updates the state with new props and, depending on the type of modal, checks styles and triggers callbacks
+   * @type {function}
+   * @param {object} prevProps Previous props
+   * @param {object} prevState Previous state
+   */
   updateState = (prevProps, prevState) => {
     this.setState({
       ...this.setPropsToState()
@@ -197,12 +269,22 @@ class PackenUiModal extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   * @param {object} prevState Previous state
+   */
+  componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
       this.updateState(prevProps, prevState);
     }
   }
 
+  /**
+   * Reinitializes the gallery arrows state, which doesn't automatically change when closing the modal
+   * @type {function}
+   */
   reinitGallery = () => {
     this.setState({
       has: {
@@ -212,14 +294,29 @@ class PackenUiModal extends Component {
     });
   }
 
+  /**
+   * Programmatically goes to the previous slide
+   * @type {function}
+   */
   prevSlide = () => {
     this.carouselRef.snapToPrev();
   }
 
+  /**
+   * Programmatically goes to the next slide
+   * @type {function}
+   */
   nextSlide = () => {
     this.carouselRef.snapToNext();
   }
 
+  /**
+   * Renders a gallery slide
+   * @type {function}
+   * @param {object} item The item's configuration data
+   * @param {number} index The item's index
+   * @return {node} JSX for the slide
+   */
   renderGallerySlide = ({ item, index }) => {
     return (
       <View key={index} style={{
@@ -240,6 +337,12 @@ class PackenUiModal extends Component {
     );
   }
 
+  /**
+   * Sets the carousel wrapper element dimensions for correct positioning
+   * @type {function}
+   * @param {number} width The width of the wrapper
+   * @param {number} height The height of the wrapper
+   */
   getGalleryDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
@@ -252,6 +355,12 @@ class PackenUiModal extends Component {
     }, this.setGalleryArrowsPosition);
   }
 
+  /**
+   * Sets the gallery arrows wrapper element dimensions for correct positioning
+   * @type {function}
+   * @param {number} width The width of the wrapper
+   * @param {number} height The height of the wrapper
+   */
   getGalleryArrowsDimensions = ({ width, height }) => {
     this.setState({
       dimensions: {
@@ -264,6 +373,10 @@ class PackenUiModal extends Component {
     }, this.setGalleryArrowsPosition);
   }
 
+  /**
+   * Sets the gallery arrows position styles to the state
+   * @type {function}
+   */
   setGalleryArrowsPosition = () => {
     const verticalOffset = this.state.dimensions.gallery.height / 2.25;
     const horizontalOffset = 20;
@@ -282,6 +395,11 @@ class PackenUiModal extends Component {
     });
   }
 
+  /**
+   * Returns the gallery box dimensions based on the screen's dimensions
+   * @type {function}
+   * @return {object} The dimensions object
+   */
   getGalleryBoxDimensions = () => {
     return {
       height: Dimensions.get("screen").height / 3.5,
@@ -289,6 +407,11 @@ class PackenUiModal extends Component {
     };
   }
 
+  /**
+   * Handles the beforeSnap event for the "gallery" modals carousel component to set the arrows visibility depending on the current slide position
+   * @type {function}
+   * @param {number} slideIndex The current slide index
+   */
   handleBeforeSnap = slideIndex => {
     this.setState({
       has: {
@@ -298,6 +421,11 @@ class PackenUiModal extends Component {
     });
   }
 
+  /**
+   * Returns the JSX for the optional banner element
+   * @type {function}
+   * @return {node|null} The JSX for the banner
+   */
   getBanner = () => {
     let banner = null;
 
@@ -315,6 +443,11 @@ class PackenUiModal extends Component {
     return banner;
   }
 
+  /**
+   * Returns the JSX for the button element of "info" modals
+   * @type {function}
+   * @return {node|null} The JSX for the button
+   */
   getInfoButton = () => {
     let btn = null;
 
@@ -329,6 +462,10 @@ class PackenUiModal extends Component {
     return btn;
   }
 
+  /**
+   * Triggers the platform-specific handlers when closing the modal when pressing the "X" icon on the header
+   * @type {function}
+   */
   headerCallDismiss = () => {
     if (Platform.OS === "ios") {
       this.onRequestCloseHandler();
@@ -339,6 +476,11 @@ class PackenUiModal extends Component {
     this.state.modalClose();
   };
 
+  /**
+   * Returns the JSX for the header element if it's not a "custom" modal
+   * @type {function}
+   * @return {node|null} JSX for the header or null
+   */
   getHeader = () => {
     let header = null;
 
@@ -361,6 +503,11 @@ class PackenUiModal extends Component {
     return header;
   }
 
+  /**
+   * Returns the correct JSX if it's a "custom" modal
+   * @type {function}
+   * @return {node} JSX for the content
+   */
   getCustomContent = () => (
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
@@ -369,6 +516,11 @@ class PackenUiModal extends Component {
     </View>
   )
 
+  /**
+   * Returns the correct JSX if it's an "info" modal
+   * @type {function}
+   * @return {node} JSX for the content
+   */
   getInfoContent = () => (
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       {this.getBanner()}
@@ -380,6 +532,11 @@ class PackenUiModal extends Component {
     </View>
   )
 
+  /**
+   * Returns the JSX for the arrows if it's a "gallery" modal
+   * @type {function}
+   * @return {node} JSX for the arrows
+   */
   getGalleryArrows = () => (
     this.state.images.length > 1 ? (
       <React.Fragment>
@@ -424,6 +581,11 @@ class PackenUiModal extends Component {
     ) : null
   )
 
+  /**
+   * Returns the correct JSX if it's a "gallery" modal
+   * @type {function}
+   * @return {node} JSX for the content
+   */
   getGalleryContent = () => (
     <View
       style={{
@@ -446,6 +608,11 @@ class PackenUiModal extends Component {
     </View>
   )
 
+  /**
+   * Returns the correct JSX for the main content depending on the type of modal
+   * @type {function}
+   * @return {node|null} JSX for the modal content or null
+   */
   getContent = () => {
     let content = null;
 
@@ -464,6 +631,10 @@ class PackenUiModal extends Component {
     return content;
   }
 
+  /**
+   * Handles the onDismissHandler event on the native Modal component
+   * @type {function}
+   */
   onDismissHandler = () => {
     if (this.state.onDismiss) {
       this.state.onDismiss();
@@ -472,6 +643,10 @@ class PackenUiModal extends Component {
     }
   }
 
+  /**
+   * Handles the onRequestCloseHandler event on the native Modal component
+   * @type {function}
+   */
   onRequestCloseHandler = () => {
     if (this.state.onRequestClose) {
       this.state.onRequestClose();
@@ -480,6 +655,10 @@ class PackenUiModal extends Component {
     }
   }
 
+  /**
+   * Closes the modal with the passed function via props
+   * @property {function}
+   */
   closeModal = () => {
     if (this.state.modalClose) {
       this.state.modalClose();
@@ -488,6 +667,11 @@ class PackenUiModal extends Component {
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <Modal
@@ -514,6 +698,11 @@ class PackenUiModal extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       container: {

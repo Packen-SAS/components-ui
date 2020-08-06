@@ -8,11 +8,24 @@ import Typography from "../styles/abstracts/typography";
 import PackenUiText from "./PackenUiText";
 import PackenUiDivider from "./PackenUiDivider";
 
+/**
+ * Wrapper component to apply common styles to the others when showcased. This component is not meant to be used at all, it's just for the example showcasing app
+ */
 class Section extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={this.getStyles().section}>
@@ -23,6 +36,11 @@ class Section extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       section: {

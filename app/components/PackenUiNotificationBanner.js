@@ -9,19 +9,45 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering running shipments' notification banners
+ */
 class PackenUiNotificationBanner extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [title=""] The actual text for the component
+   * @property {string} [theme="primary"] The theme to apply correct styles - "primary"; "success"; "info"; "warning"; "danger"
+   * @property {string} [type="accent"] The type of component to apply correct styles - "accent"; "default"
+   * @property {string} [icon="packen"] This can be either an icon name or the keyword "packen" to render accordingly
+   * @property {object} [styling={ box: {}, title: {}, logo: {}, icon: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       title: this.props.title ? this.props.title : "",
@@ -39,6 +65,11 @@ class PackenUiNotificationBanner extends Component {
     };
   }
 
+  /**
+   * Returns the correct icon or "packen" logo
+   * @type {function}
+   * @return {node|number} The JSX for the icon, or the number identifier for the local "packen" image source
+   */
   getIcon = () => {
     let icon = null;
 
@@ -84,16 +115,30 @@ class PackenUiNotificationBanner extends Component {
     return icon;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{
@@ -112,6 +157,11 @@ class PackenUiNotificationBanner extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {

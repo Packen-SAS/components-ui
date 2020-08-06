@@ -10,10 +10,30 @@ import PackenUiText from "./PackenUiText";
 import PackenUiInput from "./PackenUiInput";
 import PackenUiDropdownList from "./PackenUiDropdownList";
 
+/**
+ * Component for rendering a dropdown, either as a standlone component or as part of a {@link PackenUiListItem} component
+ */
 class PackenUiDropdown extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {boolean} flag A flag used to re-mount the component and ensure a correct update of inner elements
+     * @property {number} contentSizerHeight The height of the hidden element used to capture the input content's height and resize the real, visible input accordingly
+     * @property {boolean} isOpen Determines whether the dropdown is open or not
+     * @property {object} dimensions Object that holds the dimensions of some of the component's inner elements
+     * @property {object} styles The optional styles to be applied specifically to the menu wrapper element
+     * @property {string[]} finalSelection The current selection(s)
+     * @property {string} finalSelectionString The formatted selection string to be set to the input and content sizer elements
+     * @return {object} The props mapped to the state keys
+     */
     this.state = {
       ...this.setPropsToState(),
       flag: true,
@@ -32,18 +52,47 @@ class PackenUiDropdown extends Component {
     }
   }
 
+  /**
+   * Programmatically opens the menu
+   * @type {function}
+   */
   openMenu = () => { this.setState({ isOpen: true }) };
 
+  /**
+   * Programmatically close the menu
+   * @type {function}
+   */
   closeMenu = () => { this.setState({ isOpen: false }) };
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount = () => {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Returned false value used for testing purposes
+   */
   mockCallback = () => false;
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {function} [callback=mockCallback] The propagation function to be triggered when a new selection is made
+   * @property {string} [name=""] The identifier for this dropdown
+   * @property {boolean} [isDisabled=false] Determines if the dropdown should be disabled
+   * @property {object} [input={ placeholder: "", onChangeText: mockCallback, onOpenStateChange: mockCallback, icon: { name: "chevron-down", position: "right" }, message: false, label: "", help: undefined, theme: "default", isDropdown: true, nonEditable: true, disabled: false, isOpen: false, multiline: true, name: "", style: {} }] The configuration for the inner {@link PackenUiInput}
+   * @property {object} [list={ items: [], config: {} }] Contains the dropdown items and configuration
+   * @property {string} [size="medium"] The size of the component for applying the correct styles - "tiny"; "small"; "medium"; "large"; "giant"
+   * @property {object} [styling={ wrapper: {}, inputWrapper: {}, contentSizer: { wrapper: {}, inner: {}, text: {} }, menu: {}, list: {}, input: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
@@ -83,6 +132,11 @@ class PackenUiDropdown extends Component {
     };
   }
 
+  /**
+   * Sets the menu dimensions to the state
+   * @type {function}
+   * @param {number} height The height of the menu element
+   */
   getMenuDimensions = ({ height }) => {
     this.setState({
       dimensions: {
@@ -94,6 +148,10 @@ class PackenUiDropdown extends Component {
     }, this.setCustomStyles);
   }
 
+  /**
+   * Combines and sets to the state the custom styles for the menu wrapper element
+   * @type {function}
+   */
   setCustomStyles = () => {
     let customStyles = {};
     if (this.state.input && this.state.input.theme === "list") {
@@ -114,18 +172,31 @@ class PackenUiDropdown extends Component {
     });
   }
 
+  /**
+   * Event handler for when the menu is toggled
+   * @type {function}
+   */
   onOpenStateChange = () => {
     if (this.state.input.onOpenStateChange) {
       this.state.input.onOpenStateChange(this.state.isOpen, this.state.dimensions.menu.height);
     }
   }
 
+  /**
+   * Programmatically toggles the menu
+   * @type {function}
+   */
   toggleMenu = () => {
     this.setState({
       isOpen: !this.state.isOpen
     }, this.onOpenStateChange);
   }
 
+  /**
+   * Sets the newly selected items to the state and triggers the callback to propagate the selection
+   * @type {function}
+   * @param {string[]} selectedItems The newly selected items
+   */
   getFinalSelection = selectedItems => {
     this.setState({
       finalSelection: selectedItems
@@ -134,8 +205,20 @@ class PackenUiDropdown extends Component {
     this.state.callback(this.state.name, selectedItems);
   }
 
+  /**
+   * Concatenates the currently selected values into a single, formatted string
+   * @type {function}
+   * @param {string} item The current item being concatenated
+   * @param {string} finalSelectionString The current string
+   * @return {string} The updated final selection string
+   */
   concatFinalSelectionString = (item, finalSelectionString) => finalSelectionString += `${item}, `;
 
+  /**
+   * Sets the formatted string to be displayed as the current selection to the state
+   * @type {function}
+   * @return {string} The final selection string
+   */
   composeFinalSelectionString = () => {
     let finalSelectionString = "";
 
@@ -149,18 +232,37 @@ class PackenUiDropdown extends Component {
     return finalSelectionString;
   }
 
+  /**
+   * Programmatically resets the current selection
+   * @type {function}
+   */
+  reset = () => { this.getFinalSelection([]); }
+
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     const newFlagState = this.state.list.items.length > 0 ? true : !this.state.flag;
-    if (this.state.list.items.length <= 0) { this.getFinalSelection([]); }
     this.setState({ ...this.setPropsToState(), flag: newFlagState });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.updateState();
     }
   }
 
+  /**
+   * Returns the inner {@link PackenUiInput} placeholder's correct text and color
+   * @type {function}
+   * @return {object} The configuration object
+   */
   getPlaceholderConfig = () => {
     let config = {
       text: this.state.input.placeholder,
@@ -177,6 +279,11 @@ class PackenUiDropdown extends Component {
     return config;
   }
 
+  /**
+   * Sets the content sizer actual dimensions to the state
+   * @type {function}
+   * @param {object} nativeEvent The event data
+   */
   getContentSizerDimensions = ({ nativeEvent }) => {
     let { height } = nativeEvent.layout;
     const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
@@ -190,6 +297,11 @@ class PackenUiDropdown extends Component {
     });
   }
 
+  /**
+   * Returns the styles object to be applied to the inner {@link PackenUiInput} component
+   * @type {function}
+   * @returns {object} The styles object containing the appropriate height to update according to the current input value
+   */
   getCustomStyle = () => {
     let styles = {};
 
@@ -202,6 +314,11 @@ class PackenUiDropdown extends Component {
     return styles;
   }
 
+  /**
+   * Returns the inner {@link PackenUiInput} component
+   * @type {function}
+   * @return {node} JSX for the input element
+   */
   getInput = () => (
     <PackenUiInput
       size={this.state.size}
@@ -228,6 +345,11 @@ class PackenUiDropdown extends Component {
     />
   )
 
+  /**
+   * Returns the inner content sizer element
+   * @type {function}
+   * @return {node} JSX for the content sizer element
+   */
   getContentSizer = () => (
     <View
       pointerEvents="none"
@@ -260,6 +382,11 @@ class PackenUiDropdown extends Component {
     </View>
   )
 
+  /**
+   * Returns the inner {@link PackenUiDropdownList} component
+   * @type {function}
+   * @return {node} JSX for the {@link PackenUiDropdownList} component
+   */
   getMenu = () => (
     <View
       onLayout={e => { this.getMenuDimensions(e.nativeEvent.layout) }}
@@ -277,6 +404,8 @@ class PackenUiDropdown extends Component {
         items={this.state.list.items}
         config={{ size: this.state.size, ...this.state.list.config }}
         numShownRows={4}
+        resetDropdown={this.reset}
+        theme={this.state.input.theme}
         getFinalSelection={this.getFinalSelection}
         finalSelectionArray={this.state.finalSelection}
         toggleMenu={this.toggleMenu}
@@ -285,6 +414,11 @@ class PackenUiDropdown extends Component {
     </View>
   )
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View
@@ -306,6 +440,11 @@ class PackenUiDropdown extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wrapper: {},

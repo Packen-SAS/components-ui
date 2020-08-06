@@ -4,19 +4,45 @@ import { View } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
 
+/**
+ * Component for rendering a horizontal line
+ */
 class PackenUiDivider extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [type="light"] The theme of the divider - "light" or "dark"
+   * @property {number} [size=1] The height of the line
+   * @property {string|number} [width="100%"] The width of the line
+   * @property {object} [margin=false] The optional margin top and bottom styles
+   * @property {string} color The background color for the line
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       type: this.props.type ? this.props.type : "light",
@@ -27,16 +53,30 @@ class PackenUiDivider extends Component {
     };
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{
@@ -49,6 +89,11 @@ class PackenUiDivider extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       base: {

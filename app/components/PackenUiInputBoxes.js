@@ -5,18 +5,40 @@ import { StyleSheet, View } from "react-native";
 import * as UTIL from "../utils";
 import PackenUiInput from "./PackenUiInput";
 
+/**
+ * Component for rendering a horizontal sequence of 1-digit inputs
+ */
 class PackenUiInputBoxes extends Component {
+  /**
+   * Variable that stores the state
+   * @type {object}
+   * @property {node[]} boxes The array of JSX elements for each input
+   * @property {object[]} boxesRefs The array of {@link PackenUiInput} refs/instances
+   */
   state = {
     boxes: [],
     boxesRefs: []
   };
 
+  /**
+   * Variable that stores each combined input data (ref, component JSX, input value)
+   * @type {object[]}
+   */
   items = [];
 
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
   }
 
+  /**
+   * Sets the initial configuration for the component
+   * @type {function}
+   */
   componentDidMount = () => {
     const { boxes } = this.props;
     for (let i = 0; i < boxes; i++) {
@@ -25,6 +47,11 @@ class PackenUiInputBoxes extends Component {
     this.setState({ boxes: this.items.map(this.renderBox) });
   }
 
+  /**
+   * Returns the optional custom styling props
+   * @type {function}
+   * @return {object} The styling object
+   */
   getPropStyling = () => {
     return this.props.styling ? { ...this.props.styling } : {
       container: {},
@@ -33,10 +60,21 @@ class PackenUiInputBoxes extends Component {
     }
   }
 
+  /**
+   * Sets an input's ref to the global variable
+   * @type {function}
+   * @param {node} input The JSX for the input component
+   * @param {object} ref The {@link PackenUiInput} component's ref/instance
+   */
   setInputRef = (input, ref) => {
     this.items[ref] = { ref: ref, input: input, text: null };
   }
 
+  /**
+   * Returns the combined inputs value
+   * @type {function}
+   * @returns {string} The combined inputs value
+   */
   getVerificationCode = () => {
     let code = "";
     for (let i = 0; i < this.items.length; i++) {
@@ -47,6 +85,11 @@ class PackenUiInputBoxes extends Component {
     return code;
   }
 
+  /**
+   * Handler function called when an input is submitted, to automatically focus the next one
+   * @type {function}
+   * @param {number} id The index identifier for the current input on focus
+   */
   handleOnSubmit = id => {
     const lastItem = this.items[this.items.length - 1];
     const currentItem = this.items[id];
@@ -61,6 +104,10 @@ class PackenUiInputBoxes extends Component {
     }
   }
 
+  /**
+   * Clears all inputs' values
+   * @type {function}
+   */
   clearInputs = () => {
     for (let i = 0; this.items[i] != null; i++) {
       if (this.items[i].input != null) {
@@ -70,6 +117,12 @@ class PackenUiInputBoxes extends Component {
     return 0;
   }
 
+  /**
+   * Handler function called when an input's content changes, to automatically focus the next one
+   * @type {function}
+   * @param {number} ref The index identifier for the current input on focus
+   * @param {string} text The input's value
+   */
   handleInputText = (ref, text) => {
     const lastItem = this.items[this.items.length - 1];
     const currentItem = this.items[ref];
@@ -92,6 +145,12 @@ class PackenUiInputBoxes extends Component {
     }
   }
 
+  /**
+   * Renders each individual {@link PackenUiInput} component
+   * @type {function}
+   * @param {number} id The identifier for this box
+   * @return {node} JSX for this box
+   */
   renderBox = id => (
     <View
       key={id}
@@ -113,6 +172,11 @@ class PackenUiInputBoxes extends Component {
     </View>
   );
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render = () => {
     return (
       <View style={{

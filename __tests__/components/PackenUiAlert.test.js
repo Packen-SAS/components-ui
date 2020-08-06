@@ -132,7 +132,7 @@ describe("<PackenUiAlert/>", () => {
     it("returns the correct styles object if no position is provided", () => {
       renderInstance.setState({ position: undefined });
       const res = renderInstance.getPositionAlert();
-      expect(res).toEqual(renderInstance.getStyles().box.position.top);
+      expect(res).toEqual(renderInstance.getStyles().box.position.bottom);
     });
   });
 

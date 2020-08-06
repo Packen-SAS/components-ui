@@ -15,7 +15,21 @@ import Color from "../styles/abstracts/colors";
 import PackenUiLoaderButton from "./PackenUiLoaderButton";
 import PackenUiAvatar from "./PackenUiAvatar";
 
+/**
+ * Component for managing the device's camera
+ */
 export default class PackenUiCamera extends Component {
+  /**
+   * Variable that stores the state
+   * @type {object}
+   * @property {object} camera The RNCamera ref/instance
+   * @property {boolean} proccessing Flag for the current process status
+   * @property {number} cameraType Determines if the front or back camera is in use
+   * @property {number} flashMode Determines whether the flash should be used when taking a picture
+   * @property {object|null} picture The current picture data object
+   * @property {boolean} imageViewble Determines whether the currently taken picture can be viewed
+   * @property {object} labels The correct i18n labels to be used for permissions feedback text
+   */
   state = {
     camera: null,
     proccessing: true,
@@ -26,12 +40,21 @@ export default class PackenUiCamera extends Component {
     labels: this.props.labels ? { ...this.props.labels } : false
   };
 
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
     this.emitPicture = this.emitPicture.bind(this);
     this.capturePicture = this.capturePicture.bind(this);
   }
 
+  /**
+   * Sets the initial configuration for the camera
+   * @type {function}
+   */
   componentDidMount = () => {
     this.setState({
       flashMode: RNCamera.Constants.FlashMode.off,
@@ -39,8 +62,16 @@ export default class PackenUiCamera extends Component {
     });
   }
 
+  /**
+   * Prevents the image preview modal from showing
+   * @type {function}
+   */
   restoreImagePreviewModal = () => this.setState({ imageViewble: false });
 
+  /**
+   * Handles receiving the taken picture
+   * @type {function}
+   */
   emitPicture = () => {
     const { EMIT_TRIGGER, dismiss } = this.props;
     if ((typeof EMIT_TRIGGER === "function") && (this.state.picture != null)) {
@@ -51,11 +82,18 @@ export default class PackenUiCamera extends Component {
     this.restoreImagePreviewModal();
   };
 
+  /**
+   * Informs that the camera is no longer processing a picture
+   * @type {function}
+   */
   finalize = () => this.setState({
     proccessing: false
   });
 
-
+  /**
+   * Initializes the process of taking a picture
+   * @type {function}
+   */
   capturePicture = async () => {
     if (this.state.camera == null) {
       return -1;
@@ -67,26 +105,54 @@ export default class PackenUiCamera extends Component {
     }, this.callCamera);
   }
 
+  /**
+   * Requests the device's camera to take a picture
+   * @type {function}
+   */
   callCamera = async () => await this.makeCapture();
 
+  /**
+   * Sets the picture taken to the state
+   * @type {function}
+   */
   makeCapture = async () => this.setState({
     picture: await this.state.camera.takePictureAsync(getPermissionOpts().picture)
   }, this.finalize);
 
+  /**
+   * Sets the camera ref/instance to the state key
+   * @type {function}
+   */
   setCamera = camera => this.setState({ camera: camera });
 
+  /**
+   * Sets the correct flashmode to the state
+   * @type {function}
+   */
   setFlash = () => this.setState({
     flashMode: (this.state.flashMode == RNCamera.Constants.FlashMode.off
       ? RNCamera.Constants.FlashMode.on : RNCamera.Constants.FlashMode.off)
   })
 
+  /**
+   * Sets the correct camera type to the state
+   * @type {function}
+   */
   setCameraType = () => this.setState({
     cameraType: (this.state.cameraType == RNCamera.Constants.Type.back
       ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back)
   })
 
+  /**
+   * Informs that the device's camera is ready to take another picture
+   * @type {function}
+   */
   cameraReady = () => this.setState({ proccessing: false })
 
+  /**
+   * Opens the image preview modal
+   * @type {function}
+   */
   showCurrentPicture = () => {
     if (this.state.picture == null) {
       return;
@@ -94,8 +160,17 @@ export default class PackenUiCamera extends Component {
     this.setState({ imageViewble: true });
   }
 
+  /**
+   * Removes current picture from state and closes preview modal
+   * @type {function}
+   */
   discardCurrentPicture = () => this.setState({ picture: null }, this.restoreImagePreviewModal);
 
+  /**
+   * Returns the preview modal if a picture was taken
+   * @type {function}
+   * @return {node|null} JSX for the preview modal or null
+   */
   getImagePreview = () => {
     if (this.state.picture == null) {
       return null;
@@ -120,6 +195,11 @@ export default class PackenUiCamera extends Component {
       </Modal>);
   }
 
+  /**
+   * Returns the overlay elements for "document" and "avatar" camera modes
+   * @type {function}
+   * @return {node|null} JSX for the overlaid elements or null
+   */
   getCameraLayout = () => {
     const { MODE } = this.props;
     switch (MODE) {
@@ -140,6 +220,11 @@ export default class PackenUiCamera extends Component {
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <React.Fragment>
@@ -182,6 +267,11 @@ PackenUiCamera.propTypes = {
   VISIBLE: PropTypes.bool.isRequired
 };
 
+/**
+ * Renders the two buttons for deleting and confirming the current picture when opening the preview modal
+ * @type {function}
+ * @param {object} props Props passed to the component
+ */
 export const CameraImagePreviewTriggers = props => {
   return (
     <View style={PackenCameraStyles.imagePreviewTriggersContainer}>
@@ -211,19 +301,36 @@ export const CameraImagePreviewTriggers = props => {
   );
 };
 
+/**
+ * Inner components for managing the top elements of the camera UI (close button, preview modal)
+ */
 export class CameraTopTriggers extends Component {
+  /**
+   * Variable that stores the state
+   * @type {function}
+   * @property {object} source The object that holds the preview image uri
+   */
   state = {
     source: {
       uri: (this.props.image != null ? this.props.image.uri : null)
     }
   }
 
+  /**
+   * Propagates the picture
+   * @type {function}
+   */
   propagePicture = () => {
     if ((typeof this.props.showPicture === "function")) {
       this.props.showPicture();
     }
   }
 
+  /**
+   * Updates the latest taken image uri
+   * @type {function}
+   * @param {object} prevProps The previous props object
+   */
   componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.setState({
@@ -234,6 +341,11 @@ export class CameraTopTriggers extends Component {
     }
   }
 
+  /**
+   * Renders the inner component
+   * @type {function}
+   * @return {node} JSX for the inner component
+   */
   render() {
     return (
       <View style={PackenCameraStyles.topTriggersContainer}>
@@ -253,12 +365,25 @@ export class CameraTopTriggers extends Component {
   }
 };
 
+/**
+ * Inner components for managing the bottom elements of the camera UI (flash, trigger, camera switch)
+ */
 export class CameraBottomTriggers extends Component {
+  /**
+   * Variable that stores the state
+   * @type {function}
+   * @property {boolean} hasFlash Determines if flash is active
+   * @property {boolean} loading Determines if the camera is currently processing a previous picture
+   */
   state = {
     hasFlash: false,
     loading: false
   }
 
+  /**
+   * Propagates the current flash mode via props
+   * @type {function}
+   */
   propagateFlashMode = () => {
     if ((typeof this.props.flashTrigger === "function") && !this.state.loading) {
       this.setState({ hasFlash: !this.state.hasFlash });
@@ -266,18 +391,31 @@ export class CameraBottomTriggers extends Component {
     }
   };
 
+  /**
+   * Propagates the press on the trigger button via props callback
+   * @type {function}
+   */
   propagatePictureTaked = () => {
     if ((typeof this.props.pictureTrigger === "function") && !this.state.loading) {
       this.props.pictureTrigger();
     }
   }
 
+  /**
+   * Propagates the current camera type via props
+   * @type {function}
+   */
   propagateReverseCamera = () => {
     if ((typeof this.props.reverseCameraTrigger === "function") && !this.state.loading) {
       this.props.reverseCameraTrigger();
     }
   }
 
+  /**
+   * Returns the camera trigger button
+   * @type {function}
+   * @return {node} JSX for the trigger button
+   */
   getCaptureTrigger = () => {
     if (!this.state.loading) {
       return (
@@ -310,7 +448,12 @@ export class CameraBottomTriggers extends Component {
     );
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  /**
+   * Sets the correct loading status on props change
+   * @type {function}
+   * @param {object} prevProps The previous props object
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.setState({
         loading: this.props.cameraIsLoading
@@ -318,6 +461,11 @@ export class CameraBottomTriggers extends Component {
     }
   }
 
+  /**
+   * Renders the inner component
+   * @type {function}
+   * @return {node} JSX for the inner component
+   */
   render() {
     return (
       <View style={PackenCameraStyles.bottomTriggersContainer}>
@@ -346,6 +494,13 @@ export class CameraBottomTriggers extends Component {
   }
 }
 
+/**
+ * Returns the overlaid elements for "document" camera modes
+ * @param {number} width The width for the SVG
+ * @param {number} height The height for the SVG
+ * @param {string} color The color for the SVG
+ * @return {node} JSX for the overlay SVG
+ */
 export const DocumentLayout = ({ width, height, color }) => (
   <Svg height={height} width={width} fill="transparent">
     {/* Esquina superior izquierda */}
@@ -363,6 +518,13 @@ export const DocumentLayout = ({ width, height, color }) => (
   </Svg>
 );
 
+/**
+ * Returns the overlaid elements for "avatar" camera modes
+ * @param {number} width The width for the SVG
+ * @param {number} height The height for the SVG
+ * @param {string} color The color for the SVG
+ * @return {node} JSX for the overlay SVG
+ */
 export const AvatarLayout = ({ width, height, color }) => (
   <Svg height={height} width={width} fill="transparent" viewBox="0 0 200 200">
     {/* Frame para encuadrar rostro del conductor */}

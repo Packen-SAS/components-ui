@@ -9,19 +9,57 @@ import PackenUiInput from "./PackenUiInput";
 import PackenUiDropdown from "./PackenUiDropdown";
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering a {@link PackenUiList}'s item, so it should not be used standalone
+ */
 class PackenUiListItem extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
+    
+    /**
+     * Variable that stores the {@link PackenUiDropdown}'s ref/instance if configured like so
+     * @type {object}
+     */
     this.dropdownRef = null;
+    
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {object} data The object that groups all configurations for this item
+   * @property {object} [data.input=false] The configuration for the optional inner {@link PackenUiInput} component
+   * @property {string} [data.size="default"] The size for the item styles - "default" or "large"
+   * @property {string} [data.title=""] The main label for simple items that just render text
+   * @property {string} [data.subtitle=false] The optional sub label for simple items that just render text
+   * @property {string} [data.label=false] The optional text to display to the right of the box
+   * @property {object} [data.icon=false] The configuration object for the optional icon displayed on the right of the box
+   * @property {node} [data.media=false] The optional JSX content to display to the left of the box
+   * @property {function} [data.callback=false] The optional callback to be triggered when pressing on this specific item
+   * @property {object} [data.customWrapperStyle={}] The optional styles to be applied specifically to the wrapper element
+   * @property {object} [styling={ wrapper: {}, media: {}, main: {}, sub: {}, title: {}, subtitle: {}, dropdown: {}, input: {}, label: {}, iconWrapper: {}, iconSize: undefined, iconColor: undefined }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       data: {
@@ -52,6 +90,10 @@ class PackenUiListItem extends Component {
     };
   }
 
+  /**
+   * Triggers the callback if provided
+   * @type {function}
+   */
   onPressHandler = () => {
     if (this.state.data.callback) {
       this.state.data.callback();
@@ -60,6 +102,12 @@ class PackenUiListItem extends Component {
     }
   }
 
+  /**
+   * Handles when the optional inner {@link PackenUiDropdown} component opens/closes to set its details to the state for correct styling
+   * @type {function}
+   * @param {boolean} newState Determines if the dropdown is open or closed
+   * @param {number} height The dropdown height
+   */
   onOpenStateChangeHandler = (newState, height) => {
     this.setState({
       data: {
@@ -73,6 +121,11 @@ class PackenUiListItem extends Component {
     });
   }
 
+  /**
+   * Returns the media element
+   * @type {function}
+   * @return {node|null} JSX for the media
+   */
   getMedia = () => {
     let media = null;
 
@@ -87,6 +140,12 @@ class PackenUiListItem extends Component {
     return media;
   }
 
+  /**
+   * Handles the change event on the optional inner {@link PackenUiInput} component to trigger its original callback
+   * @type {function}
+   * @param {string} name The identifier for the input
+   * @param {string} val The new value
+   */
   inputChangeHandler = (name, val) => {
     if (this.state.data.input.onChange) {
       this.state.data.input.onChange(name, val);
@@ -95,6 +154,12 @@ class PackenUiListItem extends Component {
     }
   }
 
+  /**
+   * Returns the main wrapping element
+   * @type {function}
+   * @param {node} children The children elements to wrap
+   * @return {node} JSX for the main wrapper and its content
+   */
   getMainWrapper = children => {
     return (
       <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
@@ -114,6 +179,11 @@ class PackenUiListItem extends Component {
     );
   }
 
+  /**
+   * Returns the correct placeholder configuration for the optional inner {@link PackenUiInput} either as a standalone component or as part of the also optional {@link PackenUiDropdown}, depending on its current value
+   * @type {function}
+   * @return {object} The configuration object
+   */
   getPlaceholder = () => {
     let config = {
       val: this.state.data.input.placeholder,
@@ -130,14 +200,28 @@ class PackenUiListItem extends Component {
     return config;
   }
 
+  /**
+   * Sets the {@link PackenUiDropdown} instance to the global variable
+   * @type {function}
+   * @param {object} ref The instance object
+   */
   getDropdownRef = ref => { this.dropdownRef = ref; }
 
+  /**
+   * Toggles the optional inner {@link PackenUiDropdown} on press
+   * @type {function}
+   */
   toggleDropdown = () => {
     if (this.dropdownRef) {
       this.dropdownRef.toggleMenu();
     }
   }
 
+  /**
+   * Determines which type of input content should be rendered as part of the main elements
+   * @type {function}
+   * @return {node|null} JSX for the correct input element or null
+   */
   determineInputContent = () => {
     let content = null;
     if (this.state.data.input.isDropdown) {
@@ -189,6 +273,11 @@ class PackenUiListItem extends Component {
     return content;
   }
 
+  /**
+   * Returns the wrapped main content
+   * @type {function}
+   * @return {node|null} JSX for the wrapped main content or null
+   */
   getMainContent = () => {
     let content = null;
 
@@ -203,6 +292,11 @@ class PackenUiListItem extends Component {
     return this.getMainWrapper(content);
   }
 
+  /**
+   * Returns the secondary content
+   * @type {function}
+   * @return {node|null} JSX for the secondary content or null
+   */
   getSubContent = () => {
     return (
       <View style={{ ...this.getStyles().sub, ...this.state.styling.sub }}>
@@ -231,6 +325,11 @@ class PackenUiListItem extends Component {
     )
   }
 
+  /**
+   * Returns the touchable area element, which covers the whole component, to more easily toggle the optional inner {@link PackenUiDropdown} element
+   * @type {function}
+   * @return {node} JSX for the touchable area
+   */
   getTouchableArea = () => {
     return (
       <View style={{ ...this.getStyles().touchable.area }} pointerEvents={this.state.data.input && this.state.data.input.isDropdown ? "auto" : "none"}>
@@ -241,16 +340,30 @@ class PackenUiListItem extends Component {
     );
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (prevProps !== this.props) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <TouchableWithoutFeedback
@@ -272,6 +385,11 @@ class PackenUiListItem extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wrapper: {

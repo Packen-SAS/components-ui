@@ -7,10 +7,27 @@ import Typography from "../styles/abstracts/typography";
 
 import PackenUiText from "../components/PackenUiText";
 
+/**
+ * Component for rendering a toggle element for switching two states
+ */
 class PackenUiToggle extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {string} initialState The initial status
+     * @property {object} shape The configuration data for the shape element
+     * @property {object} dot The configuration data for the dot element
+     * @property {object} on The configuration data for the on element
+     * @property {object} off The configuration data for the off element
+     */
     this.state = {
       ...this.setPropsToState(),
       initialState: this.setInitialState(),
@@ -40,6 +57,9 @@ class PackenUiToggle extends Component {
     }
   }
 
+  /**
+   * 
+   */
   setPropsToState = () => {
     return {
       isActive: this.props.isActive ? this.props.isActive : false,
@@ -60,10 +80,19 @@ class PackenUiToggle extends Component {
     };
   }
 
+  /**
+   * Returns the inner status of the component
+   * @type {function}
+   * @return {string} The current status
+   */
   setInitialState = () => {
     return this.props.isActive ? "active" : "inactive";
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props, positions all the elements, and checks if it's disabled
+   * @type {function}
+   */
   componentDidMount = () => {
     this.positionElement();
     this.checkIfDisabled();
@@ -73,6 +102,10 @@ class PackenUiToggle extends Component {
     }
   }
 
+  /**
+   * Sets the disabled styles of all elements to the state
+   * @type {function}
+   */
   setDisabledStyles = () => {
     this.setState({
       shape: {
@@ -102,6 +135,10 @@ class PackenUiToggle extends Component {
     });
   }
 
+  /**
+   * Determines and sets whether the component is disabled, and applies the correct styles
+   * @type {function}
+   */
   checkIfDisabled = () => {
     if (this.state.isDisabled) {
       this.setState({
@@ -110,6 +147,12 @@ class PackenUiToggle extends Component {
     }
   }
 
+  /**
+   * Sets the received dimensions to the appropriate elements in the state and re-positions them
+   * @type {function}
+   * @param {object} e The received onLayout event object
+   * @param {string} elem The state key corresponding to the updated element
+   */
   getElemDimensions = (e, elem) => {
     const { height, width } = e.nativeEvent.layout;
     this.setState({
@@ -121,6 +164,10 @@ class PackenUiToggle extends Component {
     }, this.positionElement);
   }
 
+  /**
+   * Sets the updated positioning styles for all elements to the state
+   * @type {function}
+   */
   positionElement = () => {
     const positionStyles = this.getPositionStyles();
     this.setState({
@@ -139,6 +186,11 @@ class PackenUiToggle extends Component {
     });
   }
 
+  /**
+   * Returns the correct position styles for all elements depending on the current status
+   * @type {function}
+   * @return {object} The positioning styles object
+   */
   getPositionStyles = () => {
     let positionStyles = {};
     const state = this.state.isDisabled ? this.state.initialState : this.state.state;
@@ -182,6 +234,10 @@ class PackenUiToggle extends Component {
     return positionStyles;
   }
 
+  /**
+   * Toggles the inner status and propagates the change
+   * @type {function}
+   */
   toggle = () => {
     this.setState({
       state: this.state.state === "active" ? "inactive" : "active"
@@ -192,6 +248,11 @@ class PackenUiToggle extends Component {
     });
   }
 
+  /**
+   * Returns the "dot" label element
+   * @type {function}
+   * @return {node} JSX for the "dot" element
+   */
   getDot = () => (
     <View style={{
       ...this.getStyles().dot.default,
@@ -202,6 +263,11 @@ class PackenUiToggle extends Component {
     }} onLayout={e => { this.getElemDimensions(e, "dot"); }}></View>
   )
 
+  /**
+   * Returns the "on" label element
+   * @type {function}
+   * @return {node} JSX for the "on" element
+   */
   getOnLabel = () => (
     <View onLayout={e => { this.getElemDimensions(e, "on"); }} style={{ ...this.state.on.positioning, ...this.state.styling.onWrapper }}>
       <PackenUiText style={{
@@ -213,6 +279,11 @@ class PackenUiToggle extends Component {
     </View>
   )
 
+  /**
+   * Returns the "off" label element
+   * @type {function}
+   * @return {node} JSX for the "off" element
+   */
   getOffLabel = () => (
     <View onLayout={e => { this.getElemDimensions(e, "off"); }} style={{ ...this.state.off.positioning, ...this.state.styling.offWrapper }}>
       <PackenUiText style={{
@@ -224,11 +295,21 @@ class PackenUiToggle extends Component {
     </View>
   )
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props, re-positions all elements, and checks if it should now be disabled
+   * @type {function}
+   * @param {object} prevProps Previous props
+   * @param {object} prevState Previous state
+   */
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.state !== this.state.state) {
       this.positionElement();
       this.checkIfDisabled();
@@ -238,6 +319,11 @@ class PackenUiToggle extends Component {
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View pointerEvents={this.state.isDisabled ? "none" : "auto"}>
@@ -257,6 +343,11 @@ class PackenUiToggle extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       shape: {

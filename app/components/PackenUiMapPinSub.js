@@ -10,19 +10,46 @@ import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
 
+/**
+ * Component for rendering the "sub" element of {@link PackenUiMapPin} components, and should not be used standalone
+ */
 class PackenUiMapPinSub extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [theme="primary"] The theme to apply correct styles - "primary"; "white"; "white_primary"
+   * @property {object} [icon=false] The configuration data in case the component should render an icon
+   * @property {object} [label=false] The configuration data in case the component should render a label/character
+   * @property {string} [dotPosition=false] The positioning for the dot in case it should render one
+   * @property {string} [type="info"] The type of {@link PackenUiMapPin} component to apply correct styles - "info" or "icon"
+   * @property {object} [styling={ box: {}, iconSize: undefined, iconColor: undefined, character: {}, dot: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       theme: this.props.theme ? this.props.theme : "primary",
@@ -40,6 +67,11 @@ class PackenUiMapPinSub extends Component {
     };
   }
 
+  /**
+   * Returns the correct color for the icon
+   * @type {function}
+   * @return {string} The color hex code value
+   */
   getIconColor = () => {
     let color = this.getStyles().icon.type.icon.color;
 
@@ -50,6 +82,11 @@ class PackenUiMapPinSub extends Component {
     return color;
   }
 
+  /**
+   * Returns the icon element if set so
+   * @type {function}
+   * @return {node|null} JSX for the icon or null
+   */
   getIcon = () => {
     let icon = null;
 
@@ -66,6 +103,11 @@ class PackenUiMapPinSub extends Component {
     return icon;
   }
 
+  /**
+   * Returns the label element if set so
+   * @type {function}
+   * @return {node|null} JSX for the label or null
+   */
   getLabel = () => {
     let label = null;
 
@@ -86,6 +128,11 @@ class PackenUiMapPinSub extends Component {
     return label;
   }
 
+  /**
+   * Returns the dot element if set so
+   * @type {function}
+   * @return {node|null} JSX for the dot or null
+   */
   getDot = () => {
     let dot = null;
 
@@ -104,16 +151,30 @@ class PackenUiMapPinSub extends Component {
     return dot;
   }
 
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
   updateState = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View
@@ -131,6 +192,11 @@ class PackenUiMapPinSub extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       dot: {

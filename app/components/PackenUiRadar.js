@@ -4,12 +4,29 @@ import { View, Animated } from "react-native";
 
 import Colors from "../styles/abstracts/colors";
 
+/**
+ * Component for rendering an animated, pulsing radar circle to be overlaid on maps
+ */
 class PackenUiRadar extends Component {
+  /**
+   * Initializes the componenmt
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the animation data object
+     * @type {object}
+     */
     this.shadowAnim = null;
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {object} transforms Holds the transform animations
+     */
     this.state = {
       ...this.setPropsToState(),
       transforms: {
@@ -20,6 +37,15 @@ class PackenUiRadar extends Component {
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [theme="wait"] The theme to apply correct styles - "wait"; "search"; "alert"
+   * @property {boolean} [animated=false] Determines if an animation should be applied or if it should be a static radar
+   * @property {boolean} [isAnimating=false] Determines if the animation should be running in case it's an animated radar
+   * @property {object} [styling={ wrapper: {}, shadow: {}, dot: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       theme: this.props.theme ? this.props.theme : "wait",
@@ -33,6 +59,11 @@ class PackenUiRadar extends Component {
     };
   }
 
+  /**
+   * Returns the correct transform depending on whether the radar is animated
+   * @type {function}
+   * @return {object[]} The transforms array
+   */
   getInitialShadowTransform = () => {
     let transform = [{ scale: 1 }];
 
@@ -44,6 +75,11 @@ class PackenUiRadar extends Component {
     return transform;
   }
 
+  /**
+   * Configures the animation and sets it to the global variable
+   * @type {function}
+   * @param {object[]} transform The transform array to animate
+   */
   setShadowAnimation = transform => {
     this.shadowAnim = Animated.loop(
       Animated.sequence([
@@ -61,15 +97,27 @@ class PackenUiRadar extends Component {
     );
   }
 
+  /**
+   * Starts the animation
+   * @type {function}
+   */
   startShadowAnimation = () => {
     this.setShadowAnimation(this.state.transforms.shadow.transform);
     this.shadowAnim.start();
   }
 
+  /**
+   * Stops the animation
+   * @type {function}
+   */
   stopShadowAnimation = () => {
     this.shadowAnim.stop();
   }
 
+  /**
+   * Determines whether to stop or start the animation
+   * @type {function}
+   */
   checkAnimationState = () => {
     if (this.state.isAnimating) {
       this.startShadowAnimation();
@@ -78,6 +126,10 @@ class PackenUiRadar extends Component {
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props and determines whether to initialize the animation
+   * @type {function}
+   */
   componentDidMount() {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
@@ -89,15 +141,20 @@ class PackenUiRadar extends Component {
     }
   }
 
+  /**
+   * Updates the state with new props and checks the animation status
+   * @type {function}
+   */
   updateState = () => {
-    this.setState({
-      ...this.setPropsToState()
-    }, () => {
-      this.checkAnimationState();
-    });
+    this.setState({ ...this.setPropsToState() }, this.checkAnimationState);
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState();
     } else {
@@ -105,6 +162,11 @@ class PackenUiRadar extends Component {
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
@@ -123,6 +185,11 @@ class PackenUiRadar extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       wrapper: {

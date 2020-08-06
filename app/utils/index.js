@@ -1,8 +1,11 @@
 import moment from "moment";
+import deepEqual from "deep-equal";
 
 export const genKey = () => {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 }
+
+export const objectsEqual = (obj1, obj2) => deepEqual(obj1, obj2);
 
 export const arraysEqual = (_arr1, _arr2) => {
   if (!Array.isArray(_arr1) || !Array.isArray(_arr2) || _arr1.length !== _arr2.length) {

@@ -7,10 +7,25 @@ import Colors from "../styles/abstracts/colors";
 import Typography from "../styles/abstracts/typography";
 import Shadows from "../styles/abstracts/shadows";
 
+/**
+ * Component for rendering an individual selectable button for a {@link PackenUiSelectionButtons} component, and should not be used standalone
+ */
 class PackenUiSelectionButtonsControl extends Component {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props) {
     super(props);
 
+    /**
+     * Variable that stores the state
+     * @type {object}
+     * @property {string} state The current status of this item
+     * @property {object} config The configuration for the particular inner elements depending on the type of item
+     * @property {string} [labelPreset="s2"] The initial label preset to pass to the inner {@link PackenUiText} component
+     */
     this.state = {
       ...this.setPropsToState(),
       state: this.getInitialState(),
@@ -19,6 +34,10 @@ class PackenUiSelectionButtonsControl extends Component {
     }
   }
 
+  /**
+   * Propagates the component instance if a callback is provided via props, and sets the labelPreset to the one defined in the config if its a "label" type item
+   * @type {function}
+   */
   componentDidMount() {
     if (this.state.type === "label") {
       this.setState({
@@ -30,6 +49,18 @@ class PackenUiSelectionButtonsControl extends Component {
     }
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {boolean} [altStyle="false"] Flag to switch to the alternative styles
+   * @property {string} [type="label"] Determines which type of selection buttons to render - "label" for small, simple text buttons; or "image" for big buttons with an image and text
+   * @property {object} [data={ value: "", label: "", image: { src: "", width: 0, height: 0 } }] The data for this item
+   * @property {string[]} [selected=[]] The array of currently selected items' values
+   * @property {string} [selection="single"] The type of selection - "single" for single selection; or "multiple" for multiple selections
+   * @property {function} [onNewSelection=false] The callback function to be called when this item is selected
+   * @property {object} [styling={ box: {}, image: {}, label: {} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState = () => {
     return {
       altStyle: this.props.altStyle ? this.props.altStyle : false,
@@ -54,6 +85,11 @@ class PackenUiSelectionButtonsControl extends Component {
     };
   }
 
+  /**
+   * Returns the correct configuration
+   * @type {function}
+   * @return {object} The configuration object
+   */
   getConfig = () => {
     let config = {};
     const { data, altStyle } = this.setPropsToState();
@@ -73,6 +109,11 @@ class PackenUiSelectionButtonsControl extends Component {
     return config;
   }
 
+  /**
+   * Returns the status of this item
+   * @type {function}
+   * @return {string} The current status
+   */
   getInitialState = () => {
     let state;
     const data = this.setPropsToState().data;
@@ -88,6 +129,10 @@ class PackenUiSelectionButtonsControl extends Component {
     return state;
   }
 
+  /**
+   * Handles a press on this item to propagate the new selection
+   * @type {function}
+   */
   newSelection = () => {
     if (this.state.onNewSelection) {
       this.state.onNewSelection(this.state.data.value);
@@ -96,6 +141,11 @@ class PackenUiSelectionButtonsControl extends Component {
     }
   }
 
+  /**
+   * Returns the image element if set so
+   * @type {function}
+   * @return {node|null} JSX for the image or null
+   */
   getImage = () => {
     let image = null;
 
@@ -117,6 +167,11 @@ class PackenUiSelectionButtonsControl extends Component {
     return image;
   }
 
+  /**
+   * Determines whether this item should be active
+   * @type {function}
+   * @return {object} The new state for this item
+   */
   checkIfActive = () => {
     let newState = { ...this.state };
 
@@ -156,6 +211,11 @@ class PackenUiSelectionButtonsControl extends Component {
     return newState;
   }
 
+  /**
+   * Updates the state with new props, and checks if it's an active item
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   updateState = prevProps => {
     this.setState({
       ...this.setPropsToState()
@@ -166,12 +226,22 @@ class PackenUiSelectionButtonsControl extends Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps) {
     if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
       this.updateState(prevProps);
     }
   }
 
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
   render() {
     return (
       <TouchableWithoutFeedback onPress={this.newSelection}>
@@ -196,6 +266,11 @@ class PackenUiSelectionButtonsControl extends Component {
     );
   }
 
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
   getStyles = () => {
     return {
       box: {
