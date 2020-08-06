@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image } from "react-native";
+import * as UTIL from "../utils";
 
 import { RNCamera } from "react-native-camera";
 import Svg, { Line, Path } from "react-native-svg";
@@ -332,7 +333,7 @@ export class CameraTopTriggers extends Component {
    * @param {object} prevProps The previous props object
    */
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.setState({
         source: {
           uri: (this.props.image != null ? this.props.image.uri : null)

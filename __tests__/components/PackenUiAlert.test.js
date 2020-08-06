@@ -66,8 +66,8 @@ describe("<PackenUiAlert/>", () => {
     });
 
     it("returns false while executing the close callback to be handled by the parent component if not provided", () => {
-      renderInstance.setState({ onClose: undefined });
       render.setProps({ dismiss: undefined });
+      renderInstance.state.onClose = undefined;
       const res = renderInstance.close();
 
       expect(res).toBe(false);

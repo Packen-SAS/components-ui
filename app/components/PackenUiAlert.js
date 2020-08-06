@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, TouchableWithoutFeedback } from "react-native";
+import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Colors from "../styles/abstracts/colors";
@@ -234,7 +235,7 @@ class PackenUiAlert extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }

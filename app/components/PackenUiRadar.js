@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View, Animated } from "react-native";
+import * as UTIL from "../utils"
 
 import Colors from "../styles/abstracts/colors";
 
@@ -155,7 +156,7 @@ class PackenUiRadar extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     } else {
       return false;

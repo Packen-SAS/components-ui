@@ -621,7 +621,7 @@ class PackenUiInput extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }
@@ -697,7 +697,10 @@ class PackenUiInput extends Component {
       giant: 72
     };
     return {
-      container: {},
+      container: {
+        marginTop: 3,
+        marginBottom: 12
+      },
       header: {
         base: {
           flexDirection: "row",
@@ -788,7 +791,8 @@ class PackenUiInput extends Component {
           success: {},
           primary: {},
           list: {
-            marginTop: 0
+            marginTop: -8,
+            marginBottom: -12
           }
         }
       },

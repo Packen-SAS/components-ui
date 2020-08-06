@@ -142,15 +142,9 @@ describe("<PackenUiRadio/>", () => {
     });
 
     it("can use latest currentSelection", () => {
-      const prevState = {
-        currentSelection: {
-          label: "Test",
-          value: "Test",
-          isDisabled: false
-        }
-      };
-      const response = renderColumnInstance.componentDidUpdate(null, prevState, null);
-      
+      const prevState = { checkedIndex: 0, currentSelection: { label: "Test", value: "Test", isDisabled: false } };
+      renderColumnInstance.setState({ checkedIndex: 1, currentSelection: { label: "Different text", value: "Different text", isDisabled: false } });
+      const response = renderColumnInstance.componentDidUpdate(null, prevState);
       expect(response).toEqual({
         label: "Different text",
         value: "Different text",

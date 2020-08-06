@@ -172,15 +172,20 @@ describe("<PackenUiRadar/>", () => {
     });
 
     it("returns false on componentDidUpdate", () => {
+      const instance = jest.fn();
       const prevProps = {
         theme: "search",
         animated: true,
         isAnimating: true,
-        test: "Test"
+        instance: instance
       };
-      render.setProps({ test: "Test" });
-      const res = renderInstance.componentDidUpdate(prevProps, null, null);
-
+      render.setProps({
+        theme: "search",
+        animated: true,
+        isAnimating: true,
+        instance: instance
+      });
+      const res = renderInstance.componentDidUpdate(prevProps);
       expect(res).toBe(false);
     });
   });

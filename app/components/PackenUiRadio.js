@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { View } from "react-native";
+import * as UTIL from "../utils"
 
 import PackenUiRadioControl from "./PackenUiRadioControl";
 
@@ -109,7 +110,7 @@ class PackenUiRadio extends Component {
       }
       return this.state.currentSelection;
     }
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }

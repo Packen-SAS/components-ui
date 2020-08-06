@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { TouchableWithoutFeedback, View, Animated, PanResponder, Image } from "react-native"
+import { TouchableWithoutFeedback, View, Animated, PanResponder } from "react-native"
+import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/dist/Feather";
 import Color from "../styles/abstracts/colors";
@@ -393,7 +394,7 @@ class PackenUiButton extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.updateState();
     }
   }

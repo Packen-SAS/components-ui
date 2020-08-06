@@ -108,7 +108,7 @@ class PackenUiLicenseBox extends Component {
    * @param {object} prevProps Previous props
    */
   componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevProps !== this.props) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.setState({ ...this.setPropsToState() });
     }
   }
