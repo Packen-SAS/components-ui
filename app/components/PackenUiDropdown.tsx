@@ -148,7 +148,7 @@ interface PackenUiDropdownProps {
   callback: Function;
   name: string;
   isDisabled?: boolean;
-  input: object;
+  input: InputStateShape;
   list: ListShape;
   size: string;
   styling?: StylingPropShape;
@@ -204,8 +204,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
      * @property {string} finalSelectionString The formatted selection string to be set to the input and content sizer elements
      * @return {object} The props mapped to the state keys
      */
-    this.state = {
-      ...this.setPropsToState(),
+    let innerState = {
       flag: true,
       contentSizerHeight: 0,
       isOpen: false,
@@ -218,7 +217,12 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
         menu: {}
       },
       finalSelection: [],
-      finalSelectionString: ""
+      finalSelectionString: props.input && props.input.theme !== "list" ? "" : undefined
+    };
+
+    this.state = {
+      ...this.setPropsToState(),
+      ...innerState
     }
   }
 
@@ -264,7 +268,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
    * @return {object} The props mapped to the state keys
    */
   setPropsToState: Function = (): object => {
-    return {
+    let newState = {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
       name: this.props.name ? this.props.name : "",
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,
@@ -298,8 +302,13 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
         menu: {},
         list: {},
         input: {}
-      }
+      },
+      finalSelectionString:
+        this.props.input && this.props.input.theme === "list"
+          ? this.props.input.placeholder || ''
+          : undefined
     };
+    return newState;
   }
 
   /**
@@ -459,7 +468,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
     let { height } = nativeEvent.layout;
     const minHeight = this.getStyles().contentSizer.wrapper.size[this.state.size].minHeight;
 
-    if (height < minHeight) {
+    if (this.state.input.theme !== "list" && (height < minHeight)) {
       height = minHeight;
     }
 
@@ -509,7 +518,8 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
       style={{
         ...this.getCustomStyle(),
         ...this.state.input.style,
-        ...this.getStyles().input
+        ...this.getStyles().input.base,
+        ...this.getStyles().input.theme[this.state.input.theme]
       }}
       name="dropdownInput"
       styling={this.state.styling.input}
@@ -601,7 +611,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
         pointerEvents={this.state.isDisabled ? "none" : "auto"}
       >
         <TouchableWithoutFeedback onPress={this.toggleMenu}>
-          <View style={{ ...this.getStyles().input, ...this.state.styling.inputWrapper }} pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
+          <View style={{ ...this.getStyles().inputWrapper, ...this.state.styling.inputWrapper }} pointerEvents={this.state.input.nonEditable ? "box-only" : "auto"}>
             {this.getInput()}
             {this.getContentSizer()}
           </View>
@@ -619,20 +629,34 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
   getStyles: Function = (): object => {
     return {
       wrapper: {},
-      input: {},
+      inputWrapper: {},
+      input: {
+        base: {},
+        theme: {
+          default: {},
+          success: {},
+          danger: {},
+          list: {
+            marginTop: 0,
+            marginBottom: 0,
+            paddingTop: 0,
+            paddingBottom: 0,
+            height: this.state.contentSizerHeight
+          }
+        }
+      },
       contentSizer: {
         wrapper: {
           base: {
             position: "absolute",
             height: "100%",
-            width: "100%",
+            width: "104%",
             opacity: 0
           },
           size: {
             tiny: {
               minHeight: 32,
-              paddingHorizontal: 8,
-              backgroundColor: "red"
+              paddingHorizontal: 8
             },
             small: {
               minHeight: 40,
@@ -699,8 +723,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
         },
         inner: {
           base: {
-            width: "100%",
-            backgroundColor: "red"
+            width: "100%"
           },
           size: {
             tiny: { paddingVertical: 7 },

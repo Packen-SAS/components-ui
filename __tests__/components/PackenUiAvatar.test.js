@@ -108,7 +108,8 @@ describe("<PackenUiAvatar/>", () => {
           container: {},
           image: {},
           iconSize: undefined,
-          iconColor: undefined
+          iconColor: undefined,
+          touchable: {}
         }
       });
     });

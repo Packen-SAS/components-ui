@@ -120,7 +120,7 @@ class PackenUiDivider extends Component<PackenUiDividerProps, PackenUiDividerSta
   getStyles: Function = (): object => {
     return {
       base: {
-        width: this.props.width,
+        width: this.props.width ? this.props.width : "100%",
         alignItems: "stretch"
       },
       type: {
