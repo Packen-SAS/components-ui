@@ -106,7 +106,13 @@ export const formatDateSimple = (date, format) => {
   return moment(date).format(format);
 }
 
-export const isNumber = number => {
+export const isNumber = (number) => {
+  if (!number) { return false; }
+  const rx = /^(\d+)$/g;
+  return rx.exec(number) != null;
+}
+
+export const isNumberStr = number => {
   return /^\d+$/.test(number.toString());
 }
 
@@ -135,7 +141,7 @@ export const isLettersNumbers = string => {
 }
 
 export const validators = {
-  number: isNumber,
+  number: isNumberStr,
   url: isURL,
   email: isEmail,
   letters: isOnlyLetters,

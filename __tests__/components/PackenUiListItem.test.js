@@ -66,6 +66,8 @@ describe("<PackenUiListItem/>", () => {
           subtitle: false,
           label: false,
           icon: false,
+          stateIcon: false,
+          subCustom: false,
           input: false,
           media: false,
           callback: false,
@@ -282,14 +284,14 @@ describe("<PackenUiListItem/>", () => {
     });
 
     it("executes the inputChangeHandler", () => {
-      renderInstance.setState({ data: { input: { onChange: jest.fn() } } });
+      renderInstance.setState({ data: { input: { onChangeText: jest.fn() } } });
       renderInstance.inputChangeHandler("Test", "val");
 
-      expect(renderInstance.state.data.input.onChange).toHaveBeenCalledWith("Test", "val");
+      expect(renderInstance.state.data.input.onChangeText).toHaveBeenCalledWith("Test", "val");
     });
 
     it("returns false while executing the inputChangeHandler if not provided", () => {
-      renderInstance.setState({ data: { input: { onChange: undefined } } });
+      renderInstance.setState({ data: { input: { onChangeText: undefined } } });
       const res = renderInstance.inputChangeHandler("Test", "val");
 
       expect(res).toBe(false);

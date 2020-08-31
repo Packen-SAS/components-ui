@@ -150,14 +150,16 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
     currentItem.text = text;
     this.items[ref] = currentItem;
     if (currentItem.ref !== lastItem.ref) {
-      const nextItem = this.items[currentItem.ref + 1];
-      nextItem.input.focus();
+      if (currentItem.text != null) {
+        const nextItem = this.items[currentItem.ref + 1];
+        nextItem.input.focus();
+      }
     } else {
       currentItem.input.blur();
-      if (typeof this.props.emitCode === "function") {
-        this.props.emitCode(this.getVerificationCode());
-        /* this.clearInputs(); */
-      }
+    }
+    if (typeof this.props.emitCode === "function") {
+      this.props.emitCode(this.getVerificationCode());
+      /* this.clearInputs(); */
     }
   }
 
@@ -186,14 +188,14 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
         size="medium"
         maxLength={1}
         theme="default"
-        placeholder="0"
+        placeholder="-"
         textAlign="center"
         keyboardType="numeric"
         instance={this.setInputRef}
         onChangeText={this.handleInputText}
+        style={PackenInputBoxesStyles.input}
         styling={this.getPropStyling().input}
         eventHandlers={this.getEventHandlers()}
-        style={{ textAlign: "center", padding: 5 }}
       />
     </View>
   );
@@ -227,11 +229,19 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
 
 const PackenInputBoxesStyles = StyleSheet.create({
   box_container: {
+    width: "100%",
     display: "flex",
+    marginBottom: 15,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 15
+    justifyContent: "space-between",
+  },
+  input: {
+    width: 56,
+    height: 56,
+    padding: 5,
+    borderWidth: 2,
+    textAlign: "center"
   }
 });
 

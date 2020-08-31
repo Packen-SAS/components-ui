@@ -127,21 +127,23 @@ interface StylingPropShape {
 }
 
 interface InputStateShape {
-  placeholder: string;
-  onChangeText: Function;
+  theme: string;
+  size: string;
+  onChangeText: Function | boolean;
   onOpenStateChange: Function;
+  style: object;
+  placeholder: string;
+  placeholderTextColor: string,
+  nonEditable: boolean;
+  isOpen: boolean;
   icon: IconShape;
   message: MessageShape | undefined;
   label: string;
   help: HelpShape | undefined;
-  theme: string;
   isDropdown: boolean;
-  nonEditable: boolean;
   disabled: boolean;
-  isOpen: boolean;
   multiline: boolean;
   name: string;
-  style: object;
 }
 
 interface PackenUiDropdownProps {
@@ -349,7 +351,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
         ...this.state.styles,
         menu: customStyles
       }
-    });
+    }, this.onOpenStateChange);
   }
 
   /**

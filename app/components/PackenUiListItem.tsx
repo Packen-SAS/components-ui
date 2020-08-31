@@ -18,6 +18,7 @@ interface DataLabelShape {
 interface DataIconShape {
   name: string;
   color: string;
+  callback?: VoidFunction;
 }
 
 interface SideConfigShape {
@@ -69,7 +70,7 @@ interface ListShape {
 }
 
 interface DataInputShape {
-  onChange: Function;
+  onChangeText: Function;
   isOpen: boolean;
   dropdownHeight: number;
   placeholder: string;
@@ -83,6 +84,11 @@ interface DataInputShape {
   list: ListShape;
 }
 
+interface DataStateIconShape {
+  name: string;
+  color: string;
+}
+
 interface DataPropShape {
   input?: DataInputShape;
   size?: string;
@@ -90,6 +96,8 @@ interface DataPropShape {
   subtitle?: string;
   label?: DataLabelShape;
   icon?: DataIconShape;
+  stateIcon?: DataStateIconShape | null;
+  subCustom?: ReactNode;
   media?: ReactNode;
   callback?: Function;
   customWrapperStyle?: object;
@@ -102,7 +110,9 @@ interface DataStateShape {
   subtitle?: string | boolean;
   label?: DataLabelShape | boolean;
   icon?: DataIconShape | boolean;
-  media?: ReactNode;
+  stateIcon?: DataStateIconShape | boolean;
+  subCustom?: ReactNode | boolean;
+  media?: ReactNode | boolean;
   callback?: Function | boolean;
   customWrapperStyle?: object;
 }
@@ -218,6 +228,13 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   }
 
   /**
+   * Placeholder function that does nothing
+   * @type {function}
+   * @return {boolean} Returned false value used for testing purposes
+   */
+  mockCallback: Function = (): boolean => false;
+
+  /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
    * @property {object} data The object that groups all configurations for this item
@@ -227,6 +244,8 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
    * @property {string} [data.subtitle=false] The optional sub label for simple items that just render text
    * @property {string} [data.label=false] The optional text to display to the right of the box
    * @property {object} [data.icon=false] The configuration object for the optional icon displayed on the right of the box
+   * @property {object} [data.stateIcon=false] The optional icon showing the components current status
+   * @property {node} [data.subCustom=false] The optional custom content to display on the right side of the component
    * @property {node} [data.media=false] The optional JSX content to display to the left of the box
    * @property {function} [data.callback=false] The optional callback to be triggered when pressing on this specific item
    * @property {object} [data.customWrapperStyle={}] The optional styles to be applied specifically to the wrapper element
@@ -242,6 +261,8 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
         subtitle: this.props.data.subtitle ? this.props.data.subtitle : false,
         label: this.props.data.label ? this.props.data.label : false,
         icon: this.props.data.icon ? { ...this.props.data.icon } : false,
+        stateIcon: this.props.data.stateIcon ? { ...this.props.data.stateIcon } : false,
+        subCustom: this.props.data.subCustom ? this.props.data.subCustom : false,
         media: this.props.data.media ? this.props.data.media : false,
         callback: this.props.data.callback ? this.props.data.callback : false,
         customWrapperStyle: this.props.data.customWrapperStyle ? this.props.data.customWrapperStyle : {}
@@ -345,9 +366,7 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   onPressHandler: VoidFunction = (): boolean | void => {
     if (typeof this.state.data.callback === "function") {
       this.state.data.callback();
-    } else {
-      return false;
-    }
+    } else { return false; }
   }
 
   /**
@@ -397,8 +416,13 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
    * @param {string} val The new value
    */
   inputChangeHandler: Function = (name: string, val: string): boolean | void => {
-    if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChange === "function") {
-      this.state.data.input.onChange(name, val);
+    if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChangeText === "function") {
+      this.state.data.input.onChangeText(name, val);
+      if (this.state.data.input.isDropdown) {
+        const updatedData = { ...this.state.data };
+        if (typeof updatedData.input === "object") { updatedData.input.value = val; }
+        this.setState({ data: updatedData }, this.updateDropdown);
+      }
     } else {
       return false;
     }
@@ -470,6 +494,16 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   }
 
   /**
+   * Closes the optional inner {@link PackenUiDropdown} on press
+   * @type {function}
+   */
+  updateDropdown: VoidFunction = () => {
+    if (this.dropdownRef) {
+      this.dropdownRef.onOpenStateChange();
+    }
+  }
+
+  /**
    * Determines which type of input content should be rendered as part of the main elements
    * @type {function}
    * @return {node|null} JSX for the correct input element or null
@@ -486,9 +520,16 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
           callback={this.inputChangeHandler}
           styling={this.state.styling.dropdown}
           input={{
+            name: "list-item-input",
+            multiline: false,
+            disabled: false,
+            isDropdown: true,
+            message: undefined,
+            label: "",
+            help: undefined,
             theme: "list",
             size: "medium",
-            onChangeText: false,
+            onChangeText: this.mockCallback,
             onOpenStateChange: this.onOpenStateChangeHandler,
             style: {
               paddingHorizontal: 24,
@@ -500,7 +541,7 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
             placeholderTextColor: this.getPlaceholder().color,
             nonEditable: this.state.data.input.nonEditable,
             isOpen: this.state.data.input.isOpen,
-            icon: { position: "right" }
+            icon: { position: "right", callback: () => true, style: {}, name: "chevron-down" }
           }}
         />
       );
@@ -545,6 +586,34 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   }
 
   /**
+   * Returns a formatted icon element for the component
+   * @type {function}
+   * @return {node} JSX for the icon element
+   */
+  getIcon: Function = (icon: DataIconShape): ReactNode => {
+    let render = (
+      <View style={{
+        ...this.getStyles().icon,
+        ...this.state.styling.iconWrapper
+      }}>
+        <Icon
+          name={icon.name}
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : 14}
+          color={this.state.styling.iconColor ? this.state.styling.iconColor : icon.color}
+        />
+      </View>
+    );
+    if (typeof icon.callback === "function") {
+      render = (
+        <TouchableWithoutFeedback onPress={icon.callback}>
+          {render}
+        </TouchableWithoutFeedback>
+      );
+    }
+    return render;
+  }
+
+  /**
    * Returns the secondary content
    * @type {function}
    * @return {node|null} JSX for the secondary content or null
@@ -560,19 +629,9 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
             }} preset="c1">{this.state.data.label.text}</PackenUiText>
           ) : null
         }
-        {
-          typeof this.state.data.icon === "object" && this.state.data.icon ? (
-            <View style={{
-              ...this.getStyles().icon,
-              ...this.state.styling.iconWrapper
-            }}>
-              <Icon
-                name={this.state.data.icon.name}
-                size={this.state.styling.iconSize ? this.state.styling.iconSize : 14}
-                color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.data.icon.color} />
-            </View>
-          ) : null
-        }
+        {this.state.data.stateIcon ? this.getIcon(this.state.data.stateIcon) : null}
+        {this.state.data.icon ? this.getIcon(this.state.data.icon) : null}
+        {this.state.data.subCustom ? this.state.data.subCustom : null}
       </View>
     )
   }

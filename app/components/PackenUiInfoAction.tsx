@@ -233,7 +233,11 @@ class PackenUiInfoAction extends Component<PackenUiInfoActionProps, PackenUiInfo
           ...this.state.boxStyle,
           ...this.state.styling.box
         }}>
-          <PackenUiSvgIcon name={this.state.img} width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 20} height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 20} />
+          <PackenUiSvgIcon
+            name={this.state.img}
+            width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 20}
+            height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 20}
+          />
           <View style={{
             ...this.getStyles().main,
             ...this.state.styling.main

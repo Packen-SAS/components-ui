@@ -10,6 +10,7 @@ import PackenUiText from "./PackenUiText";
 
 interface StylingPropShape {
   box: object;
+  iconWrapper: object;
   iconSize: number | undefined;
   iconColor: string | undefined;
   title: object;
@@ -17,7 +18,9 @@ interface StylingPropShape {
 
 interface PackenUiHeaderProps {
   children: ReactNode;
+  titlePreset?: string;
   icon?: string;
+  noIcon?: boolean;
   onBackPress: Function;
   style?: object;
   styling?: StylingPropShape;
@@ -26,7 +29,9 @@ interface PackenUiHeaderProps {
 
 interface PackenUiHeaderState {
   children: ReactNode;
+  titlePreset: string;
   icon: string;
+  noIcon: boolean;
   onBackPress: Function | boolean;
   customStyle: object;
   styling: StylingPropShape;
@@ -65,6 +70,7 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
    * @property {node} [children=null] The title text
+   * @property {string} [titlePreset="h6"] The style preset for the title
    * @property {string} [icon="arrow-left"] The icon name to be displayed
    * @property {function} [onBackPress=false] The callback function to be called when pressing the icon
    * @property {object} [customStyle={}] Custom styles object to be applied specifically to the wrapping box element
@@ -74,11 +80,14 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
   setPropsToState: Function = (): PackenUiHeaderState => {
     return {
       children: this.props.children || null,
+      titlePreset: this.props.titlePreset || 'h6',
       icon: this.props.icon || "arrow-left",
+      noIcon: this.props.noIcon || false,
       onBackPress: this.props.onBackPress || false,
       customStyle: this.props.style || {},
       styling: this.props.styling ? { ...this.props.styling } : {
         box: {},
+        iconWrapper: {},
         iconSize: undefined,
         iconColor: undefined,
         title: {}
@@ -103,7 +112,7 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: VoidFunction = () => {
     this.setState({ ...this.setPropsToState() });
   }
 
@@ -119,6 +128,30 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
   }
 
   /**
+   * Returns the icon element for the component or null if set so
+   * @type {function}
+   * @return {node|null} JSX for the icon element or null
+   */
+  getIcon: Function = (): ReactNode | null => {
+    if (this.state.noIcon) { return null; }
+    return (
+      <View style={{
+        ...this.getStyles().iconWrapper,
+        ...this.state.styling.iconWrapper
+      }}
+      >
+        <TouchableWithoutFeedback onPress={this.onPressHandler}>
+          <Icon
+            name={this.state.icon}
+            size={this.state.styling.iconSize ? this.state.styling.iconSize : 20}
+            color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.brand.primary.drk}
+          />
+        </TouchableWithoutFeedback>
+      </View>
+    );
+  }
+
+  /**
    * Renders the component
    * @type {function}
    * @return {node} JSX for the component
@@ -130,17 +163,14 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
         ...this.state.customStyle,
         ...this.state.styling.box
       }}>
-        <TouchableWithoutFeedback onPress={this.onPressHandler}>
-          <Icon
-            name={this.state.icon}
-            size={this.state.styling.iconSize ? this.state.styling.iconSize : 20}
-            color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.brand.primary.drk}
-          />
-        </TouchableWithoutFeedback>
-        <PackenUiText preset="h6" style={{
-          ...this.getStyles().title,
-          ...this.state.styling.title
-        }}>
+        {this.getIcon()}
+        <PackenUiText
+          preset={this.state.titlePreset}
+          style={{
+            ...this.getStyles().title,
+            ...this.state.styling.title
+          }}
+        >
           {this.state.children}
         </PackenUiText>
       </View>
@@ -163,8 +193,10 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
         justifyContent: "flex-start",
         backgroundColor: Colors.basic.white.dft
       },
+      iconWrapper: {
+        paddingRight: 15
+      },
       title: {
-        paddingLeft: 15,
         color: Colors.brand.primary.drk
       }
     }
@@ -176,7 +208,9 @@ class PackenUiHeader extends Component<PackenUiHeaderProps, PackenUiHeaderState>
    */
   static propTypes: object = {
     children: PropTypes.node.isRequired,
+    titlePreset: PropTypes.string,
     icon: PropTypes.string,
+    noIcon: PropTypes.bool,
     onBackPress: PropTypes.oneOfType([PropTypes.func, PropTypes.bool]).isRequired,
     customStyle: PropTypes.object,
     styling: PropTypes.object,
