@@ -377,6 +377,9 @@ describe("<PackenUiServiceStatusItem/>", () => {
 
       expect(res).toEqual({
         data: {
+          title: "",
+          label: false,
+          subtitle: false,
           isComplete: false,
           isCurrent: false,
           time: "00:00"
@@ -385,6 +388,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
         itemsHeights: [],
         setItemsHeights: false,
         currentStepIndex: -1,
+        altStyle: false,
         styling: {
           box: {},
           sub: {},

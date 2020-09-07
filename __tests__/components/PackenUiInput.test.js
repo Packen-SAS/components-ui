@@ -229,7 +229,6 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedState = renderInstance.setInitialState();
-      console.log("RETURNED STATE IS", returnedState);
       expect(returnedState).toEqual({
         ...renderInstance.state,
         help: {

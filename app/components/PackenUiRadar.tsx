@@ -80,7 +80,7 @@ class PackenUiRadar extends Component<PackenUiRadarProps, PackenUiRadarState> {
    * @property {object} [styling={ wrapper: {}, shadow: {}, dot: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState = () => {
+  setPropsToState: Function = (): PackenUiRadarProps => {
     return {
       theme: this.props.theme ? this.props.theme : "wait",
       animated: this.props.animated ? this.props.animated : false,
@@ -154,7 +154,7 @@ class PackenUiRadar extends Component<PackenUiRadarProps, PackenUiRadarState> {
    * Determines whether to stop or start the animation
    * @type {function}
    */
-  checkAnimationState = () => {
+  checkAnimationState: VoidFunction = () => {
     if (this.state.isAnimating) {
       this.startShadowAnimation();
     } else {

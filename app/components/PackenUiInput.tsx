@@ -1188,7 +1188,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
             },
             size: {
               tiny: {
-                height: 96
+                height: 60
               },
               small: {
                 height: 104

@@ -1,10 +1,18 @@
 export default {
   base: {
+    default: "#222B45",
+    default_alt: "#304D6D",
+    default_drk: "#1F3246",
     default_lgt: "#EDF1F7",
-    default_alt: "#E6E6E6",
+    white: "#FFFFFF",
     disabled: "rgba(48, 77, 109, 0.05)",
     disabled_alt: "rgba(48, 77, 109, 0.2)",
-    disabled_alt_drk: "rgba(48, 77, 109, 0.4)"
+    disabled_alt_drk: "rgba(48, 77, 109, 0.4)",
+    transparent: "rgba(255, 255, 255, 0)",
+    gray: "#7B8DA2",
+    gray_drk: "#A0AEBC",
+    gray_alt: "#C6CED7",
+    gray_alt_drk: "#231F20"
   },
   primary: {
     default: "#00B3DB",
@@ -12,11 +20,16 @@ export default {
   },
   secondary: {
     default: "#F5F7F8",
+    default_drk: "#556D87",
     focus: "#C6CED7"
   },
   tertiary: {
     default: "#556D87",
     focus: "#304D6D"
+  },
+  brandSecondary: {
+    default: "#0D73FF",
+    focus: "#0D73FF"
   },
   ghost: {
     default: "rgba(255, 255, 255, 0)",
@@ -29,6 +42,7 @@ export default {
   },
   warning: {
     default: "#FFC10A",
+    focus: "#B78105",
     drk: "#B78105",
     lgt: "#FFF7CE"
   },
@@ -39,6 +53,7 @@ export default {
   },
   success: {
     default: "#20D292",
+    focus: "#1E9078",
     drk: "#1E9078",
     lgt: "#ECFCF8"
   },
@@ -71,13 +86,13 @@ export default {
     gray: {
       dft: "#C6CED7",
       lgt: "#ECEEF1",
+      alt: "#E6E6E6",
       drk: "#A0AEBC"
     },
     independence: {
       dft: "#556D87",
       lgt: "#7B8DA2",
-      drk: "#304D6D",
-      drk_alt: "#222B45"
+      drk: "#304D6D"
     },
     yankees: {
       dft: "#1F3246"

@@ -90,11 +90,18 @@ export const getDateByChunks = (d, locale) => {
   }
 }
 
+export const removeTimezone = (str) => {
+  if (typeof str !== 'string') { return str; }
+  if (!str.includes('T')) {
+    return (str.includes(' -05') ? str.split(' -05')[0] : str).replace(/-/g, '/');
+  } return str;
+};
+
 export const datetime = () => {
   return {
     plain: time => getDate(time),
     parts: (time, locale) => getDateByChunks(time, locale),
-    obj: o => moment(o),
+    obj: o => moment(removeTimezone(o)),
     diff: (a, b, mode) => (a.diff(b, mode))
   }
 }
@@ -149,3 +156,49 @@ export const validators = {
   lettersSpecial: isLettersSpecial,
   lettersNumbers: isLettersNumbers
 }
+
+export const toTitleCase = (str) => {
+  if (typeof str !== 'string') { return str; }
+  return str.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+};
+
+export const toCapitalCase = (str) => {
+  if (typeof str !== 'string') { return str; }
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+export const getNdayFormat = (locale, nday) => {
+  let ndayFormat = '';
+  if (locale === 'es') {
+    ndayFormat = ' de';
+  } else {
+    switch (nday.toString()) {
+      case '1':
+      case '01':
+        ndayFormat = 'st';
+        break;
+      case '2':
+      case '02':
+        ndayFormat = 'nd';
+        break;
+      case '3':
+      case '03':
+        ndayFormat = 'rd';
+        break;
+      default:
+        ndayFormat = 'th';
+        break;
+    }
+  }
+  return ndayFormat;
+};
+
+export const num2ltr = (num) => {
+  if (!num) { return null; }
+  return String.fromCharCode(num + 64);
+};
+
+export const hex2rgba = (hex, alpha = 1) => {
+  const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
+  return `rgba(${r},${g},${b},${alpha})`;
+};

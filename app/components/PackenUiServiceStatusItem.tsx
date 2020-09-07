@@ -26,15 +26,18 @@ interface StylingPropShape {
 interface DataShape {
   time?: string;
   title: string;
+  label?: string;
   subtitle?: string;
-  isCurrent: boolean;
-  isComplete: boolean;
+  isCurrent?: boolean;
+  isComplete?: boolean;
   callback?: VoidFunction;
 }
 
 interface LinePositioningShape {
+  top?: number;
+  left?: number;
   height: number;
-  bottom: number;
+  bottom?: number;
 }
 
 interface BoxStylesShape {
@@ -48,6 +51,7 @@ interface PackenUiServiceStatusItemProps {
   itemsHeights: number[];
   setItemsHeights: Function;
   currentStepIndex: number;
+  altStyle?: boolean,
   styling?: StylingPropShape;
   instance?: Function;
 }
@@ -58,6 +62,7 @@ interface PackenUiServiceStatusItemState {
   itemsHeights: number[];
   setItemsHeights: Function | boolean;
   currentStepIndex: number;
+  altStyle: boolean,
   styling: StylingPropShape;
   state: string;
   time: ReactNode | null;
@@ -81,7 +86,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * @type {number}
    */
   spaceBetweenItems: number = 25;
-  
+
   /**
    * Initializes the component
    * @type {function}
@@ -137,10 +142,14 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
   setPropsToState: Function = (): object => {
     return {
       data: this.props.data ? { ...this.props.data } : {
+        title: '',
+        label: false,
+        subtitle: false,
         isComplete: false,
         isCurrent: false,
         time: "00:00"
       },
+      altStyle: this.props.altStyle || false,
       index: this.props.index ? this.props.index : 0,
       itemsHeights: this.props.itemsHeights ? [...this.props.itemsHeights] : [],
       setItemsHeights: this.props.setItemsHeights ? this.props.setItemsHeights : false,
@@ -237,7 +246,8 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
         <PackenUiText
           style={{
             ...this.getStyles().subtitle.base,
-            ...this.getStyles().subtitle.state[this.state.state],
+            ...this.getStyles().subtitle.state[this.state.state].main,
+            ...this.getStyles().subtitle.state[this.state.state].alt[this.state.altStyle.toString()],
             ...this.state.styling.subtitle
           }}
         >{this.state.data.subtitle}</PackenUiText>
@@ -253,9 +263,20 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * @return {object} The styles object with "height" and "bottom" defined
    */
   getLinePositioning: Function = (): LinePositioningShape => {
+    if (!this.state.altStyle) {
+      return {
+        height: this.state.dimensions.line.height,
+        bottom: this.state.dimensions.line.bottom
+      };
+    }
+    let newHeight = this.state.dimensions.line.height - 3;
+    if (this.state.itemsHeights.length !== 1) {
+      newHeight = this.state.index === 0 ? this.state.dimensions.line.height + this.spaceBetweenItems + 2 : this.state.dimensions.line.height + 6;
+    }
     return {
-      height: this.state.dimensions.line.height,
-      bottom: this.state.dimensions.line.bottom
+      top: 3,
+      left: 5,
+      height: newHeight || this.state.dimensions.line.height
     };
   }
 
@@ -268,13 +289,19 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     let line: ReactNode | null = (
       <View style={{
         ...this.getStyles().line.base,
-        ...this.getStyles().line.state[this.state.state],
+        ...this.getStyles().line.state[this.state.state].main,
+        ...this.getStyles().line.state[this.state.state].alt[this.state.altStyle.toString()],
         ...this.getLinePositioning(),
         ...this.state.styling.line
       }}></View>
     );
 
-    if (this.state.index === 0) {
+    if (
+      (this.state.altStyle
+      && this.state.itemsHeights.length !== 1
+      && this.state.index === this.state.itemsHeights.length - 1)
+      || (!this.state.altStyle && this.state.index === 0)
+    ) {
       line = null;
     }
 
@@ -289,7 +316,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
   getBoxStyles: Function = (): BoxStylesShape => {
     return {
       marginTop: this.state.index === 0 ? 0 : this.spaceBetweenItems,
-      zIndex: this.state.itemsHeights.length - this.state.index
+      zIndex: this.state.altStyle ? this.state.index : this.state.itemsHeights.length - this.state.index
     };
   }
 
@@ -353,6 +380,25 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     }
   }
 
+  getTimeRender = () => {
+    if (this.state.altStyle) { return null; }
+    return (
+      <View style={{
+        ...this.getStyles().sub,
+        ...this.state.styling.sub
+      }}>
+        {this.state.time}
+      </View>
+    );
+  }
+
+  getLabel = () => {
+    if (!this.state.data.label) { return null; }
+    return (
+      <PackenUiText preset="p1" style={this.getStyles().label}>{this.state.data.label}</PackenUiText>
+    );
+  }
+
   /**
    * Updates the state with new props, and checks if its status changed
    * @type {function}
@@ -400,29 +446,38 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     return (
       <View
         style={{
-          ...this.getStyles().item,
+          ...this.getStyles().item.base,
+          ...this.getStyles().item.alt[this.state.altStyle.toString()],
           ...this.getBoxStyles(),
           ...this.state.styling.box
         }}
         onLayout={e => { this.setBoxDimensions(e); }}
       >
-        <View style={{ ...this.getStyles().sub, ...this.state.styling.sub }}>
-          {this.state.time}
-        </View>
-        <View style={{ ...this.getStyles().spacer, ...this.state.styling.spacer }}>
+        {this.getTimeRender()}
+        <View
+          style={{
+            ...this.getStyles().spacer.base,
+            ...this.getStyles().spacer.alt[this.state.altStyle.toString()],
+            ...this.state.styling.spacer
+          }}
+        >
           {this.getLine()}
-          <View style={{
-            ...this.getStyles().dot.base,
-            ...this.getStyles().dot.state[this.state.state],
-            ...this.state.styling.dot
-          }}>
+          <View
+            style={{
+              ...this.getStyles().dot.base,
+              ...this.getStyles().dot.state[this.state.state].main,
+              ...this.getStyles().dot.state[this.state.state].alt[this.state.altStyle.toString()],
+              ...this.state.styling.dot
+            }}
+          >
             {this.getDotIcon()}
           </View>
         </View>
         <View style={{ ...this.getStyles().main, ...this.state.styling.main }}>
           <PackenUiText
             style={{
-              ...this.getStyles().title.state[this.state.state],
+              ...this.getStyles().title.state[this.state.state].main,
+              ...this.getStyles().title.state[this.state.state].alt[this.state.altStyle.toString()],
               ...this.state.styling.title
             }}
           >{this.state.data.title}</PackenUiText>
@@ -437,133 +492,230 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * @type {function}
    * @return {object} The current styles object
    */
-  getStyles: Function = (): object => {
-    return {
-      item: {
-        flexDirection: "row",
-        alignItems: "stretch",
-        justifyContent: "space-between",
-        position: "relative"
+  getStyles: Function = (): object => ({
+    item: {
+      base: {
+        flexDirection: 'row',
+        alignItems: 'stretch',
+        justifyContent: 'space-between',
+        position: 'relative'
       },
-      sub: {
-        width: 35,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "flex-start"
-      },
-      time: {
-        fontFamily: Typography.family.regular,
-        fontSize: Typography.size.xtiny,
-        lineHeight: Typography.lineheight.xtiny,
-        color: Colors.basic.gray.drk
-      },
-      spacer: {
-        width: 40,
-        alignItems: "center",
-        justifyContent: "center",
-        position: "relative"
-      },
-      line: {
-        base: {
-          width: 1,
-          position: "absolute",
-          left: 20,
-          zIndex: 1
+      alt: {
+        true: {
+          alignItems: 'flex-start'
         },
-        state: {
-          default: {
+        false: {}
+      }
+    },
+    sub: {
+      width: 35,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start'
+    },
+    time: {
+      fontFamily: Typography.family.regular,
+      fontSize: Typography.size.xtiny,
+      lineHeight: Typography.lineheight.xtiny,
+      color: Colors.basic.gray.drk
+    },
+    spacer: {
+      base: {
+        width: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative'
+      },
+      alt: {
+        true: {
+          width: 11,
+          marginRight: 14
+        },
+        false: {}
+      }
+    },
+    line: {
+      base: {
+        width: 1,
+        position: 'absolute',
+        left: 20,
+        zIndex: 1
+      },
+      state: {
+        default: {
+          main: {
             backgroundColor: Colors.basic.gray.drk
           },
-          completed: {
-            backgroundColor: Colors.basic.independence.dft
-          },
-          active: {
-            backgroundColor: Colors.basic.independence.dft
+          alt: {
+            true: { backgroundColor: Colors.basic.independence.drk },
+            false: {}
           }
-        }
-      },
-      dot: {
-        base: {
-          borderRadius: 20,
-          position: "relative",
-          zIndex: 2,
-          alignItems: "center",
-          justifyContent: "center"
         },
-        state: {
-          default: {
-            height: 11,
-            width: 11,
-            borderWidth: 1,
-            borderStyle: "solid",
-            borderColor: Colors.basic.gray.drk,
-            backgroundColor: Colors.basic.white.dft
+        completed: {
+          main: {
+            backgroundColor: Colors.basic.independence.dft
           },
-          completed: {
-            height: 8,
-            width: 8,
-            backgroundColor: Colors.basic.independence.drk
+          alt: {
+            true: { backgroundColor: Colors.success.default },
+            false: {}
+          }
+        },
+        active: {
+          main: {
+            backgroundColor: Colors.basic.independence.dft
           },
-          active: {
-            height: 24,
-            width: 24,
-            borderWidth: 6,
-            borderStyle: "solid",
-            borderColor: "rgba(32, 210, 146, 0.3)",
-            backgroundColor: Colors.success.default
+          alt: {
+            true: { backgroundColor: Colors.success.default },
+            false: {}
           }
         }
+      }
+    },
+    dot: {
+      base: {
+        borderRadius: 20,
+        position: 'relative',
+        zIndex: 2,
+        alignItems: 'center',
+        justifyContent: 'center'
       },
-      icon: {
-        color: Colors.basic.white.dft,
-        size: Typography.size.xtiny * 0.65
-      },
-      main: {
-        flexDirection: "column",
-        alignItems: "flex-start",
-        justifyContent: "center",
-        flex: 1
-      },
-      title: {
-        state: {
-          default: {
+      state: {
+        default: {
+          main: {
+            width: 11,
+            height: 11,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: Colors.basic.gray.drk,
+            backgroundColor: Colors.basic.white.dft,
+          },
+          alt: {
+            true: {
+              marginTop: 3,
+              borderWidth: 0,
+              backgroundColor: Colors.basic.independence.drk
+            },
+            false: {}
+          }
+        },
+        completed: {
+          main: {
+            width: 8,
+            height: 8,
+            backgroundColor: Colors.basic.independence.drk,
+          },
+          alt: {
+            true: {},
+            false: {}
+          }
+        },
+        active: {
+          main: {
+            width: 24,
+            height: 24,
+            borderWidth: 6,
+            borderStyle: 'solid',
+            borderColor: 'rgba(32, 210, 146, 0.3)',
+            backgroundColor: Colors.success.default,
+          },
+          alt: {
+            true: {
+              width: 11,
+              height: 11,
+              marginTop: 3,
+              borderWidth: 0
+            },
+            false: {}
+          }
+        }
+      }
+    },
+    icon: {
+      color: Colors.basic.white.dft,
+      size: Typography.size.xtiny * 0.65
+    },
+    main: {
+      flexDirection: 'column',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      flex: 1
+    },
+    title: {
+      state: {
+        default: {
+          main: {
             fontFamily: Typography.family.semibold,
             fontSize: Typography.size.medium,
             lineHeight: Typography.lineheight.huge,
             color: Colors.basic.gray.drk
           },
-          completed: {
+          alt: {
+            true: { ...Typography.p1, color: Colors.basic.independence.dft },
+            false: {}
+          }
+        },
+        completed: {
+          main: {
             fontFamily: Typography.family.semibold,
             fontSize: Typography.size.medium,
             lineHeight: Typography.lineheight.huge,
             color: Colors.basic.independence.dft
           },
-          active: {
+          alt: {
+            true: { ...Typography.p1, color: Colors.basic.independence.dft },
+            false: {}
+          }
+        },
+        active: {
+          main: {
             fontFamily: Typography.family.bold,
             fontSize: Typography.size.giant,
             lineHeight: Typography.lineheight.huge,
             color: Colors.basic.independence.drk
-          }
-        }
-      },
-      subtitle: {
-        base: {
-          fontFamily: Typography.family.regular,
-          fontSize: Typography.size.xtiny,
-          lineHeight: Typography.lineheight.xtiny,
-          color: Colors.basic.gray.drk
-        },
-        state: {
-          default: {},
-          completed: {},
-          active: {
-            fontSize: Typography.size.small,
-            lineHeight: Typography.lineheight.small
+          },
+          alt: {
+            true: { ...Typography.p1, color: Colors.basic.independence.dft },
+            false: {}
           }
         }
       }
-    };
-  }
+    },
+    subtitle: {
+      base: {
+        fontFamily: Typography.family.regular,
+        fontSize: Typography.size.xtiny,
+        lineHeight: Typography.lineheight.xtiny,
+        color: Colors.basic.gray.drk
+      },
+      state: {
+        default: {
+          main: {},
+          alt: {
+            true: { ...Typography.c1, color: Colors.basic.independence.dft },
+            false: {}
+          }
+        },
+        completed: {
+          main: {},
+          alt: {
+            true: { ...Typography.c1, color: Colors.basic.independence.dft },
+            false: {}
+          }
+        },
+        active: {
+          main: {
+            fontSize: Typography.size.small,
+            lineHeight: Typography.lineheight.small
+          },
+          alt: {
+            true: { ...Typography.c1, color: Colors.basic.independence.dft },
+            false: {}
+          }
+        }
+      }
+    },
+    label: { ...Typography.c1 }
+  });
 
   /**
    * Defines prop-types for the component
@@ -575,6 +727,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     itemsHeights: PropTypes.arrayOf(PropTypes.number).isRequired,
     setItemsHeights: PropTypes.func.isRequired,
     currentStepIndex: PropTypes.number.isRequired,
+    altStyle: PropTypes.bool,
     styling: PropTypes.object,
     instance: PropTypes.func
   };
