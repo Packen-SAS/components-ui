@@ -301,7 +301,7 @@ class PackenUiToggle extends Component<PackenUiToggleProps, PackenUiToggleState>
       state: this.state.state === "active" ? "inactive" : "active"
     }, () => {
       if (typeof this.state.toggleHandler === "function") {
-        this.state.toggleHandler(this.state.name, this.state.state === "active" ? true : false);
+        this.state.toggleHandler(this.state.name, this.state.state === "active");
       }
     });
   }

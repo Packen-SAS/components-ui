@@ -36,14 +36,14 @@ interface StylingPropShape {
 }
 
 interface IconPropShape {
-  anim: {
+  anim?: {
     state: string;
     controller: {
       stop: Function;
       start: Function;
     }
   };
-  styles: object;
+  styles?: object;
   name: string;
   position: string;
 }
@@ -582,7 +582,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
         </View>
       );
   
-      if (this.state.icon.anim) {
+      if (this.state.icon.anim && this.state.icon.styles) {
         icon = (
           <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
             <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />

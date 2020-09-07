@@ -103,23 +103,6 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
   }
 
   /**
-   * Returns the current styles object
-   * @type {function}
-   * @return {object} The current styles object
-   */
-  getStyles: Function = (): object[] => (
-    [
-      {
-        display: "flex", justifyContent: "flex-end",
-        alignItems: "center", flexDirection: "row", width: "auto",
-        height: "auto", padding: 5
-      },
-      (this.state.style !== null ? this.state.style : {}),
-      this.state.styling.box
-    ]
-  )
-
-  /**
    * Updates the state with new props
    * @type {function}
    */
@@ -150,19 +133,18 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
           this.props.visible ? (
             <TouchableNativeFeedback
               onPress={this.trigger}>
-              <View style={this.getStyles()}>
+              <View style={{
+                ...this.getStyles().box,
+                ...this.state.style,
+                ...this.state.styling.box
+              }}>
                 <PackenUiSvgIcon
                   name={!this.state.inverted ? "whatsapp" : "whatsapp_inverted"}
-                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 24}
-                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 24} />
+                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 18}
+                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 18} />
                 <PackenUiText
                   style={{
-                    textDecorationStyle: "solid",
-                    textDecorationLine: "underline",
-                    textTransform: "uppercase",
-                    fontSize: 12,
-                    color: this.state.color,
-                    textDecorationColor: this.state.color,
+                    ...this.getStyles().label,
                     ...this.state.styling.text
                   }}>
                   {this.state.text}
@@ -174,6 +156,31 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
       </React.Fragment>
     )
   };
+
+  /**
+   * Returns the current styles object
+   * @type {function}
+   * @return {object} The current styles object
+   */
+  getStyles: Function = (): object => ({
+    box: {
+      display: "flex",
+      justifyContent: "flex-end",
+      alignItems: "center",
+      flexDirection: "row",
+      width: "auto",
+      height: "auto",
+      padding: 5
+    },
+    label: {
+      textDecorationStyle: "solid",
+      textDecorationLine: "underline",
+      textTransform: "uppercase",
+      fontSize: 12,
+      color: this.state.color,
+      textDecorationColor: this.state.color
+    }
+  })
 
   /**
    * Defines prop-types for the component

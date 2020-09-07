@@ -11,7 +11,7 @@ import PackenUiTag from "./PackenUiTag";
 
 interface LabelsStateShape {
   approved: string;
-  rejected: string;
+  declined: string;
   pending: string;
 }
 
@@ -62,7 +62,7 @@ interface PackenUiVehicleBoxState {
   plate: string;
   state: string;
   callback: ((event: GestureResponderEvent) => void) | undefined;
-  image: string;
+  image: string | undefined;
   labels: LabelsStateShape;
   styling: StylingPropShape;
 }
@@ -71,6 +71,8 @@ interface PackenUiVehicleBoxState {
  * Component for displaying a driver's vehicle overview
  */
 class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehicleBoxState> {
+  ready = false;
+
   /**
    * Initializes the component
    * @type {function}
@@ -91,6 +93,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    * @type {function}
    */
   componentDidMount() {
+    this.ready = true;
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
@@ -105,23 +108,23 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    * @property {string} [plate=""] The plate of the vehicle
    * @property {string} [state=""] The current status of the vehicle - "pending"; "approved"; "rejected"
    * @property {function} [callback=false] The callback function to be called when pressing on the component
-   * @property {string} [image=""] The vehicle's type preview image
+   * @property {string} [image=undefined] The vehicle's type preview image
    * @property {object} [labels={ approved: "Aprobado", rejected: "Rechazado", pending: "Pendiente" }] The correct i18n labels for the status
    * @property {object} [styling={ box: {}, imgWrapper: {}, image: {}, copy: {}, type: {}, overview: {}, year: {}, plateWrapper: {}, tag: {}, stateWrapper: {}, state: {}, stateIconSize: undefined, stateIconColor: undefined }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
-  setPropsToState: Function = (): object => {
+  setPropsToState: Function = (): PackenUiVehicleBoxState => {
     return {
       type: this.props.type ? this.props.type : "",
       overview: this.props.overview ? this.props.overview : "",
       year: this.props.year ? this.props.year : "",
       plate: this.props.plate ? this.props.plate : "",
       state: this.props.state ? this.props.state : "pending",
-      callback: this.props.callback ? this.props.callback : false,
-      image: this.props.image ? this.props.image : "",
+      callback: this.props.callback ? this.props.callback : undefined,
+      image: this.props.image ? this.props.image : undefined,
       labels: this.props.labels ? { ...this.props.labels } : {
         approved: "Aprobado",
-        rejected: "Rechazado",
+        declined: "Rechazado",
         pending: "Pendiente"
       },
       styling: this.props.styling ? { ...this.props.styling } : {
@@ -133,7 +136,10 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
         overview: {},
         year: {},
         plateWrapper: {},
-        tag: {},
+        tag: {
+          box: {},
+          label: {}
+        },
         stateWrapper: {},
         state: {},
         stateIconSize: undefined,
@@ -163,8 +169,9 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
         break;
       case "blocked":
       case "rejected":
+      case "declined":
         state = {
-          label: this.state.labels.rejected,
+          label: this.state.labels.declined,
           icon: {
             name: "alert-circle",
             color: Colors.danger.default
@@ -193,7 +200,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
   getImgStyles: Function = (): object => {
     let styles = {};
     if (this.state.type !== "moto") {
-      styles = { ...this.getStyles().img, width: 206, height: 95 };
+      styles = { ...this.getStyles().img, width: 200, height: 95 };
     } else {
       styles = { width: 121, height: 80 };
     }
@@ -261,8 +268,8 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    * @type {function}
    * @return {node} JSX for the component
    */
-  render(): ReactNode {
-    return this.getContent();
+  render(): ReactNode | null {
+    return this.ready ? this.getContent() : null;
   }
 
   /**
@@ -286,6 +293,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
         width: "42%",
         height: 95,
         paddingRight: 12,
+        marginRight: 10,
         alignItems: "center",
         justifyContent: "center"
       },

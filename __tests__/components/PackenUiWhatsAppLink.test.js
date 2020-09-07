@@ -48,9 +48,27 @@ describe("<PackenUiWhatsAppLink/>", () => {
 
   describe("styling", () => {
     it("returns the styles array", () => {
-      renderInstance.setState({ style: null });
+      renderInstance.setState({ color: "#FFFFFF" });
       const res = renderInstance.getStyles();
-      expect(res).toEqual([renderInstance.getStyles()[0], {}, renderInstance.state.styling.box]);
+      expect(res).toEqual({
+        box: {
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+          flexDirection: "row",
+          width: "auto",
+          height: "auto",
+          padding: 5
+        },
+        label: {
+          textDecorationStyle: "solid",
+          textDecorationLine: "underline",
+          textTransform: "uppercase",
+          fontSize: 12,
+          color: "#FFFFFF",
+          textDecorationColor: "#FFFFFF"
+        }
+      });
     });
   });
 
