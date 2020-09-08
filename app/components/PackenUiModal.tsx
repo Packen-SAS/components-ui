@@ -1,13 +1,6 @@
+import { Modal, View, TouchableWithoutFeedback, Image, Dimensions, Platform, ImageSourcePropType, Keyboard, EmitterSubscription, ScrollView } from "react-native";
 import React, { Component, ReactNode, RefObject } from "react";
 import PropTypes from "prop-types";
-import {
-  Modal,
-  View,
-  TouchableWithoutFeedback,
-  Image,
-  Dimensions,
-  Platform,
-  ImageSourcePropType } from "react-native";
 import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/Feather";
@@ -17,6 +10,19 @@ import Colors from "../styles/abstracts/colors";
 import Shadows from "../styles/abstracts/shadows";
 
 import PackenUiText from "./PackenUiText";
+import PackenUiButton from "./PackenUiButton";
+import PackenUiDivider from "./PackenUiDivider";
+
+interface i18nShape {
+  buttons: {
+    view_details: string;
+  };
+  modal: {
+    error: {
+      persists: string;
+    };
+  };
+}
 
 interface StylingPropShape {
   container: object;
@@ -45,17 +51,34 @@ interface StylingPropShape {
   arrowIconColor: string | undefined;
 }
 
+interface KeyboardEventArgumentShape {
+  endCoordinates: {
+    height: number;
+  };
+}
+
 interface BannerStateShape {
   icon: string;
 }
 
+interface ErrorPayloadShape {
+  success: boolean;
+  code: number;
+  status: string;
+  errors: string[];
+  source: string;
+}
+
 interface PackenUiModalProps {
+  i18n: i18nShape;
   type: string;
   banner?: object;
   size: string;
   isOpen?: boolean;
   images?: ImageSourcePropType[];
   info?: object;
+  payload?: ErrorPayloadShape;
+  customInfo?: ReactNode;
   modalClose: Function;
   theme: string;
   content?: ReactNode;
@@ -76,6 +99,14 @@ interface PackenUiModalState {
     text: string;
     btn: ReactNode;
   };
+  isPayloadVisible: boolean;
+  keyboardHeight: number | null;
+  isKeyboardOpen: boolean;
+  isInitial: boolean;
+  payload: ErrorPayloadShape | boolean;
+  customInfo: ReactNode | boolean;
+  alignmentStyles: object;
+  initialAlignmentStyles: object;
   modalClose: Function;
   theme: string;
   content: ReactNode | null;
@@ -113,6 +144,7 @@ type HandleBeforeSnapType = (slideIndex: number) => void;
 type GetDimensionsType = { width: number, height: number };
 type RenderGallerySlideParamType = { item: ImageSourcePropType, index: number };
 type RenderGallerySlideType = (item: { item: ImageSourcePropType; index: number; }, parallaxProps?: AdditionalParallaxProps | undefined) => ReactNode;
+type KeyboardDidShowType = (e: KeyboardEventArgumentShape) => void;
 
 /**
  * Component for rendering a modal popup with fading animation
@@ -123,6 +155,11 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    * @type {object}
    */
   carouselRef: RefObject<any> = React.createRef();
+
+  language = this.props.i18n;
+
+  keyboardDidShowListener: EmitterSubscription | null = null;
+  keyboardDidHideListener: EmitterSubscription | null = null;
 
   /**
    * Initializes the component
@@ -138,6 +175,12 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
      */
     let initialState: PackenUiModalState = {
       ...this.setPropsToState(),
+      isPayloadVisible: false,
+      keyboardHeight: null,
+      isKeyboardOpen: false,
+      isInitial: true,
+      alignmentStyles: {},
+      initialAlignmentStyles: {},
       backdropStyles: { ...this.getStyles().backdrop.base }
     };
     if (props.type !== "gallery") {
@@ -214,8 +257,11 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
       images: this.props.images ? this.props.images : [],
       info: this.props.info ? this.props.info : {
         title: "",
-        text: ""
+        text: "",
+        btn: false
       },
+      payload: this.props.payload ? this.props.payload : false,
+      customInfo: this.props.customInfo ? this.props.customInfo : false,
       modalClose: this.props.modalClose ? this.props.modalClose : this.mockCallback,
       theme: this.props.theme ? this.props.theme : "info",
       content: this.props.content ? this.props.content : null,
@@ -261,7 +307,20 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
+    this.keyboardDidShowListener = Keyboard.addListener("keyboardDidShow", this.keyboardDidShow);
+    this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this.keyboardDidHide);
   }
+
+  componentWillUnmount() {
+    if (this.keyboardDidShowListener && this.keyboardDidHideListener) {
+      this.keyboardDidShowListener.remove();
+      this.keyboardDidHideListener.remove();
+    }
+  }
+
+  keyboardDidShow: KeyboardDidShowType = (e: KeyboardEventArgumentShape) => { this.setState({ isKeyboardOpen: true, keyboardHeight: e.endCoordinates.height }); }
+
+  keyboardDidHide: VoidFunction = () => { this.setState({ isKeyboardOpen: false, keyboardHeight: 0, alignmentStyles: this.state.initialAlignmentStyles }); }
 
   /**
    * Returns the correct content styles depending on the type of modal
@@ -518,8 +577,8 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
   handleBeforeSnap: HandleBeforeSnapType = (slideIndex: number) => {
     this.setState({
       has: {
-        next: slideIndex === this.state.images.length - 1 ? false : true,
-        prev: slideIndex === 0 ? false : true
+        next: slideIndex !== this.state.images.length - 1,
+        prev: slideIndex !== 0
       }
     });
   }
@@ -565,18 +624,92 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     return btn;
   }
 
+  togglePayload = () => { this.setState({ isPayloadVisible: !this.state.isPayloadVisible }); }
+
+  getPayload = () => {
+    let payload = null;
+
+    if (typeof this.state.payload === "object") {
+      const { success, code, status, errors, source } = this.state.payload;
+      if (success === false) {
+        let _errors = '---';
+        let _success = '---';
+        if (Array.isArray(errors)) {
+          _errors = '';
+          errors.forEach((err) => {
+            _errors += `• ${err}\n`;
+          });
+          _errors = _errors.trimRight();
+        }
+        if (typeof success === 'boolean') { _success = success.toString(); }
+        payload = (
+          <View style={{ marginTop: 10 }}>
+            <PackenUiButton
+              isOutline
+              type="regular"
+              level="danger"
+              size="tiny"
+              icon={{ name: this.state.isPayloadVisible ? 'arrow-up' : 'arrow-down', position: 'right' }}
+              style={{ paddingLeft: 5, paddingRight: 10 }}
+              callback={this.togglePayload}
+            >
+              {this.language.buttons.view_details}
+            </PackenUiButton>
+            {
+              this.state.isPayloadVisible ? (
+                <View style={this.getStyles().payload}>
+                  <ScrollView style={this.getStyles().payloadData}>
+                    <PackenUiText preset="c1">
+                      <PackenUiText preset="c2">Code:</PackenUiText>
+                      {' '}
+                      {code || '---'}
+                    </PackenUiText>
+                    <PackenUiText preset="c1">
+                      <PackenUiText preset="c2">Status:</PackenUiText>
+                      {' '}
+                      {status || '---'}
+                    </PackenUiText>
+                    <PackenUiText preset="c1">
+                      <PackenUiText preset="c2">Source:</PackenUiText>
+                      {' '}
+                      {source || '---'}
+                    </PackenUiText>
+                    <PackenUiText preset="c1">
+                      <PackenUiText preset="c2">Success:</PackenUiText>
+                      {' '}
+                      {_success}
+                    </PackenUiText>
+                    <View style={{ flexDirection: 'row', paddingBottom: 20 }}>
+                      <PackenUiText preset="c2">Errors: </PackenUiText>
+                      <PackenUiText preset="c1" style={{ flex: 1 }}>{_errors}</PackenUiText>
+                    </View>
+                  </ScrollView>
+                  <PackenUiDivider type="light" size={1} margin={{ top: 10, bottom: 10 }} />
+                  <PackenUiText preset="c2">{this.language.modal.error.persists}</PackenUiText>
+                </View>
+              ) : null
+            }
+          </View>
+        );
+      }
+    }
+
+    return payload;
+  }
+
   /**
    * Triggers the platform-specific handlers when closing the modal when pressing the "X" icon on the header
    * @type {function}
    */
   headerCallDismiss: VoidFunction = () => {
+    this.setState({ isPayloadVisible: false });
     if (Platform.OS === "ios") {
       this.onRequestCloseHandler();
-      this.state.modalClose();
+      this.closeModal();
       return;
     }
     this.onDismissHandler();
-    this.state.modalClose();
+    this.closeModal();
   };
 
   /**
@@ -631,6 +764,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
         <PackenUiText preset="h3" style={{ ...this.getStyles().title, ...this.state.styling.title }}>{this.state.info.title}</PackenUiText>
         <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles(), ...this.state.styling.text }}>{this.state.info.text}</PackenUiText>
         {this.getInfoButton()}
+        {this.getPayload()}
       </View>
     </View>
   )
@@ -773,6 +907,33 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     }
   }
 
+  getModalLayout: Function = ({ height }: GetDimensionsType) => {
+    const screenHeight = Dimensions.get("screen").height;
+    let newStyles = { ...this.state.alignmentStyles };
+    const keyboardHeight = this.state.keyboardHeight || 0;
+    if (
+      height > screenHeight - 50
+      || (this.state.isKeyboardOpen && ((screenHeight - keyboardHeight - 50) < height))
+    ) {
+      newStyles = {}; // Enable scrolling modal by removing vertical center-alignment
+    } else {
+      newStyles = {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center"
+      }
+    }
+    if (this.state.isInitial) {
+      this.setState({
+        isInitial: false,
+        initialAlignmentStyles: { ...newStyles }
+      });
+    }
+    this.setState({
+      alignmentStyles: { ...newStyles }
+    });
+  }
+
   /**
    * Renders the component
    * @type {function}
@@ -781,24 +942,25 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
   render(): ReactNode {
     return (
       <Modal
-        transparent={true}  
+        transparent
         animationType="fade"
         visible={this.state.isOpen}
         onDismiss={this.onDismissHandler}
         onRequestClose={this.onRequestCloseHandler}
       >
-        <View style={{ ...this.getStyles().container, ...this.state.styling.container }}>
-          <TouchableWithoutFeedback onPress={this.closeModal}>
-            <View style={{ ...this.state.backdropStyles, ...this.state.styling.backdrop }}></View>
-          </TouchableWithoutFeedback>
-          <View style={{ ...this.getStyles().main.base, ...this.getStyles().main[this.state.size], ...this.state.styling.main }}>
-            <View style={{ ...this.getStyles().wrapper, ...this.state.styling.wrapper }}>
-              <View style={{ ...this.getStyles().box, ...this.state.styling.box }}>
+        <View style={this.state.backdropStyles}>
+          <ScrollView
+            nestedScrollEnabled
+            style={this.getStyles().scroll}
+            contentContainerStyle={this.state.alignmentStyles}
+          >
+            <View style={this.getStyles().wrapper[this.state.size]} onLayout={(e) => { this.getModalLayout(e.nativeEvent.layout); }}>
+              <View style={this.getStyles().box}>
                 {this.getHeader()}
                 {this.getContent()}
               </View>
             </View>
-          </View>
+          </ScrollView>
         </View>
       </Modal>
     );
@@ -811,52 +973,36 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    */
   getStyles: Function = (): object => {
     return {
-      container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center"
-      },
       backdrop: {
         base: {
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "100%"
+          alignItems: 'center',
+          justifyContent: 'center',
         },
         open: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          backgroundColor: UTIL.hex2rgba(Colors.basic.black.dft, 0.5)
         },
         closed: {
           backgroundColor: "transparent"
         }
       },
-      main: {
-        base: {
-          alignItems: "center",
-          justifyContent: "center",
-          alignSelf: "center"
-        },
+      wrapper: {
         default: {
-          width: "85%"
+          padding: 25,
+          width: "100%",
+          alignItems: "center",
+          justifyContent: "center"
         },
         small: {
-          width: "75%"
+          padding: 25
         }
-      },
-      wrapper: {
-        width: "100%",
-        alignItems: "center",
-        justifyContent: "center"
       },
       box: {
         position: "relative",
         overflow: "hidden",
         borderRadius: 8,
         width: "100%",
+        minWidth: Dimensions.get("window").width - 50,
         ...Shadows.md
       },
       header: {
@@ -948,20 +1094,21 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
         },
         default: {
           marginTop: 21,
-          marginBottom: 46
+          marginBottom: 10
         },
         banner: {
           default: {
             marginTop: 10,
-            marginBottom: 46
+            marginBottom: 10
           },
           small: {
             marginTop: 10,
-            marginBottom: 23
+            marginBottom: 10
           }
         }
       },
       btn: {
+        marginTop: 10,
         alignItems: "stretch",
         justifyContent: "center"
       },
@@ -981,9 +1128,18 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
           flex: 1,
           alignItems: "center",
           justifyContent: "center",
+          borderRadius: 8,
           backgroundColor: Colors.basic.black.dft
-        },
-        img: {}
+        }
+      },
+      payload: {
+        marginTop: 15,
+      },
+      payloadData: {
+        height: 85,
+        padding: 10,
+        overflow: "hidden",
+        backgroundColor: Colors.danger.lgt
       }
     };
   }

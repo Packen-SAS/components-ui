@@ -144,8 +144,7 @@ class PackenUiLicenseBox extends Component<PackenUiLicenseBoxProps, PackenUiLice
       .diff(
         UTIL.toMomentObject(new Date(state)),
         UTIL.toMomentObject(Date.now()), "days")
-      >
-      0);
+      > 0);
     return licenseExpired
       ? Colors.danger.default
       : Colors.success.default;

@@ -132,6 +132,7 @@ describe("<PackenUiServiceStatus/>", () => {
 
       expect(res).toEqual({
         steps: [],
+        altStyle: false,
         currentStepIndex: -1,
         styling: { wrapper: {}, item: {} }
       });

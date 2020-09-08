@@ -47,9 +47,9 @@ class Cameras extends Component {
           </View>
         </Section>
         <View>
-          <PackenUiCamera dismiss={() => { this.close("regular"); }} VISIBLE={this.state.regular} />
-          <PackenUiCamera dismiss={() => { this.close("document"); }} VISIBLE={this.state.document} MODE="document" />
-          <PackenUiCamera dismiss={() => { this.close("avatar"); }} VISIBLE={this.state.avatar} MODE="avatar" />
+          <PackenUiCamera i18n={{ placeholders: { upload_image: "Imagen cargada" } }} dismiss={() => { this.close("regular"); }} VISIBLE={this.state.regular} />
+          <PackenUiCamera i18n={{ placeholders: { upload_image: "Imagen cargada" } }} dismiss={() => { this.close("document"); }} VISIBLE={this.state.document} MODE="document" />
+          <PackenUiCamera i18n={{ placeholders: { upload_image: "Imagen cargada" } }} dismiss={() => { this.close("avatar"); }} VISIBLE={this.state.avatar} MODE="avatar" />
         </View>
       </PageView>
     );

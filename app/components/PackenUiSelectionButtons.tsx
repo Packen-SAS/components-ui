@@ -290,7 +290,8 @@ class PackenUiSelectionButtons extends Component<PackenUiSelectionButtonsProps, 
           alignItems: "stretch",
           justifyContent: "flex-start",
           flexWrap: "wrap",
-          flex: 1
+          flex: 1,
+          marginBottom: 5
         },
         type: {
           label: {

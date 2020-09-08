@@ -345,7 +345,7 @@ class PackenUiSelectionButtonsControl extends Component<PackenUiSelectionButtons
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
-            height: 120,
+            height: 128,
             width: "auto",
             borderWidth: 1,
             borderStyle: "solid",

@@ -36,14 +36,14 @@ interface StylingPropShape {
 }
 
 interface IconPropShape {
-  anim: {
+  anim?: {
     state: string;
     controller: {
       stop: Function;
       start: Function;
     }
   };
-  styles: object;
+  styles?: object;
   name: string;
   position: string;
 }
@@ -582,7 +582,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
         </View>
       );
   
-      if (this.state.icon.anim) {
+      if (this.state.icon.anim && this.state.icon.styles) {
         icon = (
           <Animated.View style={{ ...this.state.icon.styles[this.state.icon.anim.state], ...this.state.styling.iconWrapper }}>
             <Icon name={this.state.icon.name} size={this.state.styling.iconSize ? this.state.styling.iconSize : this.state.styles.icon.fontSize} color={this.state.styling.iconColor ? this.state.styling.iconColor : this.state.styles.icon.color} />
@@ -699,6 +699,9 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           overflow: "hidden"
         },
         size: {
+          xtiny: {
+            minHeight: 20
+          },
           tiny: {
             minHeight: 24
           },
@@ -725,15 +728,28 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           tertiary: {
             backgroundColor: Color.basic.independence.dft
           },
+          brandSecondary: {
+            backgroundColor: Color.brand.secondary.dft
+          },
           ghost: {
             backgroundColor: Color.ghost.default
           },
           danger: {
             backgroundColor: Color.danger.default
+          },
+          success: {
+            backgroundColor: Color.success.default
+          },
+          warning: {
+            backgroundColor: Color.warning.default
           }
         },
         type: {
           icon: {
+            xtiny: {
+              height: 16,
+              width: 16
+            },
             tiny: {
               height: 24,
               width: 24
@@ -756,6 +772,10 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
             }
           },
           regular: {
+            xtiny: {
+              paddingVertical: 4,
+              paddingHorizontal: 24
+            },
             tiny: {
               paddingVertical: 6,
               paddingHorizontal: 32
@@ -797,6 +817,12 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
             borderStyle: "solid",
             borderColor: Color.basic.independence.drk
           },
+          brandSecondary: {
+            backgroundColor: Color.brand.secondary.ulgt,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: Color.brand.secondary.dft
+          },
           ghost: {
             backgroundColor: Color.ghost.default,
             borderWidth: 1,
@@ -808,6 +834,18 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
             borderWidth: 1,
             borderStyle: "solid",
             borderColor: Color.danger.default
+          },
+          success: {
+            backgroundColor: Color.success.lgt,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: Color.success.default
+          },
+          warning: {
+            backgroundColor: Color.warning.lgt,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            borderColor: Color.warning.default
           }
         }
       },
@@ -826,6 +864,11 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           fontFamily: Typography.family.bold
         },
         size: {
+          xtiny: {
+            fontSize: Typography.size.xtiny,
+            lineHeight: Typography.lineheight.xtiny,
+            marginHorizontal: 7
+          },
           tiny: {
             fontSize: Typography.size.tiny,
             lineHeight: Typography.lineheight.tiny,
@@ -862,10 +905,19 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           tertiary: {
             color: Color.basic.white.dft
           },
+          brandSecondary: {
+            color: Color.basic.white.dft
+          },
           ghost: {
             color: Color.basic.independence.dft
           },
           danger: {
+            color: Color.basic.white.dft
+          },
+          success: {
+            color: Color.basic.white.dft
+          },
+          warning: {
             color: Color.basic.white.dft
           }
         },
@@ -876,6 +928,9 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           secondary: {
             color: Color.basic.independence.dft
           },
+          brandSecondary: {
+            color: Color.brand.secondary.dft
+          },
           tertiary: {
             color: Color.basic.independence.drk
           },
@@ -884,11 +939,20 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           },
           danger: {
             color: Color.danger.default
+          },
+          success: {
+            color: Color.success.default
+          },
+          warning: {
+            color: Color.warning.default
           }
         }
       },
       icon: {
         size: {
+          xtiny: {
+            fontSize: Typography.size.xtiny * iconSizeMultiplier
+          },
           tiny: {
             fontSize: Typography.size.tiny * iconSizeMultiplier
           },
@@ -915,10 +979,19 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           tertiary: {
             color: Color.basic.white.dft
           },
+          brandSecondary: {
+            color: Color.basic.white.dft
+          },
           ghost: {
             color: Color.basic.independence.dft
           },
           danger: {
+            color: Color.basic.white.dft
+          },
+          success: {
+            color: Color.basic.white.dft
+          },
+          warning: {
             color: Color.basic.white.dft
           }
         },
@@ -932,11 +1005,20 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
           tertiary: {
             color: Color.basic.independence.drk
           },
+          brandSecondary: {
+            color: Color.brand.secondary.dft
+          },
           ghost: {
             color: Color.basic.independence.dft
           },
           danger: {
             color: Color.danger.default
+          },
+          success: {
+            color: Color.success.default
+          },
+          warning: {
+            color: Color.warning.default
           }
         }
       }

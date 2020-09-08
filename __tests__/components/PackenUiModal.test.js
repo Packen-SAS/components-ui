@@ -280,7 +280,7 @@ describe("<PackenUiModal/>", () => {
         type: "gallery",
         images: []
       });
-      render.props().children.props.children[1].props.children.props.children.props.children[1].props.onLayout(e);
+      render.props().children.props.children.props.children.props.children.props.children[1].props.onLayout(e);
 
       expect(spyGetGalleryBoxDimensions).toHaveBeenCalled();
       spyGetGalleryBoxDimensions.mockRestore();
@@ -299,7 +299,7 @@ describe("<PackenUiModal/>", () => {
         images: ["", "", ""]
       });
       renderInstance.setState({ has: { prev: true } });
-      render.props().children.props.children[1].props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
+      render.props().children.props.children.props.children.props.children.props.children[1].props.children[0].props.children[0].props.children.props.onLayout(e);
 
       expect(spyGetGalleryArrowsDimensions).toHaveBeenCalled();
       spyGetGalleryArrowsDimensions.mockRestore();
@@ -580,13 +580,16 @@ describe("<PackenUiModal/>", () => {
         images: [],
         info: {
           title: "",
-          text: ""
+          text: "",
+          btn: false
         },
         modalClose: renderInstance.mockCallback,
         theme: "info",
         content: null,
         onDismiss: false,
         onRequestClose: false,
+        payload: false,
+        customInfo: false,
         styling: {
           container: {},
           backdrop: {},

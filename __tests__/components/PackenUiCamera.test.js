@@ -2,15 +2,8 @@ import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
 
+import PackenUiCamera, { CameraImagePreviewTriggers, CameraTopTriggers, CameraBottomTriggers, DocumentLayout, AvatarLayout } from "../../app/components/PackenUiCamera";
 import { RNCamera } from "react-native-camera";
-import
-  PackenUiCamera,
-  { CameraImagePreviewTriggers,
-    CameraTopTriggers,
-    CameraBottomTriggers,
-    DocumentLayout,
-    AvatarLayout
-  } from "../../app/components/PackenUiCamera";
 
 describe("<PackenUiCamera/>", () => {
   const mockCallback = jest.fn();
@@ -28,10 +21,12 @@ describe("<PackenUiCamera/>", () => {
       cancel: "Cancelar"
     }
   };
+  const i18n = { placeholders: { upload_image: "Imagen cargada" } };
   const render = shallow(
     <PackenUiCamera
       dismiss={mockCallback}
       VISIBLE={true}
+      i18n
     />
   );
   const renderLabels = shallow(
@@ -39,6 +34,7 @@ describe("<PackenUiCamera/>", () => {
       dismiss={mockCallback}
       VISIBLE={true}
       labels={labels}
+      i18n
     />
   );
   const renderInstance = render.instance();
@@ -49,6 +45,7 @@ describe("<PackenUiCamera/>", () => {
       image={""}
       closeCameraTrigger={mockCallback}
       showPicture={mockCallback}
+      language={i18n}
     />
   );
   const renderTopTriggersInstance = renderTopTriggers.instance();
@@ -57,6 +54,7 @@ describe("<PackenUiCamera/>", () => {
     <CameraTopTriggers
       closeCameraTrigger={mockCallback}
       showPicture={mockCallback}
+      language={i18n}
     />
   );
 

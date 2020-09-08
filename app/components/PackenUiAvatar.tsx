@@ -8,6 +8,7 @@ import Colors from "../styles/abstracts/colors";
 
 interface StylingPropShape {
   container: object;
+  touchable: object;
   image: object;
   iconSize: number | undefined;
   iconColor: string | undefined;
@@ -73,6 +74,7 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
       callback: this.props.callback ? this.props.callback : this.mockFunction,
       styling: this.props.styling ? { ...this.props.styling } : {
         container: {},
+        touchable: {},
         image: {},
         iconSize: undefined,
         iconColor: undefined
@@ -111,8 +113,8 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
     } else {
       inner = (
         <Icon
-          name="user"
-          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().container.size[this.state.size].width / 1.5}
+          name="camera"
+          size={this.state.styling.iconSize ? this.state.styling.iconSize : this.getStyles().container.size[this.state.size].width / 3}
           color={this.state.styling.iconColor ? this.state.styling.iconColor : Colors.basic.white.dft}
         />
       );
@@ -135,7 +137,7 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
           <View
             style={[
               this.getStyles().touchable,
-              this.state.styling.container
+              this.state.styling.touchable
             ]}
           >
             {this.getInner()}
@@ -231,6 +233,8 @@ class PackenUiAvatar extends Component<PackenUiAvatarProps, PackenUiAvatarState>
       },
       touchable: {
         flex: 1,
+        width: "100%",
+        height: "100%",
         borderRadius: 100,
         alignItems: "center",
         justifyContent: "center"

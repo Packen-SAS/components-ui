@@ -78,7 +78,7 @@ class PackenUiProgressbar extends Component<PackenUiProgressbarProps, PackenUiPr
    * @property {number} [radius=0] The border radius for the progressbar
    * @property {boolean} [isComplete=false] Determines if the progressbar should trigger its "complete" animation depending on its type
    * @property {string} [label=false] The optional label text to show above the progressbar
-   * @property {object} [colors={ track: Colors.base.default_atl, indicator: Colors.success.default }] The colors to be applied to the progressbar elements
+   * @property {object} [colors={ track: Colors.basic.gray.alt, indicator: Colors.success.default }] The colors to be applied to the progressbar elements
    * @property {object} [styling={ wrapper: {}, label: {}, track: {}, indicator: {} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
@@ -91,7 +91,7 @@ class PackenUiProgressbar extends Component<PackenUiProgressbarProps, PackenUiPr
       isComplete: this.props.isComplete ? this.props.isComplete : false,
       label: this.props.label ? this.props.label : false,
       colors: {
-        track: this.props.trackColor ? this.props.trackColor : Colors.base.default_alt,
+        track: this.props.trackColor ? this.props.trackColor : Colors.basic.gray.alt,
         indicator: this.props.indicatorColor ? this.props.indicatorColor : Colors.success.default
       },
       styling: this.props.styling ? { ...this.props.styling } : {
@@ -217,13 +217,7 @@ class PackenUiProgressbar extends Component<PackenUiProgressbarProps, PackenUiPr
 
     if (this.state.label) {
       label = (
-        <PackenUiText style={{
-          color: this.props.indicatorColor,
-          width: "100%",
-          textAlign: "center",
-          paddingBottom: 10,
-          ...this.state.styling.label
-        }}>
+        <PackenUiText style={this.getStyles().label}>
           {this.state.label}
         </PackenUiText>
       );
@@ -291,6 +285,13 @@ class PackenUiProgressbar extends Component<PackenUiProgressbarProps, PackenUiPr
     return {
       wrapper: {
         width: "100%"
+      },
+      label: {
+        width: "100%",
+        paddingBottom: 10,
+        textAlign: "center",
+        color: this.state.colors.indicator,
+        ...this.state.styling.label
       },
       track: {
         overflow: "hidden",

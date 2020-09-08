@@ -1,13 +1,15 @@
 import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View,
+import {
+  View,
   TextInput,
   TouchableWithoutFeedback,
   Keyboard,
   LayoutChangeEvent,
   NativeSyntheticEvent,
   TextInputFocusEventData,
-  TextInputSubmitEditingEventData } from "react-native";
+  TextInputSubmitEditingEventData
+} from "react-native";
 import Icon from "react-native-vector-icons/Feather";
 
 import * as UTIL from "../utils";
@@ -93,7 +95,7 @@ interface PackenUiInputProps {
   placeholderTextColor?: string;
   maxLength?: number;
   minLength?: number;
-  onChangeText: Function;
+  onChangeText: Function | boolean;
   eventHandlers?: EventHandlersShape;
   textAlign?: "left" | "center" | "right";
   propagateRef?: Function;
@@ -133,7 +135,6 @@ interface PackenUiInputState {
   loading: boolean,
   validator: string | boolean,
   styling: StylingPropShape;
-  ref: TextInput | null;
   dimensions: {
     box: {
       width: number;
@@ -144,6 +145,11 @@ interface PackenUiInputState {
       height: number;
     };
   };
+}
+
+interface refShape {
+  focus: Function,
+  blur: Function
 }
 
 type LayoutChangeType = (event: LayoutChangeEvent) => void;
@@ -157,6 +163,12 @@ type GetRefType = (instance: TextInput | null) => boolean | void;
  * Component for rendering an input with optional label, help and message elements
  */
 class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
+  /**
+   * Variable that stores the default TextInput component ref
+   * @type {object|null}
+   */
+  ref: refShape | null = null;
+
   /**
    * Initializes the component
    * @type {function}
@@ -283,8 +295,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   setInitialState: Function = (): object => {
     let initialState = {
-      ...this.setPropsToState(),
-      ref: null
+      ...this.setPropsToState()
     };
 
     if (this.props.icon) {
@@ -458,7 +469,11 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     let isValid = true;
 
     if (typeof this.state.validator === "string") {
-      isValid = UTIL.validators[this.state.validator](text) && text !== "" && text.length >= this.state.minLength;
+      isValid =
+        UTIL.validators[this.state.validator](text)
+        && text !== ""
+        && text.length >= this.state.minLength
+        && (this.state.maxLength ? text.length <= this.state.maxLength : true);
     }
 
     this.state.onChangeText(this.state.name, text ? text : null, isValid);
@@ -478,8 +493,8 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @type {function}
    */
   removeKeyboardEvents: VoidFunction = () => {
-    Keyboard.removeAllListeners("keyboardDidShow");
-    Keyboard.removeAllListeners("keyboardDidHide");
+    Keyboard.removeListener("keyboardDidShow", this.focus);
+    Keyboard.removeListener("keyboardDidHide", this.blur);
   }
 
   /**
@@ -556,11 +571,14 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
               style: {
                 label: {
                   color: Colors.brand.secondary.dft,
-                  textDecorationLine: "underline"
+                  textDecorationLine: "underline",
+                  ...this.state.styling.help.text
+                },
+                wrapper: {
+                  ...this.state.styling.help.touchable
                 }
               },
-              callback: this.triggerHelpCallback,
-              ...this.state.styling.help.touchable
+              callback: this.triggerHelpCallback
             }}
             style={{
               ...this.getStyles().help.base,
@@ -614,6 +632,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
         <View style={{ ...this.getStyles().message.box, ...this.state.styling.message.box }}>
           {this.getMessageIcon()}
           <PackenUiText style={{
+            ...this.getStyles().message.text.base,
             ...this.getStyles().message.text.size[this.state.size],
             ...this.getStyles().message.text.theme[this.state.theme],
             ...this.getStyles().message.text.state[this.state.state],
@@ -641,14 +660,12 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @param {object} input The received ref/instance
    */
   getRef: GetRefType = (input: TextInput | null): boolean | void => {
-    this.setState({
-      ref: input
-    }, this.checkFocus);
-
-    if (typeof this.props.instance === "function") {
-      this.props.instance(input, this.state.name);
-    } else {
-      return false;
+    if (!this.ref) {
+      this.ref = input;
+      this.checkFocus();
+      if (typeof this.props.instance === "function") {
+        this.props.instance(input, this.state.name);
+      } else { return false; }
     }
   }
 
@@ -658,11 +675,13 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @return {boolean} Flag used only for testing purposes
    */
   focus: VoidFunction = (): boolean | void => {
-    if (this.state.ref && this.state.ref) {
-      this.state.ref.focus();
-    } else {
-      return false;
-    }
+    if (this.ref) {
+      // Weird bug, if timeout is not set the focus function doesn't do anything
+      const timeout = setTimeout(() => {
+        if (this.ref) { this.ref.focus(); }
+        clearTimeout(timeout);
+      }, 250);
+    } else { return false; }
   }
 
   /**
@@ -671,11 +690,9 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @return {boolean} Flag used only for testing purposes
    */
   blur: VoidFunction = (): boolean | void => {
-    if (this.state.ref && this.state.ref) {
-      this.state.ref.blur();
-    } else {
-      return false;
-    }
+    if (this.ref) {
+      this.ref.blur();
+    } else { return false; }
   }
 
   /**
@@ -685,8 +702,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
   checkFocus: VoidFunction = () => {
     if (this.state.isFocused) {
       this.focus();
-    } else {
-      this.blur();
     }
   }
 
@@ -733,15 +748,15 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
           }}
         />
       ) : (
-        <PackenUiLoaderButton
-          type="icon"
-          level="ghost"
-          size="tiny"
-          isDone={false}
-          callback={this.mockCallback}
-          styling={this.state.styling.loader}
-        />
-      );
+          <PackenUiLoaderButton
+            type="icon"
+            level="ghost"
+            size="tiny"
+            isDone={false}
+            callback={this.mockCallback}
+            styling={this.state.styling.loader}
+          />
+        );
 
       if (typeof this.state.icon === "object" && this.state.icon.callback) {
         icon = this.getIconWrapper((
@@ -1173,7 +1188,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
             },
             size: {
               tiny: {
-                height: 96
+                height: 60
               },
               small: {
                 height: 104
@@ -1255,6 +1270,9 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
           }
         },
         text: {
+          base: {
+            flex: 1
+          },
           size: {
             tiny: {
               fontSize: Typography.size.tiny

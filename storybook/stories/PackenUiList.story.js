@@ -19,7 +19,7 @@ const items = [
       isOpen: false,
       value: "",
       placeholder: "Carry",
-      onChange: () => true,
+      onChangeText: () => true,
       list: {
         config: {
           size: "medium",
@@ -130,7 +130,7 @@ const items = [
       nonEditable: false,
       value: "",
       placeholder: "Steven Seagal",
-      onChange: () => true
+      onChangeText: () => true
     },
     customWrapperStyle: { marginBottom: 16 }
   },
@@ -196,7 +196,7 @@ storiesOf("PackenUiList", module)
       isOpen: false,
       value: "",
       placeholder: "Carry",
-      onChange: () => true,
+      onChangeText: () => true,
       list: {
         config: {
           size: "medium",
@@ -307,7 +307,7 @@ storiesOf("PackenUiList", module)
       nonEditable: false,
       value: "",
       placeholder: "Steven Seagal",
-      onChange: () => true
+      onChangeText: () => true
     },
     customWrapperStyle: { marginBottom: 16 }
   },

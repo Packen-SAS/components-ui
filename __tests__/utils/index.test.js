@@ -1,5 +1,6 @@
 import moment from "moment";
 import * as UTIL from "../../app/utils";
+import Colors from "../../app/styles/abstracts/colors";
 
 describe("arraysEqual", () => {
   it("returns true if arrays contain the same items", () => {
@@ -105,5 +106,31 @@ describe("validators", () => {
 
   it("checks if the provided string is an url", () => {
     expect(UTIL.isURL("https://www.asd.com")).toBe(true);
+  });
+
+  it("removes the timezone part of a date string if it's the custom schema from api", () => {
+    expect(UTIL.removeTimezone(null)).toBe(null);
+    expect(UTIL.removeTimezone("2020-08-27T00:00:00-0500")).toBe("2020-08-27T00:00:00-0500");
+    expect(UTIL.removeTimezone("2020-08-27 00:00:00 -05")).toBe("2020/08/27 00:00:00");
+    expect(UTIL.removeTimezone("2020-08-27 00:00:00")).toBe("2020/08/27 00:00:00");
+  });
+
+  it("converts a hex color code into rgba", () => {
+    expect(UTIL.hex2rgba(Colors.brand.primary.snw, .5)).toBe("rgba(231,252,255,0.5)");
+    expect(UTIL.hex2rgba(Colors.brand.primary.snw)).toBe("rgba(231,252,255,1)");
+  });
+
+  it("converts a number into its corresponding alphabet letter", () => {
+    expect(UTIL.num2ltr(1)).toBe("A");
+    expect(UTIL.num2ltr(26)).toBe("Z");
+    expect(UTIL.num2ltr(undefined)).toBe(null);
+  });
+
+  it("returns the correct day format depending on the locale", () => {
+    expect(UTIL.getNdayFormat("es", 1)).toBe(" de");
+    expect(UTIL.getNdayFormat("en", 1)).toBe("st");
+    expect(UTIL.getNdayFormat("en", 2)).toBe("nd");
+    expect(UTIL.getNdayFormat("en", 3)).toBe("rd");
+    expect(UTIL.getNdayFormat("en", 4)).toBe("th");
   });
 });

@@ -75,11 +75,11 @@ describe("<PackenUiVehicleBox/>", () => {
         year: "",
         plate: "",
         state: "pending",
-        callback: false,
-        image: "",
+        callback: undefined,
+        image: undefined,
         labels: {
           approved: "Aprobado",
-          rejected: "Rechazado",
+          declined: "Rechazado",
           pending: "Pendiente"
         },
         styling: {
@@ -91,7 +91,10 @@ describe("<PackenUiVehicleBox/>", () => {
           overview: {},
           year: {},
           plateWrapper: {},
-          tag: {},
+          tag: {
+            box: {},
+            label: {}
+          },
           stateWrapper: {},
           state: {},
           stateIconSize: undefined,
@@ -103,7 +106,7 @@ describe("<PackenUiVehicleBox/>", () => {
     it("returns incoming props as the state key-value pairs if image and labels are provided", () => {
       const labels = {
         approved: "Aprobado",
-        rejected: "Rechazado",
+        declined: "Rechazado",
         pending: "Pendiente"
       };
       render.setProps({
@@ -216,7 +219,7 @@ describe("<PackenUiVehicleBox/>", () => {
       renderInstance.setState({ type: "carry" });
       const returnedStyles = renderInstance.getImgStyles();
 
-      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().img, width: 206, height: 95 });
+      expect(returnedStyles).toEqual({ ...renderInstance.getStyles().img, width: 200, height: 95 });
     });
 
     it("returns the custom image styles if it's a motorcycle", () => {

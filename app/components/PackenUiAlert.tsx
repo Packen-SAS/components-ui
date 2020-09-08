@@ -319,7 +319,7 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
         },
         position: {
           top: { top: 30 },
-          bottom: { bottom: 30 }
+          bottom: { bottom: 70 }
         },
         base: {
           width: "90%",

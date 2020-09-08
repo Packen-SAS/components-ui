@@ -25,22 +25,25 @@ interface StylingPropShape {
 interface StepShape {
   time?: string;
   title: string;
+  label?: string;
   subtitle?: string;
-  isCurrent: boolean;
-  isComplete: boolean;
+  isCurrent?: boolean;
+  isComplete?: boolean;
   callback?: VoidFunction;
 }
 
 interface PackenUiServiceStatusProps {
   steps: StepShape[];
-  currentStepIndex: number;
-  styling: StylingPropShape;
-  instance: Function;
+  currentStepIndex?: number;
+  altStyle?: boolean,
+  styling?: StylingPropShape;
+  instance?: Function;
 }
 
 interface PackenUiServiceStatusState {
   steps: StepShape[];
   currentStepIndex: number;
+  altStyle: boolean,
   styling: StylingPropShape;
   itemsHeights: number[];
 }
@@ -90,6 +93,7 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
    */
   setPropsToState: Function = (): object => {
     return {
+      altStyle: this.props.altStyle || false,
       steps: this.props.steps ? [...this.props.steps] : [],
       currentStepIndex: this.props.currentStepIndex === 0 ? 0 : this.props.currentStepIndex ? this.props.currentStepIndex : -1,
       styling: this.props.styling ? { ...this.props.styling } : {
@@ -103,16 +107,17 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
    * Updates the currently active step item and styles each accordingly
    * @type {function}
    */
-  updateCurrentStep: Function = () => {
+  updateCurrentStep: VoidFunction = () => {
     if (this.state.steps && this.state.steps.length > 0) {
-      for (let i = 0; i < this.state.currentStepIndex; i++) {
-        this.state.steps[i].isComplete = true;
-        this.state.steps[i].isCurrent = false;
-      }
-      for (let i = this.state.currentStepIndex; i < this.state.steps.length; i++) {
-        this.state.steps[i].isComplete = false;
-        this.state.steps[i].isCurrent = false;
-      }
+      this.state.steps.forEach((step, i) => {
+        if (i < this.state.currentStepIndex) {
+          step.isComplete = true;
+          step.isCurrent = false;
+        } else {
+          step.isComplete = false;
+          step.isCurrent = false;
+        }
+      });
 
       this.setState({
         currentStepIndex: this.state.currentStepIndex
@@ -143,9 +148,7 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
   updateState: Function = () => {
     this.setState({
       ...this.setPropsToState()
-    }, () => {
-      this.updateCurrentStep();
-    });
+    }, this.updateCurrentStep);
   }
 
   /**
@@ -171,6 +174,7 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
       key={i}
       index={i}
       data={step}
+      altStyle={this.state.altStyle}
       currentStepIndex={this.state.currentStepIndex}
       itemsHeights={this.state.itemsHeights}
       setItemsHeights={this.setItemsHeights}
@@ -211,6 +215,7 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
   static propTypes: object = {
     steps: PropTypes.arrayOf(PropTypes.object).isRequired,
     currentStepIndex: PropTypes.number.isRequired,
+    altStyle: PropTypes.bool,
     styling: PropTypes.object,
     instance: PropTypes.func
   };

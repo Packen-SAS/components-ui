@@ -1,10 +1,10 @@
-import React, { Component, ReactNode, RefObject } from "react";
-import PropTypes from "prop-types";
 import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image, GestureResponderEvent, ImageSourcePropType } from "react-native";
+import { RNCamera, TakePictureResponse } from "react-native-camera";
+import React, { Component, ReactNode, RefObject } from "react";
+import Svg, { Line, Path } from "react-native-svg";
+import PropTypes from "prop-types";
 import * as UTIL from "../utils";
 
-import { RNCamera, TakePictureResponse } from "react-native-camera";
-import Svg, { Line, Path } from "react-native-svg";
 import TurnOnOffFlash from "react-native-vector-icons/Ionicons";
 import ConfirmPicture from "react-native-vector-icons/Feather";
 import CameraReverse from "react-native-vector-icons/Ionicons";
@@ -15,6 +15,7 @@ import Color from "../styles/abstracts/colors";
 
 import PackenUiLoaderButton from "./PackenUiLoaderButton";
 import PackenUiAvatar from "./PackenUiAvatar";
+import PackenUiText from './PackenUiText';
 
 interface LabelsShape {
   camera: {
@@ -50,9 +51,20 @@ interface StylesShape {
   imagePreview: object;
   imagePreviewTriggersContainer: object;
   imagePreviewTile: object;
+  imagePreviewContainer: object;
+  imagePreviewInner: object;
+  topTriggersInner: object;
+  btnUploadLabel: object;
+}
+
+interface i18nShape {
+  placeholders: {
+    upload_image: string;
+  };
 }
 
 interface PackenUiCameraProps {
+  i18n: i18nShape;
   labels: LabelsShape;
   EMIT_TRIGGER: Function;
   dismiss: Function;
@@ -77,6 +89,8 @@ type SetCameraType = string | ((instance: RNCamera | null) => void) | RefObject<
  * Component for managing the device's camera
  */
 export default class PackenUiCamera extends Component<PackenUiCameraProps, PackenUiCameraState> {
+  i18n = this.props.i18n || { placeholders: { upload_image: "Cargar imagen" } };
+
   /**
    * Variable that stores the state
    * @type {object}
@@ -240,21 +254,26 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     return (
       <Modal
         visible={this.state.imageViewble}
-        transparent={true}
-        animationType="fade">
-        <View style={PackenCameraStyles.container}>
-          <Image
-            resizeMode="cover"
-            source={{ uri: this.state.picture.uri }}
-            style={PackenCameraStyles.imagePreviewTile} />
-          <View style={PackenCameraStyles.imagePreview}>
-            <CameraImagePreviewTriggers
-              confirmPicture={this.restoreImagePreviewModal}
-              deletePicture={this.discardCurrentPicture}
+        transparent
+        animationType="fade"
+      >
+        <View style={PackenCameraStyles.imagePreviewContainer}>
+          <View style={PackenCameraStyles.imagePreviewInner}>
+            <Image
+              resizeMode="cover"
+              source={{ uri: this.state.picture.uri }}
+              style={PackenCameraStyles.imagePreviewTile}
             />
+            <View style={PackenCameraStyles.imagePreview}>
+              <CameraImagePreviewTriggers
+                confirmPicture={this.restoreImagePreviewModal}
+                deletePicture={this.discardCurrentPicture}
+              />
+            </View>
           </View>
         </View>
-      </Modal>);
+      </Modal>
+    );
   }
 
   /**
@@ -274,7 +293,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
       case "avatar":
         return (
           <View style={PackenCameraStyles.layout_avatar}>
-            <AvatarLayout width={400} height={500} color={Color.success.drk} />
+            <AvatarLayout width={400} height={500} color={Color.brand.primary.dft} />
           </View>
         );
       default:
@@ -308,6 +327,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
             />
             {this.getCameraLayout()}
             <CameraTopTriggers
+              language={this.i18n}
               image={this.state.picture}
               closeCameraTrigger={this.emitPicture}
               showPicture={this.showCurrentPicture}
@@ -353,23 +373,29 @@ export const CameraImagePreviewTriggers: Function = (props: CameraImagePreviewTr
     <View style={PackenCameraStyles.imagePreviewTriggersContainer}>
       <TouchableWithoutFeedback onPress={props.confirmPicture}>
         <View style={[PackenCameraStyles.trigger, {
-          width: 55, height: 55, borderRadius: 27,
-          marginLeft: 5, marginRight: 5
+          width: 55,
+          height: 55,
+          borderRadius: 27,
+          marginHorizontal: 10
         }]}>
-          <ConfirmPicture size={25}
-            name="check-circle"
-            color={Color.basic.white.dft}
+          <ConfirmPicture
+            size={25}
+            name="arrow-left"
+            color={Color.base.white}
           />
         </View>
       </TouchableWithoutFeedback>
       <TouchableWithoutFeedback onPress={props.deletePicture}>
         <View style={[PackenCameraStyles.trigger, {
-          width: 55, height: 55, borderRadius: 27,
-          marginLeft: 5, marginRight: 5
+          width: 55,
+          height: 55,
+          borderRadius: 27,
+          marginHorizontal: 10
         }]}>
-          <TrashPicture size={25}
+          <TrashPicture
+            size={25}
             name="trash-2"
-            color={Color.basic.white.dft}
+            color={Color.base.white}
           />
         </View>
       </TouchableWithoutFeedback>
@@ -378,6 +404,7 @@ export const CameraImagePreviewTriggers: Function = (props: CameraImagePreviewTr
 };
 
 interface CameraTopTriggersProps {
+  language: i18nShape;
   image: null | {
     uri: string;
   };
@@ -386,6 +413,7 @@ interface CameraTopTriggersProps {
 }
 
 interface CameraTopTriggersState {
+  icon: string;
   source: ImageSourcePropType | {
     uri: string;
   }
@@ -401,8 +429,10 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
    * @property {object} source The object that holds the preview image uri
    */
   state: CameraTopTriggersState = {
+    icon: "x",
     source: {
-      uri: (this.props.image != null ? this.props.image.uri : "")
+      uri: ""
+      /* uri: (this.props.image != null ? this.props.image.uri : "") */
     }
   }
 
@@ -423,10 +453,15 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
    */
   componentDidUpdate(prevProps: CameraTopTriggersProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
+      let newIcon = "x";
+      let newSource = { uri: "" };
+      if (this.props.image) {
+        newIcon = "check";
+        newSource = { uri: this.props.image.uri };
+      }
       this.setState({
-        source: {
-          uri: (this.props.image != null ? this.props.image.uri : "")
-        }
+        icon: newIcon,
+        source: newSource
       });
     }
   }
@@ -440,13 +475,24 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
     return (
       <View style={PackenCameraStyles.topTriggersContainer}>
         <TouchableWithoutFeedback onPress={this.props.closeCameraTrigger}>
-          <View style={[PackenCameraStyles.trigger, {
-            width: 40, height: 40, borderRadius: 20
-          }]}>
-            <CloseCamera size={25}
-              name="x"
-              color={Color.basic.white.dft}
-            />
+          <View style={PackenCameraStyles.topTriggersInner}>
+            <View style={[PackenCameraStyles.trigger, {
+              width: 40, height: 40, borderRadius: 20
+            }]}
+            >
+              <CloseCamera
+                size={25}
+                name={this.state.icon}
+                color={Color.base.white}
+              />
+            </View>
+            {
+              this.props.image ? (
+                <PackenUiText style={PackenCameraStyles.btnUploadLabel}>
+                  {this.props.language.placeholders.upload_image}
+                </PackenUiText>
+              ) : null
+            }
           </View>
         </TouchableWithoutFeedback>
         <PackenUiAvatar size="medium" src={this.state.source} callback={this.propagePicture} />
@@ -556,7 +602,7 @@ export class CameraBottomTriggers extends Component<CameraBottomTriggersProps, C
    * @param {object} prevProps The previous props object
    */
   componentDidUpdate(prevProps: CameraBottomTriggersProps) {
-    if (JSON.stringify(prevProps) !== JSON.stringify(this.props)) {
+    if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.setState({
         loading: this.props.cameraIsLoading
       });
@@ -630,7 +676,7 @@ export const DocumentLayout: Function = (props: LayoutPropsShape): ReactNode => 
 export const AvatarLayout: Function = (props: LayoutPropsShape): ReactNode => (
   <Svg height={props.height} width={props.width} fill="transparent" viewBox="0 0 200 200">
     {/* Frame para encuadrar rostro del conductor */}
-    <Path fill="none" stroke={Color.success.default} strokeWidth="2"
+    <Path fill="none" stroke={props.color} strokeWidth="2"
       d="M 141.50,89.50
         C 143.20,77.08 143.00,64.00 143.00,64.00
         135.00,10.00 69.50,-8.50 52.00,64.00
@@ -727,23 +773,30 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  btnUploadLabel: {
+    marginLeft: 10,
+    color: Color.basic.white.dft,
+    textShadowColor: UTIL.hex2rgba(Color.basic.black.dft, 0.75),
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 15
+  },
   trigger: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Color.brand.primary.drk
+    backgroundColor: Color.primary.default
   },
   triggerChild: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Color.brand.primary.drk
+    backgroundColor: Color.primary.default
   },
   triggerChildDisabled: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: Color.basic.independence.drk_alt
+    backgroundColor: Color.base.default
   },
   bottomTriggersContainer: {
     position: "absolute",
@@ -769,15 +822,26 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row"
   },
+  topTriggersInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start"
+  },
+  imagePreviewContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: UTIL.hex2rgba(Color.basic.black.dft, 0.75)
+  },
+  imagePreviewInner: {
+    position: "relative"
+  },
   imagePreview: {
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-    width: "100%",
-    padding: 5,
-    zIndex: 10,
-    position: "absolute",
+    left: 0,
+    right: 0,
     bottom: 50,
-    left: 0
+    zIndex: 10,
+    position: "absolute"
   },
   imagePreviewTriggersContainer: {
     width: "100%",

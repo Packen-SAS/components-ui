@@ -72,14 +72,17 @@ describe("<PackenUiHeader/>", () => {
       expect(res).toEqual({
         children: null,
         icon: "arrow-left",
+        noIcon: false,
         onBackPress: false,
         customStyle: {},
         styling: {
           box: {},
+          iconWrapper: {},
           iconSize: undefined,
           iconColor: undefined,
           title: {}
-        }
+        },
+        titlePreset: "h6"
       });
     });
 

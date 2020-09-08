@@ -131,7 +131,7 @@ class Lists extends Component {
             isOpen: false,
             value: "",
             placeholder: "Carry",
-            onChange: this.mockCallback,
+            onChangeText: this.mockCallback,
             list: {
               config: {
                 size: "medium",
@@ -152,7 +152,7 @@ class Lists extends Component {
             nonEditable: false,
             value: "",
             placeholder: "Steven Seagal",
-            onChange: this.mockCallback
+            onChangeText: this.mockCallback
           },
           customWrapperStyle: { marginBottom: 16 }
         },

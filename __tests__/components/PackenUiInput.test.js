@@ -78,7 +78,6 @@ describe("<PackenUiInput/>", () => {
       isPassword: false,
       label: "Label tiny",
       placeholder: "Placeholder",
-      ref: null,
       dimensions: {
         box: {
           width: 0,
@@ -132,7 +131,6 @@ describe("<PackenUiInput/>", () => {
         eventHandlers: false,
         textAlign: "left",
         propagateRef: false,
-        ref: null,
         loading: false,
         validator: false,
         minLength: 0,
@@ -176,7 +174,6 @@ describe("<PackenUiInput/>", () => {
       expect(returnedState).toEqual({
         ...renderInstance.state,
         state: "disabled",
-        ref: null,
         dimensions: {
           box: {
             width: 0,
@@ -205,7 +202,6 @@ describe("<PackenUiInput/>", () => {
         ...renderInstance.state,
         help: undefined,
         state: "disabled",
-        ref: null,
         dimensions: {
           box: {
             width: 0,
@@ -233,7 +229,6 @@ describe("<PackenUiInput/>", () => {
         }
       });
       const returnedState = renderInstance.setInitialState();
-
       expect(returnedState).toEqual({
         ...renderInstance.state,
         help: {
@@ -241,9 +236,7 @@ describe("<PackenUiInput/>", () => {
           touchable: true,
           callback: this.mockCallback
         },
-
         state: "disabled",
-        ref: null,
         dimensions: {
           box: {
             width: 0,
@@ -460,12 +453,13 @@ describe("<PackenUiInput/>", () => {
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
 
-      expect(renderInstance.state.ref).toEqual(ref);
+      expect(renderInstance.ref).toEqual(ref);
     });
 
     it("executes the propagation callback after returning the ref if provided", () => {
       render.setProps({ instance: jest.fn() });
       renderInstance.setState({ name: "Test" });
+      renderInstance.ref = null;
       const ref = { blur: mockCallback, focus: mockCallback };
       renderInstance.getRef(ref);
 
@@ -474,6 +468,7 @@ describe("<PackenUiInput/>", () => {
 
     it("returns false while executing the propagation callback after returning the ref if not provided", () => {
       render.setProps({ instance: jest.fn() });
+      renderInstance.ref = null;
       renderInstance.getRef();
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
@@ -487,7 +482,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns false if trying to focus the input and ref is not defined", () => {
-      renderInstance.setState({ ref: null });
+      renderInstance.ref = null;
       const res = renderInstance.focus();
 
       expect(res).toBe(false);
@@ -501,7 +496,7 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("returns false if trying to blur the input and ref is not defined", () => {
-      renderInstance.setState({ ref: null });
+      renderInstance.ref = null;
       const res = renderInstance.blur();
 
       expect(res).toBe(false);
@@ -518,11 +513,11 @@ describe("<PackenUiInput/>", () => {
 
     it("blurs the input while checking its focus if it's set so", () => {
       render.setProps({ isFocused: false });
-      const spyBlur = jest.spyOn(renderInstance, "blur");
+      const spyFocus = jest.spyOn(renderInstance, "focus");
       renderInstance.checkFocus();
 
-      expect(spyBlur).toHaveBeenCalled();
-      spyBlur.mockRestore();
+      expect(spyFocus).not.toHaveBeenCalled();
+      spyFocus.mockRestore();
     });
 
     it("triggers the help callback", () => {

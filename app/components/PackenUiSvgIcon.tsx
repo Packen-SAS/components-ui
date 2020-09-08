@@ -48,6 +48,18 @@ import PackenSupportBlur from "../../assets/icons/support_blur.svg";
 import PackenProfile from "../../assets/icons/profile.svg";
 // @ts-ignore
 import PackenProfileBlur from "../../assets/icons/profile_blur.svg";
+// @ts-ignore
+import PackenOnboardingOne from "../../assets/images/onboarding-1.svg";
+// @ts-ignore
+import PackenOnboardingTwo from "../../assets/images/onboarding-2.svg";
+// @ts-ignore
+import PackenOnboardingThree from "../../assets/images/onboarding-3.svg";
+// @ts-ignore
+import PackenOnboardingFour from "../../assets/images/onboarding-4.svg";
+// @ts-ignore
+import PackenCamera from "../../assets/icons/camera.svg";
+// @ts-ignore
+import PackenCheck from "../../assets/icons/check.svg";
 
 interface PackenUiSvgIconProps {
   name: string;
@@ -76,7 +88,7 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
   constructor(props: PackenUiSvgIconProps) {
     super(props);
     const { width, height } = props;
-    
+
     /**
      * Variable that stores the state
      * @type {object}
@@ -94,6 +106,8 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
         "document_front": <PackenDocumentFront width={width} height={height} />,
         "document_file": <PackenDocumentFile width={width} height={height} />,
         "swipe": <PackenSwipe width={width} height={height} />,
+        "camera": <PackenCamera width={width} height={height} />,
+        "check": <PackenCheck width={width} height={height} />,
         /* Toolbar icons */
         "navigation": <PackenNavigation width={width} height={height} />,
         "navigation_blur": <PackenNavigationBlur width={width} height={height} />,
@@ -104,7 +118,12 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
         "support": <PackenSupport width={width} height={height} />,
         "support_blur": <PackenSupportBlur width={width} height={height} />,
         "profile": <PackenProfile width={width} height={height} />,
-        "profile_blur": <PackenProfileBlur width={width} height={height} />
+        "profile_blur": <PackenProfileBlur width={width} height={height} />,
+        /* Onboarding images */
+        "onboarding_1": <PackenOnboardingOne width={width} height={height} />,
+        "onboarding_2": <PackenOnboardingTwo width={width} height={height} />,
+        "onboarding_3": <PackenOnboardingThree width={width} height={height} />,
+        "onboarding_4": <PackenOnboardingFour width={width} height={height} />
       }
     }
   }
@@ -115,7 +134,7 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
    * @return {node} JSX for the subcomponent
    */
   render(): ReactNode {
-    return this.state.icons[this.props.name] || <PackenUiText>Icon not found.</PackenUiText>
+    return this.state.icons[this.props.name] || <PackenUiText preset="label">Icon not found.</PackenUiText>
   }
 
   /**
