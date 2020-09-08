@@ -89,7 +89,11 @@ type SetCameraType = string | ((instance: RNCamera | null) => void) | RefObject<
  * Component for managing the device's camera
  */
 export default class PackenUiCamera extends Component<PackenUiCameraProps, PackenUiCameraState> {
-  i18n = this.props.i18n || { placeholders: { upload_image: "Cargar imagen" } };
+  /**
+   * Variable that stores the i18n json data
+   * @type {object}
+   */
+  i18n: i18nShape = this.props.i18n || { placeholders: { upload_image: "Cargar imagen" } };
 
   /**
    * Variable that stores the state

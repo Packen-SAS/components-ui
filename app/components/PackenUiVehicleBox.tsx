@@ -71,7 +71,11 @@ interface PackenUiVehicleBoxState {
  * Component for displaying a driver's vehicle overview
  */
 class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehicleBoxState> {
-  ready = false;
+  /**
+   * Variable that stores whether the component has finished mounting to render its data
+   * @type {boolean}
+   */
+  ready: boolean = false;
 
   /**
    * Initializes the component

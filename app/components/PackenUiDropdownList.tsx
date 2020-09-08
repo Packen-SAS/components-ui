@@ -394,7 +394,7 @@ class PackenUiDropdownList extends Component<PackenUiDropdownListProps, PackenUi
    * Updates the state with new props
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() });
   }
 

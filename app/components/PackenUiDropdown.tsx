@@ -206,7 +206,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
      * @property {string} finalSelectionString The formatted selection string to be set to the input and content sizer elements
      * @return {object} The props mapped to the state keys
      */
-    let innerState = {
+    let innerState: object = {
       flag: true,
       contentSizerHeight: 0,
       isOpen: false,
