@@ -134,12 +134,42 @@ interface i18nShape {
   }
 }
 
+interface StylingPropShape {
+  container?: object;
+  header?: {
+    box?: object;
+    inline?: object;
+    label?: object;
+  }
+  tag?: {
+    box?: object;
+    label?: object;
+  };
+  body?: {
+    box?: object;
+    fold?: object;
+    section?: object;
+    overview?: object;
+    group?: object;
+    client?: object;
+    label?: object;
+    fee?: object;
+    description?: object;
+    details?: object;
+    comments?: object;
+    locations?: object;
+    dates?: object;
+    cta?: object;
+  }
+}
+
 interface PackenUiShipmentCardProps {
   i18n: i18nShape,
   shipment: ShipmentShape;
   isDetails?: boolean;
   showDetails?: boolean;
   isMyShipments?: boolean;
+  styling?: StylingPropShape;
 }
 
 interface PackenUiShipmentCardState {
@@ -162,7 +192,8 @@ interface PackenUiShipmentCardState {
   deliveriesCount: number;
   acceptShipment: Function;
   type: string;
-  origin: OriginShape
+  origin: OriginShape;
+  styling: StylingPropShape;
 }
 
 /**
@@ -214,6 +245,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @property {string} [model.type=undefined] The type of shipment
    * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
    * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
+   * @property {object} [styling={ container: {},header: { box: {}, inline: {}, label: {} },tag: { box: {},  label: {} }, body: { box: {}, fold: {}, section: {}, overview: {}, group: {}, client: {}, label: {}, fee: {}, description: {}, details: {}, comments: {}, locations: {}, dates: {}, cta: {}} }] The optional custom styling props
    * @return {object} The props mapped to the state keys
    */
   setPropsToState: Function = (): PackenUiShipmentCardState => {
@@ -241,6 +273,34 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       origin: {
         main: model.pickup_origin,
         extra: model.pickup_origin_extend
+      },
+      styling: this.props.styling || {
+        container: {},
+        header: {
+          box: {},
+          inline: {},
+          label: {}
+        },
+        tag: {
+          box: {},
+          label: {}
+        },
+        body: {
+          box: {},
+          fold: {},
+          section: {},
+          overview: {},
+          group: {},
+          client: {},
+          label: {},
+          fee: {},
+          description: {},
+          details: {},
+          comments: {},
+          locations: {},
+          dates: {},
+          cta: {}
+        }
       }
     };
   }
@@ -302,15 +362,25 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node} JSX for the overview elements
    */
   getOverview: Function = (): ReactNode => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.overview]}>
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.overview,
+      ...this.state.styling.body?.overview
+    }}>
       <View style={{
         ...this.getStyles().body.group.base,
-        ...this.getStyles().body.client[this.state.type]
+        ...this.state.styling.body?.group,
+        ...this.getStyles().body.client[this.state.type],
+        ...this.state.styling.body?.client
       }}
       >
         <PackenUiText
           preset="c1"
-          style={this.getStyles().body.label}
+          style={{
+            ...this.getStyles().body.label,
+            ...this.state.styling.body?.label
+          }}
         >
           {this.language.shipment.client_label}
         </PackenUiText>
@@ -319,16 +389,26 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         </PackenUiText>
       </View>
       {this.getPickDate()}
-      <View style={[this.getStyles().body.group.base, this.getStyles().body.group.right]}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group,
+        ...this.getStyles().body.group.right
+      }}>
         <PackenUiText
           preset="c1"
-          style={this.getStyles().body.label}
+          style={{
+            ...this.getStyles().body.label,
+            ...this.state.styling.body?.label
+          }}
         >
           {this.language.shipment.fee_label}
         </PackenUiText>
         <PackenUiText
           preset="t1"
-          style={this.getStyles().body.fee}
+          style={{
+            ...this.getStyles().body.fee,
+            ...this.state.styling.body?.fee
+          }}
         >
           {numeral(this.state.amount).format('$ 0,0[.]00')}
         </PackenUiText>
@@ -344,16 +424,24 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   getDescription: Function = (): ReactNode | null => {
     if (!this.state.isDetails) { return null; }
     return (
-      <View style={this.getStyles().body.section}>
+      <View style={{
+        ...this.getStyles().body.section,
+        ...this.state.styling.body?.section
+      }}>
         <View
           style={{
             ...this.getStyles().body.group.base,
-            ...this.getStyles().body.description
+            ...this.state.styling.body?.group,
+            ...this.getStyles().body.description,
+            ...this.state.styling.body?.description
           }}
         >
           <PackenUiText
             preset="c1"
-            style={this.getStyles().body.label}
+            style={{
+              ...this.getStyles().body.label,
+              ...this.state.styling.body?.label
+            }}
           >
             {this.language.shipment.content_description}
           </PackenUiText>
@@ -435,15 +523,23 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   getComments: Function = (): ReactNode | null => {
     if (this.state.comments && this.state.isDetails) {
       return (
-        <View style={this.getStyles().body.section}>
+        <View style={{
+          ...this.getStyles().body.section,
+          ...this.state.styling.body?.section
+        }}>
           <View style={{
             ...this.getStyles().body.group.base,
-            ...this.getStyles().body.comments
+            ...this.state.styling.body?.group,
+            ...this.getStyles().body.comments,
+            ...this.state.styling.body?.comments
           }}
           >
             <PackenUiText
               preset="c1"
-              style={this.getStyles().body.label}
+              style={{
+                ...this.getStyles().body.label,
+                ...this.state.styling.body?.label
+              }}
             >
               {this.language.shipment.comments_label}
             </PackenUiText>
@@ -462,14 +558,28 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node} JSX for the details elements
    */
   getDetails: Function = (): ReactNode => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.details]}>
-      <View style={this.getStyles().body.group.base}>
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.details,
+      ...this.state.styling.body?.details
+    }}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled />
       </View>
-      <View style={this.getStyles().body.group.base}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled />
       </View>
-      <View style={this.getStyles().body.group.base}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo {...this.getPaymentProps()} />
       </View>
     </View>
@@ -506,11 +616,17 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node} JSX for the elements
    */
   getLocations: Function = (): ReactNode => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.locations]}>
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.locations,
+      ...this.state.styling.body?.locations
+    }}>
       <PackenUiText
         preset="c1"
         style={{
           ...this.getStyles().body.label,
+          ...this.state.styling.body?.label,
           fontFamily: typography.family.bold,
           color: colors.basic.independence.drk
         }}
@@ -546,6 +662,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
           preset="c1"
           style={{
             ...this.getStyles().body.label,
+            ...this.state.styling.body?.label,
             fontFamily: typography.family.bold,
             color: colors.basic.independence.drk,
             marginBottom: 8
@@ -615,7 +732,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node} JSX for the elements
    */
   getEvents: Function = (): ReactNode => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.locations]}>
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.locations,
+      ...this.state.styling.body?.locations
+    }}>
       <View style={{ width: '100%', marginTop: 5 }}>
         <PackenUiServiceStatus
           altStyle
@@ -634,11 +756,17 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   getCta: Function = (): ReactNode | null => {
     if (this.state.isDetails) { return null; }
     return (
-      <View style={[this.getStyles().body.section, this.getStyles().body.cta]}>
+      <View style={{
+        ...this.getStyles().body.section,
+        ...this.state.styling.body?.section,
+        ...this.getStyles().body.cta,
+        ...this.state.styling.body?.cta
+      }}>
         {
           !this.state.isMyShipments ? (
             <View style={{
               ...this.getStyles().body.group.base,
+              ...this.state.styling.body?.group,
               paddingRight: 3
             }}
             >
@@ -656,6 +784,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         }
         <View style={{
           ...this.getStyles().body.group.base,
+          ...this.state.styling.body?.group,
           width: this.state.isMyShipments ? '100%' : 'auto',
           paddingLeft: this.state.isMyShipments ? 0 : 3
         }}
@@ -703,10 +832,14 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    */
   render(): ReactNode {
     return (
-      <View style={this.getStyles().container}>
+      <View style={{
+        ...this.getStyles().container,
+        ...this.state.styling.container
+      }}>
         <View style={{
           ...this.getStyles().header.box.base,
-          ...this.getStyles().header.box.type[this.state.type]
+          ...this.getStyles().header.box.type[this.state.type],
+          ...this.state.styling.header?.box
         }}
         >
           <View style={this.getStyles().header.inline}>
@@ -714,7 +847,8 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
               preset="c2"
               style={{
                 ...this.getStyles().header.label.base,
-                ...this.getStyles().header.label.type[this.state.type]
+                ...this.getStyles().header.label.type[this.state.type],
+                ...this.state.styling.header?.label
               }}
             >
               {this.language.shipment.shipment_label.toUpperCase()}
@@ -730,18 +864,23 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
             styling={{
               box: {
                 ...this.getStyles().header.tag.box.base,
-                ...this.getStyles().header.tag.box.type[this.state.type]
+                ...this.getStyles().header.tag.box.type[this.state.type],
+                ...this.state.styling.tag?.box
               },
               label: {
                 ...this.getStyles().header.tag.label.base,
-                ...this.getStyles().header.tag.label.type[this.state.type]
+                ...this.getStyles().header.tag.label.type[this.state.type],
+                ...this.state.styling.tag?.label
               }
             }}
           >
             {UTIL.toCapitalCase(this.getShipmentTypeLabel())}
           </PackenUiTag>
         </View>
-        <View style={this.getStyles().body.box}>
+        <View style={{
+          ...this.getStyles().body.box,
+          ...this.state.styling.body?.box
+        }}>
           {this.getOverview()}
           {this.getDescription()}
           <View style={{
