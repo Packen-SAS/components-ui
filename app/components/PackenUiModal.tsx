@@ -156,9 +156,22 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
    */
   carouselRef: RefObject<any> = React.createRef();
 
-  language = this.props.i18n;
+  /**
+   * Variable that holds the i18n json data
+   * @type {object}
+   */
+  language: i18nShape = this.props.i18n;
 
+  /**
+   * Variable that holds the keyboardDidShow event listener
+   * @type {object}
+   */
   keyboardDidShowListener: EmitterSubscription | null = null;
+
+  /**
+   * Variable that holds the keyboardDidHide event listener
+   * @type {object}
+   */
   keyboardDidHideListener: EmitterSubscription | null = null;
 
   /**
@@ -311,6 +324,10 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     this.keyboardDidHideListener = Keyboard.addListener("keyboardDidHide", this.keyboardDidHide);
   }
 
+  /**
+   * Removes keyboard event listeners when the component is unmounted
+   * @type {Function}
+   */
   componentWillUnmount() {
     if (this.keyboardDidShowListener && this.keyboardDidHideListener) {
       this.keyboardDidShowListener.remove();
@@ -318,8 +335,17 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     }
   }
 
+  /**
+   * Sets the keyboard height to the state when it's opened
+   * @type {Function}
+   * @param {object} e The event data object
+   */
   keyboardDidShow: KeyboardDidShowType = (e: KeyboardEventArgumentShape) => { this.setState({ isKeyboardOpen: true, keyboardHeight: e.endCoordinates.height }); }
 
+  /**
+   * Resets all keyboard-related properties in the state when it's closed
+   * @type {Function}
+   */
   keyboardDidHide: VoidFunction = () => { this.setState({ isKeyboardOpen: false, keyboardHeight: 0, alignmentStyles: this.state.initialAlignmentStyles }); }
 
   /**
@@ -624,9 +650,18 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     return btn;
   }
 
-  togglePayload = () => { this.setState({ isPayloadVisible: !this.state.isPayloadVisible }); }
+  /**
+   * Toggles payload content visibility
+   * @type {Function}
+   */
+  togglePayload: Function = () => { this.setState({ isPayloadVisible: !this.state.isPayloadVisible }); }
 
-  getPayload = () => {
+  /**
+   * Returns the payload elements if corresponding data is provided
+   * @type {Function}
+   * @return {node|null}
+   */
+  getPayload: Function = (): ReactNode | null => {
     let payload = null;
 
     if (typeof this.state.payload === "object") {
@@ -907,6 +942,11 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     }
   }
 
+  /**
+   * Determines whether to apply to vertical center-alignment styles to enable scrolling when modal height exceeds the available space
+   * @type {Function}
+   * @param {number} height The height of the modal
+   */
   getModalLayout: Function = ({ height }: GetDimensionsType) => {
     const screenHeight = Dimensions.get("screen").height;
     let newStyles = { ...this.state.alignmentStyles };

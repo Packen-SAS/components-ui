@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { View } from 'react-native';
+import PropTypes from "prop-types";
 import numeral from 'numeral';
 import PackenUiServiceStatus from './PackenUiServiceStatus';
 import typography from '../styles/abstracts/typography';
@@ -130,7 +131,35 @@ interface i18nShape {
   buttons: {
     accept_shipment: string;
     view_details: string;
-    
+  }
+}
+
+interface StylingPropShape {
+  container?: object;
+  header?: {
+    box?: object;
+    inline?: object;
+    label?: object;
+  }
+  tag?: {
+    box?: object;
+    label?: object;
+  };
+  body?: {
+    box?: object;
+    fold?: object;
+    section?: object;
+    overview?: object;
+    group?: object;
+    client?: object;
+    label?: object;
+    fee?: object;
+    description?: object;
+    details?: object;
+    comments?: object;
+    locations?: object;
+    dates?: object;
+    cta?: object;
   }
 }
 
@@ -140,6 +169,7 @@ interface PackenUiShipmentCardProps {
   isDetails?: boolean;
   showDetails?: boolean;
   isMyShipments?: boolean;
+  styling?: StylingPropShape;
 }
 
 interface PackenUiShipmentCardState {
@@ -162,17 +192,62 @@ interface PackenUiShipmentCardState {
   deliveriesCount: number;
   acceptShipment: Function;
   type: string;
-  origin: OriginShape
+  origin: OriginShape;
+  styling: StylingPropShape;
 }
 
+/**
+ * Component for rendering a shipment's details in a card
+ */
 class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUiShipmentCardState> {
-  language = this.props.i18n;
+  /**
+   * Variable that holds the i18n json data
+   * @type {object}
+   */
+  language: i18nShape = this.props.i18n;
 
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props: PackenUiShipmentCardProps) {
     super(props);
+
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() };
   }
 
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {boolean} [isDetails=false] Whether the component is being used as part of a details view
+   * @property {boolean} [showDetails=false] Whether to show the content "below the fold" when being used as part of a details view
+   * @property {boolean} [isMyShipments=false] Whether the component is being used as part of a historical shipments view
+   * @property {object|boolean} [btnText=false] Optional custom text for the "accept" and "view" buttons
+   * @property {string} [model.client=undefined] The client name
+   * @property {string} [model.amount=undefined] The shipment fee
+   * @property {object[]} [model.events=undefined] The shipment events if it's already delivered
+   * @property {number} [model.id=undefined] The unique shipment id
+   * @property {string} [model.content=undefined] The shipment description
+   * @property {string} [model.distance=undefined] The total distance between all shipment locations
+   * @property {string} [model.timeAway=undefined] The total time to travel between all shipment locations
+   * @property {string|null} [model.comments=undefined] The shipment extra comments
+   * @property {string} [model.pickDate=undefined] The shipment pickup date
+   * @property {object[]|null} [model.deliveries=undefined] The shipment deliveries
+   * @property {object} [model.payment=undefined] The payment method data object
+   * @property {Function} [model.viewDetails=undefined] The callback function to trigger when pressing on the "view" button
+   * @property {number} [model.deliveriesCount=undefined] The number of deliveries for the shipment
+   * @property {Function} [model.acceptShipment=undefined] The callback function to trigger when pressing on the "accept" button
+   * @property {string} [model.type=undefined] The type of shipment
+   * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
+   * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
+   * @property {object} [styling={ container: {},header: { box: {}, inline: {}, label: {} },tag: { box: {},  label: {} }, body: { box: {}, fold: {}, section: {}, overview: {}, group: {}, client: {}, label: {}, fee: {}, description: {}, details: {}, comments: {}, locations: {}, dates: {}, cta: {}} }] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
   setPropsToState: Function = (): PackenUiShipmentCardState => {
     const { deliveries_count, model, btnText } = this.props.shipment;
     return {
@@ -198,10 +273,43 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       origin: {
         main: model.pickup_origin,
         extra: model.pickup_origin_extend
+      },
+      styling: this.props.styling || {
+        container: {},
+        header: {
+          box: {},
+          inline: {},
+          label: {}
+        },
+        tag: {
+          box: {},
+          label: {}
+        },
+        body: {
+          box: {},
+          fold: {},
+          section: {},
+          overview: {},
+          group: {},
+          client: {},
+          label: {},
+          fee: {},
+          description: {},
+          details: {},
+          comments: {},
+          locations: {},
+          dates: {},
+          cta: {}
+        }
       }
     };
   }
 
+  /**
+   * Returns the number of deliveries as a {@link PackenUiText} component
+   * @type {Function}
+   * @return {node} JSX for the deliveries element
+   */
   getDeliveries: Function = (): ReactNode => {
     let content = ` - ${UTIL.toCapitalCase(this.language.shipment.all_day_label)}`;
     if (this.state.deliveriesCount > 0) {
@@ -220,7 +328,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
-  getPickDate = () => {
+  /**
+   * Returns the pickup date when it's a programmed shipment as a {@link PackenUiIconInfo} component
+   * @type {Function}
+   * @return {node|null} JSX for the pickup date element or null
+   */
+  getPickDate: Function = (): ReactNode | null => {
     if (!this.state.pickDate) { return null; }
     const { day, month, nday, time, locale } = UTIL.datetime().parts(this.state.pickDate);
     const ndayFormat = UTIL.getNdayFormat(locale, nday);
@@ -243,16 +356,31 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
-  getOverview = () => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.overview]}>
+  /**
+   * Returns the main, "above the fold," overview element which contains the client name and shipment fee
+   * @type {Function}
+   * @return {node} JSX for the overview elements
+   */
+  getOverview: Function = (): ReactNode => (
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.overview,
+      ...this.state.styling.body?.overview
+    }}>
       <View style={{
         ...this.getStyles().body.group.base,
-        ...this.getStyles().body.client[this.state.type]
+        ...this.state.styling.body?.group,
+        ...this.getStyles().body.client[this.state.type],
+        ...this.state.styling.body?.client
       }}
       >
         <PackenUiText
           preset="c1"
-          style={this.getStyles().body.label}
+          style={{
+            ...this.getStyles().body.label,
+            ...this.state.styling.body?.label
+          }}
         >
           {this.language.shipment.client_label}
         </PackenUiText>
@@ -261,16 +389,26 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         </PackenUiText>
       </View>
       {this.getPickDate()}
-      <View style={[this.getStyles().body.group.base, this.getStyles().body.group.right]}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group,
+        ...this.getStyles().body.group.right
+      }}>
         <PackenUiText
           preset="c1"
-          style={this.getStyles().body.label}
+          style={{
+            ...this.getStyles().body.label,
+            ...this.state.styling.body?.label
+          }}
         >
           {this.language.shipment.fee_label}
         </PackenUiText>
         <PackenUiText
           preset="t1"
-          style={this.getStyles().body.fee}
+          style={{
+            ...this.getStyles().body.fee,
+            ...this.state.styling.body?.fee
+          }}
         >
           {numeral(this.state.amount).format('$ 0,0[.]00')}
         </PackenUiText>
@@ -278,19 +416,32 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     </View>
   );
 
-  getDescription = () => {
+  /**
+   * Returns the shipment description element if data is available
+   * @type {Function}
+   * @return {node|null} JSX for the description elements or null
+   */
+  getDescription: Function = (): ReactNode | null => {
     if (!this.state.isDetails) { return null; }
     return (
-      <View style={this.getStyles().body.section}>
+      <View style={{
+        ...this.getStyles().body.section,
+        ...this.state.styling.body?.section
+      }}>
         <View
           style={{
             ...this.getStyles().body.group.base,
-            ...this.getStyles().body.description
+            ...this.state.styling.body?.group,
+            ...this.getStyles().body.description,
+            ...this.state.styling.body?.description
           }}
         >
           <PackenUiText
             preset="c1"
-            style={this.getStyles().body.label}
+            style={{
+              ...this.getStyles().body.label,
+              ...this.state.styling.body?.label
+            }}
           >
             {this.language.shipment.content_description}
           </PackenUiText>
@@ -302,7 +453,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
-  getPaymentProps = () => {
+  /**
+   * Returns the {@link PackenUiIconInfo} props used specifically for the payment method element
+   * @type {Function}
+   * @return {object} The correct props for the component instance
+   */
+  getPaymentProps: Function = (): object => {
     let key = '';
     let icon = '';
     let iconSet = 'FTR';
@@ -352,20 +508,38 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     };
   }
 
-  getTypeStyling = () => (this.state.type === 'programmed' ? { iconColor: colors.brandSecondary.default } : {});
+  /**
+   * Returns the correct color for a {@link PackenUiIconInfo} depending on the shipment type
+   * @type {Function}
+   * @return {object} The custom styling prop with correct icon color passed to the component instance
+   */
+  getTypeStyling: Function = (): Object => (this.state.type === 'programmed' ? { iconColor: colors.brandSecondary.default } : {});
 
-  getComments = () => {
+  /**
+   * Returns the comments elements if data is provided
+   * @type {Function}
+   * @return {node|null} JSX for the comments elements or null
+   */
+  getComments: Function = (): ReactNode | null => {
     if (this.state.comments && this.state.isDetails) {
       return (
-        <View style={this.getStyles().body.section}>
+        <View style={{
+          ...this.getStyles().body.section,
+          ...this.state.styling.body?.section
+        }}>
           <View style={{
             ...this.getStyles().body.group.base,
-            ...this.getStyles().body.comments
+            ...this.state.styling.body?.group,
+            ...this.getStyles().body.comments,
+            ...this.state.styling.body?.comments
           }}
           >
             <PackenUiText
               preset="c1"
-              style={this.getStyles().body.label}
+              style={{
+                ...this.getStyles().body.label,
+                ...this.state.styling.body?.label
+              }}
             >
               {this.language.shipment.comments_label}
             </PackenUiText>
@@ -378,22 +552,46 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     } return null;
   }
 
-  getDetails = () => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.details]}>
-      <View style={this.getStyles().body.group.base}>
+  /**
+   * Returns the details elements (distance, time away, and payment method)
+   * @type {Function}
+   * @return {node} JSX for the details elements
+   */
+  getDetails: Function = (): ReactNode => (
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.details,
+      ...this.state.styling.body?.details
+    }}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled />
       </View>
-      <View style={this.getStyles().body.group.base}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled />
       </View>
-      <View style={this.getStyles().body.group.base}>
+      <View style={{
+        ...this.getStyles().body.group.base,
+        ...this.state.styling.body?.group
+      }}>
         <PackenUiIconInfo {...this.getPaymentProps()} />
       </View>
     </View>
   );
 
-  getLocationsData = () => {
-    const locations:LocationShape[] = [{
+  /**
+   * Returns the data required by the {@link PackenUiServiceStatus} component used for rendering the locations
+   * @type {Function}
+   * @return {object[]} The "steps" prop for the component instance
+   */
+  getLocationsData: Function = (): object[] => {
+    const locations: LocationShape[] = [{
       isCurrent: true,
       label: this.language.shipment.origin,
       title: UTIL.toCapitalCase(this.state.origin.main),
@@ -412,12 +610,23 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     return locations;
   }
 
-  getLocations = () => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.locations]}>
+  /**
+   * Returns the {@link PackenUiServiceStatus} for rendering the shipment origin and deliveries
+   * @type {Function}
+   * @return {node} JSX for the elements
+   */
+  getLocations: Function = (): ReactNode => (
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.locations,
+      ...this.state.styling.body?.locations
+    }}>
       <PackenUiText
         preset="c1"
         style={{
           ...this.getStyles().body.label,
+          ...this.state.styling.body?.label,
           fontFamily: typography.family.bold,
           color: colors.basic.independence.drk
         }}
@@ -434,7 +643,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     </View>
   );
 
-  getStartEndDates = () => {
+  /**
+   * Returns the {@link PackenUiServiceStatus} and {@link PackenUiIconInfo} components for rendering the start/end dates and events for delivered shipments
+   * @type {Function}
+   * @return {node} JSX for the elements
+   */
+  getStartEndDates: Function = (): ReactNode => {
     if (!this.state.isDetails || !this.state.events || !this.state.events.length) { return null; }
     const startDate = this.state.events[0].created_at;
     const endDate = this.state.events[this.state.events.length - 1].created_at;
@@ -448,6 +662,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
           preset="c1"
           style={{
             ...this.getStyles().body.label,
+            ...this.state.styling.body?.label,
             fontFamily: typography.family.bold,
             color: colors.basic.independence.drk,
             marginBottom: 8
@@ -494,8 +709,13 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
-  getEventsData = () => {
-    const events:EventsDataInterface[] = [];
+  /**
+   * Returns the data required by the {@link PackenUiServiceStatus} component used for rendering the shipment events
+   * @type {Function}
+   * @return {object[]} The "steps" prop for the component instance
+   */
+  getEventsData: Function = (): object[] => {
+    const events: EventsDataInterface[] = [];
     this.state.events.forEach((item) => {
       const { message, time_event } = item;
       events.push({
@@ -506,8 +726,18 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     return events;
   }
 
-  getEvents = () => (
-    <View style={[this.getStyles().body.section, this.getStyles().body.locations]}>
+  /**
+   * Returns the {@link PackenUiServiceStatus} for rendering the shipment events if already delivered
+   * @type {Function}
+   * @return {node} JSX for the elements
+   */
+  getEvents: Function = (): ReactNode => (
+    <View style={{
+      ...this.getStyles().body.section,
+      ...this.state.styling.body?.section,
+      ...this.getStyles().body.locations,
+      ...this.state.styling.body?.locations
+    }}>
       <View style={{ width: '100%', marginTop: 5 }}>
         <PackenUiServiceStatus
           altStyle
@@ -518,14 +748,25 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     </View>
   );
 
-  getCta = () => {
+  /**
+   * Returns the cta elements if it's not part of an inner details view
+   * @type {Function}
+   * @return {node|null} JSX for the elements or null
+   */
+  getCta: Function = (): ReactNode | null => {
     if (this.state.isDetails) { return null; }
     return (
-      <View style={[this.getStyles().body.section, this.getStyles().body.cta]}>
+      <View style={{
+        ...this.getStyles().body.section,
+        ...this.state.styling.body?.section,
+        ...this.getStyles().body.cta,
+        ...this.state.styling.body?.cta
+      }}>
         {
           !this.state.isMyShipments ? (
             <View style={{
               ...this.getStyles().body.group.base,
+              ...this.state.styling.body?.group,
               paddingRight: 3
             }}
             >
@@ -543,6 +784,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         }
         <View style={{
           ...this.getStyles().body.group.base,
+          ...this.state.styling.body?.group,
           width: this.state.isMyShipments ? '100%' : 'auto',
           paddingLeft: this.state.isMyShipments ? 0 : 3
         }}
@@ -561,20 +803,43 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
-  getShipmentTypeLabel = () => (this.state.type === 'programmed' ? this.language.shipment.programmed_label : this.language.shipment.instant_label);
+  /**
+   * Returns the i18n label depending on the type of shipment
+   * @type {Function}
+   * @return {string} The correct i18n label for the type of shipment
+   */
+  getShipmentTypeLabel: Function = (): string => (this.state.type === 'programmed' ? this.language.shipment.programmed_label : this.language.shipment.instant_label);
 
-  updateState = () => { this.setState({ ...this.setPropsToState() }); }
+  /**
+   * Updates the state with new props
+   * @type {function}
+   */
+  updateState: Function = () => { this.setState({ ...this.setPropsToState() }); }
 
-  componentDidUpdate = (prevProps: PackenUiShipmentCardProps) => {
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
+  componentDidUpdate(prevProps: PackenUiShipmentCardProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) { this.updateState(); }
   }
 
-  render() {
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
+  render(): ReactNode {
     return (
-      <View style={this.getStyles().container}>
+      <View style={{
+        ...this.getStyles().container,
+        ...this.state.styling.container
+      }}>
         <View style={{
           ...this.getStyles().header.box.base,
-          ...this.getStyles().header.box.type[this.state.type]
+          ...this.getStyles().header.box.type[this.state.type],
+          ...this.state.styling.header?.box
         }}
         >
           <View style={this.getStyles().header.inline}>
@@ -582,7 +847,8 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
               preset="c2"
               style={{
                 ...this.getStyles().header.label.base,
-                ...this.getStyles().header.label.type[this.state.type]
+                ...this.getStyles().header.label.type[this.state.type],
+                ...this.state.styling.header?.label
               }}
             >
               {this.language.shipment.shipment_label.toUpperCase()}
@@ -598,18 +864,23 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
             styling={{
               box: {
                 ...this.getStyles().header.tag.box.base,
-                ...this.getStyles().header.tag.box.type[this.state.type]
+                ...this.getStyles().header.tag.box.type[this.state.type],
+                ...this.state.styling.tag?.box
               },
               label: {
                 ...this.getStyles().header.tag.label.base,
-                ...this.getStyles().header.tag.label.type[this.state.type]
+                ...this.getStyles().header.tag.label.type[this.state.type],
+                ...this.state.styling.tag?.label
               }
             }}
           >
             {UTIL.toCapitalCase(this.getShipmentTypeLabel())}
           </PackenUiTag>
         </View>
-        <View style={this.getStyles().body.box}>
+        <View style={{
+          ...this.getStyles().body.box,
+          ...this.state.styling.body?.box
+        }}>
           {this.getOverview()}
           {this.getDescription()}
           <View style={{
@@ -628,6 +899,11 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     );
   }
 
+  /**
+   * Returns the styles object
+   * @type {function}
+   * @return {object} The styles object
+   */
   getStyles: Function = (): object => ({
     container: {
       width: '100%',
@@ -777,6 +1053,106 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       cta: {}
     },
   });
+
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
+  static propTypes: object = {
+    i18n: PropTypes.shape({
+      shipment: PropTypes.shape({
+        all_day_label: PropTypes.string,
+        deliveries: PropTypes.string,
+        delivery: PropTypes.string,
+        date: PropTypes.string,
+        client_label: PropTypes.string,
+        fee_label: PropTypes.string,
+        content_description: PropTypes.string,
+        payment: PropTypes.shape({
+          title: PropTypes.string,
+          label: PropTypes.string
+        }).isRequired,
+        comments_label: PropTypes.string,
+        distance_away: PropTypes.string,
+        time_away: PropTypes.string,
+        origin: PropTypes.string,
+        locations: PropTypes.string,
+        events: PropTypes.string,
+        start_label: PropTypes.string,
+        end_label: PropTypes.string,
+        programmed_label: PropTypes.string,
+        instant_label: PropTypes.string,
+        shipment_label: PropTypes.string
+      }).isRequired,
+      buttons: PropTypes.shape({
+        accept_shipment: PropTypes.string,
+        view_details: PropTypes.string
+      }).isRequired
+    }).isRequired,
+    isDetails: PropTypes.bool,
+    showDetails: PropTypes.bool,
+    isMyShipments: PropTypes.bool,
+    shipment: PropTypes.shape({
+      deliveries_count: PropTypes.number.isRequired,
+      btnText: PropTypes.shape({
+        view: PropTypes.string,
+        accept: PropTypes.string
+      }),
+      model: PropTypes.shape({
+        shipment_id: PropTypes.number.isRequired,
+        city: PropTypes.string.isRequired,
+        client: PropTypes.string.isRequired,
+        pickup_origin: PropTypes.string.isRequired,
+        pickup_origin_extend: PropTypes.string,
+        amount: PropTypes.string.isRequired,
+        delivered: PropTypes.bool.isRequired,
+        details: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        scheduled: PropTypes.bool.isRequired,
+        text_button: PropTypes.string,
+        triggers: PropTypes.shape({
+          view: PropTypes.func,
+          accept: PropTypes.func
+        }),
+        when: PropTypes.string,
+        distance: PropTypes.string.isRequired,
+        timeAway: PropTypes.string.isRequired,
+        payment: PropTypes.shape({
+          method: PropTypes.string.isRequired,
+          amount: PropTypes.number
+        }),
+        content: PropTypes.string,
+        comments: PropTypes.string,
+        deliveries: PropTypes.arrayOf(PropTypes.shape({
+          id: PropTypes.number.isRequired,
+          index: PropTypes.number.isRequired,
+          date: PropTypes.string.isRequired,
+          status: PropTypes.string.isRequired,
+          status_translate: PropTypes.string.isRequired,
+          to_contact: PropTypes.shape({
+            id: PropTypes.number,
+            full_name: PropTypes.string,
+            company_name: PropTypes.string,
+            address_1: PropTypes.string.isRequired,
+            address_2: PropTypes.string,
+            geographic_location_id: PropTypes.number.isRequired,
+            location_data: PropTypes.shape({
+              latitude: PropTypes.number.isRequired,
+              longitude: PropTypes.number.isRequired,
+            }).isRequired,
+            geographic_location_name: PropTypes.string,
+            phone: PropTypes.string,
+            comments: PropTypes.string,
+          }).isRequired
+        })),
+        pick_date: PropTypes.string,
+        events: PropTypes.arrayOf(PropTypes.shape({
+          created_at: PropTypes.string.isRequired,
+          message: PropTypes.string.isRequired,
+          time_event: PropTypes.string.isRequired
+        }))
+      }).isRequired,
+    }).isRequired
+  }
 }
 
 export default PackenUiShipmentCard;

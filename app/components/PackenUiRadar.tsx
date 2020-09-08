@@ -182,7 +182,7 @@ class PackenUiRadar extends Component<PackenUiRadarProps, PackenUiRadarState> {
    * Updates the state with new props and checks the animation status
    * @type {function}
    */
-  updateState = () => {
+  updateState: Function = () => {
     this.setState({ ...this.setPropsToState() }, this.checkAnimationState);
   }
 

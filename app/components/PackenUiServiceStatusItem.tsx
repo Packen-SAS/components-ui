@@ -380,7 +380,12 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     }
   }
 
-  getTimeRender = () => {
+  /**
+   * Returns the time element if provided
+   * @type {Function}
+   * @return {node|null} JSX for the time element or null
+   */
+  getTimeRender: Function = (): ReactNode | null => {
     if (this.state.altStyle) { return null; }
     return (
       <View style={{
@@ -392,7 +397,12 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     );
   }
 
-  getLabel = () => {
+  /**
+   * Returns the label element if provided
+   * @type {Function}
+   * @return {node|null} JSX for the label element or null
+   */
+  getLabel: Function = (): ReactNode | null => {
     if (!this.state.data.label) { return null; }
     return (
       <PackenUiText preset="p1" style={this.getStyles().label}>{this.state.data.label}</PackenUiText>

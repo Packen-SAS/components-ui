@@ -39,13 +39,37 @@ interface PackenUiIconInfoState {
   styling: StylingPropShape
 }
 
+/**
+ * Component for rendering an icon with either default elements or custom content to its right
+ */
 class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfoState> {
+  /**
+   * Initializes the component
+   * @type {function}
+   * @param {object} props Props passed to the component
+   */
   constructor(props: PackenUiIconInfoProps) {
     super(props);
+
+    /**
+     * Variable that stores the state
+     * @type {object}
+     */
     this.state = { ...this.setPropsToState() };
   }
 
-  setPropsToState = () => ({
+  /**
+   * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
+   * @type {function}
+   * @property {string} [icon="box"] The icon name to render
+   * @property {string} [label=""] The text for the default label element
+   * @property {string} [title=""] The text for the default title element
+   * @property {string} [iconSet="FTR"] The icon set to use (Feather, MaterialCommunityIcons, FontAwesome) - "FTR"; "MCI"; "FA"
+   * @property {node} [children=null] The optional custom content to render instead of the default elements
+   * @property {object} [styling={ box: {}, iconSize: null, iconColor: null, copy: {}, label: {}, title: {} ] The optional custom styling props
+   * @return {object} The props mapped to the state keys
+   */
+  setPropsToState: Function = (): PackenUiIconInfoState => ({
     icon: this.props.icon || 'box',
     label: this.props.label || '',
     title: this.props.title || '',
@@ -62,7 +86,12 @@ class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfo
     }
   });
 
-  getIcon = () => {
+  /**
+   * Returns the icon element
+   * @type {Function}
+   * @return {node}
+   */
+  getIcon: Function = (): ReactNode => {
     const props = {
       name: this.state.icon,
       size: this.state.styling.iconSize || 18,
@@ -85,12 +114,22 @@ class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfo
     }
   }
 
-  getDisabledStyles = () => {
+  /**
+   * Returns the disabled styles for the component
+   * @type {Function}
+   * @return {object}
+   */
+  getDisabledStyles: Function = (): object => {
     if (!this.state.disabled) { return {}; }
     return { opacity: 0.35 };
   }
 
-  getContent = () => {
+  /**
+   * Returns the main content elements (default or custom)
+   * @type {Function}
+   * @return {node}
+   */
+  getContent: Function = (): ReactNode => {
     if (this.state.children) { return this.state.children; }
     return (
       <>
@@ -116,13 +155,23 @@ class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfo
     );
   }
 
+  /**
+   * Compares props to determine if the component should update its state with new props
+   * @type {function}
+   * @param {object} prevProps Previous props
+   */
   componentDidUpdate(prevProps: PackenUiIconInfoProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       this.setState({ ...this.setPropsToState() });
     }
   }
 
-  render() {
+  /**
+   * Renders the component
+   * @type {function}
+   * @return {node} JSX for the component
+   */
+  render(): ReactNode {
     return (
       <View style={{
         ...this.getStyles().box,
@@ -142,6 +191,11 @@ class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfo
     );
   }
 
+  /**
+   * Returns the styles object
+   * @type {function}
+   * @return {object} The styles object
+   */
   getStyles: Function = (): object => ({
     box: {
       flexDirection: 'row',
@@ -159,6 +213,10 @@ class PackenUiIconInfo extends Component<PackenUiIconInfoProps, PackenUiIconInfo
     }
   });
 
+  /**
+   * Defines prop-types for the component
+   * @type {object}
+   */
   static propTypes: object = {
     icon: PropTypes.string.isRequired,
     label: PropTypes.string,
