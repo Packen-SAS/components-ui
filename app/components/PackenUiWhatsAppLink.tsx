@@ -155,7 +155,7 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
         }
       </React.Fragment>
     )
-  };
+  }
 
   /**
    * Returns the current styles object

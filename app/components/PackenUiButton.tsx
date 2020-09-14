@@ -384,7 +384,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @param {string} level The button's level for styling
    * @return {object} The outline styles object
    */
-  getOutlineStyles: Function = (styles: InnerStylesShape, isOutline: Boolean, level: string): object => {
+  getOutlineStyles: Function = (styles: InnerStylesShape, isOutline: boolean, level: string): object => {
     if (isOutline) {
       styles = {
         ...styles,
@@ -404,7 +404,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @param {string} level The button's level for styling
    * @return {object} The disabled styles object
    */
-  getDisabledStyles: Function = (styles: InnerStylesShape, isDisabled: Boolean, level: string): object => {
+  getDisabledStyles: Function = (styles: InnerStylesShape, isDisabled: boolean, level: string): object => {
     if (isDisabled) {
       styles.shape.backgroundColor = Color.ghost.focus;
       styles.icon.color = Color.basic.white.dft;
@@ -512,7 +512,7 @@ class PackenUiButton extends Component<PackenUiButtonProps, PackenUiButtonState>
    * @return {object} The new styles object
    */
   pressInHandler: GestureResponderFunction = (): object => {
-    let newStyles = { ...this.getStyles() }
+    const newStyles = { ...this.getStyles() }
     newStyles.shape.backgroundColor = Color[this.state.level].focus;
     if (this.state.level !== "ghost" && this.state.level !== "secondary") {
       if (this.state.type === "regular") {

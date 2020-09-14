@@ -206,7 +206,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
      * @property {string} finalSelectionString The formatted selection string to be set to the input and content sizer elements
      * @return {object} The props mapped to the state keys
      */
-    let innerState: object = {
+    const innerState: object = {
       flag: true,
       contentSizerHeight: 0,
       isOpen: false,
@@ -270,7 +270,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
    * @return {object} The props mapped to the state keys
    */
   setPropsToState: Function = (): object => {
-    let newState = {
+    const newState = {
       callback: this.props.callback ? this.props.callback : this.mockCallback,
       name: this.props.name ? this.props.name : "",
       isDisabled: this.props.isDisabled ? this.props.isDisabled : false,

@@ -85,7 +85,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * Variable to control the vertical whitespace between each item
    * @type {number}
    */
-  spaceBetweenItems: number = 25;
+  spaceBetweenItems = 25;
 
   /**
    * Initializes the component

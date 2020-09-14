@@ -119,7 +119,7 @@ class PackenUiNotificationBanner extends Component<PackenUiNotificationBannerPro
           case "info":
             src = require("../../assets/images/arrow_packen_info.png");
             break;
-        };
+        }
 
         icon = (
           <Image style={{
