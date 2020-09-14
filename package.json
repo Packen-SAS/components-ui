@@ -9,7 +9,7 @@
     "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "estlint .",
+    "lint": "eslint app/components/ --fix",
     "test": "jest --coverage",
     "storybook": "start-storybook -p 7007",
     "docs": "./node_modules/.bin/esdoc"
@@ -32,7 +32,6 @@
     "@react-navigation/native": "^5.1.6",
     "@types/numeral": "0.0.28",
     "deep-equal": "^2.0.3",
-    "eslint": "^7.9.0",
     "moment": "^2.26.0",
     "numeral": "^2.0.6",
     "react": "16.9.0",
@@ -79,6 +78,8 @@
     "@types/react-native-snap-carousel": "^3.8.1",
     "@types/react-native-vector-icons": "^6.4.5",
     "@types/react-navigation": "^3.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
     "babel-jest": "^26.3.0",
     "babel-loader": "^8.0.6",
     "enzyme": "^3.11.0",
@@ -88,11 +89,12 @@
     "esdoc-jsx-plugin": "^1.0.0",
     "esdoc-standard-plugin": "^1.0.0",
     "esdoc-typescript-plugin": "^1.0.1",
+    "eslint": "^7.9.0",
     "jest": "^26.4.2",
     "metro-react-native-babel-preset": "^0.56.0",
     "prop-types": "^15.7.2",
     "react-dom": "^16.8.3",
     "react-test-renderer": "16.9.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.7"
   }
 }
