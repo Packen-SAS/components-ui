@@ -228,7 +228,7 @@ class PackenUiSelectionButtonsControl extends Component<PackenUiSelectionButtons
    * @return {object} The new state for this item
    */
   checkIfActive: Function = (): object => {
-    let newState = { ...this.state };
+    const newState = { ...this.state };
 
     if (this.state.selection === "single") {
       if (this.state.selected === this.state.data.value) {

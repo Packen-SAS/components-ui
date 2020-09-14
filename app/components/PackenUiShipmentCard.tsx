@@ -94,7 +94,7 @@ interface DeliveryShape {
 }
 
 interface PaymentShape {
-  method: String;
+  method: string;
   amount: number | null;
 }
 

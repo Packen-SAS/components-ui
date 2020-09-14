@@ -75,7 +75,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    * Variable that stores whether the component has finished mounting to render its data
    * @type {boolean}
    */
-  ready: boolean = false;
+  ready = false;
 
   /**
    * Initializes the component

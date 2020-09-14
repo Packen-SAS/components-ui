@@ -159,7 +159,7 @@ class PackenUiTabsItem extends Component<PackenUiTabsItemProps, PackenUiTabsItem
    * @return The active styles object
    */
   setActiveStyles: Function = () => {
-    let activeStyles = { ...this.state.itemStyles };
+    const activeStyles = { ...this.state.itemStyles };
     activeStyles.shape = {
       ...activeStyles.shape,
       ...this.getStyles().item.active.shape
@@ -225,7 +225,7 @@ class PackenUiTabsItem extends Component<PackenUiTabsItemProps, PackenUiTabsItem
    * @type {function}
    */
   pressInHandler: VoidFunction = () => {
-    let newStyles = { ...this.state.itemStyles };
+    const newStyles = { ...this.state.itemStyles };
 
     newStyles.shape = {
       ...newStyles.shape,

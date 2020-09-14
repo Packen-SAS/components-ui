@@ -503,7 +503,7 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
       </View>
     );
   }
-};
+}
 
 interface CameraBottomTriggersProps {
   flashTrigger: Function;
