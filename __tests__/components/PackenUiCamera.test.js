@@ -169,10 +169,10 @@ describe("<PackenUiCamera/>", () => {
       expect(renderInstance.state.proccessing).toBe(true);
     });
 
-    it("returns -1 while trying to capture a picture if the camera is null", () => {
+    it("returns -1 while trying to capture a picture if the camera is null", async () => {
       renderInstance.setState({ camera: null });
-      const res = renderInstance.capturePicture();
-      expect(res).toEqual({ "_40": 0, "_55": null, "_65": 0, "_72": null });
+      const res = await renderInstance.capturePicture();
+      expect(res).toBe(-1);
     });
 
     it("sets the camera", () => {
