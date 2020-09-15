@@ -171,8 +171,8 @@ class PackenUiBadge extends Component<PackenUiBadgeProps, PackenUiBadgeState> {
         justifyContent: "flex-start"
       },
       dotWrapper: {
-        top: 0,
-        right: 0,
+        top: -3,
+        right: -3,
         zIndex: 1,
         position: "absolute",
         borderRadius: this.state.borderRadius

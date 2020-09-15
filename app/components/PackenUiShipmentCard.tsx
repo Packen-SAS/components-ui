@@ -31,32 +31,34 @@ interface EventsDataInterface {
 }
 
 interface ModelShape {
-  shipment_id: number,
-  city: string,
-  client: string,
-  pickup_origin: string,
-  pickup_origin_extend: string,
-  amount: string,
-  delivered: boolean,
-  details: string | boolean,
-  scheduled: boolean,
-  text_button: string,
+  shipment_id: number;
+  city: string;
+  client: string;
+  pickup_origin: string;
+  pickup_origin_extend: string;
+  amount: string;
+  delivered: boolean;
+  details: string | boolean;
+  scheduled: boolean;
+  text_button: string;
   triggers: {
-    view: Function,
-    accept: Function
-  },
-  when: string | null,
-  distance: string,
-  timeAway: string,
+    view: Function;
+    accept: Function;
+    reject: Function;
+  };
+  when: string | null;
+  distance: string;
+  timeAway: string;
   payment: {
-    method: string,
-    amount: number | null
-  },
-  content: string | null,
-  comments: string | null,
-  deliveries: DeliveryShape[],
-  pick_date: string,
-  events: EventShape[]
+    method: string;
+    amount: number | null;
+  };
+  content: string | null;
+  comments: string | null;
+  deliveries: DeliveryShape[];
+  pick_date: string;
+  events: EventShape[];
+  status: string;
 }
 
 interface EventShape {
@@ -68,6 +70,7 @@ interface EventShape {
 interface BtnTextShape {
   view?: string;
   accept?: string;
+  reject?: string;
 }
 
 interface DeliveryShape {
@@ -131,6 +134,7 @@ interface i18nShape {
   buttons: {
     accept_shipment: string;
     view_details: string;
+    cancel: string;
   }
 }
 
@@ -180,6 +184,7 @@ interface PackenUiShipmentCardState {
   client: string;
   amount: string;
   events: EventShape[];
+  status: string;
   id: number;
   content: string;
   distance: string;
@@ -191,6 +196,7 @@ interface PackenUiShipmentCardState {
   viewDetails: Function;
   deliveriesCount: number;
   acceptShipment: Function;
+  rejectShipment: Function;
   type: string;
   origin: OriginShape;
   styling: StylingPropShape;
@@ -231,6 +237,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @property {string} [model.client=undefined] The client name
    * @property {string} [model.amount=undefined] The shipment fee
    * @property {object[]} [model.events=undefined] The shipment events if it's already delivered
+   * @property {string} [model.status=undefined] The shipment current status
    * @property {number} [model.id=undefined] The unique shipment id
    * @property {string} [model.content=undefined] The shipment description
    * @property {string} [model.distance=undefined] The total distance between all shipment locations
@@ -242,6 +249,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @property {Function} [model.viewDetails=undefined] The callback function to trigger when pressing on the "view" button
    * @property {number} [model.deliveriesCount=undefined] The number of deliveries for the shipment
    * @property {Function} [model.acceptShipment=undefined] The callback function to trigger when pressing on the "accept" button
+   * @property {Function} [model.rejectShipment=undefined] The callback function to trigger when pressing on the "reject" button
    * @property {string} [model.type=undefined] The type of shipment
    * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
    * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
@@ -258,6 +266,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       client: model.client,
       amount: model.amount,
       events: model.events,
+      status: model.status,
       id: model.shipment_id,
       content: model.content || "",
       distance: model.distance,
@@ -269,6 +278,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       viewDetails: model.triggers.view,
       deliveriesCount: deliveries_count,
       acceptShipment: model.triggers.accept,
+      rejectShipment: model.triggers.reject,
       type: model.scheduled ? 'programmed' : 'instant',
       origin: {
         main: model.pickup_origin,
@@ -780,18 +790,41 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
                 {this.state.btnText.accept || this.language.buttons.accept_shipment}
               </PackenUiButton>
             </View>
+          ) : this.state.type === "programmed" && this.state.status !== "delivered" ? (
+            <View style={{
+              ...this.getStyles().body.group.base,
+              paddingRight: 3
+            }}
+            >
+              <PackenUiButton
+                isOutline
+                size="tiny"
+                level="danger"
+                type="regular"
+                callback={this.state.rejectShipment}
+                styling={{ shape: { paddingHorizontal: 0, paddingVertical: 10 } }}
+              >
+                {this.state.btnText.reject || this.language.buttons.cancel}
+              </PackenUiButton>
+            </View>
           ) : null
         }
         <View style={{
           ...this.getStyles().body.group.base,
           ...this.state.styling.body?.group,
-          width: this.state.isMyShipments ? '100%' : 'auto',
+          width: this.state.type === "programmed"
+            ? this.state.status === "delivered"
+              ? "100%"
+              : "auto"
+            : this.state.isMyShipments
+              ? "100%"
+              : "auto",
           paddingLeft: this.state.isMyShipments ? 0 : 3
         }}
         >
           <PackenUiButton
             size="tiny"
-            level={this.state.type === 'programmed' ? 'brandSecondary' : 'primary'}
+            level={this.state.type === "programmed" ? "brandSecondary" : "primary"}
             type="regular"
             callback={this.state.viewDetails}
             styling={{ shape: { paddingHorizontal: 0, paddingVertical: 11 } }}
