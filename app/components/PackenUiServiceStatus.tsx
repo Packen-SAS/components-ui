@@ -119,9 +119,9 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
         }
       });
 
-      this.setState({
-        currentStepIndex: this.state.currentStepIndex
-      }, this.state.steps[this.state.currentStepIndex].callback);
+      if (typeof this.state.steps[this.state.currentStepIndex].callback === "function") {
+        this.state.steps[this.state.currentStepIndex].callback();
+      }
     }
   }
 
