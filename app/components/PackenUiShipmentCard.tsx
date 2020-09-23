@@ -643,13 +643,13 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         icon = "money";
         iconSet = "FA";
         break;
-      case "TRANSFERENCIA/CONSIGNACIÃ“N EN BANCO":
+      case "TRANSFERENCIA/CONSIGNACIÓN EN BANCO":
         key = "transfer";
         icon = "bank-transfer";
         iconSet = "MCI";
         customStyling = { copy: { marginLeft: -2 } };
         break;
-      case "TARJETA DE CRÃ‰DITO":
+      case "TARJETA DE CRÉDITO":
         key = "card";
         icon = "credit-card";
         break;
