@@ -1,6 +1,7 @@
-import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image, GestureResponderEvent, ImageSourcePropType } from "react-native";
+import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image, GestureResponderEvent, ImageSourcePropType, ImageBackground, ScrollView } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 import React, { Component, ReactNode, RefObject } from "react";
+import Icon from "react-native-vector-icons/Feather";
 import Svg, { Line, Path } from "react-native-svg";
 import PropTypes from "prop-types";
 import * as UTIL from "../utils";
@@ -40,13 +41,22 @@ interface LayoutPropsShape {
 
 interface StylesShape {
   rncamera: object;
+  content: object;
   layout: object;
   layout_avatar: object;
+  layout_shipment: object;
+  layout_shipment_topleft: object;
+  layout_shipment_topright: object;
+  layout_shipment_bottomleft: object;
+  layout_shipment_bottomright: object;
   container: object;
+  triggers: object;
   trigger: object;
+  triggerLabel: object;
   triggerChild: object;
   triggerChildDisabled: object;
   bottomTriggersContainer: object;
+  bottomTriggersContainerAlt: object;
   topTriggersContainer: object;
   imagePreview: object;
   imagePreviewTriggersContainer: object;
@@ -55,10 +65,23 @@ interface StylesShape {
   imagePreviewInner: object;
   topTriggersInner: object;
   btnUploadLabel: object;
+  thumbnails: object;
+  thumbsTitle: object;
+  thumbsImgs: object;
+  thumbsScroll: object;
+  thumb: object;
+  thumbOverlay: object;
+  thumbImg: object;
+  emit: object;
+  emitInner: object;
+  emitClose: object;
 }
 
 interface i18nShape {
   placeholders: {
+    close: string;
+    photo: string;
+    thumbnails: string;
     upload_image: string;
   };
 }
@@ -70,6 +93,7 @@ interface PackenUiCameraProps {
   dismiss: Function;
   MODE?: string;
   VISIBLE: boolean;
+  maxLength?: number;
 }
 
 interface PackenUiCameraState {
@@ -78,7 +102,9 @@ interface PackenUiCameraState {
   cameraType: "front" | "back" | undefined;
   flashMode: "on" | "off" | "torch" | "auto" | undefined;
   picture: TakePictureResponse | null;
+  pictures: TakePictureResponse[] | [];
   imageViewble: boolean;
+  maxLength: number | null;
   labels: LabelsShape | boolean;
 }
 
@@ -93,7 +119,14 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
    * Variable that stores the i18n json data
    * @type {object}
    */
-  i18n: i18nShape = this.props.i18n || { placeholders: { upload_image: "Cargar imagen" } };
+  i18n: i18nShape = this.props.i18n || {
+    placeholders: {
+      close: "Cerrar",
+      photo: "Foto",
+      thumbnails: "Selecciona las fotografías que vas a subir",
+      upload_image: "Cargar imagen"
+    }
+  };
 
   /**
    * Variable that stores the state
@@ -103,7 +136,9 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
    * @property {undefined|string} cameraType Determines if the front or back camera is in use
    * @property {undefined|string} flashMode Determines whether the flash should be used when taking a picture
    * @property {object|null} picture The current picture data object
+   * @property {object[]|[]} pictures The current pictures array when MODE is "shipment"
    * @property {boolean} imageViewble Determines whether the currently taken picture can be viewed
+   * @property {number} maxLength The maximum number of photos that can be taken when MODE is "shipment"
    * @property {object} labels The correct i18n labels to be used for permissions feedback text
    */
   state: PackenUiCameraState = {
@@ -112,7 +147,9 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     cameraType: undefined,
     flashMode: undefined,
     picture: null,
+    pictures: [],
     imageViewble: false,
+    maxLength: this.props.maxLength || null,
     labels: this.props.labels ? { ...this.props.labels } : false
   };
 
@@ -150,13 +187,28 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
    */
   emitPicture: GestureResponderType = () => {
     const { EMIT_TRIGGER, dismiss } = this.props;
-    if ((typeof EMIT_TRIGGER === "function") && (this.state.picture != null)) {
-      this.setState({ picture: null });
-      EMIT_TRIGGER(this.state.picture);
+    if ((typeof EMIT_TRIGGER === "function") && ((this.state.picture !== null) || (this.getSelectedImgs().length > 0))) {
+      this.setState({ picture: null, pictures: [] });
+      if (this.props.MODE === "shipment") {
+        EMIT_TRIGGER(this.getSelectedImgs());
+      } else {
+        EMIT_TRIGGER(this.state.picture);
+      }
     }
     dismiss();
     this.restoreImagePreviewModal();
   };
+
+  /**
+   * Closes camera and resets data
+   * @type {Function}
+   */
+  closeCamera: VoidFunction = () => {
+    this.props.dismiss();
+    this.props.EMIT_TRIGGER();
+    this.restoreImagePreviewModal();
+    this.setState({ picture: null, pictures: [] });
+  }
 
   /**
    * Informs that the camera is no longer processing a picture
@@ -193,9 +245,16 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
    */
   makeCapture: Function = async () => {
     if (this.state.camera) {
-      this.setState({
-        picture: await this.state.camera.takePictureAsync(getPermissionOpts(this.state.labels).picture)
-      }, this.finalize);
+      const newLength = this.state.pictures.length + 1;
+      if (
+        !this.state.maxLength
+        || (this.state.maxLength && newLength <= this.state.maxLength)
+      ) {
+        const picture = await this.state.camera.takePictureAsync(getPermissionOpts(this.state.labels).picture);
+        picture.isSelected = false;
+        const pictures = [...this.state.pictures, picture];
+        this.setState({ picture, pictures }, this.finalize);
+      } else { this.cameraReady(); }
     }
   }
 
@@ -281,7 +340,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
   }
 
   /**
-   * Returns the overlay elements for "document" and "avatar" camera modes
+   * Returns the overlay elements for "document", "avatar" and "shipment" camera modes
    * @type {function}
    * @return {node|null} JSX for the overlaid elements or null
    */
@@ -290,8 +349,10 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     switch (MODE) {
       case "document":
         return (
-          <View style={PackenCameraStyles.layout}>
-            <DocumentLayout width={250} height={400} color={Color.basic.white.dft} />
+          <View style={PackenCameraStyles.container}>
+            <View style={PackenCameraStyles.layout}>
+              <DocumentLayout width={250} height={400} color={Color.basic.white.dft} />
+            </View>
           </View>
         );
       case "avatar":
@@ -300,9 +361,132 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
             <AvatarLayout width={400} height={500} color={Color.brand.primary.dft} />
           </View>
         );
+      case "shipment":
+        return (
+          <View style={PackenCameraStyles.layout_shipment}>
+            <View style={PackenCameraStyles.layout_shipment_topleft}></View>
+            <View style={PackenCameraStyles.layout_shipment_topright}></View>
+            <View style={PackenCameraStyles.layout_shipment_bottomleft}></View>
+            <View style={PackenCameraStyles.layout_shipment_bottomright}></View>
+          </View>
+        );
       default:
         return null;
     }
+  }
+
+  /**
+   * Returns the selected images when mode is "shipment"
+   * @type {Function}
+   * @return {object[]} The array of selected images
+   */
+  getSelectedImgs: Function = (): TakePictureResponse[] => this.state.pictures.filter((pic) => pic.isSelected);
+
+  /**
+   * Toggles selection on a thumbnail when mode is "shipment"
+   * @type {Function}
+   * @param {number} index The thumbnail index to toggle
+   */
+  toggleImgSelection: Function = (index: number) => {
+    const updatedPictures = [...this.state.pictures];
+    const img = updatedPictures[index];
+    img.isSelected = !img.isSelected;
+    this.setState({ pictures: updatedPictures });
+  }
+
+  /**
+   * Returns a single thumbnail component
+   * @type {Function}
+   * @return {node} JSX for the thumbnail
+   */
+  mapThumbs: Function = (): ReactNode => {
+    const thumbs: ReactNode[] = [];
+    this.state.pictures.forEach((pic, i) => {
+      thumbs.push(
+        <TouchableWithoutFeedback onPress={() => { this.toggleImgSelection(i); }}>
+          <View style={PackenCameraStyles.thumb}>
+            {
+              pic.isSelected ? (
+                <View style={PackenCameraStyles.thumbOverlay}>
+                  <Icon name="check" color={Color.basic.white.dft} size={14} />
+                </View>
+              ) : null
+            }
+            <ImageBackground
+              resizeMode="cover"
+              source={{ uri: pic.uri }}
+              style={PackenCameraStyles.thumbImg}
+            />
+          </View>
+        </TouchableWithoutFeedback>
+      );
+    });
+    return thumbs;
+  }
+
+  /**
+   * Returns the custom close and upload buttons when mode is "shipment"
+   * @type {Function}
+   * @type {node|null} JSX for the buttons or null
+   */
+  getTriggers: Function = (): ReactNode | null => {
+    if (this.props.MODE !== "shipment") { return null; }
+    const numSelected = this.getSelectedImgs().length;
+    return (
+      <View style={PackenCameraStyles.triggers}>
+        <View style={PackenCameraStyles.emit}>
+          <TouchableWithoutFeedback onPress={this.closeCamera}>
+            <View style={[PackenCameraStyles.emitInner, PackenCameraStyles.emitClose]}>
+              <Icon name="x" color={Color.basic.white.dft} size={14} />
+              <PackenUiText preset="c1" style={PackenCameraStyles.triggerLabel}>
+                {this.i18n.placeholders.close}
+              </PackenUiText>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        {
+          numSelected > 0 ? (
+            <View style={PackenCameraStyles.emit}>
+              <TouchableWithoutFeedback onPress={this.emitPicture}>
+                <View style={PackenCameraStyles.emitInner}>
+                  <Icon name="check" color={Color.basic.white.dft} size={14} />
+                  <PackenUiText preset="c1" style={PackenCameraStyles.triggerLabel}>
+                    {`${numSelected} ${this.i18n.placeholders.photo}`}
+                  </PackenUiText>
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+          ) : null
+        }
+      </View>
+    );
+  }
+
+  /**
+   * Returns the thumbnails list when mode is "shipment" and there's at least 1 picture
+   * @type {Function}
+   * @return {node|null} JSX for the thumbnails or null
+   */
+  getThumbnails: Function = (): ReactNode | null => {
+    if (this.props.MODE !== "shipment" || this.state.pictures.length <= 0) { return null; }
+    return (
+      <View style={PackenCameraStyles.thumbnails}>
+        <PackenUiText
+          preset="c1"
+          style={PackenCameraStyles.thumbsTitle}
+        >
+          {this.i18n.placeholders.thumbnails}
+        </PackenUiText>
+        <View style={PackenCameraStyles.thumbsImgs}>
+          <ScrollView
+            horizontal
+            contentContainerStyle={PackenCameraStyles.thumbsScroll}
+          >
+            {this.mapThumbs()}
+          </ScrollView>
+        </View>
+      </View>
+    );
   }
 
   /**
@@ -329,19 +513,28 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
               androidCameraPermissionOptions={getPermissionOpts(this.state.labels).camera}
               androidRecordAudioPermissionOptions={getPermissionOpts(this.state.labels).audio}
             />
-            {this.getCameraLayout()}
-            <CameraTopTriggers
-              language={this.i18n}
-              image={this.state.picture}
-              closeCameraTrigger={this.emitPicture}
-              showPicture={this.showCurrentPicture}
-            />
-            <CameraBottomTriggers
-              flashTrigger={this.setFlash}
-              cameraIsLoading={this.state.proccessing}
-              reverseCameraTrigger={this.setCameraType}
-              pictureTrigger={this.capturePicture}
-            />
+            <View style={PackenCameraStyles.content}>
+              {this.getCameraLayout()}
+              {
+                this.props.MODE !== "shipment" ? (
+                  <CameraTopTriggers
+                    language={this.i18n}
+                    image={this.state.picture}
+                    closeCameraTrigger={this.emitPicture}
+                    showPicture={this.showCurrentPicture}
+                  />
+                ) : null
+              }
+              {this.getThumbnails()}
+              {this.getTriggers()}
+              <CameraBottomTriggers
+                mode={this.props.MODE}
+                flashTrigger={this.setFlash}
+                cameraIsLoading={this.state.proccessing}
+                reverseCameraTrigger={this.setCameraType}
+                pictureTrigger={this.capturePicture}
+              />
+            </View>
           </View>
         </Modal>
         {this.getImagePreview()}
@@ -358,7 +551,16 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     EMIT_TRIGGER: PropTypes.func.isRequired,
     dismiss: PropTypes.func.isRequired,
     MODE: PropTypes.string,
-    VISIBLE: PropTypes.bool.isRequired
+    VISIBLE: PropTypes.bool.isRequired,
+    i18n: PropTypes.shape({
+      placeholders: PropTypes.shape({
+        close: PropTypes.string,
+        photo: PropTypes.string,
+        thumbnails: PropTypes.string,
+        upload_image: PropTypes.string
+      })
+    }).isRequired,
+    maxLength: PropTypes.number
   };
 }
 
@@ -510,6 +712,7 @@ interface CameraBottomTriggersProps {
   pictureTrigger: Function;
   reverseCameraTrigger: Function;
   cameraIsLoading: boolean;
+  mode: string | undefined;
 }
 
 interface CameraBottomTriggersState {
@@ -620,7 +823,12 @@ export class CameraBottomTriggers extends Component<CameraBottomTriggersProps, C
    */
   render(): ReactNode {
     return (
-      <View style={PackenCameraStyles.bottomTriggersContainer}>
+      <View
+        style={this.props.mode === "shipment"
+          ? PackenCameraStyles.bottomTriggersContainerAlt
+          : PackenCameraStyles.bottomTriggersContainer
+        }
+      >
         <TouchableWithoutFeedback onPress={this.propagateFlashMode}>
           <View style={[PackenCameraStyles.trigger, {
             width: 50, height: 50, borderRadius: 25
@@ -754,6 +962,14 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     zIndex: 1,
     flex: 1
   },
+  content: {
+    top: 0,
+    left: 0,
+    zIndex: 2,
+    width: "100%",
+    height: "100%",
+    position: "absolute"
+  },
   layout: {
     position: "relative",
     zIndex: 2,
@@ -772,6 +988,53 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
+  layout_shipment: {
+    flex: 1
+  },
+  layout_shipment_topleft: {
+    top: 30,
+    left: 30,
+    width: 70,
+    height: 50,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    position: "absolute",
+    borderTopColor: Color.basic.white.dft,
+    borderLeftColor: Color.basic.white.dft
+  },
+  layout_shipment_topright: {
+    top: 30,
+    right: 30,
+    width: 70,
+    height: 50,
+    borderTopWidth: 1,
+    borderRightWidth: 1,
+    position: "absolute",
+    borderTopColor: Color.basic.white.dft,
+    borderRightColor: Color.basic.white.dft
+  },
+  layout_shipment_bottomleft: {
+    bottom: 12,
+    left: 30,
+    width: 70,
+    height: 50,
+    borderBottomWidth: 1,
+    borderLeftWidth: 1,
+    position: "absolute",
+    borderBottomColor: Color.basic.white.dft,
+    borderLeftColor: Color.basic.white.dft
+  },
+  layout_shipment_bottomright: {
+    bottom: 12,
+    right: 30,
+    width: 70,
+    height: 50,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    position: "absolute",
+    borderBottomColor: Color.basic.white.dft,
+    borderRightColor: Color.basic.white.dft
+  },
   container: {
     flex: 1,
     justifyContent: "center",
@@ -783,6 +1046,66 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     textShadowColor: UTIL.hex2rgba(Color.basic.black.dft, 0.75),
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 15
+  },
+  thumbnails: {},
+  thumbsTitle: {
+    color: Color.basic.white.dft,
+    textShadowColor: UTIL.hex2rgba(Color.basic.black.dft, 0.75),
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 15,
+    marginBottom: 13,
+    textAlign: "center"
+  },
+  thumbsImgs: {
+    width: "100%",
+    overflow: "hidden"
+  },
+  thumbsScroll: {
+    paddingHorizontal: 28
+  },
+  thumb: {
+    width: 56,
+    height: 56,
+    marginHorizontal: 2
+  },
+  thumbOverlay: {
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    width: "100%",
+    height: "100%",
+    position: "absolute",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: UTIL.hex2rgba(Color.basic.black.dft, 0.25)
+  },
+  thumbImg: {
+    width: "100%",
+    height: "100%"
+  },
+  triggers: {
+    paddingTop: 10,
+    paddingHorizontal: 30,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
+  emit: {},
+  emitInner: {
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: Color.success.default,
+  },
+  emitClose: {
+    backgroundColor: Color.danger.default
+  },
+  triggerLabel: {
+    marginLeft: 3,
+    color: Color.basic.white.dft
   },
   trigger: {
     display: "flex",
@@ -812,6 +1135,12 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row"
+  },
+  bottomTriggersContainerAlt: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 32
   },
   topTriggersContainer: {
     position: "absolute",

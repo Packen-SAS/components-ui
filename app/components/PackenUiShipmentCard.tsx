@@ -1,15 +1,17 @@
-import React, { Component, ReactNode } from 'react';
-import { View } from 'react-native';
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/Feather";
+import React, { Component, ReactNode } from "react";
+import { View } from "react-native";
 import PropTypes from "prop-types";
-import numeral from 'numeral';
-import PackenUiServiceStatus from './PackenUiServiceStatus';
-import typography from '../styles/abstracts/typography';
-import PackenUiIconInfo from './PackenUiIconInfo';
-import colors from '../styles/abstracts/colors';
-import PackenUiButton from './PackenUiButton';
-import PackenUiText from './PackenUiText';
+import numeral from "numeral";
+import PackenUiServiceStatus from "./PackenUiServiceStatus";
+import typography from "../styles/abstracts/typography";
+import PackenUiIconInfo from "./PackenUiIconInfo";
+import colors from "../styles/abstracts/colors";
+import PackenUiButton from "./PackenUiButton";
+import PackenUiText from "./PackenUiText";
+import PackenUiTag from "./PackenUiTag";
 import * as UTIL from '../utils';
-import PackenUiTag from './PackenUiTag';
 
 interface ShipmentShape {
   deliveries_count: number,
@@ -42,9 +44,11 @@ interface ModelShape {
   scheduled: boolean;
   text_button: string;
   triggers: {
-    view: Function;
-    accept: Function;
-    reject: Function;
+    view: VoidFunction;
+    accept: VoidFunction;
+    reject: VoidFunction;
+    call: VoidFunction;
+    message: VoidFunction;
   };
   when: string | null;
   distance: string;
@@ -170,16 +174,22 @@ interface StylingPropShape {
 interface PackenUiShipmentCardProps {
   i18n: i18nShape,
   shipment: ShipmentShape;
+  isRunning?: boolean;
   isDetails?: boolean;
   showDetails?: boolean;
   isMyShipments?: boolean;
+  hideActions?: boolean;
+  runningCurrentStep?: number;
   styling?: StylingPropShape;
 }
 
 interface PackenUiShipmentCardState {
+  isRunning: boolean;
   isDetails: boolean;
   showDetails: boolean;
   isMyShipments: boolean;
+  hideActions: boolean;
+  runningCurrentStep: number;
   btnText: BtnTextShape;
   client: string;
   amount: string;
@@ -193,18 +203,17 @@ interface PackenUiShipmentCardState {
   pickDate: string | null;
   deliveries: DeliveryShape[];
   payment: PaymentShape;
-  viewDetails: Function;
+  viewDetails: VoidFunction;
   deliveriesCount: number;
-  acceptShipment: Function;
-  rejectShipment: Function;
+  acceptShipment: VoidFunction;
+  rejectShipment: VoidFunction;
+  callClient: VoidFunction;
+  messageClient: VoidFunction;
   type: string;
   origin: OriginShape;
   styling: StylingPropShape;
 }
 
-/**
- * Component for rendering a shipment's details in a card
- */
 class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUiShipmentCardState> {
   /**
    * Variable that holds the i18n json data
@@ -230,9 +239,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   /**
    * Centralizes the received props assignment to set them to the state, determining default values in case any is not provided
    * @type {function}
+   * @property {boolean} [isRunning=false] Whether the component is being used as part of an ongoing shipment view
    * @property {boolean} [isDetails=false] Whether the component is being used as part of a details view
    * @property {boolean} [showDetails=false] Whether to show the content "below the fold" when being used as part of a details view
+   * @property {boolean} [hideActions=false] Whether to show the actions elements (message, call, cancel)
    * @property {boolean} [isMyShipments=false] Whether the component is being used as part of a historical shipments view
+   * @property {boolean} [runningCurrentStep=0] The current step when the component is being used as part of an ongoing shipment view
    * @property {object|boolean} [btnText=false] Optional custom text for the "accept" and "view" buttons
    * @property {string} [model.client=undefined] The client name
    * @property {string} [model.amount=undefined] The shipment fee
@@ -246,10 +258,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @property {string} [model.pickDate=undefined] The shipment pickup date
    * @property {object[]|null} [model.deliveries=undefined] The shipment deliveries
    * @property {object} [model.payment=undefined] The payment method data object
-   * @property {Function} [model.viewDetails=undefined] The callback function to trigger when pressing on the "view" button
+   * @property {object} [model.triggers.call=undefined] The callback function to trigger when pressing on the phone icon
+   * @property {Function} [model.triggers.viewDetails=undefined] The callback function to trigger when pressing on the "view" button
    * @property {number} [model.deliveriesCount=undefined] The number of deliveries for the shipment
-   * @property {Function} [model.acceptShipment=undefined] The callback function to trigger when pressing on the "accept" button
-   * @property {Function} [model.rejectShipment=undefined] The callback function to trigger when pressing on the "reject" button
+   * @property {Function} [model.triggers.accept=undefined] The callback function to trigger when pressing on the "accept" button
+   * @property {Function} [model.triggers.reject=undefined] The callback function to trigger when pressing on the "reject" button
+   * @property {object} [model.triggers.message=undefined] The callback function to trigger when pressing on the message icon
    * @property {string} [model.type=undefined] The type of shipment
    * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
    * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
@@ -259,9 +273,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   setPropsToState: Function = (): PackenUiShipmentCardState => {
     const { deliveries_count, model, btnText } = this.props.shipment;
     return {
+      isRunning: this.props.isRunning || false,
       isDetails: this.props.isDetails || false,
       showDetails: this.props.showDetails || false,
+      hideActions: this.props.hideActions || false,
       isMyShipments: this.props.isMyShipments || false,
+      runningCurrentStep: this.props.runningCurrentStep || 0,
       btnText: { ...btnText } || false,
       client: model.client,
       amount: model.amount,
@@ -275,11 +292,13 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       pickDate: model.pick_date,
       deliveries: model.deliveries,
       payment: { ...model.payment },
+      callClient: model.triggers.call,
       viewDetails: model.triggers.view,
       deliveriesCount: deliveries_count,
       acceptShipment: model.triggers.accept,
       rejectShipment: model.triggers.reject,
-      type: model.scheduled ? 'programmed' : 'instant',
+      messageClient: model.triggers.message,
+      type: model.scheduled ? "programmed" : "instant",
       origin: {
         main: model.pickup_origin,
         extra: model.pickup_origin_extend
@@ -359,9 +378,104 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
           >
             {this.language.shipment.date}
           </PackenUiText>
-          <PackenUiText preset="p2">{`${day}, ${nday}${ndayFormat} ${month}`}</PackenUiText>
+          <PackenUiText preset="p2">{`${day},`}</PackenUiText>
+          <PackenUiText preset="p2">{`${nday}${ndayFormat} ${month}`}</PackenUiText>
           <PackenUiText preset="c1" style={{ marginTop: 2 }}>{time}</PackenUiText>
         </PackenUiIconInfo>
+      </View>
+    );
+  }
+
+  /**
+   * Returns the actions elements (message, call, reject) when it's used as part of an ongoing shipment view
+   * @type {Function}
+   * @return {node|null} JSX for the pickup date element or null
+   */
+  getActions: Function = (): ReactNode | null => {
+    if (this.state.hideActions) { return null; }
+    const colorType = this.state.type === "programmed" ? colors.brand.secondary.dft : colors.brand.primary.drk;
+    return (
+      <View style={this.getStyles().actions.wrapper}>
+        <TouchableWithoutFeedback onPress={this.state.messageClient}>
+          <View style={this.getStyles().actions.item.box}>
+            <Icon name="message-square" color={colorType} size={20} />
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={this.state.callClient}>
+          <View style={this.getStyles().actions.item.box}>
+            <Icon name="phone-call" color={colorType} size={20} />
+          </View>
+        </TouchableWithoutFeedback>
+        {
+          this.state.runningCurrentStep === 0 ? (
+            <TouchableWithoutFeedback onPress={this.state.rejectShipment}>
+              <View style={this.getStyles().actions.item.box}>
+                <Icon name="x-circle" color={colors.danger.default} size={20} />
+                <PackenUiText style={this.getStyles().actions.item.label}>{this.language.buttons.cancel}</PackenUiText>
+              </View>
+            </TouchableWithoutFeedback>
+          ) : null
+        }
+      </View>
+    );
+  }
+
+  /**
+   * Returns the header elements
+   * @type {Function}
+   * @return {node|null} JSX for the pickup date element or null
+   */
+  getHeader: Function = (): ReactNode | null => {
+    if (this.state.isRunning) {
+      return (
+        <View style={this.getStyles().running}>
+          {this.getClient()}
+          {this.getActions()}
+        </View>
+      );
+    }
+    return (
+      <View style={{
+        ...this.getStyles().header.box.base,
+        ...this.getStyles().header.box.type[this.state.type],
+        ...this.state.styling.header?.box
+      }}
+      >
+        <View style={{
+          ...this.getStyles().header.inline,
+          ...this.state.styling.header?.inline
+        }}>
+          <PackenUiText
+            preset="c2"
+            style={{
+              ...this.getStyles().header.label.base,
+              ...this.getStyles().header.label.type[this.state.type],
+              ...this.state.styling.header?.label
+            }}
+          >
+            {this.language.shipment.shipment_label.toUpperCase()}
+            {" "}
+            #
+            {this.state.id}
+          </PackenUiText>
+          {this.getDeliveries()}
+        </View>
+        <PackenUiTag
+          textColor={colors.brand.primary.drk}
+          backgroundColor={colors.brand.primary.ulgt}
+          styling={{
+            box: {
+              ...this.getStyles().header.tag.box.base,
+              ...this.getStyles().header.tag.box.type[this.state.type]
+            },
+            label: {
+              ...this.getStyles().header.tag.label.base,
+              ...this.getStyles().header.tag.label.type[this.state.type]
+            }
+          }}
+        >
+          {UTIL.toCapitalCase(this.getShipmentTypeLabel())}
+        </PackenUiTag>
       </View>
     );
   }
@@ -378,51 +492,75 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       ...this.getStyles().body.overview,
       ...this.state.styling.body?.overview
     }}>
-      <View style={{
+      {this.state.isRunning ? this.getDescription() : this.getClient()}
+      {this.getPickDate()}
+      {this.getFee()}
+    </View>
+  );
+
+  /**
+   * Returns the elements that make up the client name
+   * @type {Function}
+   * @return {node} JSX for the overview elements
+   */
+  getClient: Function = (): ReactNode => (
+    <View
+      style={{
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group,
         ...this.getStyles().body.client[this.state.type],
+        ...this.getStyles().body.client.running[this.state.isRunning.toString()],
         ...this.state.styling.body?.client
       }}
+    >
+      <PackenUiText
+        preset="c1"
+        style={{
+          ...this.getStyles().body.label,
+          ...this.state.styling.body?.label
+        }}
       >
-        <PackenUiText
-          preset="c1"
-          style={{
-            ...this.getStyles().body.label,
-            ...this.state.styling.body?.label
-          }}
-        >
-          {this.language.shipment.client_label}
-        </PackenUiText>
-        <PackenUiText preset="p1">
-          {UTIL.toTitleCase(this.state.client)}
-        </PackenUiText>
-      </View>
-      {this.getPickDate()}
-      <View style={{
-        ...this.getStyles().body.group.base,
-        ...this.state.styling.body?.group,
-        ...this.getStyles().body.group.right
-      }}>
-        <PackenUiText
-          preset="c1"
-          style={{
-            ...this.getStyles().body.label,
-            ...this.state.styling.body?.label
-          }}
-        >
-          {this.language.shipment.fee_label}
-        </PackenUiText>
-        <PackenUiText
-          preset="t1"
-          style={{
-            ...this.getStyles().body.fee,
-            ...this.state.styling.body?.fee
-          }}
-        >
-          {numeral(this.state.amount).format('$ 0,0[.]00')}
-        </PackenUiText>
-      </View>
+        {this.language.shipment.client_label}
+      </PackenUiText>
+      <PackenUiText
+        preset="p1"
+        style={this.getStyles().body.clientName.running[this.state.isRunning.toString()]}
+      >
+        {UTIL.toTitleCase(this.state.client)}
+      </PackenUiText>
+    </View>
+  );
+
+  /**
+   * Returns the elements that make up the shipment fee
+   * @type {Function}
+   * @return {node} JSX for the overview elements
+   */
+  getFee: Function = (): ReactNode => (
+    <View style={{
+      ...this.getStyles().body.group.base,
+      ...this.state.styling.body?.group,
+      ...this.getStyles().body.group.right
+    }}>
+      <PackenUiText
+        preset="c1"
+        style={{
+          ...this.getStyles().body.label,
+          ...this.state.styling.body?.label
+        }}
+      >
+        {this.language.shipment.fee_label}
+      </PackenUiText>
+      <PackenUiText
+        preset="t1"
+        style={{
+          ...this.getStyles().body.fee.base,
+          ...this.getStyles().body.fee.running[this.state.isRunning.toString()],
+          ...this.state.styling.body?.fee
+        }}
+      >
+        {numeral(this.state.amount).format("$ 0,0[.]00")}
+      </PackenUiText>
     </View>
   );
 
@@ -432,12 +570,15 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node|null} JSX for the description elements or null
    */
   getDescription: Function = (): ReactNode | null => {
-    if (!this.state.isDetails) { return null; }
+    if (!this.state.isDetails && !this.state.isRunning) { return null; }
     return (
-      <View style={{
-        ...this.getStyles().body.section,
-        ...this.state.styling.body?.section
-      }}>
+      <View
+        style={{
+          ...this.getStyles().body.section,
+          ...this.getStyles().body.descriptionSection.running[this.state.isRunning.toString()],
+          ...this.state.styling.body?.section
+        }}
+      >
         <View
           style={{
             ...this.getStyles().body.group.base,
@@ -464,30 +605,53 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
   }
 
   /**
+   * Returns the elements "below the fold", which are initially hidden
+   * @type {Function}
+   * @return {node|null} JSX for the overview elements or null
+   */
+  getFold: Function = (): ReactNode | null => {
+    if (this.state.isRunning) { return null; }
+    return (
+      <View
+        style={{
+          ...this.getStyles().body.fold.base,
+          ...this.getStyles().body.fold.visible[this.state.showDetails.toString()]
+        }}
+      >
+        {this.getComments()}
+        {this.getDetails()}
+        {this.getLocations()}
+        {this.getStartEndDates()}
+        {this.getCta()}
+      </View>
+    );
+  }
+
+  /**
    * Returns the {@link PackenUiIconInfo} props used specifically for the payment method element
    * @type {Function}
    * @return {object} The correct props for the component instance
    */
   getPaymentProps: Function = (): object => {
-    let key = '';
-    let icon = '';
-    let iconSet = 'FTR';
+    let key = "";
+    let icon = "";
+    let iconSet = "FTR";
     let customStyling = {};
     switch (this.state.payment.method.toUpperCase()) {
-      case 'EFECTIVO':
-        key = 'cash';
-        icon = 'money';
-        iconSet = 'FA';
+      case "EFECTIVO":
+        key = "cash";
+        icon = "money";
+        iconSet = "FA";
         break;
-      case 'TRANSFERENCIA/CONSIGNACIÓN EN BANCO':
-        key = 'transfer';
-        icon = 'bank-transfer';
-        iconSet = 'MCI';
+      case "TRANSFERENCIA/CONSIGNACIÓN EN BANCO":
+        key = "transfer";
+        icon = "bank-transfer";
+        iconSet = "MCI";
         customStyling = { copy: { marginLeft: -2 } };
         break;
-      case 'TARJETA DE CRÉDITO':
-        key = 'card';
-        icon = 'credit-card';
+      case "TARJETA DE CRÉDITO":
+        key = "card";
+        icon = "credit-card";
         break;
       default:
         break;
@@ -498,16 +662,16 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         color: colors.basic.independence.drk
       },
       ...customStyling,
-      iconColor: key === 'cash'
+      iconColor: key === "cash"
         ? colors.success.default
-        : this.state.type === 'programmed'
+        : this.state.type === "programmed"
           ? colors.brandSecondary.default
           : colors.brand.primary.drk
     };
     let { title } = this.language.shipment.payment[key];
     if (this.state.payment.amount) {
       delete styling.title.fontSize;
-      title = numeral(this.state.payment.amount).format('$ 0,0[.]00');
+      title = numeral(this.state.payment.amount).format("$ 0,0[.]00");
     }
     return {
       iconSet,
@@ -523,7 +687,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @type {Function}
    * @return {object} The custom styling prop with correct icon color passed to the component instance
    */
-  getTypeStyling: Function = (): Object => (this.state.type === 'programmed' ? { iconColor: colors.brandSecondary.default } : {});
+  getTypeStyling: Function = (): Object => (this.state.type === "programmed" ? { iconColor: colors.brandSecondary.default } : {});
 
   /**
    * Returns the comments elements if data is provided
@@ -571,9 +735,11 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     <View style={{
       ...this.getStyles().body.section,
       ...this.state.styling.body?.section,
-      ...this.getStyles().body.details,
+      ...this.getStyles().body.details.base,
+      ...this.getStyles().body.details.running[this.state.isRunning.toString()],
       ...this.state.styling.body?.details
-    }}>
+    }}
+    >
       <View style={{
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
@@ -643,7 +809,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       >
         {this.language.shipment.locations}
       </PackenUiText>
-      <View style={{ width: '100%', marginTop: 5 }}>
+      <View style={{ width: "100%", marginTop: 5 }}>
         <PackenUiServiceStatus
           altStyle
           currentStepIndex={0}
@@ -680,7 +846,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         >
           {this.language.shipment.events}
         </PackenUiText>
-        <View style={[this.getStyles().body.section, this.getStyles().body.dates]}>
+        <View style={{
+          ...this.getStyles().body.section,
+          ...this.state.styling.body?.section,
+          ...this.getStyles().body.dates,
+          ...this.state.styling.body?.dates,
+        }}>
           <View style={{ flex: 1 }}>
             <PackenUiIconInfo
               iconSet="MCI"
@@ -693,7 +864,8 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
               >
                 {this.language.shipment.start_label}
               </PackenUiText>
-              <PackenUiText preset="p2">{`${startDateParts.day}, ${startDateParts.nday}${ndayFormatStart} ${startDateParts.month}`}</PackenUiText>
+              <PackenUiText preset="p2">{`${startDateParts.day},`}</PackenUiText>
+              <PackenUiText preset="p2">{`${startDateParts.nday}${ndayFormatStart} ${startDateParts.month}`}</PackenUiText>
               <PackenUiText preset="c1" style={{ marginTop: 2 }}>{startDateParts.time}</PackenUiText>
             </PackenUiIconInfo>
           </View>
@@ -709,7 +881,8 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
               >
                 {this.language.shipment.end_label}
               </PackenUiText>
-              <PackenUiText preset="p2">{`${endDateParts.day}, ${endDateParts.nday}${ndayFormatEnd} ${endDateParts.month}`}</PackenUiText>
+              <PackenUiText preset="p2">{`${endDateParts.day},`}</PackenUiText>
+              <PackenUiText preset="p2">{`${endDateParts.nday}${ndayFormatEnd} ${endDateParts.month}`}</PackenUiText>
               <PackenUiText preset="c1" style={{ marginTop: 2 }}>{endDateParts.time}</PackenUiText>
             </PackenUiIconInfo>
           </View>
@@ -748,7 +921,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       ...this.getStyles().body.locations,
       ...this.state.styling.body?.locations
     }}>
-      <View style={{ width: '100%', marginTop: 5 }}>
+      <View style={{ width: "100%", marginTop: 5 }}>
         <PackenUiServiceStatus
           altStyle
           currentStepIndex={0}
@@ -764,7 +937,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node|null} JSX for the elements or null
    */
   getCta: Function = (): ReactNode | null => {
-    if (this.state.isDetails) { return null; }
+    if (this.state.isDetails || this.state.isRunning) { return null; }
     return (
       <View style={{
         ...this.getStyles().body.section,
@@ -793,6 +966,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
           ) : this.state.type === "programmed" && this.state.status !== "delivered" ? (
             <View style={{
               ...this.getStyles().body.group.base,
+              ...this.state.styling.body?.group,
               paddingRight: 3
             }}
             >
@@ -841,7 +1015,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @type {Function}
    * @return {string} The correct i18n label for the type of shipment
    */
-  getShipmentTypeLabel: Function = (): string => (this.state.type === 'programmed' ? this.language.shipment.programmed_label : this.language.shipment.instant_label);
+  getShipmentTypeLabel: Function = (): string => (this.state.type === "programmed" ? this.language.shipment.programmed_label : this.language.shipment.instant_label);
 
   /**
    * Updates the state with new props
@@ -854,7 +1028,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @type {function}
    * @param {object} prevProps Previous props
    */
-  componentDidUpdate(prevProps: PackenUiShipmentCardProps) {
+  componentDidUpdate = (prevProps: PackenUiShipmentCardProps) => {
     if (!UTIL.objectsEqual(prevProps, this.props)) { this.updateState(); }
   }
 
@@ -865,68 +1039,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    */
   render(): ReactNode {
     return (
-      <View style={{
-        ...this.getStyles().container,
-        ...this.state.styling.container
-      }}>
-        <View style={{
-          ...this.getStyles().header.box.base,
-          ...this.getStyles().header.box.type[this.state.type],
-          ...this.state.styling.header?.box
-        }}
-        >
-          <View style={this.getStyles().header.inline}>
-            <PackenUiText
-              preset="c2"
-              style={{
-                ...this.getStyles().header.label.base,
-                ...this.getStyles().header.label.type[this.state.type],
-                ...this.state.styling.header?.label
-              }}
-            >
-              {this.language.shipment.shipment_label.toUpperCase()}
-              {' '}
-              #
-              {this.state.id}
-            </PackenUiText>
-            {this.getDeliveries()}
-          </View>
-          <PackenUiTag
-            textColor={colors.brand.primary.drk}
-            backgroundColor={colors.brand.primary.ulgt}
-            styling={{
-              box: {
-                ...this.getStyles().header.tag.box.base,
-                ...this.getStyles().header.tag.box.type[this.state.type],
-                ...this.state.styling.tag?.box
-              },
-              label: {
-                ...this.getStyles().header.tag.label.base,
-                ...this.getStyles().header.tag.label.type[this.state.type],
-                ...this.state.styling.tag?.label
-              }
-            }}
-          >
-            {UTIL.toCapitalCase(this.getShipmentTypeLabel())}
-          </PackenUiTag>
-        </View>
-        <View style={{
-          ...this.getStyles().body.box,
-          ...this.state.styling.body?.box
-        }}>
+      <View style={this.getStyles().container}>
+        {this.getHeader()}
+        <View style={this.getStyles().body.box}>
           {this.getOverview()}
-          {this.getDescription()}
-          <View style={{
-            ...this.getStyles().body.fold.base,
-            ...this.getStyles().body.fold.visible[this.state.showDetails.toString()]
-          }}
-          >
-            {this.getComments()}
-            {this.getDetails()}
-            {this.getLocations()}
-            {this.getStartEndDates()}
-            {this.getCta()}
-          </View>
+          {this.state.isRunning ? this.getDetails() : this.getDescription()}
+          {this.getFold()}
         </View>
       </View>
     );
@@ -939,17 +1057,45 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    */
   getStyles: Function = (): object => ({
     container: {
-      width: '100%',
+      width: "100%",
       backgroundColor: colors.basic.white.dft
+    },
+    running: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      paddingVertical: 14,
+      paddingHorizontal: 20,
+      backgroundColor: colors.basic.white.drk
+    },
+    actions: {
+      wrapper: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-end"
+      },
+      item: {
+        box: {
+          marginLeft: 20,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "flex-start"
+        },
+        label: {
+          marginLeft: 5,
+          fontWeight: "600",
+          color: colors.danger.default
+        }
+      }
     },
     header: {
       box: {
         base: {
           paddingVertical: 6,
           paddingHorizontal: 20,
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between'
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between"
         },
         type: {
           programmed: {
@@ -961,9 +1107,9 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         }
       },
       inline: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-start'
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "flex-start"
       },
       label: {
         base: {
@@ -1020,21 +1166,21 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     },
     body: {
       box: {
-        width: '100%',
+        width: "100%",
         paddingTop: 11,
         paddingBottom: this.state.isDetails ? 0 : 16,
         paddingHorizontal: 20,
         backgroundColor: colors.basic.white.dft
       },
       section: {
-        width: '100%',
-        flexDirection: 'row',
-        alignItems: 'flex-start'
+        width: "100%",
+        flexDirection: "row",
+        alignItems: "flex-start"
       },
       group: {
         base: {},
         right: {
-          alignItems: 'flex-end'
+          alignItems: "flex-end"
         }
       },
       label: {
@@ -1042,23 +1188,57 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         color: colors.basic.independence.dft
       },
       client: {
-        programmed: {
-          maxWidth: '20%'
-        },
-        instant: {}
+        programmed: {},
+        instant: {},
+        running: {
+          true: {
+            flex: 1,
+            width: "auto",
+            maxWidth: "100%",
+            paddingRight: 15
+          },
+          false: {}
+        }
       },
       fee: {
-        fontFamily: typography.family.bold
+        base: {
+          fontFamily: typography.family.bold
+        },
+        running: {
+          true: {
+            fontSize: 25,
+            lineHeight: 25,
+            letterSpacing: 1
+          },
+          false: {}
+        }
+      },
+      clientName: {
+        running: {
+          true: {
+            fontFamily: typography.family.bold
+          },
+          false: {}
+        }
       },
       overview: {
         marginBottom: 12,
-        justifyContent: 'space-between'
+        justifyContent: "space-between"
       },
       fold: {
         base: {},
         visible: {
-          true: { display: 'flex' },
-          false: { display: 'none' }
+          true: { display: "flex" },
+          false: { display: "none" }
+        }
+      },
+      descriptionSection: {
+        running: {
+          true: {
+            flex: 1,
+            width: "auto"
+          },
+          false: {}
         }
       },
       description: {
@@ -1070,8 +1250,16 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         marginBottom: 20
       },
       details: {
-        marginBottom: 20,
-        justifyContent: 'space-between'
+        base: {
+          marginBottom: 20,
+          justifyContent: "space-between"
+        },
+        running: {
+          true: {
+            marginBottom: -10
+          },
+          false: {}
+        }
       },
       dates: {
         marginBottom: 12
@@ -1081,7 +1269,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       },
       locations: {
         marginBottom: 22,
-        flexDirection: 'column'
+        flexDirection: "column"
       },
       cta: {}
     },
@@ -1122,9 +1310,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         view_details: PropTypes.string
       }).isRequired
     }).isRequired,
+    isRunning: PropTypes.bool,
     isDetails: PropTypes.bool,
     showDetails: PropTypes.bool,
     isMyShipments: PropTypes.bool,
+    hideActions: PropTypes.bool,
+    runningCurrentStep: PropTypes.number,
     shipment: PropTypes.shape({
       deliveries_count: PropTypes.number.isRequired,
       btnText: PropTypes.shape({
@@ -1144,7 +1335,10 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         text_button: PropTypes.string,
         triggers: PropTypes.shape({
           view: PropTypes.func,
-          accept: PropTypes.func
+          accept: PropTypes.func,
+          reject: PropTypes.func,
+          message: PropTypes.func,
+          call: PropTypes.func
         }),
         when: PropTypes.string,
         distance: PropTypes.string.isRequired,
