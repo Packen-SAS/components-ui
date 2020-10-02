@@ -120,8 +120,22 @@ interface i18nShape {
     fee_label: string;
     content_description: string;
     payment: {
-      title: string;
-      label: string;
+      cash: {
+        title: string;
+        label: string;
+      },
+      transfer: {
+        title: string;
+        label: string;
+      },
+      card: {
+        title: string;
+        label: string;
+      },
+      credit: {
+        title: string;
+        label: string;
+      }
     },
     comments_label: string;
     distance_away: string;
@@ -363,7 +377,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node|null} JSX for the pickup date element or null
    */
   getPickDate: Function = (): ReactNode | null => {
-    if (!this.state.pickDate) { return null; }
+    if (!this.state.pickDate || this.state.isRunning) { return null; }
     const { day, month, nday, time, locale } = UTIL.datetime().parts(this.state.pickDate);
     const ndayFormat = UTIL.getNdayFormat(locale, nday);
     return (
@@ -652,6 +666,11 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       case "TARJETA DE CRÉDITO":
         key = "card";
         icon = "credit-card";
+        break;
+      case "CRÉDITOS":
+        key = "credit";
+        iconSet = "MCI";
+        icon = "progress-clock";
         break;
       default:
         break;
