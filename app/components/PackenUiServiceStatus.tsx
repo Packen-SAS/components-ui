@@ -141,6 +141,13 @@ class PackenUiServiceStatus extends Component<PackenUiServiceStatusProps, Packen
   }
 
   /**
+   * Returns the current state
+   * @type {Function}
+   * @return {object} The state object
+   */
+  getState: Function = (): object => ({ ...this.state });
+
+  /**
    * Updates the state with new props, and checks if it's an active item
    * @type {function}
    * @param {object} prevProps Previous props
