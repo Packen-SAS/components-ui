@@ -1,6 +1,6 @@
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Feather";
-import React, { Component, ReactNode } from "react";
+import React, { PureComponent, ReactNode } from "react";
 import { View } from "react-native";
 import PropTypes from "prop-types";
 import numeral from "numeral";
@@ -106,6 +106,7 @@ interface PaymentShape {
 }
 
 interface OriginShape {
+  city?: string;
   main: string;
   extra?: string;
 }
@@ -228,7 +229,7 @@ interface PackenUiShipmentCardState {
   styling: StylingPropShape;
 }
 
-class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUiShipmentCardState> {
+class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, PackenUiShipmentCardState> {
   /**
    * Variable that holds the i18n json data
    * @type {object}
@@ -314,6 +315,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
       messageClient: model.triggers.message,
       type: model.scheduled ? "programmed" : "instant",
       origin: {
+        city: model.city,
         main: model.pickup_origin,
         extra: model.pickup_origin_extend
       },
@@ -714,7 +716,10 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node|null} JSX for the comments elements or null
    */
   getComments: Function = (): ReactNode | null => {
-    if (this.state.comments && this.state.isDetails) {
+    if (
+      this.state.comments
+      && (this.state.isDetails || this.state.isRunning)
+    ) {
       return (
         <View style={{
           ...this.getStyles().body.section,
@@ -723,7 +728,8 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
           <View style={{
             ...this.getStyles().body.group.base,
             ...this.state.styling.body?.group,
-            ...this.getStyles().body.comments,
+            ...this.getStyles().body.comments.base,
+            ...this.getStyles().body.comments.running[this.state.isRunning.toString()],
             ...this.state.styling.body?.comments
           }}
           >
@@ -763,13 +769,13 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
-        <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled />
+        <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
-        <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled />
+        <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
@@ -789,7 +795,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
     const locations: LocationShape[] = [{
       isCurrent: true,
       label: this.language.shipment.origin,
-      title: UTIL.toCapitalCase(this.state.origin.main),
+      title: `${UTIL.toCapitalCase(this.state.origin.main)}${this.state.origin.city ? ` - ${this.state.origin.city}` : ""}`,
       subtitle: UTIL.toCapitalCase(this.state.origin.extra)
     }];
     if (this.state.isDetails) {
@@ -797,7 +803,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         const { address_1, address_2 } = item.to_contact;
         locations.push({
           label: `${UTIL.toCapitalCase(this.language.shipment.delivery)} ${UTIL.num2ltr(i + 1)}`,
-          title: UTIL.toCapitalCase(address_1),
+          title: `${UTIL.toCapitalCase(address_1)}${item.to_contact.geographic_location_name ? ` - ${item.to_contact.geographic_location_name}` : ""}`,
           subtitle: UTIL.toCapitalCase(address_2)
         });
       });
@@ -844,7 +850,7 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
    * @return {node} JSX for the elements
    */
   getStartEndDates: Function = (): ReactNode => {
-    if (!this.state.isDetails || !this.state.events || !this.state.events.length) { return null; }
+    if (!this.state.isDetails || !this.state.events || this.state.events.length < 2) { return null; }
     const startDate = this.state.events[0].created_at;
     const endDate = this.state.events[this.state.events.length - 1].created_at;
     const startDateParts = UTIL.datetime().parts(startDate);
@@ -1062,7 +1068,14 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         {this.getHeader()}
         <View style={this.getStyles().body.box}>
           {this.getOverview()}
-          {this.state.isRunning ? this.getDetails() : this.getDescription()}
+          {this.state.isRunning
+            ? (
+              <>
+                {this.getComments()}
+                {this.getDetails()}
+              </>
+            )
+            : this.getDescription()}
           {this.getFold()}
         </View>
       </View>
@@ -1207,8 +1220,12 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         color: colors.basic.independence.dft
       },
       client: {
-        programmed: {},
-        instant: {},
+        programmed: {
+          maxWidth: "40%"
+        },
+        instant: {
+          maxWidth: "50%"
+        },
         running: {
           true: {
             flex: 1,
@@ -1265,8 +1282,16 @@ class PackenUiShipmentCard extends Component<PackenUiShipmentCardProps, PackenUi
         marginBottom: 12
       },
       comments: {
-        flex: 1,
-        marginBottom: 20
+        base: {
+          flex: 1,
+          marginBottom: 20
+        },
+        running: {
+          true: {
+            marginTop: -15
+          },
+          false: {}
+        }
       },
       details: {
         base: {
