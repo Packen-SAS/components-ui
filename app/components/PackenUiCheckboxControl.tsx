@@ -286,7 +286,8 @@ class PackenUiCheckboxControl extends Component<PackenUiCheckboxControlProps, Pa
           color: Colors.basic.independence.drk,
           fontSize: Typography.size.medium,
           lineHeight: Typography.lineheight.medium_alt,
-          marginLeft: 8
+          marginLeft: 8,
+          flex: 1
         },
         state: {
           default: {},
