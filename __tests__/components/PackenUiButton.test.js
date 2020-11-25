@@ -10,6 +10,7 @@ describe("<PackenUiButton/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
+    jest.useFakeTimers();
     renderRegular = shallow(
       <PackenUiButton
         icon={{ name: "arrow-right", position: "right" }}

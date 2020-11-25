@@ -11,6 +11,7 @@ describe("<PackenUiModal/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
+    jest.useFakeTimers();
     render = shallow(
       <PackenUiModal
         isOpen={false}

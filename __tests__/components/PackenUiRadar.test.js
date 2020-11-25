@@ -9,6 +9,7 @@ describe("<PackenUiRadar/>", () => {
   let render, renderStatic, renderInstance, renderStaticInstance;
 
   beforeAll(() => {
+    jest.useFakeTimers();
     render = shallow(
       <PackenUiRadar
         theme="search"
