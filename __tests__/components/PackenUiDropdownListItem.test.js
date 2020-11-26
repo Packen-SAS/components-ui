@@ -1214,10 +1214,17 @@ describe("<PackenUiDropdownListItem/>", () => {
         },
         styling: { sideIconColor: "#FFFFFF", sideIconSize: 15 }
       }
-      const resLeft = renderInstance.getLeftRender({}, 1);
-      const resRight = renderInstance.getRightRender({}, 1);
+      let resLeft = renderInstance.getLeftRender({}, 1);
+      let resRight = renderInstance.getRightRender({}, 1);
       expect(resLeft).toBeDefined();
       expect(resRight).toBeDefined();
+
+      renderInstance.props.mainContent.left = false;
+      renderInstance.props.mainContent.right = false;
+      resLeft = renderInstance.getLeftRender({}, 1);
+      resRight = renderInstance.getRightRender({}, 1);
+      expect(resLeft).toEqual({});
+      expect(resRight).toEqual({});
     });
 
     it("returns right content", () => {

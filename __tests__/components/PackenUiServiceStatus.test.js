@@ -102,6 +102,11 @@ describe("<PackenUiServiceStatus/>", () => {
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
     });
+
+    it("returns the current component state", () => {
+      const res = renderInstance.getState();
+      expect(res).toEqual(renderInstance.state);
+    });
   });
 
   describe("state changing", () => {
@@ -114,6 +119,15 @@ describe("<PackenUiServiceStatus/>", () => {
 
       expect(renderInstance.state.currentStepIndex).toBe(2);
       expect(renderInstance.state.steps[2].callback).toHaveBeenCalled();
+
+      const steps = [...mockSteps];
+      steps[0].callback = false;
+      render.setProps({
+        steps,
+        currentStepIndex: 0
+      });
+      renderInstance.updateCurrentStep();
+      expect(renderInstance.state.currentStepIndex).toBe(0);
     });
 
     it("sets items heights", () => {

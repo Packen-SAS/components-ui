@@ -255,9 +255,31 @@ describe("<PackenUiDropdown/>", () => {
     });
 
     it("returns incoming props as the state key-value pairs if some are provided", () => {
-      render.setProps({ styling: { test: "Test" } });
-      const res = renderInstance.setPropsToState();
+      const config = {
+        styling: { test: "Test" },
+        input: {
+          label: "Single selection",
+          placeholder: "Selecciona tu ciudad",
+          onChangeText: () => { return; },
+          icon: {
+            name: "chevron-down",
+            position: "right",
+            style: { color: Colors.brand.primary.drk }
+          },
+          theme: "list",
+          nonEditable: true,
+          help: "Help text"
+        }
+      };
+      render.setProps(config);
+      let res = renderInstance.setPropsToState();
       expect(res.styling).toEqual({ test: "Test", contentSizer: {} });
+      expect(res.finalSelectionString).toBe("Selecciona tu ciudad");
+
+      delete config.input.placeholder;
+      render.setProps(config);
+      res = renderInstance.setPropsToState();
+      expect(res.finalSelectionString).toBe("");
     });
 
     it("sets custom styles to position the menu if its theme is 'list'", () => {
@@ -327,6 +349,15 @@ describe("<PackenUiDropdown/>", () => {
   describe("rendering", () => {
     it("renders correctly", () => {
       expect(render).toBeDefined();
+
+      const altRenderInstance = new PackenUiDropdown({
+        size: "medium",
+        list: { ...list },
+        input: false,
+        name: "dropdown3",
+        callback: mockCallback
+      });
+      expect(altRenderInstance.state.finalSelectionString).toBeUndefined();
     });
 
     it("adds a '0' bottom padding when rendering if it's an input of theme 'list' and it's not open", () => {

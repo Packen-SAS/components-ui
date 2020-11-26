@@ -99,6 +99,16 @@ describe("<PackenUiMapPin/>", () => {
 
       expect(returnedElement).toBe(null);
     });
+
+    it("returns the 'sub' elements", () => {
+      renderInfoInstance.setState({ sub: { icon: "test", character: "A" } });
+      let res = renderInfoInstance.getSubRender();
+      expect(res).toBeDefined();
+
+      renderInfoInstance.setState({ sub: false });
+      res = renderInfoInstance.getSubRender();
+      expect(res).toBeNull();
+    });
   });
 
   describe("state changing", () => {

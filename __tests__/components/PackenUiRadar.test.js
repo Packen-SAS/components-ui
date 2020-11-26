@@ -61,8 +61,10 @@ describe("<PackenUiRadar/>", () => {
   describe("styling", () => {
     it("sets the shadow animation", () => {
       const spyAnimatedLoop = jest.spyOn(Animated, "loop");
-      renderInstance.setShadowAnimation([{ scale: new Animated.Value(0.2) }]);
+      renderInstance.setShadowAnimation([{ scale: 0 }]);
+      expect(spyAnimatedLoop).not.toHaveBeenCalled();
 
+      renderInstance.setShadowAnimation([{ scale: new Animated.Value(0.2) }]);
       expect(spyAnimatedLoop).toHaveBeenCalled();
       spyAnimatedLoop.mockRestore();
     });
@@ -71,6 +73,10 @@ describe("<PackenUiRadar/>", () => {
   describe("triggering actions", () => {
     it("starts the shadow animation", () => {
       const spySetShadowAnimation = jest.spyOn(renderInstance, "setShadowAnimation");
+      renderInstance.shadowAnim = null;
+      renderInstance.startShadowAnimation();
+      expect(spySetShadowAnimation).toHaveBeenCalled();
+
       renderInstance.setState({
         transforms: {
           shadow: {
@@ -79,17 +85,18 @@ describe("<PackenUiRadar/>", () => {
         }
       });
       renderInstance.startShadowAnimation();
-
       expect(spySetShadowAnimation).toHaveBeenCalled();
       spySetShadowAnimation.mockRestore();
     });
 
     it("stops the shadow animation", () => {
-      /* renderInstance.shadowAnim = { stop: jest.fn() }; */
       const spyStop = jest.spyOn(renderInstance.shadowAnim, "stop");
       renderInstance.stopShadowAnimation();
-
       expect(spyStop).toHaveBeenCalled();
+
+      renderInstance.shadowAnim = null;
+      renderInstance.stopShadowAnimation();
+      expect(spyStop).toHaveBeenCalledTimes(1);
       spyStop.mockRestore();
     });
 
@@ -217,7 +224,7 @@ describe("<PackenUiRadar/>", () => {
         styling: undefined
       });
       const res = renderInstance.setPropsToState();
-      
+
       expect(res).toEqual({
         theme: "wait",
         animated: false,
