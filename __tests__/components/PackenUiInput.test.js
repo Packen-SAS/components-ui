@@ -257,6 +257,7 @@ describe("<PackenUiInput/>", () => {
         minLength: 5,
         loading: true,
         isPassword: true,
+        textAlign: "right",
         validator: "number",
         placeholder: undefined,
         styling: { test: "Test" }
@@ -269,6 +270,7 @@ describe("<PackenUiInput/>", () => {
       expect(res.loading).toBe(true);
       expect(res.isPassword).toBe(true);
       expect(res.placeholder).toBe("");
+      expect(res.textAlign).toBe("right");
       expect(res.validator).toBe("number");
       expect(res.styling).toEqual({ test: "Test", header: {}, help: {}, message: {} });
     });
@@ -377,10 +379,16 @@ describe("<PackenUiInput/>", () => {
 
     it("handles onChangeText if a validator is provided and it's valid", () => {
       render.setProps({ onChangeText: mockCallback });
-      renderInstance.setState({ name: "Test", validator: "letters" })
-      renderInstance.handleChangeText("Test");
-
-      expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+      [4, 0].forEach((qty) => {
+        renderInstance.setState({
+          name: "Test",
+          validator: "letters",
+          minLength: 1,
+          maxLength: qty
+        });
+        renderInstance.handleChangeText("Test");
+        expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", "Test", true);
+      });
     });
 
     it("handles onChangeText if a validator is provided and it's invalid", () => {
@@ -456,6 +464,15 @@ describe("<PackenUiInput/>", () => {
       expect(renderInstance.ref).toEqual(ref);
     });
 
+    it("returns undefined when getting the component ref if it's already set", () => {
+      const spyCheckFocus = jest.spyOn(renderInstance, "checkFocus");
+      renderInstance.ref = { focus: jest.fn(), blur: jest.fn() };
+      const res = renderInstance.getRef();
+      expect(res).toBeUndefined();
+      expect(spyCheckFocus).not.toHaveBeenCalled();
+      spyCheckFocus.mockRestore();
+    });
+
     it("executes the propagation callback after returning the ref if provided", () => {
       render.setProps({ instance: jest.fn() });
       renderInstance.setState({ name: "Test" });
@@ -475,24 +492,28 @@ describe("<PackenUiInput/>", () => {
     });
 
     it("focuses the input if ref is defined", () => {
-      renderInstance.setState({ ref: { focus: mockCallback } });
+      jest.useFakeTimers();
+      renderInstance.ref = { focus: jest.fn() };
       renderInstance.focus();
-
-      expect(renderInstance.state.ref.focus).toHaveBeenCalled();
+      jest.advanceTimersByTime(1000);
+      expect(renderInstance.ref.focus).toHaveBeenCalled();
+      jest.useRealTimers();
     });
 
     it("returns false if trying to focus the input and ref is not defined", () => {
+      jest.useFakeTimers();
       renderInstance.ref = null;
       const res = renderInstance.focus();
-
-      expect(res).toBe(false);
+      jest.advanceTimersByTime(1000);
+      expect(res).toBeUndefined();
+      jest.useRealTimers();
     });
 
     it("blurs the input if ref is defined", () => {
-      renderInstance.setState({ ref: { blur: mockCallback } });
+      renderInstance.ref = { blur: jest.fn() };
       renderInstance.blur();
 
-      expect(renderInstance.state.ref.blur).toHaveBeenCalled();
+      expect(renderInstance.ref.blur).toHaveBeenCalled();
     });
 
     it("returns false if trying to blur the input and ref is not defined", () => {
@@ -672,6 +693,12 @@ describe("<PackenUiInput/>", () => {
       const returnedName = renderInstance.getIconName();
 
       expect(returnedName).toBe("chevron-down");
+    });
+
+    it("returns an empty string as icon name if not it's properly configured", () => {
+      renderInstance.setState({ isDropdown: false, icon: false });
+      const res = renderInstance.getIconName();
+      expect(res).toBe("");
     });
   });
 

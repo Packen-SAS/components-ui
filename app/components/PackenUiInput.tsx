@@ -675,13 +675,11 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @return {boolean} Flag used only for testing purposes
    */
   focus: VoidFunction = (): boolean | void => {
-    if (this.ref) {
-      // Weird bug, if timeout is not set the focus function doesn't do anything
-      const timeout = setTimeout(() => {
-        if (this.ref) { this.ref.focus(); }
-        clearTimeout(timeout);
-      }, 250);
-    } else { return false; }
+    // Weird bug, if timeout is not set the focus function doesn't do anything
+    const timeout = setTimeout(() => {
+      clearTimeout(timeout);
+      if (this.ref) { this.ref.focus(); }
+    }, 250);
   }
 
   /**
