@@ -180,9 +180,19 @@ describe("<PackenUiListItem/>", () => {
 
     it("changes the state when opening and closing if it's a dropdown", () => {
       renderInstance.onOpenStateChangeHandler(true, 10);
-
       expect(renderInstance.state.data.input.isOpen).toBe(true);
       expect(renderInstance.state.data.input.dropdownHeight).toBe(10);
+
+      renderInstance.setState({ data: { input: false } });
+      const res = renderInstance.onOpenStateChangeHandler();
+      expect(res).toBeUndefined();
+    });
+
+    it("returns incoming props as the state key-value pairs if some are provided", () => {
+      render.setProps({ data: { stateIcon: { test: "test" }, subCustom: "test" } });
+      const res = renderInstance.setPropsToState();
+      expect(res.data.stateIcon).toEqual({ test: "test" });
+      expect(res.data.subCustom).toBe("test");
     });
   });
 
@@ -249,6 +259,30 @@ describe("<PackenUiListItem/>", () => {
       returnedElement = renderInstance.getSubContent();
       expect(returnedElement).toBeDefined();
     });
+
+    it("returns the correct inner input component", () => {
+      [true, false].forEach((state) => {
+        const _data = { ...renderInstance.state.data };
+        _data.input = { isDropdown: state };
+        renderInstance.setState({ data: _data });
+        const res = renderInstance.determineInputContent();
+        expect(res).toBeDefined();
+        if (state) {
+          expect(res.props.input.icon.callback()).toBe(true);
+        }
+      });
+
+      renderInstance.setState({ data: { input: false } });
+      const _res = renderInstance.determineInputContent();
+      expect(_res).toBeNull();
+    });
+
+    it("returns the icon element", () => {
+      [undefined, jest.fn()].forEach((callback) => {
+        const res = renderInstance.getIcon({ name: "test", color: "test", callback });
+        expect(res).toBeDefined();
+      });
+    });
   });
 
   describe("triggering actions", () => {
@@ -286,8 +320,14 @@ describe("<PackenUiListItem/>", () => {
     it("executes the inputChangeHandler", () => {
       renderInstance.setState({ data: { input: { onChangeText: jest.fn() } } });
       renderInstance.inputChangeHandler("Test", "val");
-
       expect(renderInstance.state.data.input.onChangeText).toHaveBeenCalledWith("Test", "val");
+
+      const spyUpdateDropdown = jest.spyOn(renderInstance, "updateDropdown");
+      renderInstance.setState({ data: { input: { isDropdown: true, value: "", onChangeText: jest.fn() } } });
+      renderInstance.inputChangeHandler("Test", "val");
+      expect(renderInstance.state.data.input.value).toBe("val");
+      expect(spyUpdateDropdown).toHaveBeenCalled();
+      spyUpdateDropdown.mockRestore();
     });
 
     it("returns false while executing the inputChangeHandler if not provided", () => {
@@ -305,6 +345,9 @@ describe("<PackenUiListItem/>", () => {
         val: "Test",
         color: Colors.basic.independence.drk
       });
+
+      renderInstance.setState({ data: { input: false } });
+      expect(renderInstance.getPlaceholder()).toBeUndefined();
     });
 
     it("returns the correct placeholder configuration if a value is not provided", () => {
@@ -318,19 +361,21 @@ describe("<PackenUiListItem/>", () => {
     });
 
     it("returns the main wrapper if it's an open dropdown", () => {
-      renderInstance.setState({
-        data: {
-          input: {
-            isOpen: true,
-            dropdownHeight: 10
-          },
-          subtitle: true
-        }
-      });
-      const returnedElement = renderInstance.getMainWrapper(<View></View>);
+      [true, false].forEach((state) => {
+        renderInstance.setState({
+          data: {
+            input: {
+              isOpen: state,
+              dropdownHeight: 10
+            },
+            subtitle: true
+          }
+        });
+        const returnedElement = renderInstance.getMainWrapper(<View></View>);
 
-      expect(returnedElement).toBeDefined();
-      expect(returnedElement.props.children[1].props.style.transform[0].translateY).toBe(-10);
+        expect(returnedElement).toBeDefined();
+        expect(returnedElement.props.children[1].props.style.transform[0].translateY).toBe(state ? -10 : 0);
+      });
     });
 
     it("sets the dropdoen ref", () => {
@@ -346,6 +391,20 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.dropdownRef = undefined;
       const res = renderInstance.toggleDropdown();
       expect(res).toBe(undefined);
+    });
+
+    it("executes the placeholder function", () => {
+      expect(renderInstance.mockCallback()).toBe(false);
+    });
+
+    it("executes the onOpenStateChange event of the optional inner dropdown component", () => {
+      renderInstance.dropdownRef = { onOpenStateChange: jest.fn() };
+      renderInstance.updateDropdown();
+      expect(renderInstance.dropdownRef.onOpenStateChange).toHaveBeenCalled();
+
+      renderInstance.dropdownRef = null;
+      const res = renderInstance.updateDropdown();
+      expect(res).toBeUndefined();
     });
   });
 });
