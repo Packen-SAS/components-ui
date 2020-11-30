@@ -668,7 +668,7 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
       const { success, code, status, errors, source } = this.state.payload;
       if (success === false) {
         let _errors = '---';
-        let _success = '---';
+        let _success = success.toString();
         if (Array.isArray(errors)) {
           _errors = '';
           errors.forEach((err) => {
@@ -676,7 +676,6 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
           });
           _errors = _errors.trimRight();
         }
-        if (typeof success === 'boolean') { _success = success.toString(); }
         payload = (
           <View style={{ marginTop: 10 }}>
             <PackenUiButton

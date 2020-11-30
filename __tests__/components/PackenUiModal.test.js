@@ -167,6 +167,40 @@ describe("<PackenUiModal/>", () => {
       const res = renderInstance.getGalleryArrows();
       expect(res).toBeDefined();
     });
+
+    it("returns the error payload elements", () => {
+      renderInstance.setState({ payload: false });
+      let res = renderInstance.getPayload();
+      expect(res).toBeNull();
+
+      renderInstance.language = {
+        buttons: { view_details: "test" },
+        modal: { error: { persists: "test" } }
+      };
+      const payload = {
+        success: false,
+        code: 123,
+        status: 404,
+        errors: ["Test error"],
+        source: "api"
+      };
+      renderInstance.setState({ payload, isPayloadVisible: false });
+      res = renderInstance.getPayload();
+      expect(res).toBeDefined();
+
+      payload.errors = "";
+      payload.code = null;
+      payload.status = null;
+      payload.source = null;
+      renderInstance.setState({ payload, isPayloadVisible: true });
+      res = renderInstance.getPayload();
+      expect(res).toBeDefined();
+
+      payload.success = true;
+      renderInstance.setState({ payload });
+      res = renderInstance.getPayload();
+      expect(res).toBeDefined();
+    });
   });
 
   describe("styling", () => {
@@ -375,8 +409,10 @@ describe("<PackenUiModal/>", () => {
         }
       };
       renderInstance.prevSlide();
-
       expect(renderInstance.carouselRef.current.snapToPrev).toHaveBeenCalled();
+
+      renderInstance.carouselRef = null;
+      expect(renderInstance.prevSlide()).toBeUndefined();
     });
 
     it("goes to the next slide if type is gallery", () => {
@@ -386,8 +422,10 @@ describe("<PackenUiModal/>", () => {
         }
       };
       renderInstance.nextSlide();
-
       expect(renderInstance.carouselRef.current.snapToNext).toHaveBeenCalled();
+
+      renderInstance.carouselRef = null;
+      expect(renderInstance.nextSlide()).toBeUndefined();
     });
 
     it("triggers the onDismissHandler", () => {
@@ -448,6 +486,36 @@ describe("<PackenUiModal/>", () => {
       renderInstance.setState({ modalClose: undefined });
       const res = renderInstance.closeModal();
       expect(res).toBe(false);
+    });
+
+    it("removes all keyboard listeners when unmounting", () => {
+      renderInstance.keyboardDidShowListener = null;
+      renderInstance.keyboardDidHideListener = null;
+      const res = renderInstance.componentWillUnmount();
+      expect(res).toBeUndefined();
+
+      renderInstance.keyboardDidShowListener = { remove: jest.fn() };
+      renderInstance.keyboardDidHideListener = { remove: jest.fn() };
+      renderInstance.componentWillUnmount();
+      expect(renderInstance.keyboardDidShowListener.remove).toHaveBeenCalled();
+      expect(renderInstance.keyboardDidHideListener.remove).toHaveBeenCalled();
+    });
+
+    it("toggles error payload information", () => {
+      [true, false].forEach((state) => {
+        renderInstance.setState({ isPayloadVisible: state });
+        renderInstance.togglePayload();
+        expect(renderInstance.state.isPayloadVisible).toBe(!state);
+      });
+    });
+
+    it("gets the modal content layout data", () => {
+      const spyGetModalLayout = jest.spyOn(renderInstance, "getModalLayout");
+      const res = renderInstance.render();
+      expect(res).toBeDefined();
+      res.props.children.props.children.props.children.props.onLayout({ nativeEvent: { layout: { test: "Test" } } });
+      expect(spyGetModalLayout).toHaveBeenCalledWith({ test: "Test" });
+      spyGetModalLayout.mockRestore();
     });
   });
 
@@ -626,7 +694,9 @@ describe("<PackenUiModal/>", () => {
         modalClose: mockCallback,
         onDismiss: mockCallback,
         onRequestClose: mockCallback,
-        styling: { test: "Test" }
+        styling: { test: "Test" },
+        payload: { test: "Test" },
+        customInfo: "Test"
       });
       const res = renderInstance.setPropsToState();
 
@@ -635,6 +705,39 @@ describe("<PackenUiModal/>", () => {
       expect(res.onDismiss).toBe(mockCallback);
       expect(res.onRequestClose).toBe(mockCallback);
       expect(res.styling).toEqual({ test: "Test" });
+      expect(res.payload).toEqual({ test: "Test" });
+      expect(res.customInfo).toBe("Test");
+    });
+
+    it("sets the keyboardDidShow event data to the state", () => {
+      renderInstance.keyboardDidShow({ endCoordinates: { height: 123 } });
+      expect(renderInstance.state.isKeyboardOpen).toBe(true);
+      expect(renderInstance.state.keyboardHeight).toBe(123);
+    });
+
+    it("sets the keyboardDidHide event data to the state", () => {
+      renderInstance.setState({ initialAlignmentStyles: { test: "Test" } });
+      renderInstance.keyboardDidHide();
+      expect(renderInstance.state.isKeyboardOpen).toBe(false);
+      expect(renderInstance.state.keyboardHeight).toBe(0);
+      expect(renderInstance.state.initialAlignmentStyles).toEqual({ test: "Test" });
+    });
+
+    it("returns the correct vertical alignment styles", () => {
+      [10, 0].forEach((val) => {
+        renderInstance.setState({ isInitial: false, keyboardHeight: val, isKeyboardOpen: true });
+        renderInstance.getModalLayout({ height: 10000 });
+        expect(renderInstance.state.alignmentStyles).toEqual({});
+      });
+
+      [true, false].forEach((state) => {
+        const styles = { flex: 1, alignItems: "center", justifyContent: "center" };
+        renderInstance.setState({ isInitial: state, alignmentStyles: { test: "Test" } });
+        renderInstance.getModalLayout({ height: 500 });
+        expect(renderInstance.state.isInitial).toBe(false);
+        expect(renderInstance.state.initialAlignmentStyles).toEqual(styles);
+        expect(renderInstance.state.alignmentStyles).toEqual(styles);
+      });
     });
   });
 });

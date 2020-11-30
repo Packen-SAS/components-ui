@@ -416,7 +416,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     const thumbs: ReactNode[] = [];
     this.state.pictures.forEach((pic, i) => {
       thumbs.push(
-        <TouchableWithoutFeedback onPress={() => { this.toggleImgSelection(i); }}>
+        <TouchableWithoutFeedback key={i} onPress={() => { this.toggleImgSelection(i); }}>
           <View style={PackenCameraStyles.thumb}>
             {
               pic.isSelected ? (
