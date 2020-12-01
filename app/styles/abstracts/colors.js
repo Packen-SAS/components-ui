@@ -1,4 +1,4 @@
-export default {
+const colors = () => ({
   base: {
     default: "#222B45",
     default_alt: "#304D6D",
@@ -102,4 +102,6 @@ export default {
       dft: "#000000"
     }
   }
-}
+});
+
+export default colors();
