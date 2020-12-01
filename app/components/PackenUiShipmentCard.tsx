@@ -136,8 +136,12 @@ interface i18nShape {
       credit: {
         title: string;
         label: string;
+      },
+      undefined: {
+        title: string;
+        label: string;
       }
-    },
+    };
     comments_label: string;
     distance_away: string;
     time_away: string;
@@ -154,7 +158,7 @@ interface i18nShape {
     accept_shipment: string;
     view_details: string;
     cancel: string;
-  }
+  };
 }
 
 interface StylingPropShape {
@@ -280,6 +284,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * @property {Function} [model.triggers.reject=undefined] The callback function to trigger when pressing on the "reject" button
    * @property {object} [model.triggers.message=undefined] The callback function to trigger when pressing on the message icon
    * @property {string} [model.type=undefined] The type of shipment
+   * @property {string} [model.city=undefined] The city for the pickup location
    * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
    * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
    * @property {object} [styling={ container: {},header: { box: {}, inline: {}, label: {} },tag: { box: {},  label: {} }, body: { box: {}, fold: {}, section: {}, overview: {}, group: {}, client: {}, label: {}, fee: {}, description: {}, details: {}, comments: {}, locations: {}, dates: {}, cta: {}} }] The optional custom styling props
@@ -294,7 +299,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
       hideActions: this.props.hideActions || false,
       isMyShipments: this.props.isMyShipments || false,
       runningCurrentStep: this.props.runningCurrentStep || 0,
-      btnText: { ...btnText } || false,
+      btnText: btnText ? { ...btnText } : {},
       client: model.client,
       amount: model.amount,
       events: model.events,
@@ -675,6 +680,8 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         icon = "progress-clock";
         break;
       default:
+        key = "undefined";
+        icon = "help-circle";
         break;
     }
     const styling = {
@@ -1373,7 +1380,6 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         pickup_origin: PropTypes.string.isRequired,
         pickup_origin_extend: PropTypes.string,
         amount: PropTypes.string.isRequired,
-        delivered: PropTypes.bool.isRequired,
         details: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         scheduled: PropTypes.bool.isRequired,
         text_button: PropTypes.string,

@@ -79,7 +79,7 @@ export const getDate = time => {
   return result;
 }
 
-export const getDateByChunks = (d, locale) => {
+export const getDateByChunks = (d, locale = "es") => {
   const date = d instanceof Date ? d : new Date(d);
   const lang = locale;
   const date_local = datetime_locale[lang];
