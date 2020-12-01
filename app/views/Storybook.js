@@ -1,3 +1,5 @@
 import StorybookUIRoot from "../../storybook";
 
-export default StorybookUIRoot;
+const getModule = () => StorybookUIRoot;
+
+export default getModule();
