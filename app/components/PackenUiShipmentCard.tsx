@@ -38,6 +38,7 @@ interface ModelShape {
   client: string;
   pickup_origin: string;
   pickup_origin_extend: string;
+  all_day: boolean;
   amount: string;
   delivered: boolean;
   details: string | boolean;
@@ -145,6 +146,7 @@ interface i18nShape {
     comments_label: string;
     distance_away: string;
     time_away: string;
+    duration: string;
     origin: string;
     locations: string;
     events: string;
@@ -215,6 +217,7 @@ interface PackenUiShipmentCardState {
   events: EventShape[];
   status: string;
   id: number;
+  allDay: boolean;
   content: string;
   distance: string;
   timeAway: string;
@@ -270,6 +273,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * @property {object[]} [model.events=undefined] The shipment events if it's already delivered
    * @property {string} [model.status=undefined] The shipment current status
    * @property {number} [model.id=undefined] The unique shipment id
+   * @property {boolean} [model.all_day=undefined] Whether the shipment is "all_day" or not
    * @property {string} [model.content=undefined] The shipment description
    * @property {string} [model.distance=undefined] The total distance between all shipment locations
    * @property {string} [model.timeAway=undefined] The total time to travel between all shipment locations
@@ -305,6 +309,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
       events: model.events,
       status: model.status,
       id: model.shipment_id,
+      allDay: model.all_day,
       content: model.content || "",
       distance: model.distance,
       timeAway: model.timeAway,
@@ -776,13 +781,26 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
-        <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
+        <PackenUiIconInfo
+          icon="map"
+          title={this.state.distance}
+          styling={this.getTypeStyling()}
+          label={this.language.shipment.distance_away}
+          disabled={!this.state.isRunning && this.state.allDay}
+        />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
         <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
+        <PackenUiIconInfo
+          icon="clock"
+          title={this.state.timeAway}
+          styling={this.getTypeStyling()}
+          disabled={!this.state.isRunning && this.state.allDay}
+          label={this.state.isRunning ? this.language.shipment.time_away : this.language.shipment.duration}
+        />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
