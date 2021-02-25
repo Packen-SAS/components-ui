@@ -265,7 +265,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
   getLinePositioning: Function = (): LinePositioningShape => {
     if (!this.state.altStyle) {
       return {
-        height: this.state.dimensions.line.height,
+        height: this.state.dimensions.line.height || 0,
         bottom: this.state.dimensions.line.bottom
       };
     }
@@ -276,7 +276,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     return {
       top: 3,
       left: 5,
-      height: newHeight || this.state.dimensions.line.height
+      height: newHeight || this.state.dimensions.line.height || 0
     };
   }
 
@@ -626,7 +626,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
             height: 24,
             borderWidth: 6,
             borderStyle: 'solid',
-            borderColor: 'rgba(32, 210, 146, 0.3)',
+            borderColor: '#B4EAD6',
             backgroundColor: Colors.success.default,
           },
           alt: {

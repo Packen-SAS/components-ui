@@ -485,7 +485,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   addKeyboardEvents: VoidFunction = () => {
     Keyboard.addListener("keyboardDidShow", this.focus);
-    Keyboard.addListener("keyboardDidHide", this.blur);
   }
 
   /**
@@ -494,7 +493,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   removeKeyboardEvents: VoidFunction = () => {
     Keyboard.removeListener("keyboardDidShow", this.focus);
-    Keyboard.removeListener("keyboardDidHide", this.blur);
   }
 
   /**
@@ -770,6 +768,8 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     return icon;
   }
 
+  clear = () => { this.ref.clear(); }
+
   /**
    * Updates the state with new props and checks if it's now focused
    * @type {function}
@@ -791,6 +791,11 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     }
   }
 
+  getPointerEvents = () => {
+    if (this.state.state === "disabled" || this.state.nonEditable) { return "none"; }
+    return "auto";
+  }
+
   /**
    * Renders the component
    * @type {function}
@@ -798,7 +803,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   render(): ReactNode {
     return (
-      <View style={this.getStyles().container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}>
+      <View style={this.getStyles().container} pointerEvents={this.getPointerEvents()}>
         <View style={{
           ...this.getStyles().header.base,
           ...this.getStyles().header.theme[this.state.theme],

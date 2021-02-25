@@ -194,6 +194,8 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
   constructor(props: PackenUiDropdownProps) {
     super(props);
 
+    this.inputInstance = null;
+
     /**
      * Variable that stores the state
      * @type {object}
@@ -496,6 +498,14 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
     return styles;
   }
 
+  getInputInstance = (ref) => { this.inputInstance = ref; }
+
+  clearInput = () => {
+    if (this.inputInstance) {
+      this.inputInstance.clear();
+    }
+  }
+
   /**
    * Returns the inner {@link PackenUiInput} component
    * @type {function}
@@ -525,6 +535,7 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
       }}
       name="dropdownInput"
       styling={this.state.styling.input}
+      instance={this.getInputInstance}
     />
   )
 

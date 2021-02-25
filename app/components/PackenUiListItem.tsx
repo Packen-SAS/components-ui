@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback, ImageSourcePropType } from "react-native";
+import { View, TouchableWithoutFeedback, ImageSourcePropType, Platform } from "react-native";
 import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/Feather";
@@ -552,7 +552,7 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
             theme="list"
             size="medium"
             name={this.state.data.input.name}
-            style={{ marginVertical: -5 }}
+            style={{ marginVertical: Platform.OS === "android" ? -5 : 0 }}
             keyboardType={this.state.data.input.keyboardType}
             onChangeText={this.inputChangeHandler}
             placeholder={this.getPlaceholder().val}
