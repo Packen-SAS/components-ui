@@ -50,6 +50,7 @@ interface StylesShape {
   layout_shipment_bottomleft: object;
   layout_shipment_bottomright: object;
   container: object;
+  containerIOS: object;
   triggers: object;
   trigger: object;
   triggerLabel: object;
@@ -502,7 +503,12 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     );
   }
 
-  getMainUI = () => {
+  /**
+   * Returns the main user interface elements for the camera
+   * @type {function}
+   * @return {node} The main camera modal UI
+   */
+  getMainUI: Function = (): ReactNode => {
     let styles = { ...PackenCameraStyles.container };
     if (Platform.OS === "ios") {
       styles = { ...styles, ...PackenCameraStyles.containerIOS };
@@ -526,6 +532,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
           {
             this.props.MODE !== "shipment" ? (
               <CameraTopTriggers
+                language={this.i18n}
                 image={this.state.picture}
                 closeCameraTrigger={this.emitPicture}
                 showPicture={this.showCurrentPicture}

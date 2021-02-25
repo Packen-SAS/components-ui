@@ -180,6 +180,10 @@ interface PackenUiDropdownState {
   finalSelectionString: string;
 }
 
+interface InputRefShape {
+  clear: Function
+}
+
 type LayoutChangeType = (e: LayoutChangeEvent) => void;
 
 /**
@@ -187,14 +191,18 @@ type LayoutChangeType = (e: LayoutChangeEvent) => void;
  */
 class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdownState> {
   /**
+   * Stores the {@link PackenUiInput} component ref
+   * @type {object|null}
+   */
+  inputInstance: InputRefShape | null = null;
+
+  /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
    */
   constructor(props: PackenUiDropdownProps) {
     super(props);
-
-    this.inputInstance = null;
 
     /**
      * Variable that stores the state
@@ -498,9 +506,17 @@ class PackenUiDropdown extends Component<PackenUiDropdownProps, PackenUiDropdown
     return styles;
   }
 
-  getInputInstance = (ref) => { this.inputInstance = ref; }
+  /**
+   * Sets the inner {@link PackenUiInput} component ref to the global variable
+   * @param {object} ref The ref object
+   */
+  getInputInstance: Function = (ref: InputRefShape) => { this.inputInstance = ref; }
 
-  clearInput = () => {
+  /**
+   * Clears the inner {@link PackenUiInput} component text
+   * @type {function}
+   */
+  clearInput: Function = () => {
     if (this.inputInstance) {
       this.inputInstance.clear();
     }

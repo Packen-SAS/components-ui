@@ -149,6 +149,7 @@ interface PackenUiInputState {
 
 interface refShape {
   focus: Function,
+  clear: Function,
   blur: Function
 }
 
@@ -768,7 +769,11 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     return icon;
   }
 
-  clear = () => { this.ref.clear(); }
+  /**
+   * Clears native input text if ref is set
+   * @type {function}
+   */
+  clear: Function = () => { if (this.ref) { this.ref.clear(); } }
 
   /**
    * Updates the state with new props and checks if it's now focused
@@ -791,7 +796,12 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     }
   }
 
-  getPointerEvents = () => {
+  /**
+   * Returns whether pointer events should be disabled
+   * @type {function}
+   * @return {string} The pointerEvents value ("none" or "auto")
+   */
+  getPointerEvents: Function = (): string => {
     if (this.state.state === "disabled" || this.state.nonEditable) { return "none"; }
     return "auto";
   }
