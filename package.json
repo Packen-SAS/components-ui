@@ -26,6 +26,7 @@
   "author": "andres.liu@packen.co",
   "license": "UNLICENSED",
   "dependencies": {
+    "@react-native-community/datetimepicker": "^3.0.9",
     "@react-native-community/masked-view": "^0.1.9",
     "@react-native-community/viewpager": "^4.0.0",
     "@react-navigation/drawer": "^5.5.0",
