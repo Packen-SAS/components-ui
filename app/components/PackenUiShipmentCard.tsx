@@ -61,6 +61,7 @@ interface ModelShape {
   content: string | null;
   comments: string | null;
   deliveries: DeliveryShape[];
+  locations: LocationShape[];
   pick_date: string;
   events: EventShape[];
   status: string;
@@ -76,6 +77,10 @@ interface BtnTextShape {
   view?: string;
   accept?: string;
   reject?: string;
+}
+
+interface LocationShape {
+  time_parsed_at: string;
 }
 
 interface DeliveryShape {
@@ -223,6 +228,7 @@ interface PackenUiShipmentCardState {
   timeAway: string;
   comments: string;
   pickDate: string | null;
+  locations: LocationShape[];
   deliveries: DeliveryShape[];
   payment: PaymentShape;
   viewDetails: VoidFunction;
@@ -279,6 +285,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * @property {string} [model.timeAway=undefined] The total time to travel between all shipment locations
    * @property {string|null} [model.comments=undefined] The shipment extra comments
    * @property {string} [model.pickDate=undefined] The shipment pickup date
+   * @property {object[]} [model.locations=undefined] The array of dynamic deliveries created for a finished all_day shipment
    * @property {object[]|null} [model.deliveries=undefined] The shipment deliveries
    * @property {object} [model.payment=undefined] The payment method data object
    * @property {object} [model.triggers.call=undefined] The callback function to trigger when pressing on the phone icon
@@ -315,6 +322,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
       timeAway: model.timeAway,
       comments: model.comments || "",
       pickDate: model.pick_date,
+      locations: model.locations,
       deliveries: model.deliveries,
       payment: { ...model.payment },
       callClient: model.triggers.call,
@@ -956,6 +964,16 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         subtitle: UTIL.toCapitalCase(time_event)
       });
     });
+    if (this.state.allDay && this.state.locations && this.state.locations.length) {
+      const deliveries = this.state.locations.map((location, i) => {
+        const { time_parsed_at } = location;
+        return {
+          title: `${UTIL.toCapitalCase(this.language.shipment.delivery)} ${UTIL.num2ltr(i + 1)}`,
+          subtitle: UTIL.toCapitalCase(time_parsed_at)
+        }
+      });
+      events.splice(events.length - 1, 0, ...deliveries);
+    }
     return events;
   }
 
