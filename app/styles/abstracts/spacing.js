@@ -1,4 +1,4 @@
-export default {
+const spacing = () => ({
   padding: {
     horizontal: {
       base: 25
@@ -17,4 +17,6 @@ export default {
   "20": 80,
   "24": 96,
   "32": 128
-}
+});
+
+export default spacing();

@@ -1,6 +1,6 @@
 import Colors from "./colors";
 
-export default {
+const shadows = () => ({
   xs: {
     shadowColor: Colors.basic.black.dft,
     shadowOffset: {
@@ -61,4 +61,6 @@ export default {
     shadowRadius: 16.00,
     elevation: 24
   }
-}
+});
+
+export default shadows();

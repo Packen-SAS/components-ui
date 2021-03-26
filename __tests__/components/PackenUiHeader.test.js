@@ -23,6 +23,14 @@ describe("<PackenUiHeader/>", () => {
       renderInstance.setState({ styling: { iconSize: 15, iconColor: "#FFFFFF" } });
       expect(render).toBeDefined();
     });
+
+    it("returns the icon element", () => {
+      renderInstance.setState({ noIcon: true });
+      expect(renderInstance.getIcon()).toBeNull();
+
+      renderInstance.setState({ noIcon: false });
+      expect(renderInstance.getIcon()).toBeDefined();
+    });
   });
 
   describe("triggering actions", () => {

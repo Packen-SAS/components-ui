@@ -56,7 +56,7 @@ interface PackenUiMapPinState {
 }
 
 /**
- * Component for rendering pins to be overlaid on a map
+ * Component for rendering pins to be overlaid on a {@link PackenUiMap} component
  */
 class PackenUiMapPin extends Component<PackenUiMapPinProps, PackenUiMapPinState> {
   /**

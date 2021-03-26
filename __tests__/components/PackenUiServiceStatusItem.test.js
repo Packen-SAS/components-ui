@@ -94,6 +94,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
   describe("styling", () => {
     it("returns the step's line positioning styles", () => {
       renderInstance.setState({
+        altStyle: false,
         dimensions: {
           line: {
             height: 10,
@@ -101,10 +102,44 @@ describe("<PackenUiServiceStatusItem/>", () => {
           }
         }
       });
-      const returnedStyles = renderInstance.getLinePositioning();
-
+      let returnedStyles = renderInstance.getLinePositioning();
       expect(returnedStyles.height).toBe(10);
       expect(returnedStyles.bottom).toBe(10);
+
+      [0, 1].forEach((index) => {
+        renderInstance.setState({ altStyle: true, index });
+        returnedStyles = renderInstance.getLinePositioning();
+        expect(returnedStyles.top).toBe(3);
+        expect(returnedStyles.left).toBe(5);
+        expect(returnedStyles.height).toBe(index === 0 ? 37 : 16);
+      });
+
+      /**
+       * This scenario should be impossible to reproduce, but it's just
+       * to test the fallback values in case it does happen
+       */
+      renderInstance.setState({
+        altStyle: true,
+        dimensions: {
+          line: {
+            height: -6
+          }
+        }
+      });
+      returnedStyles = renderInstance.getLinePositioning();
+      expect(returnedStyles.height).toBe(-6);
+
+      renderInstance.setState({
+        altStyle: true,
+        dimensions: {
+          line: {
+            height: 123
+          }
+        }
+      });
+      renderInstance.setState({ itemsHeights: [10] });
+      returnedStyles = renderInstance.getLinePositioning();
+      expect(returnedStyles.height).toBe(120);
     });
 
     it("returns the correct step's box styles if it's the first one", () => {
@@ -500,6 +535,16 @@ describe("<PackenUiServiceStatusItem/>", () => {
       renderInstance.setState({ styling: false });
       returnedElement = renderInstance.getInitialTime();
       expect(returnedElement.props.style).toEqual({ ...renderInstance.getStyles().time, test: "Test" });
+    });
+
+    it("returns the label element", () => {
+      renderInstance.setState({ data: { label: "test" } });
+      let res = renderInstance.getLabel();
+      expect(res).toBeDefined();
+
+      renderInstance.setState({ data: { label: false } });
+      res = renderInstance.getLabel();
+      expect(res).toBeNull();
     });
   });
 });

@@ -311,15 +311,13 @@ class PackenUiAlert extends Component<PackenUiAlertProps, PackenUiAlertState> {
       box: {
         main: {
           width: "100%",
-          position: "absolute",
-          left: 0,
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "center",
         },
         position: {
-          top: { top: 30 },
-          bottom: { bottom: 70 }
+          top: { top: 0 },
+          bottom: { bottom: 0 }
         },
         base: {
           width: "90%",

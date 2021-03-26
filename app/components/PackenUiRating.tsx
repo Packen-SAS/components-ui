@@ -50,7 +50,7 @@ class PackenUiRating extends Component<PackenUiRatingProps, PackenUiRatingState>
   }
 
   /**
-   * Resets the rating to its default state when unmounting
+   * Sets initial stars state based on the provided configuration
    * @type {Function}
    */
   componentWillMount() {
@@ -118,7 +118,7 @@ class PackenUiRating extends Component<PackenUiRatingProps, PackenUiRatingState>
           key={i}
           size={config.size || 35}
           name={((config.defaultRating <= i) ? "staro" : "star")}
-          color={(config.stars[i].rated ? colors.warning.default : colors.basic.independence.dft)}
+          color={(this.state.stars[i].rated ? colors.warning.default : colors.basic.independence.dft)}
         />
       );
     }

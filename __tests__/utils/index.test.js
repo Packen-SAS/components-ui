@@ -3,19 +3,20 @@ import * as UTIL from "../../app/utils";
 import Colors from "../../app/styles/abstracts/colors";
 
 describe("arraysEqual", () => {
-  it("returns true if arrays contain the same items", () => {
-    const arr1 = ["Item 1", "Item 2"];
-    const arr2 = ["Item 1", "Item 2"];
-
-    expect(UTIL.arraysEqual(arr1, arr2)).toBe(true);
-  });
-
-  it("returns false if arrays don't contain the same items", () => {
-    const arr1 = ["Item 1", "Item 2"];
-    const arr2 = ["Item 2", "Item 3"];
-
-    expect(UTIL.arraysEqual(arr1, arr2)).toBe(false);
-  });
+  it('check arrays equality when a len != b len', () => {
+    expect(UTIL.arraysEqual([], [1])).toBeFalsy();
+  })
+  it('check arrays equality when a len == b len, but keys is not equals', () => {
+    expect(UTIL.arraysEqual([1, 2], [1, 3])).toBeFalsy();
+  })
+  it('check arrays equality when a len == b len and keys is equals', () => {
+    expect(UTIL.arraysEqual([1, 2], [1, 2])).toBeTruthy();
+  })
+  it('check arrays equality when a and b contain objects', () => {
+    expect(UTIL.arraysEqual([{ test: "test 1" }], [{ test: "test 1" }])).toBeTruthy();
+    expect(UTIL.arraysEqual([{ test: "test 1" }], [{ test: "test 2" }])).toBeFalsy();
+    expect(UTIL.arraysEqual([{ test: "test 1" }, { test: "test 1" }], [{ test: "test 1" }, { test: "test 2" }])).toBeFalsy();
+  })
 });
 
 describe("moment", () => {
@@ -81,7 +82,14 @@ describe("moment", () => {
 
 describe("validators", () => {
   it("checks if the provided string is a number", () => {
-    expect(UTIL.isNumber("123")).toBe(true);
+    [null, undefined, false].forEach((val) => {
+      expect(UTIL.isNumber(val)).toBe(false);
+    });
+    [123, "123"].forEach((val) => {
+      expect(UTIL.isNumber(val)).toBe(true);
+      expect(UTIL.isNumber(val)).toBe(true);
+      expect(UTIL.isNumberStr(val)).toBe(true);
+    });
   });
 
   it("checks if the provided string is only letters", () => {
@@ -132,5 +140,20 @@ describe("validators", () => {
     expect(UTIL.getNdayFormat("en", 2)).toBe("nd");
     expect(UTIL.getNdayFormat("en", 3)).toBe("rd");
     expect(UTIL.getNdayFormat("en", 4)).toBe("th");
+  });
+});
+
+describe("string formatting", () => {
+  it("capitalizes every word in a string", () => {
+    expect(UTIL.toTitleCase(null)).toBe(null);
+    expect(UTIL.toTitleCase("test")).toBe("Test");
+    expect(UTIL.toTitleCase("test más largo")).toBe("Test Más Largo");
+    expect(UTIL.toTitleCase("uN tEsT Muy lOCo")).toBe("Un Test Muy Loco");
+  });
+
+  it("capitalizes a string", () => {
+    expect(UTIL.toCapitalCase(null)).toBe(null);
+    expect(UTIL.toCapitalCase("test")).toBe("Test");
+    expect(UTIL.toCapitalCase("test más largo")).toBe("Test más largo");
   });
 });

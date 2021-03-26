@@ -41,6 +41,22 @@ describe("<PackenUiAvatar/>", () => {
 
       expect(returnedElement).toBeDefined();
     });
+
+    it("returns the main content element", () => {
+      renderInstance.setState({ callback: jest.fn() });
+      let res = renderInstance.getContent();
+      expect(res).toBeDefined();
+      expect(res).toHaveProperty("props.onPress", expect.any(Function));
+      res.props.onPress();
+      expect(renderInstance.state.callback).toHaveBeenCalled();
+
+      const spyGetInner = jest.spyOn(renderInstance, "getInner");
+      renderInstance.setState({ callback: false });
+      res = renderInstance.getContent();
+      expect(res).toBeDefined();
+      expect(spyGetInner).toHaveBeenCalled();
+      spyGetInner.mockRestore();
+    });
   });
 
   describe("triggering actions", () => {
@@ -59,6 +75,10 @@ describe("<PackenUiAvatar/>", () => {
       renderInstance.componentDidMount();
 
       expect(renderInstance.props.instance).toHaveBeenCalled();
+    });
+
+    it("executes the mock function", () => {
+      expect(renderInstance.mockFunction()).toBe(true);
     });
   });
 

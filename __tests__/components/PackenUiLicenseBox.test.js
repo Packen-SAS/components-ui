@@ -51,6 +51,11 @@ describe("<PackenUiLicenseBox/>", () => {
       const res = renderInstance.getDueDateState("2025-08-14");
       expect(res).toBe(Colors.danger.default);
     });
+
+    it("executes the placeholder function", () => {
+      const res = renderInstance.mockCallback();
+      expect(res).toBe(true);
+    });
   });
 
   describe("state changing", () => {

@@ -38,6 +38,7 @@ interface ModelShape {
   client: string;
   pickup_origin: string;
   pickup_origin_extend: string;
+  all_day: boolean;
   amount: string;
   delivered: boolean;
   details: string | boolean;
@@ -60,6 +61,7 @@ interface ModelShape {
   content: string | null;
   comments: string | null;
   deliveries: DeliveryShape[];
+  locations: LocationShape[];
   pick_date: string;
   events: EventShape[];
   status: string;
@@ -75,6 +77,10 @@ interface BtnTextShape {
   view?: string;
   accept?: string;
   reject?: string;
+}
+
+interface LocationShape {
+  time_parsed_at: string;
 }
 
 interface DeliveryShape {
@@ -136,11 +142,16 @@ interface i18nShape {
       credit: {
         title: string;
         label: string;
+      },
+      undefined: {
+        title: string;
+        label: string;
       }
-    },
+    };
     comments_label: string;
     distance_away: string;
     time_away: string;
+    duration: string;
     origin: string;
     locations: string;
     events: string;
@@ -154,7 +165,7 @@ interface i18nShape {
     accept_shipment: string;
     view_details: string;
     cancel: string;
-  }
+  };
 }
 
 interface StylingPropShape {
@@ -211,11 +222,13 @@ interface PackenUiShipmentCardState {
   events: EventShape[];
   status: string;
   id: number;
+  allDay: boolean;
   content: string;
   distance: string;
   timeAway: string;
   comments: string;
   pickDate: string | null;
+  locations: LocationShape[];
   deliveries: DeliveryShape[];
   payment: PaymentShape;
   viewDetails: VoidFunction;
@@ -266,11 +279,13 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * @property {object[]} [model.events=undefined] The shipment events if it's already delivered
    * @property {string} [model.status=undefined] The shipment current status
    * @property {number} [model.id=undefined] The unique shipment id
+   * @property {boolean} [model.all_day=undefined] Whether the shipment is "all_day" or not
    * @property {string} [model.content=undefined] The shipment description
    * @property {string} [model.distance=undefined] The total distance between all shipment locations
    * @property {string} [model.timeAway=undefined] The total time to travel between all shipment locations
    * @property {string|null} [model.comments=undefined] The shipment extra comments
    * @property {string} [model.pickDate=undefined] The shipment pickup date
+   * @property {object[]} [model.locations=undefined] The array of dynamic deliveries created for a finished all_day shipment
    * @property {object[]|null} [model.deliveries=undefined] The shipment deliveries
    * @property {object} [model.payment=undefined] The payment method data object
    * @property {object} [model.triggers.call=undefined] The callback function to trigger when pressing on the phone icon
@@ -280,6 +295,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * @property {Function} [model.triggers.reject=undefined] The callback function to trigger when pressing on the "reject" button
    * @property {object} [model.triggers.message=undefined] The callback function to trigger when pressing on the message icon
    * @property {string} [model.type=undefined] The type of shipment
+   * @property {string} [model.city=undefined] The city for the pickup location
    * @property {string} [model.pickup_origin=undefined] The main address for the pickup location
    * @property {string} [model.pickup_origin_extend=undefined] The extra address for the pickup location
    * @property {object} [styling={ container: {},header: { box: {}, inline: {}, label: {} },tag: { box: {},  label: {} }, body: { box: {}, fold: {}, section: {}, overview: {}, group: {}, client: {}, label: {}, fee: {}, description: {}, details: {}, comments: {}, locations: {}, dates: {}, cta: {}} }] The optional custom styling props
@@ -294,17 +310,19 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
       hideActions: this.props.hideActions || false,
       isMyShipments: this.props.isMyShipments || false,
       runningCurrentStep: this.props.runningCurrentStep || 0,
-      btnText: { ...btnText } || false,
+      btnText: btnText ? { ...btnText } : {},
       client: model.client,
       amount: model.amount,
       events: model.events,
       status: model.status,
       id: model.shipment_id,
+      allDay: model.all_day,
       content: model.content || "",
       distance: model.distance,
       timeAway: model.timeAway,
       comments: model.comments || "",
       pickDate: model.pick_date,
+      locations: model.locations,
       deliveries: model.deliveries,
       payment: { ...model.payment },
       callClient: model.triggers.call,
@@ -675,6 +693,8 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         icon = "progress-clock";
         break;
       default:
+        key = "undefined";
+        icon = "help-circle";
         break;
     }
     const styling = {
@@ -769,13 +789,26 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
-        <PackenUiIconInfo icon="map" label={this.language.shipment.distance_away} title={this.state.distance} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
+        <PackenUiIconInfo
+          icon="map"
+          title={this.state.distance}
+          styling={this.getTypeStyling()}
+          label={this.language.shipment.distance_away}
+          disabled={!this.state.isRunning && this.state.allDay}
+        />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
         <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
+        <PackenUiIconInfo
+          icon="clock"
+          title={this.state.timeAway}
+          styling={this.getTypeStyling()}
+          disabled={!this.state.isRunning && this.state.allDay}
+          label={this.state.isRunning ? this.language.shipment.time_away : this.language.shipment.duration}
+        />
       </View>
       <View style={{
         ...this.getStyles().body.group.base,
@@ -931,6 +964,16 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         subtitle: UTIL.toCapitalCase(time_event)
       });
     });
+    if (this.state.allDay && this.state.locations && this.state.locations.length) {
+      const deliveries = this.state.locations.map((location, i) => {
+        const { time_parsed_at } = location;
+        return {
+          title: `${UTIL.toCapitalCase(this.language.shipment.delivery)} ${UTIL.num2ltr(i + 1)}`,
+          subtitle: UTIL.toCapitalCase(time_parsed_at)
+        }
+      });
+      events.splice(events.length - 1, 0, ...deliveries);
+    }
     return events;
   }
 
@@ -1373,7 +1416,6 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         pickup_origin: PropTypes.string.isRequired,
         pickup_origin_extend: PropTypes.string,
         amount: PropTypes.string.isRequired,
-        delivered: PropTypes.bool.isRequired,
         details: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
         scheduled: PropTypes.bool.isRequired,
         text_button: PropTypes.string,

@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image, GestureResponderEvent, ImageSourcePropType, ImageBackground, ScrollView } from "react-native";
+import { TouchableWithoutFeedback, StyleSheet, Dimensions, Modal, View, Image, GestureResponderEvent, ImageSourcePropType, ImageBackground, ScrollView, Platform } from "react-native";
 import { RNCamera, TakePictureResponse } from "react-native-camera";
 import React, { Component, ReactNode, RefObject } from "react";
 import Icon from "react-native-vector-icons/Feather";
@@ -50,6 +50,7 @@ interface StylesShape {
   layout_shipment_bottomleft: object;
   layout_shipment_bottomright: object;
   container: object;
+  containerIOS: object;
   triggers: object;
   trigger: object;
   triggerLabel: object;
@@ -416,7 +417,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
     const thumbs: ReactNode[] = [];
     this.state.pictures.forEach((pic, i) => {
       thumbs.push(
-        <TouchableWithoutFeedback onPress={() => { this.toggleImgSelection(i); }}>
+        <TouchableWithoutFeedback key={i} onPress={() => { this.toggleImgSelection(i); }}>
           <View style={PackenCameraStyles.thumb}>
             {
               pic.isSelected ? (
@@ -503,6 +504,74 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
   }
 
   /**
+   * Returns the main user interface elements for the camera
+   * @type {function}
+   * @return {node} The main camera modal UI
+   */
+  getMainUI: Function = (): ReactNode => {
+    let styles = { ...PackenCameraStyles.container };
+    if (Platform.OS === "ios") {
+      styles = { ...styles, ...PackenCameraStyles.containerIOS };
+    }
+
+    let render = (
+      <View style={styles}>
+        <RNCamera
+          ref={this.setCamera}
+          style={PackenCameraStyles.rncamera}
+          flashMode={this.state.flashMode}
+          type={this.state.cameraType}
+          onCameraReady={this.cameraReady}
+          zoom={0}
+          autoFocus
+          androidCameraPermissionOptions={getPermissionOpts(this.state.labels).camera}
+          androidRecordAudioPermissionOptions={getPermissionOpts(this.state.labels).audio}
+        />
+        <View style={PackenCameraStyles.content}>
+          {this.getCameraLayout()}
+          {
+            this.props.MODE !== "shipment" ? (
+              <CameraTopTriggers
+                language={this.i18n}
+                image={this.state.picture}
+                closeCameraTrigger={this.emitPicture}
+                showPicture={this.showCurrentPicture}
+              />
+            ) : null
+          }
+          {this.getThumbnails()}
+          {this.getTriggers()}
+          <CameraBottomTriggers
+            mode={this.props.MODE}
+            flashTrigger={this.setFlash}
+            cameraIsLoading={this.state.proccessing}
+            reverseCameraTrigger={this.setCameraType}
+            pictureTrigger={this.capturePicture}
+          />
+        </View>
+      </View>
+    );
+
+    if (Platform.OS === "ios") {
+      if (this.props.VISIBLE) {
+        return render;
+      } else {
+        return null;
+      }
+    }
+
+    return (
+      <Modal
+        transparent={false}
+        animationType="slide"
+        visible={this.props.VISIBLE}
+      >
+        {render}
+      </Modal>
+    );
+  }
+
+  /**
    * Renders the component
    * @type {function}
    * @return {node} JSX for the component
@@ -510,46 +579,7 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
   render(): ReactNode {
     return (
       <React.Fragment>
-        <Modal
-          transparent={false}
-          animationType="slide"
-          visible={this.props.VISIBLE}>
-          <View style={PackenCameraStyles.container}>
-            <RNCamera
-              zoom={0}
-              autoFocus="on"
-              ref={this.setCamera}
-              type={this.state.cameraType}
-              flashMode={this.state.flashMode}
-              onCameraReady={this.cameraReady}
-              style={PackenCameraStyles.rncamera}
-              androidCameraPermissionOptions={getPermissionOpts(this.state.labels).camera}
-              androidRecordAudioPermissionOptions={getPermissionOpts(this.state.labels).audio}
-            />
-            <View style={PackenCameraStyles.content}>
-              {this.getCameraLayout()}
-              {
-                this.props.MODE !== "shipment" ? (
-                  <CameraTopTriggers
-                    language={this.i18n}
-                    image={this.state.picture}
-                    closeCameraTrigger={this.emitPicture}
-                    showPicture={this.showCurrentPicture}
-                  />
-                ) : null
-              }
-              {this.getThumbnails()}
-              {this.getTriggers()}
-              <CameraBottomTriggers
-                mode={this.props.MODE}
-                flashTrigger={this.setFlash}
-                cameraIsLoading={this.state.proccessing}
-                reverseCameraTrigger={this.setCameraType}
-                pictureTrigger={this.capturePicture}
-              />
-            </View>
-          </View>
-        </Modal>
+        {this.getMainUI()}
         {this.getImagePreview()}
       </React.Fragment>
     );
@@ -858,7 +888,7 @@ export class CameraBottomTriggers extends Component<CameraBottomTriggersProps, C
             width: 50, height: 50, borderRadius: 25
           }]}>
             <CameraReverse size={25}
-              name="md-reverse-camera"
+              name="camera-reverse"
               color={!this.props.cameraIsLoading ? Color.basic.white.dft : Color.basic.independence.drk_alt}
             />
           </View>
@@ -981,7 +1011,8 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     zIndex: 2,
     width: "100%",
     height: "100%",
-    position: "absolute"
+    position: "absolute",
+    paddingTop: Platform.OS === "ios" ? 30 : 0
   },
   layout: {
     position: "relative",
@@ -994,7 +1025,7 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
   layout_avatar: {
     position: "absolute",
     left: 0,
-    top: -5,
+    top: Platform.OS === "ios" ? 15 : -5,
     zIndex: 2,
     width: "100%",
     display: "flex",
@@ -1052,6 +1083,14 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  containerIOS: {
+    top: 0,
+    left: 0,
+    zIndex: 1,
+    width: "100%",
+    height: "100%",
+    position: "absolute"
   },
   btnUploadLabel: {
     marginLeft: 10,
@@ -1140,7 +1179,7 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
   },
   bottomTriggersContainer: {
     position: "absolute",
-    bottom: 10,
+    bottom: Platform.OS === "ios" ? 40 : 10,
     left: 0,
     zIndex: 5,
     width: "100%",
@@ -1157,7 +1196,7 @@ const PackenCameraStyles: StylesShape = StyleSheet.create({
   },
   topTriggersContainer: {
     position: "absolute",
-    top: 10,
+    top: Platform.OS === "ios" ? 40 : 10,
     left: 0,
     zIndex: 5,
     paddingLeft: 30,

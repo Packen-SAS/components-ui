@@ -10,6 +10,7 @@ describe("<PackenUiButton/>", () => {
   const mockCallback = jest.fn();
 
   beforeAll(() => {
+    jest.useFakeTimers();
     renderRegular = shallow(
       <PackenUiButton
         icon={{ name: "arrow-right", position: "right" }}
@@ -62,6 +63,11 @@ describe("<PackenUiButton/>", () => {
       renderRegularInstance.executeCallback();
 
       expect(mockCallback).toHaveBeenCalled();
+    });
+
+    it("executes mockFunction", () => {
+      const res = renderRegularInstance.mockFunction();
+      expect(res).toBe(true);
     });
 
     it("returns false while trying to execute the callback if not provided", () => {
@@ -346,6 +352,10 @@ describe("<PackenUiButton/>", () => {
       });
       returnedElement = renderRegularInstance.getIcon();
       expect(returnedElement).toBeDefined();
+
+      renderRegularInstance.setState({ icon: false });
+      returnedElement = renderRegularInstance.getIcon();
+      expect(returnedElement).toBeNull();
     });
 
     it("returns the main content if type is 'icon'", () => {

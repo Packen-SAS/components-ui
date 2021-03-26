@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, TouchableWithoutFeedback, ImageSourcePropType } from "react-native";
+import { View, TouchableWithoutFeedback, ImageSourcePropType, Platform } from "react-native";
 import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/Feather";
@@ -418,9 +418,9 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   inputChangeHandler: Function = (name: string, val: string): boolean | void => {
     if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChangeText === "function") {
       this.state.data.input.onChangeText(name, val);
-      if (this.state.data.input.isDropdown) {
-        const updatedData = { ...this.state.data };
-        if (typeof updatedData.input === "object") { updatedData.input.value = val; }
+      const updatedData = { ...this.state.data };
+      if (typeof updatedData.input === "object" && updatedData.input.isDropdown) {
+        updatedData.input.value = val;
         this.setState({ data: updatedData }, this.updateDropdown);
       }
     } else {
@@ -510,58 +510,60 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
    */
   determineInputContent: Function = (): ReactNode | null => {
     let content = null;
-    if (typeof this.state.data.input === "object" && this.state.data.input.isDropdown) {
-      content = (
-        <PackenUiDropdown
-          size="medium"
-          ref={this.getDropdownRef}
-          name={this.state.data.input.name}
-          list={this.state.data.input.list}
-          callback={this.inputChangeHandler}
-          styling={this.state.styling.dropdown}
-          input={{
-            name: "list-item-input",
-            multiline: false,
-            disabled: false,
-            isDropdown: true,
-            message: undefined,
-            label: "",
-            help: undefined,
-            theme: "list",
-            size: "medium",
-            onChangeText: this.mockCallback,
-            onOpenStateChange: this.onOpenStateChangeHandler,
-            style: {
-              paddingHorizontal: 24,
-              marginHorizontal: -24,
-              paddingVertical: 15,
-              marginVertical: -15
-            },
-            placeholder: this.getPlaceholder().val,
-            placeholderTextColor: this.getPlaceholder().color,
-            nonEditable: this.state.data.input.nonEditable,
-            isOpen: this.state.data.input.isOpen,
-            icon: { position: "right", callback: () => true, style: {}, name: "chevron-down" }
-          }}
-        />
-      );
-    } else if (typeof this.state.data.input === "object") {
-      content = (
-        <PackenUiInput
-          theme="list"
-          size="medium"
-          name={this.state.data.input.name}
-          style={{ marginVertical: -5 }}
-          keyboardType={this.state.data.input.keyboardType}
-          onChangeText={this.inputChangeHandler}
-          placeholder={this.getPlaceholder().val}
-          placeholderTextColor={this.getPlaceholder().color}
-          nonEditable={this.state.data.input.nonEditable}
-          multiline={this.state.data.input.multiline}
-          maxLength={this.state.data.input.maxLength}
-          styling={this.state.styling.input}
-        />
-      )
+    if (typeof this.state.data.input === "object") {
+      if (this.state.data.input.isDropdown) {
+        content = (
+          <PackenUiDropdown
+            size="medium"
+            ref={this.getDropdownRef}
+            name={this.state.data.input.name}
+            list={this.state.data.input.list}
+            callback={this.inputChangeHandler}
+            styling={this.state.styling.dropdown}
+            input={{
+              name: "list-item-input",
+              multiline: false,
+              disabled: false,
+              isDropdown: true,
+              message: undefined,
+              label: "",
+              help: undefined,
+              theme: "list",
+              size: "medium",
+              onChangeText: this.mockCallback,
+              onOpenStateChange: this.onOpenStateChangeHandler,
+              style: {
+                paddingHorizontal: 24,
+                marginHorizontal: -24,
+                paddingVertical: 15,
+                marginVertical: -15
+              },
+              placeholder: this.getPlaceholder().val,
+              placeholderTextColor: this.getPlaceholder().color,
+              nonEditable: this.state.data.input.nonEditable,
+              isOpen: this.state.data.input.isOpen,
+              icon: { position: "right", callback: () => true, style: {}, name: "chevron-down" }
+            }}
+          />
+        );
+      } else {
+        content = (
+          <PackenUiInput
+            theme="list"
+            size="medium"
+            name={this.state.data.input.name}
+            style={{ marginVertical: Platform.OS === "android" ? -5 : 0 }}
+            keyboardType={this.state.data.input.keyboardType}
+            onChangeText={this.inputChangeHandler}
+            placeholder={this.getPlaceholder().val}
+            placeholderTextColor={this.getPlaceholder().color}
+            nonEditable={this.state.data.input.nonEditable}
+            multiline={this.state.data.input.multiline}
+            maxLength={this.state.data.input.maxLength}
+            styling={this.state.styling.input}
+          />
+        )
+      }
     }
     return content;
   }

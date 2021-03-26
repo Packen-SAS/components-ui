@@ -6,6 +6,7 @@ import PackenUiCamera, { CameraImagePreviewTriggers, CameraTopTriggers, CameraBo
 import { RNCamera } from "react-native-camera";
 
 describe("<PackenUiCamera/>", () => {
+  jest.useFakeTimers();
   const mockCallback = jest.fn();
   const labels = {
     camera: {
@@ -26,7 +27,7 @@ describe("<PackenUiCamera/>", () => {
     <PackenUiCamera
       dismiss={mockCallback}
       VISIBLE={true}
-      i18n
+      i18n={i18n}
     />
   );
   const renderLabels = shallow(
@@ -34,7 +35,6 @@ describe("<PackenUiCamera/>", () => {
       dismiss={mockCallback}
       VISIBLE={true}
       labels={labels}
-      i18n
     />
   );
   const renderInstance = render.instance();
@@ -112,6 +112,30 @@ describe("<PackenUiCamera/>", () => {
       expect(DocumentLayout({ width: 10, height: 10, color: "#FFFFFF" })).toBeDefined();
       expect(AvatarLayout({ width: 10, height: 10, color: "#FFFFFF" })).toBeDefined();
     });
+
+    it("returns each picture as a thumbnail element when mode is 'shipment'", () => {
+      renderInstance.setState({ pictures: [{ isSelected: false }, { isSelected: true }] });
+      const res = renderInstance.mapThumbs();
+      expect(res).toHaveLength(2);
+
+      const spyToggleImgSelection = jest.spyOn(renderInstance, "toggleImgSelection");
+      res[0].props.onPress();
+      expect(spyToggleImgSelection).toHaveBeenCalledWith(0);
+      spyToggleImgSelection.mockRestore();
+    });
+
+    it("returns the capture trigger element", () => {
+      renderBottomTriggersInstance.setState({ loading: true });
+      const res = renderBottomTriggersInstance.getCaptureTrigger();
+      expect(res).toBeDefined();
+      expect(res.props.children.props.callback()).toBe(false);
+    });
+
+    it("returns the custom bottom trigger elements when mode is 'shipment'", () => {
+      renderBottomTriggers.setProps({ mode: "shipment" });
+      const res = renderBottomTriggersInstance.render();
+      expect(res).toBeDefined();
+    });
   });
 
   describe("state changing", () => {
@@ -139,6 +163,14 @@ describe("<PackenUiCamera/>", () => {
 
       renderTopTriggers.setProps({ test: "Test 2", image: { uri: "test" } });
       expect(renderTopTriggersInstance.state.source.uri).toBe("test");
+
+      render.setProps({ TYPE: "front" });
+      renderInstance.componentDidUpdate({ TYPE: "back" });
+      expect(renderInstance.state.cameraType).toBe("front");
+
+      renderInstance.setState({ TYPE: "back" });
+      renderInstance.componentDidUpdate({ TYPE: "back" });
+      expect(renderInstance.state.TYPE).toBe("back");
     })
   });
 
@@ -147,9 +179,13 @@ describe("<PackenUiCamera/>", () => {
       render.setProps({ EMIT_TRIGGER: mockCallback });
       renderInstance.setState({ picture: {} });
       renderInstance.emitPicture();
-
       expect(renderInstance.state.picture).toBe(null);
       expect(renderInstance.props.EMIT_TRIGGER).toHaveBeenCalled();
+
+      render.setProps({ MODE: "shipment" });
+      renderInstance.setState({ picture: null, pictures: [{ isSelected: true }] });
+      renderInstance.emitPicture();
+      expect(renderInstance.props.EMIT_TRIGGER).toHaveBeenCalledWith([]);
     });
 
     it("dismisses the modal while emitting the picture taken if props are not valid", () => {
@@ -278,6 +314,49 @@ describe("<PackenUiCamera/>", () => {
       renderBottomTriggersInstance.setState({ loading: true });
       const res = renderBottomTriggersInstance.propagateReverseCamera();
       expect(res).toBe(undefined);
+    });
+
+    it("closes the camera and resets all values", () => {
+      render.setProps({ dismiss: jest.fn(), EMIT_TRIGGER: jest.fn() });
+      const spyRestoreImagePreviewModal = jest.spyOn(renderInstance, "restoreImagePreviewModal");
+      renderInstance.closeCamera();
+      expect(renderInstance.props.dismiss).toHaveBeenCalled();
+      expect(renderInstance.props.EMIT_TRIGGER).toHaveBeenCalled();
+      expect(spyRestoreImagePreviewModal).toHaveBeenCalled();
+      expect(renderInstance.state.picture).toBeNull();
+      expect(renderInstance.state.pictures).toEqual([]);
+      spyRestoreImagePreviewModal.mockRestore();
+    });
+
+    it("takes a picture and sets it to the state", async () => {
+      renderInstance.setState({ camera: null, picture: null, pictures: [] });
+      await renderInstance.makeCapture();
+      expect(renderInstance.state.picture).toBeNull();
+      expect(renderInstance.state.pictures).toEqual([]);
+
+      const spyFinalize = jest.spyOn(renderInstance, "finalize");
+      renderInstance.setState({ camera: { takePictureAsync: jest.fn(() => ({ picture: {} })) }, maxLength: false });
+      await renderInstance.makeCapture();
+      expect(renderInstance.state.picture).toBeDefined();
+      expect(renderInstance.state.pictures).toHaveLength(1);
+      renderInstance.setState({ pictures: [], maxLength: 1 });
+      await renderInstance.makeCapture();
+      expect(renderInstance.state.picture).toBeDefined();
+      expect(renderInstance.state.pictures).toHaveLength(1);
+      expect(spyFinalize).toHaveBeenCalledTimes(2);
+      spyFinalize.mockRestore();
+
+      const spyCameraReady = jest.spyOn(renderInstance, "cameraReady");
+      renderInstance.setState({ pictures: [{}], maxLength: 1 });
+      await renderInstance.makeCapture();
+      expect(spyCameraReady).toHaveBeenCalled();
+      spyCameraReady.mockRestore();
+    });
+
+    it("toggles a thumbnail selection when mode is 'shipment'", () => {
+      renderInstance.setState({ pictures: [{ isSelected: false }, { isSelected: true }] });
+      renderInstance.toggleImgSelection(0);
+      expect(renderInstance.state.pictures).toEqual([{ isSelected: true }, { isSelected: true }]);
     });
   });
 });

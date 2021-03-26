@@ -149,6 +149,7 @@ interface PackenUiInputState {
 
 interface refShape {
   focus: Function,
+  clear: Function,
   blur: Function
 }
 
@@ -485,7 +486,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   addKeyboardEvents: VoidFunction = () => {
     Keyboard.addListener("keyboardDidShow", this.focus);
-    Keyboard.addListener("keyboardDidHide", this.blur);
   }
 
   /**
@@ -494,7 +494,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    */
   removeKeyboardEvents: VoidFunction = () => {
     Keyboard.removeListener("keyboardDidShow", this.focus);
-    Keyboard.removeListener("keyboardDidHide", this.blur);
   }
 
   /**
@@ -675,13 +674,11 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
    * @return {boolean} Flag used only for testing purposes
    */
   focus: VoidFunction = (): boolean | void => {
-    if (this.ref) {
-      // Weird bug, if timeout is not set the focus function doesn't do anything
-      const timeout = setTimeout(() => {
-        if (this.ref) { this.ref.focus(); }
-        clearTimeout(timeout);
-      }, 250);
-    } else { return false; }
+    // Weird bug, if timeout is not set the focus function doesn't do anything
+    const timeout = setTimeout(() => {
+      clearTimeout(timeout);
+      if (this.ref) { this.ref.focus(); }
+    }, 250);
   }
 
   /**
@@ -773,6 +770,12 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
   }
 
   /**
+   * Clears native input text if ref is set
+   * @type {function}
+   */
+  clear: Function = () => { if (this.ref) { this.ref.clear(); } }
+
+  /**
    * Updates the state with new props and checks if it's now focused
    * @type {function}
    */
@@ -794,13 +797,23 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
   }
 
   /**
+   * Returns whether pointer events should be disabled
+   * @type {function}
+   * @return {string} The pointerEvents value ("none" or "auto")
+   */
+  getPointerEvents: Function = (): string => {
+    if (this.state.state === "disabled" || this.state.nonEditable) { return "none"; }
+    return "auto";
+  }
+
+  /**
    * Renders the component
    * @type {function}
    * @return {node} JSX for the component
    */
   render(): ReactNode {
     return (
-      <View style={this.getStyles().container} pointerEvents={this.state.state === "disabled" ? "none" : "auto"}>
+      <View style={this.getStyles().container} pointerEvents={this.getPointerEvents()}>
         <View style={{
           ...this.getStyles().header.base,
           ...this.getStyles().header.theme[this.state.theme],

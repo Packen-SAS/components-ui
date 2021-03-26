@@ -310,6 +310,40 @@ describe("<PackenUiDropdownList/>", () => {
       const res = renderInstance.setPropsToState();
       expect(res.styling).toEqual({ test: "Test" });
     });
+
+    it("filters the selected items when it's a 'multiple' or 'checkbox' dropdown", () => {
+      [true, false].forEach((state) => {
+        const res = renderInstance.filterNewItems({ isSelected: state });
+        expect(res).toBe(state);
+      });
+      const _res = renderInstance.filterNewItems("test");
+      expect(_res).toBe(false);
+    });
+
+    it("maps an item to extract only its value when it's a 'multiple' or 'checkbox' dropdown", () => {
+      let res = renderInstance.mapNewItems({ value: "test" });
+      expect(res).toBe("test");
+
+      res = renderInstance.mapNewItems("test");
+      expect(res).toBe("");
+    });
+
+    it("handles selecting a new item with incorrect types when it's a 'single' or 'radio' dropdown", () => {
+      renderInstance.setState({ items: ["test"] });
+      renderInstance.handleSingleRadioUpdate("test 2", {
+        checkedType: "radio",
+        checkedValue: "test"
+      });
+      expect(renderInstance.state.items).toEqual(["test"]);
+      expect(renderInstance.state.selectedItems).toEqual(["test 2"]);
+    });
+
+    it("handles selecting a new item with incorrect types when it's a 'multiple' or 'checkbox' dropdown", () => {
+      renderInstance.setState({ items: ["test"] });
+      renderInstance.handleMultipleCheckboxUpdate("test 2", true);
+      expect(renderInstance.state.items).toEqual(["test"]);
+      expect(renderInstance.state.selectedItems).toEqual([]);
+    });
   });
 
   describe("triggering actions", () => {

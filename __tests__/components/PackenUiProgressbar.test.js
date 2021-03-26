@@ -9,6 +9,7 @@ describe("<PackenUiProgressbar/>", () => {
   let render, renderInstance;
 
   beforeAll(() => {
+    jest.useFakeTimers();
     render = shallow(
       <PackenUiProgressbar
         wrapperStyle={{ marginBottom: 10 }}

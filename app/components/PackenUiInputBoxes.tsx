@@ -150,10 +150,8 @@ class PackenUiInputBoxes extends Component<PackenUiInputBoxesProps, PackenUiInpu
     currentItem.text = text;
     this.items[ref] = currentItem;
     if (currentItem.ref !== lastItem.ref) {
-      if (currentItem.text != null) {
-        const nextItem = this.items[currentItem.ref + 1];
-        nextItem.input.focus();
-      }
+      const nextItem = this.items[currentItem.ref + 1];
+      nextItem.input.focus();
     } else {
       currentItem.input.blur();
     }
