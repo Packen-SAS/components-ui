@@ -247,56 +247,7 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    * Variable that holds the i18n json data
    * @type {object}
    */
-  language: i18nShape = {
-    shipment: {
-      all_day_label: "",
-      deliveries: "",
-      delivery: "",
-      date: "",
-      client_label: "",
-      fee_label: "",
-      content_description: "",
-      payment: {
-        cash: {
-          title: "",
-          label: ""
-        },
-        transfer: {
-          title: "",
-          label: ""
-        },
-        card: {
-          title: "",
-          label: ""
-        },
-        credit: {
-          title: "",
-          label: ""
-        },
-        undefined: {
-          title: "",
-          label: ""
-        }
-      },
-      comments_label: "",
-      distance_away: "",
-      time_away: "",
-      duration: "",
-      origin: "",
-      locations: "",
-      events: "",
-      start_label: "",
-      end_label: "",
-      programmed_label: "",
-      instant_label: "",
-      shipment_label: ""
-    },
-    buttons: {
-      accept_shipment: "",
-      view_details: "",
-      cancel: ""
-    }
-  };
+  language: i18nShape = this.props.i18n;
 
   /**
    * Initializes the component
@@ -305,8 +256,6 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
    */
   constructor(props: PackenUiShipmentCardProps) {
     super(props);
-
-    this.language = this.props.i18n;
 
     /**
      * Variable that stores the state
@@ -852,7 +801,6 @@ class PackenUiShipmentCard extends PureComponent<PackenUiShipmentCardProps, Pack
         ...this.getStyles().body.group.base,
         ...this.state.styling.body?.group
       }}>
-        <PackenUiIconInfo icon="clock" label={this.language.shipment.time_away} title={this.state.timeAway} styling={this.getTypeStyling()} disabled={!this.state.isRunning} />
         <PackenUiIconInfo
           icon="clock"
           title={this.state.timeAway}
