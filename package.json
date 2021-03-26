@@ -1,9 +1,9 @@
 {
-  "name": "@packen/react-native-ui",
+  "name": "@packen/react-native-ui-components",
   "version": "1.0.0",
-  "description": "UI components for ReactNative apps developed by Packen",
+  "description": "UI components for React Native apps developed by Packen",
   "main": "index.js",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "adb kill-server && yarn android && yarn start",
     "start": "react-native start",
@@ -24,7 +24,7 @@
     "react-native"
   ],
   "author": "andres.liu@packen.co",
-  "license": "UNLICENSED",
+  "license": "ISC",
   "dependencies": {
     "@react-native-community/datetimepicker": "^3.0.9",
     "@react-native-community/masked-view": "^0.1.9",
@@ -39,6 +39,7 @@
     "react-native": "^0.63.2",
     "react-native-camera": "^3.26.0",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-maps": "^0.27.1",
     "react-native-reanimated": "^1.8.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.5.0",
