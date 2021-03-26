@@ -94,6 +94,7 @@ interface PackenUiCameraProps {
   MODE?: string;
   VISIBLE: boolean;
   maxLength?: number;
+  TYPE?: "front" | "back";
 }
 
 interface PackenUiCameraState {
@@ -173,6 +174,18 @@ export default class PackenUiCamera extends Component<PackenUiCameraProps, Packe
       flashMode: RNCamera.Constants.FlashMode.off,
       cameraType: RNCamera.Constants.Type.back
     });
+  }
+
+  /**
+   * Updates the state with correct camera type prop
+   * @type {Function}
+   */
+  componentDidUpdate(prevProps: PackenUiCameraProps) {
+    if (this.props.TYPE && prevProps.TYPE !== this.props.TYPE) {
+      this.setState({
+        cameraType: this.props.TYPE
+      });
+    }
   }
 
   /**

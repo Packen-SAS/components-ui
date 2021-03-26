@@ -518,7 +518,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
       }
     },
     sub: {
-      width: 35,
+      width: 45,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start'
@@ -534,7 +534,8 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
         width: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        position: 'relative'
+        position: 'relative',
+        marginRight: 10
       },
       alt: {
         true: {
