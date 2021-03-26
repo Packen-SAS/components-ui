@@ -1,5 +1,5 @@
 {
-  "name": "@packen/react-native-ui-components",
+  "name": "packen-rn",
   "version": "1.0.0",
   "description": "UI components for React Native apps developed by Packen",
   "main": "index.js",
@@ -16,14 +16,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/packen_ror_team/ui_components/src/master/"
+    "url": "https://github.com/Packen-SAS/components-ui"
   },
   "keywords": [
     "ui",
     "components",
     "react-native"
   ],
-  "author": "andres.liu@packen.co",
+  "author": "Andrés Liu",
   "license": "ISC",
   "dependencies": {
     "@react-native-community/datetimepicker": "^3.0.9",
