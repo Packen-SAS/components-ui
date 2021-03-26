@@ -206,3 +206,43 @@ export const hex2rgba = (hex, alpha = 1) => {
   const [r, g, b] = hex.match(/\w\w/g).map((x) => parseInt(x, 16));
   return `rgba(${r},${g},${b},${alpha})`;
 };
+
+export const getPerpendicularBisectorCoords = (p1, p2) => {
+  const p1x = parseFloat(p1.x);
+  const p1y = parseFloat(p1.y);
+  const p2x = parseFloat(p2.x);
+  const p2y = parseFloat(p2.y);
+
+  const mpx = (p2x + p1x) * 0.5;
+  const mpy = (p2y + p1y) * 0.5;
+
+  const distance = Math.sqrt(((p2x - p1x) * (p2x - p1x)) + ((p2y - p1y) * (p2y - p1y)));
+  const theta = Math.atan2(p2y - p1y, p2x - p1x) - Math.PI / 2;
+
+  const offset = -0.5 * distance;
+
+  const c1x = mpx + offset * Math.cos(theta);
+  const c1y = mpy + offset * Math.sin(theta);
+
+  return { x: c1x, y: c1y };
+};
+
+export const getQuadraticXY = (t, start, cp, end) => ({
+  x: (1 - t) * (1 - t) * start.x + 2 * (1 - t) * t * cp.x + t * t * end.x,
+  y: (1 - t) * (1 - t) * start.y + 2 * (1 - t) * t * cp.y + t * t * end.y
+});
+
+export const getCurveCoordsBetween2Points = (pairCoords) => {
+  const start = { x: pairCoords[0].latitude, y: pairCoords[0].longitude };
+  const end = { x: pairCoords[1].latitude, y: pairCoords[1].longitude };
+  const perpBisectPoint = getPerpendicularBisectorCoords(
+    { x: start.x, y: start.y },
+    { x: end.x, y: end.y }
+  );
+  const finalCurveCoords = [];
+  for (let i = 0; i <= 1; i += 0.01) {
+    const { x, y } = getQuadraticXY(i, start, perpBisectPoint, end);
+    finalCurveCoords.push({ latitude: x, longitude: y });
+  }
+  return finalCurveCoords;
+};
