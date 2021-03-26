@@ -74,7 +74,9 @@ ios
 .gitattributes
 .prettierrc.js
 .watchmanconfig
+App.js
 app.json
+./index.js
 babel.config.js
 metro.config.js
 README.md

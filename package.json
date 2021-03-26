@@ -1,8 +1,8 @@
 {
   "name": "packen-rn",
-  "version": "1.0.0",
+  "version": "1.0.5",
   "description": "UI components for React Native apps developed by Packen",
-  "main": "index.js",
+  "main": "lib.js",
   "private": false,
   "scripts": {
     "dev": "adb kill-server && yarn android && yarn start",
