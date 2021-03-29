@@ -60,6 +60,8 @@ import PackenOnboardingFour from "../../assets/images/onboarding-4.svg";
 import PackenCamera from "../../assets/icons/camera.svg";
 // @ts-ignore
 import PackenCheck from "../../assets/icons/check.svg";
+// @ts-ignore
+import PackenMaintenance from "../../assets/images/maintenance.svg";
 
 interface PackenUiSvgIconProps {
   name: string;
@@ -123,7 +125,9 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
         "onboarding_1": <PackenOnboardingOne width={width} height={height} />,
         "onboarding_2": <PackenOnboardingTwo width={width} height={height} />,
         "onboarding_3": <PackenOnboardingThree width={width} height={height} />,
-        "onboarding_4": <PackenOnboardingFour width={width} height={height} />
+        "onboarding_4": <PackenOnboardingFour width={width} height={height} />,
+        /* Maintenance image */
+        "maintenance": <PackenMaintenance width={width} heigth={height} />
       }
     }
   }

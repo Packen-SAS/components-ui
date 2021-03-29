@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View, TouchableNativeFeedback } from "react-native";
 import * as UTIL from "../utils";
 
+import typography from "../styles/abstracts/typography";
 import colors from "../styles/abstracts/colors";
 import PackenUiSvgIcon from "./PackenUiSvgIcon";
 import PackenUiText from "./PackenUiText";
@@ -140,8 +141,8 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
               }}>
                 <PackenUiSvgIcon
                   name={!this.state.inverted ? "whatsapp" : "whatsapp_inverted"}
-                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 18}
-                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 18} />
+                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 14}
+                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 14} />
                 <PackenUiText
                   style={{
                     ...this.getStyles().label,
@@ -176,8 +177,12 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
       textDecorationStyle: "solid",
       textDecorationLine: "underline",
       textTransform: "uppercase",
-      fontSize: 12,
+      fontSize: 10,
+      marginLeft: 5,
+      lineHeight: 12,
+      letterSpacing: 1,
       color: this.state.color,
+      fontFamily: typography.family.bold,
       textDecorationColor: this.state.color
     }
   })
