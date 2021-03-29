@@ -70,7 +70,7 @@ interface ListShape {
 }
 
 interface DataInputShape {
-  onChangeText: Function;
+  onChange: Function;
   isOpen: boolean;
   dropdownHeight: number;
   placeholder: string;
@@ -416,8 +416,8 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
    * @param {string} val The new value
    */
   inputChangeHandler: Function = (name: string, val: string): boolean | void => {
-    if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChangeText === "function") {
-      this.state.data.input.onChangeText(name, val);
+    if (typeof this.state.data.input === "object" && typeof this.state.data.input.onChange === "function") {
+      this.state.data.input.onChange(name, val);
       const updatedData = { ...this.state.data };
       if (typeof updatedData.input === "object" && updatedData.input.isDropdown) {
         updatedData.input.value = val;
