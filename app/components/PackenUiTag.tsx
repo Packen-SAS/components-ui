@@ -152,9 +152,9 @@ class PackenUiTag extends Component<PackenUiTagProps, PackenUiTagState> {
       label: {
         base: {
           color: this.state.textColor,
-          fontFamily: Typography.family.regular,
-          fontSize: Typography.size.tiny_alt,
-          lineHeight: Typography.lineheight.medium_alt
+          fontFamily: Typography.family.semibold,
+          fontSize: Typography.size.xtiny,
+          lineHeight: Typography.lineheight.medium_altƒ
         }
       }
     };
