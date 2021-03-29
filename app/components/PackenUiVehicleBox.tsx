@@ -154,7 +154,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
   getState: Function = (): StateStateShape | null => {
     let state = null;
 
-    switch (this.state.state) {
+    switch (this.state.state.toLowerCase()) {
       case "taken":
       case "approved":
         state = {
