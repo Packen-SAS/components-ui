@@ -72,12 +72,6 @@ interface PackenUiVehicleBoxState {
  */
 class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehicleBoxState> {
   /**
-   * Variable that stores whether the component has finished mounting to render its data
-   * @type {boolean}
-   */
-  ready = false;
-
-  /**
    * Initializes the component
    * @type {function}
    * @param {object} props Props passed to the component
@@ -183,6 +177,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
         };
         break;
       case "pending":
+      default:
         state = {
           label: this.state.labels.pending,
           icon: {
@@ -273,7 +268,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    * @return {node} JSX for the component
    */
   render(): ReactNode | null {
-    return this.ready ? this.getContent() : null;
+    return this.getContent();
   }
 
   /**
