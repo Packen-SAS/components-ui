@@ -664,7 +664,7 @@ interface CameraTopTriggersProps {
 interface CameraTopTriggersState {
   icon: string;
   source: ImageSourcePropType | {
-    uri: string;
+    uri: string | undefined;
   }
 }
 
@@ -680,8 +680,7 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
   state: CameraTopTriggersState = {
     icon: "x",
     source: {
-      uri: ""
-      /* uri: (this.props.image != null ? this.props.image.uri : "") */
+      uri: undefined
     }
   }
 
@@ -703,7 +702,7 @@ export class CameraTopTriggers extends Component<CameraTopTriggersProps, CameraT
   componentDidUpdate(prevProps: CameraTopTriggersProps) {
     if (!UTIL.objectsEqual(prevProps, this.props)) {
       let newIcon = "x";
-      let newSource = { uri: "" };
+      let newSource = { uri: undefined };
       if (this.props.image) {
         newIcon = "check";
         newSource = { uri: this.props.image.uri };
