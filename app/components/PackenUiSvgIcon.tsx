@@ -90,6 +90,8 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
   constructor(props: PackenUiSvgIconProps) {
     super(props);
     const { width, height } = props;
+    const _width = typeof width === "string" ? parseInt(width, 10) : width;
+    const _height = typeof height === "string" ? parseInt(height, 10) : height;
 
     /**
      * Variable that stores the state
@@ -98,36 +100,36 @@ export class Icon extends Component<PackenUiSvgIconProps, IconState> {
      */
     this.state = {
       icons: {
-        "logo-inverted": <PackenLogoInverted width={width} height={height} />,
-        "logo-main": <PackenLogoMain width={width} height={height} />,
-        "icon-vehicle": <PackenIconVehicle width={width} height={height} />,
-        "whatsapp": <PackenWhatsApp width={width} height={height} />,
-        "whatsapp_inverted": <PackenWhatsAppInverted width={width} height={height} />,
-        "backhandler": <PackenBackHandler width={width} height={height} />,
-        "document_back": <PackenDocumentBack width={width} height={height} />,
-        "document_front": <PackenDocumentFront width={width} height={height} />,
-        "document_file": <PackenDocumentFile width={width} height={height} />,
-        "swipe": <PackenSwipe width={width} height={height} />,
-        "camera": <PackenCamera width={width} height={height} />,
-        "check": <PackenCheck width={width} height={height} />,
+        "logo-inverted": <PackenLogoInverted width={_width} height={_height} />,
+        "logo-main": <PackenLogoMain width={_width} height={_height} />,
+        "icon-vehicle": <PackenIconVehicle width={_width} height={_height} />,
+        "whatsapp": <PackenWhatsApp width={_width} height={_height} />,
+        "whatsapp_inverted": <PackenWhatsAppInverted width={_width} height={_height} />,
+        "backhandler": <PackenBackHandler width={_width} height={_height} />,
+        "document_back": <PackenDocumentBack width={_width} height={_height} />,
+        "document_front": <PackenDocumentFront width={_width} height={_height} />,
+        "document_file": <PackenDocumentFile width={_width} height={_height} />,
+        "swipe": <PackenSwipe width={_width} height={_height} />,
+        "camera": <PackenCamera width={_width} height={_height} />,
+        "check": <PackenCheck width={_width} height={_height} />,
         /* Toolbar icons */
-        "navigation": <PackenNavigation width={width} height={height} />,
-        "navigation_blur": <PackenNavigationBlur width={width} height={height} />,
-        "shipments": <PackenShipments width={width} height={height} />,
-        "shipments_blur": <PackenShipmentsBlur width={width} height={height} />,
-        "myshipments": <PackenMyShipments width={width} height={height} />,
-        "myshipments_blur": <PackenMyShipmentsBlur width={width} height={height} />,
-        "support": <PackenSupport width={width} height={height} />,
-        "support_blur": <PackenSupportBlur width={width} height={height} />,
-        "profile": <PackenProfile width={width} height={height} />,
-        "profile_blur": <PackenProfileBlur width={width} height={height} />,
+        "navigation": <PackenNavigation width={_width} height={_height} />,
+        "navigation_blur": <PackenNavigationBlur width={_width} height={_height} />,
+        "shipments": <PackenShipments width={_width} height={_height} />,
+        "shipments_blur": <PackenShipmentsBlur width={_width} height={_height} />,
+        "myshipments": <PackenMyShipments width={_width} height={_height} />,
+        "myshipments_blur": <PackenMyShipmentsBlur width={_width} height={_height} />,
+        "support": <PackenSupport width={_width} height={_height} />,
+        "support_blur": <PackenSupportBlur width={_width} height={_height} />,
+        "profile": <PackenProfile width={_width} height={_height} />,
+        "profile_blur": <PackenProfileBlur width={_width} height={_height} />,
         /* Onboarding images */
-        "onboarding_1": <PackenOnboardingOne width={width} height={height} />,
-        "onboarding_2": <PackenOnboardingTwo width={width} height={height} />,
-        "onboarding_3": <PackenOnboardingThree width={width} height={height} />,
-        "onboarding_4": <PackenOnboardingFour width={width} height={height} />,
+        "onboarding_1": <PackenOnboardingOne width={_width} height={_height} />,
+        "onboarding_2": <PackenOnboardingTwo width={_width} height={_height} />,
+        "onboarding_3": <PackenOnboardingThree width={_width} height={_height} />,
+        "onboarding_4": <PackenOnboardingFour width={_width} height={_height} />,
         /* Maintenance image */
-        "maintenance": <PackenMaintenance width={width} heigth={height} />
+        "maintenance": <PackenMaintenance width={_width} heigth={_height} />
       }
     }
   }
