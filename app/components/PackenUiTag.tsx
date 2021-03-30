@@ -154,7 +154,7 @@ class PackenUiTag extends Component<PackenUiTagProps, PackenUiTagState> {
           color: this.state.textColor,
           fontFamily: Typography.family.semibold,
           fontSize: Typography.size.xtiny,
-          lineHeight: Typography.lineheight.medium_altƒ
+          lineHeight: Typography.lineheight.medium_alt
         }
       }
     };
