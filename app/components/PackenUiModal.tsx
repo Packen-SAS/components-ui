@@ -795,10 +795,16 @@ class PackenUiModal extends Component<PackenUiModalProps, PackenUiModalState> {
     <View style={{ ...this.getStyles().info, ...this.state.styling.info }}>
       {this.getBanner()}
       <View style={{ ...this.getContentStyles(), ...this.state.styling.content }}>
-        <PackenUiText preset="h3" style={{ ...this.getStyles().title, ...this.state.styling.title }}>{this.state.info.title}</PackenUiText>
-        <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles(), ...this.state.styling.text }}>{this.state.info.text}</PackenUiText>
-        {this.getInfoButton()}
-        {this.getPayload()}
+        {
+          this.state.customInfo ? this.state.customInfo : (
+            <>
+              <PackenUiText preset="h3" style={{ ...this.getStyles().title, ...this.state.styling.title }}>{this.state.info.title}</PackenUiText>
+              <PackenUiText preset="p1" style={{ ...this.getStyles().text.base, ...this.getTextStyles(), ...this.state.styling.text }}>{this.state.info.text}</PackenUiText>
+              {this.getInfoButton()}
+              {this.getPayload()}
+            </>
+          )
+        }
       </View>
     </View>
   )
