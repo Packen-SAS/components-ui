@@ -83,7 +83,7 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
       trigger: this.props.trigger ? this.props.trigger : false,
       visible: this.props.visible ? this.props.visible : false,
       inverted: this.props.inverted ? this.props.inverted : false,
-      color: this.props.color ? this.props.color : colors.basic.independence.drk_alt,
+      color: this.props.color ? this.props.color : colors.basic.independence.dft,
       styling: this.props.styling ? { ...this.props.styling } : {
         box: {},
         svgWidth: undefined,
@@ -141,8 +141,8 @@ class PackenUiWhatsAppLink extends Component<PackenUiWhatsAppLinkProps, PackenUi
               }}>
                 <PackenUiSvgIcon
                   name={!this.state.inverted ? "whatsapp" : "whatsapp_inverted"}
-                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 14}
-                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 14} />
+                  width={this.state.styling.svgWidth ? this.state.styling.svgWidth : 13}
+                  height={this.state.styling.svgHeight ? this.state.styling.svgHeight : 13} />
                 <PackenUiText
                   style={{
                     ...this.getStyles().label,
