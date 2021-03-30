@@ -198,7 +198,7 @@ class PackenUiVehicleBox extends Component<PackenUiVehicleBoxProps, PackenUiVehi
    */
   getImgStyles: Function = (): object => {
     let styles = {};
-    if (this.state.type !== "moto") {
+    if (this.state.type.toLowerCase() !== "moto") {
       styles = { ...this.getStyles().img, width: 200, height: 95 };
     } else {
       styles = { width: 121, height: 80 };
