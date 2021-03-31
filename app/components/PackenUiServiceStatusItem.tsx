@@ -276,7 +276,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
     return {
       top: 3,
       left: 5,
-      height: newHeight || this.state.dimensions.line.height || 0
+      height: newHeight || this.state.dimensions.line.height || 0
     };
   }
 
