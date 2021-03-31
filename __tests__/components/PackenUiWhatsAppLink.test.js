@@ -64,8 +64,12 @@ describe("<PackenUiWhatsAppLink/>", () => {
           textDecorationStyle: "solid",
           textDecorationLine: "underline",
           textTransform: "uppercase",
-          fontSize: 12,
+          fontSize: 10,
+          fontFamily: "Muli-Bold",
           color: "#FFFFFF",
+          letterSpacing: 1,
+          lineHeight: 12,
+          marginLeft: 5,
           textDecorationColor: "#FFFFFF"
         }
       });
@@ -107,7 +111,7 @@ describe("<PackenUiWhatsAppLink/>", () => {
         trigger: false,
         visible: false,
         inverted: false,
-        color: Colors.basic.independence.drk_alt,
+        color: Colors.basic.independence.dft,
         styling: {
           box: {},
           svgWidth: undefined,

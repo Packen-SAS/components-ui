@@ -318,12 +318,12 @@ describe("<PackenUiListItem/>", () => {
     });
 
     it("executes the inputChangeHandler", () => {
-      renderInstance.setState({ data: { input: { onChangeText: jest.fn() } } });
+      renderInstance.setState({ data: { input: { onChange: jest.fn() } } });
       renderInstance.inputChangeHandler("Test", "val");
-      expect(renderInstance.state.data.input.onChangeText).toHaveBeenCalledWith("Test", "val");
+      expect(renderInstance.state.data.input.onChange).toHaveBeenCalledWith("Test", "val");
 
       const spyUpdateDropdown = jest.spyOn(renderInstance, "updateDropdown");
-      renderInstance.setState({ data: { input: { isDropdown: true, value: "", onChangeText: jest.fn() } } });
+      renderInstance.setState({ data: { input: { isDropdown: true, value: "", onChange: jest.fn() } } });
       renderInstance.inputChangeHandler("Test", "val");
       expect(renderInstance.state.data.input.value).toBe("val");
       expect(spyUpdateDropdown).toHaveBeenCalled();
@@ -331,7 +331,7 @@ describe("<PackenUiListItem/>", () => {
     });
 
     it("returns false while executing the inputChangeHandler if not provided", () => {
-      renderInstance.setState({ data: { input: { onChangeText: undefined } } });
+      renderInstance.setState({ data: { input: { onChange: undefined } } });
       const res = renderInstance.inputChangeHandler("Test", "val");
 
       expect(res).toBe(false);
