@@ -504,6 +504,12 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
   }
 
   /**
+   * Returns the styles to apply to the optional inner {@link PackenUiInput} component
+   * @return {object} The style object
+   */
+  getInputStyle: Function = (): object => ({ marginVertical: Platform.OS === "android" ? -5 : 0 });
+
+  /**
    * Determines which type of input content should be rendered as part of the main elements
    * @type {function}
    * @return {node|null} JSX for the correct input element or null
@@ -551,8 +557,8 @@ class PackenUiListItem extends Component<PackenUiListItemProps, PackenUiListItem
           <PackenUiInput
             theme="list"
             size="medium"
+            style={this.getInputStyle()}
             name={this.state.data.input.name}
-            style={{ marginVertical: Platform.OS === "android" ? -5 : 0 }}
             keyboardType={this.state.data.input.keyboardType}
             onChangeText={this.inputChangeHandler}
             placeholder={this.getPlaceholder().val}
