@@ -1,7 +1,7 @@
 import "react-native";
 import React from "react";
-import { View } from "react-native";
 import { shallow } from "enzyme";
+import { View, Platform } from "react-native";
 
 import Colors from "../../app/styles/abstracts/colors";
 import Icon from "react-native-vector-icons/dist/Feather";
@@ -258,6 +258,14 @@ describe("<PackenUiListItem/>", () => {
       renderInstance.setState({ data: { icon: {} }, styling: { iconSize: 15, iconColor: "#FFFFFF" } });
       returnedElement = renderInstance.getSubContent();
       expect(returnedElement).toBeDefined();
+    });
+
+    it("returns the correct styles object to apply to the optional inner input component", () => {
+      ["android", "ios"].forEach((platform) => {
+        Platform.OS = platform;
+        const res = renderInstance.getInputStyle();
+        expect(res).toHaveProperty("marginVertical", expect.any(Number));
+      })
     });
 
     it("returns the correct inner input component", () => {

@@ -4,6 +4,12 @@ import { shallow } from "enzyme";
 
 import PackenUiCamera, { CameraImagePreviewTriggers, CameraTopTriggers, CameraBottomTriggers, DocumentLayout, AvatarLayout } from "../../app/components/PackenUiCamera";
 import { RNCamera } from "react-native-camera";
+import { Platform } from "react-native";
+
+jest.mock("react-native/Libraries/Utilities/Platform", () => ({
+  OS: "android", // or 'ios'
+  select: () => null
+}));
 
 describe("<PackenUiCamera/>", () => {
   jest.useFakeTimers();
@@ -134,6 +140,21 @@ describe("<PackenUiCamera/>", () => {
     it("returns the custom bottom trigger elements when mode is 'shipment'", () => {
       renderBottomTriggers.setProps({ mode: "shipment" });
       const res = renderBottomTriggersInstance.render();
+      expect(res).toBeDefined();
+    });
+
+    it("returns the main ui elements", () => {
+      Platform.OS = "ios";
+      render.setProps({ VISIBLE: true });
+      let res = renderInstance.getMainUI();
+      expect(res).toBeDefined();
+
+      render.setProps({ VISIBLE: false });
+      res = renderInstance.getMainUI();
+      expect(res).toBeNull();
+
+      Platform.OS = "android";
+      res = renderInstance.getMainUI();
       expect(res).toBeDefined();
     });
   });

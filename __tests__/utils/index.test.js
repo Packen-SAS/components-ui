@@ -157,3 +157,24 @@ describe("string formatting", () => {
     expect(UTIL.toCapitalCase("test más largo")).toBe("Test más largo");
   });
 });
+
+describe("geometry and plotting", () => {
+  it("returns an array of interpolated points that describe a curve", () => {
+    const res = UTIL.getCurveCoordsBetween2Points([{ x: 1, y: 1 }, { x: 5, y: 5 }]);
+    expect(res).toBeDefined();
+    expect(res).toBeInstanceOf(Array);
+    expect(res.length).toBeGreaterThan(2);
+  });
+
+  it("returns the (x,y) coordinates of the perpendicular bisector of two points", () => {
+    const res = UTIL.getPerpendicularBisectorCoords({ x: 1, y: 1 }, { x: 5, y: 5 });
+    expect(res).toHaveProperty("x", 0.9999999999999996);
+    expect(res).toHaveProperty("y", 5);
+  });
+
+  it("returns the (x,y) coordinates of a point along a quadratic bézier curve", () => {
+    const res = UTIL.getQuadraticXY(0.5, { x: 1, y: 1 }, { x: 2, y: 2 }, { x: 5, y: 5 });
+    expect(res).toHaveProperty("x", expect.any(Number));
+    expect(res).toHaveProperty("y", expect.any(Number));
+  });
+});

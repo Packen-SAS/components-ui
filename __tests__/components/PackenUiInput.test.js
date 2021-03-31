@@ -407,6 +407,16 @@ describe("<PackenUiInput/>", () => {
       expect(renderInstance.props.onChangeText).toHaveBeenCalledWith("Test", null, true);
     });
 
+    it("clears input content", () => {
+      renderInstance.ref = { clear: jest.fn() };
+      renderInstance.clear();
+      expect(renderInstance.ref.clear).toHaveBeenCalled();
+
+      renderInstance.ref = undefined;
+      const res = renderInstance.clear();
+      expect(res).toBeUndefined();
+    });
+
     it("executes correct code on componentDidUpdate", () => {
       const prevProps = { isFocused: false };
       const spyCheckFocus = jest.spyOn(renderInstance, "checkFocus");

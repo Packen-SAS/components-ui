@@ -140,6 +140,10 @@ describe("<PackenUiServiceStatusItem/>", () => {
       renderInstance.setState({ itemsHeights: [10] });
       returnedStyles = renderInstance.getLinePositioning();
       expect(returnedStyles.height).toBe(120);
+
+      renderInstance.setState({ dimensions: { line: { height: undefined } }, itemsHeights: [0] });
+      returnedStyles = renderInstance.getLinePositioning();
+      expect(returnedStyles.height).toBe(0);
     });
 
     it("returns the correct step's box styles if it's the first one", () => {

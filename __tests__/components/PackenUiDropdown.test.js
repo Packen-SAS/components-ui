@@ -344,6 +344,25 @@ describe("<PackenUiDropdown/>", () => {
       expect(spyGetFinalSelection).toHaveBeenCalledWith([]);
       spyGetFinalSelection.mockRestore();
     });
+
+    it("sets the inner input instance to a global variable", () => {
+      renderInstance.getInputInstance({ test: "test" });
+      expect(renderInstance.inputInstance).toEqual({ test: "test" });
+    });
+
+    it("clears an inner input", () => {
+      const mockClear = jest.fn();
+      [undefined, { clear: mockClear }].forEach((val) => {
+        mockClear.mockReset();
+        renderInstance.inputInstance = val;
+        renderInstance.clearInput();
+        if (val) {
+          expect(mockClear).toHaveBeenCalled();
+        } else {
+          expect(mockClear).not.toHaveBeenCalled();
+        }
+      })
+    });
   });
 
   describe("rendering", () => {

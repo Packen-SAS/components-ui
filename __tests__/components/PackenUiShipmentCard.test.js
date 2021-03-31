@@ -227,6 +227,21 @@ describe("<PackenUiShipmentCard/>", () => {
       expect(res).toBeNull();
     });
 
+    it("returns the events data object", () => {
+      instance.setState({
+        allDay: true,
+        locations: [{ time_parsed_at: "test-date" }],
+        events: [
+          { message: "test", time_event: "test-date" },
+          { message: "test", time_event: "test-date" },
+          { message: "test", time_event: "test-date" }
+        ]
+      });
+      const res = instance.getEventsData();
+      expect(res).toBeInstanceOf(Array);
+      expect(res).toHaveLength(4);
+    });
+
     it("returns the cta elements", () => {
       [
         { isDetails: true },
