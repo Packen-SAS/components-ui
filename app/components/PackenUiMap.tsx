@@ -1,4 +1,4 @@
-import { View, TouchableNativeFeedback, Image, Platform, PixelRatio, LayoutChangeEvent, GestureResponderEvent } from "react-native";
+import { View, TouchableNativeFeedback, Image, Platform, PixelRatio, LayoutChangeEvent, GestureResponderEvent, ImageSourcePropType } from "react-native";
 import React, { Component, createRef, LegacyRef, ReactNode } from "react";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import Icon from "react-native-vector-icons/Feather";
@@ -82,7 +82,7 @@ interface PackenUiMapProps {
   heading: number;
   showNavigationBtn: boolean;
   GeocodingService: Function;
-  userIcon: string;
+  userIcon: ImageSourcePropType;
 }
 
 interface PackenUiMapState {
@@ -452,7 +452,7 @@ export default class PackenUiMap extends Component<PackenUiMapProps, PackenUiMap
           }}
         >
           <Image
-            source={require(this.props.userIcon)}
+            source={this.props.userIcon}
           />
         </View>
       </Marker>

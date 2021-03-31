@@ -1,0 +1,139 @@
+{
+  "id": 30867,
+  "tracking_code": "bc0dcc5f8d27195d2f85",
+  "pick_date": null,
+  "fee_data": {
+    "use": "Se usa más para transportes nacionales, y presta servicios urbanos que requieren estas capacidades de peso o volumen. Carga industrial para entregas de materias primas, distribución de pedidos generalmente a n nivel industrial con uno o múltiples destinos y trasteos grandes.",
+    "aux_load": 75000,
+    "aux_unload": 75000,
+    "base_hours": 8,
+    "base_value": 700000,
+    "all_day_value": 700000,
+    "capacity_desc": "36mtrs3. Medidas aproximadas de su interior: 7.20mts x 2.30mts x 2.20mts",
+    "urban_perimeter": "",
+    "destination_base": 0,
+    "destination_time": 0,
+    "assurance_percentage": 0.005,
+    "additional_hour_value": 0,
+    "transporter_percentage": 0.75
+  },
+  "map_url": null,
+  "weight": "hasta 17.5 toneladas",
+  "cost": "700000",
+  "status": "accepted",
+  "pickup_origin": {
+    "full_name": "Probando",
+    "company_name": "Testing",
+    "address_1": "Calle 71 13 81",
+    "address_2": "Oficina 203",
+    "geographic_location_id": 433,
+    "location_data": {
+      "latitude": 4.6576754,
+      "longitude": -74.0618743
+    },
+    "geographic_location_name": "Bogotá, D.C.",
+    "phone": "3008889966",
+    "comments": ""
+  },
+  "aux_load": 0,
+  "aux_unload": 0,
+  "freezer": true,
+  "food": true,
+  "comments": "",
+  "vehicle_type": "doble troque 17.5",
+  "bodywork": "Furgón",
+  "description": "asdad",
+  "images": [],
+  "user_resource": {
+    "id": 5632,
+    "email": null,
+    "full_name": "Edgar Alfredo Ruiz Reyes",
+    "document_type_name": "Cédula de Ciudadania",
+    "document_number": "1143119159",
+    "address_1": "Carrera 100 # 148 57",
+    "address_2": null,
+    "phone_number": null,
+    "cellphone_number": "3008985434",
+    "company_name": null
+  },
+  "round_trip": false,
+  "current_delivery_id": null,
+  "current_delivery_index": null,
+  "is_programmed": false,
+  "payment_method_name": "Efectivo",
+  "all_day": true,
+  "deliveries": [
+    {
+      "id": 2000,
+      "index": 0,
+      "to_contact": {
+        "full_name": "test",
+        "company_name": "test",
+        "address_1": "test",
+        "geographic_location_name": "test",
+        "location_data": {
+          "latitude": 4.0000000,
+          "longitude": -74.000000
+        },
+        "comments": "test"
+      },
+      "status": "pending"
+    }
+  ],
+  "created_at": "2020-01-11T12:01:36.844-05:00",
+  "agency_name": null,
+  "estimated_weight": "3333",
+  "transporter_profit": "525000",
+  "cost_detail": {
+    "insurance_cost": 0,
+    "auxiliares_fee": 0,
+    "base_fare": 700000,
+    "is_urban": true
+  },
+  "status_translate": "Aceptado",
+  "dangerous": true,
+  "hash_polyline": null,
+  "transporter": {
+    "id": 3518,
+    "name": "Edgar Ruiz",
+    "identifier": "1143119159",
+    "phone": "21312312",
+    "cellphone": "3213213212",
+    "agency_name": null,
+    "status": "on_duty",
+    "arl": "Sura",
+    "eps": "Sura",
+    "current_shipment_id": 30867,
+    "score_transporter": 4,
+    "current_vehicle": {
+      "id": 1389,
+      "kind": "doble troque 17.5",
+      "license_plate": "JPB321",
+      "property_card": "8812399982889",
+      "agency_name": "ALFA ST SAS",
+      "company": "Royal Enfield",
+      "model": "TBX 350",
+      "color": "Negro",
+      "capacity": "0-0.3",
+      "year": "2020",
+      "soat_date": "2020-09-30",
+      "mecanic_revision_date": "2020-09-30",
+      "assurance_company": "Sura",
+      "state": "taken",
+      "bodywork_name": false,
+      "vehicle_name": false,
+      "current_transporter_id": 3518
+    }
+  },
+  "shipment_events": [
+    {
+      "id": 77326,
+      "status": "accepted",
+      "status_translate": "Aceptado",
+      "message": "Aceptado",
+      "latitude": "4.6575322",
+      "longitude": "-74.0618569",
+      "time_event": "21 de enero del 2020 12:15 PM"
+    }
+  ]
+}

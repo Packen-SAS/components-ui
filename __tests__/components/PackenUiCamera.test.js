@@ -7,7 +7,7 @@ import { RNCamera } from "react-native-camera";
 import { Platform } from "react-native";
 
 jest.mock("react-native/Libraries/Utilities/Platform", () => ({
-  OS: "android", // or 'ios'
+  OS: "android",
   select: () => null
 }));
 
