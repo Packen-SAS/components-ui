@@ -428,7 +428,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     if (this.state.theme !== "list") {
       this.setState({
         state: "focus"
-      }, this.addKeyboardEvents);
+      });
       if (this.state.eventHandlers && this.state.eventHandlers.onFocus) {
         this.state.eventHandlers.onFocus(this.state.name);
       }
@@ -444,7 +444,7 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
   handleBlur: HandleFocusBlurType = () => {
     this.setState({
       state: "default"
-    }, this.removeKeyboardEvents);
+    });
     if (this.state.eventHandlers && this.state.eventHandlers.onBlur) {
       this.state.eventHandlers.onBlur(this.state.name);
     }
@@ -478,22 +478,6 @@ class PackenUiInput extends Component<PackenUiInputProps, PackenUiInputState> {
     }
 
     this.state.onChangeText(this.state.name, text ? text : null, isValid);
-  }
-
-  /**
-   * Sets the keyboard event listeners
-   * @type {function}
-   */
-  addKeyboardEvents: VoidFunction = () => {
-    Keyboard.addListener("keyboardDidShow", this.focus);
-  }
-
-  /**
-   * Destroys the keyboard event listeners
-   * @type {function}
-   */
-  removeKeyboardEvents: VoidFunction = () => {
-    Keyboard.removeListener("keyboardDidShow", this.focus);
   }
 
   /**
