@@ -257,6 +257,7 @@ export default class PackenUiMap extends Component<PackenUiMapProps, PackenUiMap
     if (this.map) {
       const timeout = setTimeout(() => {
         const markersIds = this.state.map.markers.map((item) => item.id.toString());
+        if (this.props.currentUserLocation && this.props.userIcon) { markersIds.push("driver"); }
         const edgePadding = Platform.OS === "android"
           ? { top: 100, right: 200, bottom: 0, left: 0 }
           : { top: 50, right: 100, bottom: 15, left: 15 }
@@ -437,6 +438,7 @@ export default class PackenUiMap extends Component<PackenUiMapProps, PackenUiMap
     const { latitude, longitude } = this.props.currentUserLocation;
     return (
       <Marker
+        identifier="driver"
         coordinate={{
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude)
