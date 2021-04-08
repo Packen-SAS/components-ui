@@ -265,7 +265,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
   getLinePositioning: Function = (): LinePositioningShape => {
     if (!this.state.altStyle) {
       return {
-        height: this.state.dimensions.line.height || 0,
+        height: this.state.dimensions.line.height + (this.getPreviousBoxHeight() / 2) || 0,
         bottom: this.state.dimensions.line.bottom
       };
     }
