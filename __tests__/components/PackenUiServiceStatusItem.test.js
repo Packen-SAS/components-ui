@@ -106,13 +106,15 @@ describe("<PackenUiServiceStatusItem/>", () => {
       expect(returnedStyles.height).toBe(10);
       expect(returnedStyles.bottom).toBe(10);
 
+      renderInstance.setState({ itemsHeights: [10] });
       [0, 1].forEach((index) => {
         renderInstance.setState({ altStyle: true, index });
         returnedStyles = renderInstance.getLinePositioning();
         expect(returnedStyles.top).toBe(3);
         expect(returnedStyles.left).toBe(5);
-        expect(returnedStyles.height).toBe(index === 0 ? 37 : 16);
+        expect(returnedStyles.height).toBe(index === 0 ? 4 : 35);
       });
+      renderInstance.setState({ itemsHeights: [] });
 
       /**
        * This scenario should be impossible to reproduce, but it's just
@@ -127,7 +129,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
         }
       });
       returnedStyles = renderInstance.getLinePositioning();
-      expect(returnedStyles.height).toBe(-6);
+      expect(returnedStyles.height).toBe(19);
 
       renderInstance.setState({
         altStyle: true,
@@ -139,7 +141,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
       });
       renderInstance.setState({ itemsHeights: [10] });
       returnedStyles = renderInstance.getLinePositioning();
-      expect(returnedStyles.height).toBe(120);
+      expect(returnedStyles.height).toBe(148);
 
       renderInstance.setState({ dimensions: { line: { height: undefined } }, itemsHeights: [0] });
       returnedStyles = renderInstance.getLinePositioning();
@@ -345,7 +347,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
       });
 
       expect(renderInstance.state.dimensions.box.height).toBe(10);
-      expect(renderInstance.state.dimensions.line.height).toBe(35);
+      expect(renderInstance.state.dimensions.line.height).toBe(10);
       expect(renderInstance.state.dimensions.line.bottom).toBe(5);
       expect(mockCallback).toHaveBeenCalled();
     });
@@ -366,7 +368,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
 
       expect(res).toBe(false);
       expect(renderInstance.state.dimensions.box.height).toBe(10);
-      expect(renderInstance.state.dimensions.line.height).toBe(35);
+      expect(renderInstance.state.dimensions.line.height).toBe(10);
       expect(renderInstance.state.dimensions.line.bottom).toBe(5);
     });
 

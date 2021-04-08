@@ -269,9 +269,9 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
         bottom: this.state.dimensions.line.bottom
       };
     }
-    let newHeight = this.state.dimensions.line.height - 3;
-    if (this.state.itemsHeights.length !== 1) {
-      newHeight = this.state.index === 0 ? this.state.dimensions.line.height + this.spaceBetweenItems + 2 : this.state.dimensions.line.height + 6;
+    let newHeight = this.state.dimensions.line.height + this.spaceBetweenItems;
+    if (this.state.index === 0 && this.state.itemsHeights.length === 1) {
+      newHeight = newHeight - 6 - this.spaceBetweenItems;
     }
     return {
       top: 3,
@@ -367,7 +367,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
           height: height
         },
         line: {
-          height: (height / 2) + this.spaceBetweenItems + (this.getPreviousBoxHeight() / 2),
+          height: height,
           bottom: height / 2
         }
       }
