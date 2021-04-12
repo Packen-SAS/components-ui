@@ -439,6 +439,7 @@ export default class PackenUiMap extends Component<PackenUiMapProps, PackenUiMap
     return (
       <Marker
         identifier="driver"
+        anchor={{ x: 0.5, y: 0.5 }}
         coordinate={{
           latitude: parseFloat(latitude),
           longitude: parseFloat(longitude)
