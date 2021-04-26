@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import PropTypes from "prop-types";
-import { View, LayoutChangeEvent } from "react-native";
+import { View, LayoutChangeEvent, Animated } from "react-native";
 import * as UTIL from "../utils";
 
 import Icon from "react-native-vector-icons/Feather";
@@ -21,6 +21,7 @@ interface StylingPropShape {
   main: object;
   title: object;
   subtitle: object;
+  shadow: object;
 }
 
 interface DataShape {
@@ -74,7 +75,8 @@ interface PackenUiServiceStatusItemState {
       height: number;
       bottom: number;
     };
-  }
+  },
+  activeScale: Animated.AnimatedValue
 }
 
 /**
@@ -101,6 +103,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
      * @property {string} [state="default"] The item's current status
      * @property {node|null} time JSX for the time element or null if the step is not yet reached
      * @property {object} dimensions Stores the item's element's dimensions
+     * @property {object} activeScale Stores the active item's shadow element animation
      */
     this.state = {
       ...this.setPropsToState(),
@@ -114,7 +117,8 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
           height: 0,
           bottom: 0
         }
-      }
+      },
+      activeScale: new Animated.Value(0)
     }
   }
 
@@ -123,9 +127,29 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * @type {function}
    */
   componentDidMount() {
+    this.startActiveAnim();
     if (typeof this.props.instance === "function") {
       this.props.instance(this);
     }
+  }
+
+  /**
+   * Starts active dot animation
+   * @type {function}
+   */
+  startActiveAnim: Function = () => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(this.state.activeScale, {
+          toValue: 1,
+          useNativeDriver: true
+        }),
+        Animated.timing(this.state.activeScale, {
+          toValue: 0,
+          useNativeDriver: true
+        })
+      ])
+    ).start();
   }
 
   /**
@@ -165,7 +189,8 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
         dotIconColor: undefined,
         main: {},
         title: {},
-        subtitle: {}
+        subtitle: {},
+        shadow: {}
       }
     };
   }
@@ -298,8 +323,8 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
 
     if (
       (this.state.altStyle
-      && this.state.itemsHeights.length !== 1
-      && this.state.index === this.state.itemsHeights.length - 1)
+        && this.state.itemsHeights.length !== 1
+        && this.state.index === this.state.itemsHeights.length - 1)
       || (!this.state.altStyle && this.state.index === 0)
     ) {
       line = null;
@@ -472,6 +497,14 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
           }}
         >
           {this.getLine()}
+          <Animated.View
+            style={{
+              ...this.getStyles().shadow.base,
+              ...this.getStyles().shadow.state[this.state.state].main,
+              ...this.getStyles().shadow.state[this.state.state].alt[this.state.altStyle.toString()],
+              ...this.state.styling.shadow
+            }}
+          />
           <View
             style={{
               ...this.getStyles().dot.base,
@@ -582,6 +615,50 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
         }
       }
     },
+    shadow: {
+      base: {
+        zIndex: 1,
+        width: 24,
+        height: 24,
+        opacity: 0,
+        display: "none",
+        borderRadius: 24,
+        position: "absolute",
+        backgroundColor: "#B4EAD6"
+      },
+      state: {
+        default: {
+          main: {},
+          alt: {
+            true: {},
+            false: {}
+          }
+        },
+        completed: {
+          main: {},
+          alt: {
+            true: {},
+            false: {}
+          }
+        },
+        active: {
+          alt: {
+            true: { opacity: 0, display: "none" },
+            false: {}
+          },
+          main: {
+            opacity: 1,
+            display: "flex",
+            transform: [{
+              scale: this.state.activeScale.interpolate({
+                inputRange: [0, 1],
+                outputRange: [1, 1.25]
+              })
+            }]
+          }
+        }
+      }
+    },
     dot: {
       base: {
         borderRadius: 20,
@@ -627,7 +704,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
             borderWidth: 6,
             borderStyle: 'solid',
             borderColor: '#B4EAD6',
-            backgroundColor: Colors.success.default,
+            backgroundColor: Colors.success.default
           },
           alt: {
             true: {

@@ -1,6 +1,7 @@
 import "react-native";
 import React from "react";
 import { shallow } from "enzyme";
+import { Animated } from "react-native";
 
 import PackenUiServiceStatusItem from "../../app/components/PackenUiServiceStatusItem";
 
@@ -87,7 +88,8 @@ describe("<PackenUiServiceStatusItem/>", () => {
           height: 0,
           bottom: 0
         }
-      }
+      },
+      activeScale: new Animated.Value(0)
     });
   });
 
@@ -100,7 +102,8 @@ describe("<PackenUiServiceStatusItem/>", () => {
             height: 10,
             bottom: 10
           }
-        }
+        },
+        activeScale: new Animated.Value(0)
       });
       let returnedStyles = renderInstance.getLinePositioning();
       expect(returnedStyles.height).toBe(10);
@@ -137,7 +140,8 @@ describe("<PackenUiServiceStatusItem/>", () => {
           line: {
             height: 123
           }
-        }
+        },
+        activeScale: new Animated.Value(0)
       });
       renderInstance.setState({ itemsHeights: [10] });
       returnedStyles = renderInstance.getLinePositioning();
@@ -205,10 +209,13 @@ describe("<PackenUiServiceStatusItem/>", () => {
     });
 
     it("executes the instance callback on componentDidMount if provided", () => {
+      const spyStartActiveAnim = jest.spyOn(renderInstance, "startActiveAnim");
       render.setProps({ instance: jest.fn() });
       renderInstance.componentDidMount();
 
+      expect(spyStartActiveAnim).toHaveBeenCalled();
       expect(renderInstance.props.instance).toHaveBeenCalled();
+      spyStartActiveAnim.mockRestore();
     });
 
     it("executes the onLayout callback for the main box", () => {
