@@ -10,7 +10,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint app/components/ --fix",
-    "test": "jest --coverage",
+    "test": "jest --coverage --maxWorkers=2",
     "storybook": "start-storybook -p 7007",
     "docs": "./node_modules/.bin/esdoc"
   },
