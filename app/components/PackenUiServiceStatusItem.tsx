@@ -75,8 +75,7 @@ interface PackenUiServiceStatusItemState {
       height: number;
       bottom: number;
     };
-  },
-  activeScale: Animated.AnimatedValue
+  }
 }
 
 /**
@@ -88,6 +87,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
    * @type {number}
    */
   spaceBetweenItems = 25;
+  activeScale = new Animated.Value(0);
 
   /**
    * Initializes the component
@@ -117,8 +117,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
           height: 0,
           bottom: 0
         }
-      },
-      activeScale: new Animated.Value(0)
+      }
     }
   }
 
@@ -140,11 +139,11 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
   startActiveAnim: Function = () => {
     Animated.loop(
       Animated.sequence([
-        Animated.timing(this.state.activeScale, {
+        Animated.timing(this.activeScale, {
           toValue: 1,
           useNativeDriver: true
         }),
-        Animated.timing(this.state.activeScale, {
+        Animated.timing(this.activeScale, {
           toValue: 0,
           useNativeDriver: true
         })
@@ -650,7 +649,7 @@ class PackenUiServiceStatusItem extends Component<PackenUiServiceStatusItemProps
             opacity: 1,
             display: "flex",
             transform: [{
-              scale: this.state.activeScale.interpolate({
+              scale: this.activeScale.interpolate({
                 inputRange: [0, 1],
                 outputRange: [1, 1.25]
               })

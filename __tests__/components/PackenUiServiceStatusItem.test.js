@@ -5,6 +5,8 @@ import { Animated } from "react-native";
 
 import PackenUiServiceStatusItem from "../../app/components/PackenUiServiceStatusItem";
 
+jest.useFakeTimers();
+
 describe("<PackenUiServiceStatusItem/>", () => {
   let render, renderInstance;
   const mockCallback = jest.fn();
@@ -102,8 +104,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
             height: 10,
             bottom: 10
           }
-        },
-        activeScale: new Animated.Value(0)
+        }
       });
       let returnedStyles = renderInstance.getLinePositioning();
       expect(returnedStyles.height).toBe(10);
@@ -140,8 +141,7 @@ describe("<PackenUiServiceStatusItem/>", () => {
           line: {
             height: 123
           }
-        },
-        activeScale: new Animated.Value(0)
+        }
       });
       renderInstance.setState({ itemsHeights: [10] });
       returnedStyles = renderInstance.getLinePositioning();
@@ -448,7 +448,8 @@ describe("<PackenUiServiceStatusItem/>", () => {
           dotIconColor: undefined,
           main: {},
           title: {},
-          subtitle: {}
+          subtitle: {},
+          shadow: {}
         }
       });
 

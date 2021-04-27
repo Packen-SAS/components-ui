@@ -1,6 +1,6 @@
 {
   "name": "packen-rn",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "UI components for React Native apps developed by Packen",
   "main": "lib.js",
   "private": false,
